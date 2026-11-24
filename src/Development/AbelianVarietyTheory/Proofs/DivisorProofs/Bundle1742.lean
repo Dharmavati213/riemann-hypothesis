@@ -37,6 +37,7 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousCo
 
 -- bundled from Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitIdelesOpen
 section
+attribute [-instance] GlobalTheory.AllWt.subRulesModuleInt GlobalTheory.AllWt.subRulesTower
 noncomputable section
 
 namespace GlobalTheory.ThK.ConeEuler.UnitsOpen
