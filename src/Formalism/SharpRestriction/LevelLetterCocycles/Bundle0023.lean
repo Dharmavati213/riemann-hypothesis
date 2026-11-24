@@ -13,6 +13,7 @@ public import Formalism.SharpRestriction.LevelLetterCocycles.Bundle0021
 
 -- bundled from Formalism.SharpRestriction.LevelLetterCocycles.EqZeroOfMemSum
 section
+attribute [-instance] Formalism.BasicNotions.LocLat.modO Formalism.BasicNotions.LocLat.towO Formalism.BasicNotions.LocLat.modFun Formalism.BasicNotions.LocLat.modSubFun Formalism.BasicNotions.LocLat.modT
 noncomputable section
 
 namespace Formalism.MainNotions.RamifiedCoefficientChains.S9.Hodge
