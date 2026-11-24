@@ -215,6 +215,7 @@ end
 
 -- bundled from Development.WeilBound.CoreStatements.FlagImmersions.TopLeIffCentre
 section
+attribute [-instance] GlobalTheory.CompHt.fintypePsi
 noncomputable section
 
 namespace RootFieldNumerics.Un

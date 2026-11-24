@@ -30,6 +30,7 @@ public import ReciprocityTheory.DualLattices.Bundle0005
 
 -- bundled from Development.AbelianVarietyTheory.Proofs.DivisorProofs.NatCastMemBelow
 section
+attribute [-instance] GlobalTheory.CompHt.fintypePsi
 noncomputable section
 
 open NumberField IsDedekindDomain Formalism.BasicNotions GlobalTheory.CMVal GlobalTheory.FunObj GlobalTheory.FunObj.SqNum GlobalTheory.ChiGrid

@@ -386,6 +386,7 @@ end
 
 -- bundled from Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MultOfNotMem
 section
+attribute [-instance] GlobalTheory.CompHt.fintypePsi
 noncomputable section
 
 open MvPolynomial Matrix NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor

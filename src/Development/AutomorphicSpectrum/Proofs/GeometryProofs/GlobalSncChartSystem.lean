@@ -63,6 +63,7 @@ public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.Bundle0127
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.VerticalDivisorDegree
 
 @[expose] public section
+attribute [-instance] GlobalTheory.CompHt.fintypePsi
 
 noncomputable section
 
