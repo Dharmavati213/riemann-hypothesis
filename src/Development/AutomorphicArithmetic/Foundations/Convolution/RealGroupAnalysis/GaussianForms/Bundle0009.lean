@@ -83,7 +83,7 @@ theorem UpperTheory.ConvolutionTheory.R2.C.gaussOp :
   conv_lhs => rw [ft4]
   simp only [e1]
   have : (adeleMeasurePi F (ι := Fin 4)).IsNegInvariant :=
-    inferInstanceAs (Measure.pi fun _ : Fin 4 => adeleMeasure F).IsNegInvariant
+    Measure.IsAddHaarMeasure.isNegInvariant_of_innerRegular (adeleMeasurePi F (ι := Fin 4))
   rw [← integral_neg_eq_self _ (adeleMeasurePi F (ι := Fin 4))]
   simp only [neg_neg, quadraticForm_neg, quaternaryForm_neg_right]
   rw [ft4, ← integral_const_mul]
