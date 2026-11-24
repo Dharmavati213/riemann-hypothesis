@@ -31,6 +31,7 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.Bundle1239
 
 -- bundled from Development.AbelianVarietyTheory.Proofs.DivisorProofs.ClassesAt
 section
+attribute [-instance] GroundTheory.PAdicHodge.subfield_valuativeRel
 set_option autoImplicit false
 
 noncomputable section
