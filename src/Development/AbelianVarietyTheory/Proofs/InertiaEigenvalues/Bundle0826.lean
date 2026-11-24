@@ -323,6 +323,8 @@ theorem pet_kerInf_left (hω : ω.IsUnitary) {X : Type} [MeasurableSpace X] {ν 
       ((norm_nonneg _).trans (hC 1))) (norm_nonneg _)
   rw [(pet_eq_setIntegral hω (kerInf_mem_bddForms hk h) h' hD).2]
   simp only [← integral_mul_const]
+  have : SFinite (μ.restrict (stdDom (latticeGL E a))) :=
+    @instSFiniteOfSigmaFinite _ _ _ (IsFiniteMeasure.toSigmaFinite _)
   rw [integral_integral_swap hi]
   refine integral_congr_ae (.of_forall fun x => ?_)
   simp only [(pet_eq_setIntegral hω (mul_right_mem_bddForms h _) h' hD).2, ← integral_const_mul, mul_assoc]
