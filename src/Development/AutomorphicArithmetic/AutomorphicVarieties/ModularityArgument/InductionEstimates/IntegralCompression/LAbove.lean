@@ -7,6 +7,7 @@ public import GroundTheory.AutomorphicForms.TensorProductTheorem.NonemptyAdelicD
 
 @[expose] public section
 
+attribute [-instance] GlobalTheory.CompanionTheory.QL.instMeasGL GlobalTheory.CompanionTheory.QL.instBorelGL Formalism.DoubleCosetMeasures.instMeasGL Formalism.DoubleCosetMeasures.instBorelGL
 noncomputable section
 
 open MeasureTheory NumberField Filter Topology Matrix
