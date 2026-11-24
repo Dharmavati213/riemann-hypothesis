@@ -5,6 +5,7 @@ public import Development.WeilBound.CoreStatements.AutomorphicKernels.UnitarySch
 
 @[expose] public section
 
+attribute [-instance] PI.WSF.instMeasurableSpaceMat PI.WSF.instBorelSpaceMat
 noncomputable section
 
 namespace PositivityTheory.SiegelWeilFormula.Gen

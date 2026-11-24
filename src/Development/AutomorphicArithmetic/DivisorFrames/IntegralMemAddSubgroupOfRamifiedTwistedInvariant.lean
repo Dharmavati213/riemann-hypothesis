@@ -8,6 +8,7 @@ public import Development.AutomorphicArithmetic.DivisorFrames.Bundle0002
 
 @[expose] public section
 
+attribute [-instance] PI.WSF.instMeasurableSpaceMat PI.WSF.instBorelSpaceMat
 open MeasureTheory ValuativeRel Matrix GlobalTheory.SplitWeil GlobalTheory.SplitFlip
 open scoped Pointwise
 
