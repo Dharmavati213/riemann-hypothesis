@@ -63,7 +63,7 @@ theorem genRel_psi_twist (D : DegData T.V (maximalIdeal T.V)) [Module (𝓞 E) D
       ((algebraMap (FractionRing T.V) F (algebraMap T.V _ ϖ)) ^ (beF D hϖ y y / 2)) := by
   have h0 : algebraMap (FractionRing T.V) F (algebraMap T.V _ ϖ) ≠ 0 :=
     (map_ne_zero _).2 ((map_ne_zero_iff _ (IsFractionRing.injective T.V (FractionRing T.V))).2 hϖ.ne_zero)
-  have hq : beF D hϖ y y / 2 = qv D hϖ y := by rw [beF_self]; omega
+  have hq : beF D hϖ y y / 2 = qv D hϖ y := by rw [GlobalTheory.TraitArc.beF_self]; omega
   let u : Fˣ := Units.mk0 _ h0 ^ (beF D hϖ y y / 2)
   have hu : ((u : Fˣ) : F) = (algebraMap (FractionRing T.V) F (algebraMap T.V _ ϖ)) ^ (beF D hϖ y y / 2) := by
     simp only [u, Units.val_zpow_eq_zpow_val, Units.val_mk0]
