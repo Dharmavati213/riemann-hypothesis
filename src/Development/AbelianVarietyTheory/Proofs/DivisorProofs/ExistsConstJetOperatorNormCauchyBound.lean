@@ -22,7 +22,7 @@ namespace GlobalTheory.FockJetBound
 theorem fockS_self {σ : Type} (f : MvPolynomial σ ℂ) : fockS f f = ((fockNormSq f : ℝ) : ℂ) := by
   simp only [fockS, fockNormSq, Complex.ofReal_sum, Complex.ofReal_mul, Complex.ofReal_pow, Complex.ofReal_natCast]
   refine Finset.sum_congr rfl fun m _ => ?_
-  have hm : (mfact m : ℂ) = (multiFactorial m : ℂ) := rfl
+  have hm : (mfact m : ℂ) = (_root_.GlobalTheory.MvPoly.multiFactorial m : ℂ) := rfl
   rw [show star (f.coeff m) = (starRingEnd ℂ) (f.coeff m) from rfl, Complex.conj_mul', hm]
   ring
 
@@ -57,17 +57,17 @@ private theorem sum_support_eq_degree_of_isHomogeneous {σ : Type} {P : MvPolyno
   simpa [Finsupp.weight_apply, Finsupp.sum] using hw
 
 private theorem multiFactorial_le_factorial_of_isHomogeneous {σ : Type} {P : MvPolynomial σ ℂ} {d : ℕ} (h : P.IsHomogeneous d)
-    {α : σ →₀ ℕ} (hα : α ∈ P.support) : (multiFactorial α : ℝ) ≤ d.factorial := by
+    {α : σ →₀ ℕ} (hα : α ∈ P.support) : (_root_.GlobalTheory.MvPoly.multiFactorial α : ℝ) ≤ d.factorial := by
   have hdiv := Nat.prod_factorial_dvd_factorial_sum α.support α
   rw [sum_support_eq_degree_of_isHomogeneous h hα] at hdiv
   have hle := Nat.le_of_dvd (Nat.factorial_pos _) hdiv
-  unfold multiFactorial Finsupp.prod
+  unfold _root_.GlobalTheory.MvPoly.multiFactorial Finsupp.prod
   exact_mod_cast hle
 
 theorem fockNormSq_le_l1Norm_sq {σ : Type} {P : MvPolynomial σ ℂ} {d : ℕ} (h : P.IsHomogeneous d) :
     fockNormSq P ≤ d.factorial * l1Norm P ^ 2 := by
   unfold fockNormSq l1Norm
-  calc ∑ α ∈ P.support, (multiFactorial α : ℝ) * ‖P.coeff α‖ ^ 2
+  calc ∑ α ∈ P.support, (_root_.GlobalTheory.MvPoly.multiFactorial α : ℝ) * ‖P.coeff α‖ ^ 2
       ≤ ∑ α ∈ P.support, (d.factorial : ℝ) * ‖P.coeff α‖ ^ 2 :=
         Finset.sum_le_sum fun α hα => mul_le_mul_of_nonneg_right (multiFactorial_le_factorial_of_isHomogeneous h hα) (sq_nonneg _)
     _ = (d.factorial : ℝ) * ∑ α ∈ P.support, ‖P.coeff α‖ ^ 2 := by rw [Finset.mul_sum]
@@ -109,7 +109,7 @@ theorem l1Norm_sq_le_mul_fockNormSq {σ : Type} [Fintype σ] {P : MvPolynomial �
         sq_sum_le_card_mul_sum_sq
     _ ≤ (1 + d) ^ Fintype.card σ * ∑ α ∈ P.support, ‖P.coeff α‖ ^ 2 :=
         mul_le_mul_of_nonneg_right (card_support_le_of_isHomogeneous h) (Finset.sum_nonneg fun _ _ => sq_nonneg _)
-    _ ≤ (1 + d) ^ Fintype.card σ * ∑ α ∈ P.support, (multiFactorial α : ℝ) * ‖P.coeff α‖ ^ 2 := by
+    _ ≤ (1 + d) ^ Fintype.card σ * ∑ α ∈ P.support, (_root_.GlobalTheory.MvPoly.multiFactorial α : ℝ) * ‖P.coeff α‖ ^ 2 := by
         refine mul_le_mul_of_nonneg_left (Finset.sum_le_sum fun α _ => ?_) (by positivity)
         exact le_mul_of_one_le_left (sq_nonneg _) (one_le_multiFactorial α)
 
