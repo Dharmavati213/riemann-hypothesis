@@ -382,6 +382,15 @@ theorem l2Norm_sq_le_fockNormSq (P : MvPolynomial σ K) : l2Norm P ^ 2 ≤ fockN
   exact sum_le_sum fun α _ ↦ le_mul_of_one_le_left (sq_nonneg _)
     (by exact_mod_cast multiFactorial_pos α)
 
+theorem l1Norm_sq_le_choose_mul_fockNormSq [Fintype σ] {P : MvPolynomial σ K} {d : ℕ}
+    (h : P.totalDegree ≤ d) : l1Norm P ^ 2 ≤ ((Fintype.card σ + d).choose d : ℝ) * fockNormSq P := by
+  calc
+    l1Norm P ^ 2 ≤ (√((Fintype.card σ + d).choose d) * l2Norm P) ^ 2 :=
+      pow_le_pow_left₀ (l1Norm_nonneg P) (l1Norm_le_sqrt_choose_mul_l2Norm h) 2
+    _ = ((Fintype.card σ + d).choose d : ℝ) * l2Norm P ^ 2 := by
+      rw [mul_pow, Real.sq_sqrt (Nat.cast_nonneg _)]
+    _ ≤ _ := mul_le_mul_of_nonneg_left (l2Norm_sq_le_fockNormSq P) (Nat.cast_nonneg _)
+
 @[simp] theorem fockNormSq_eq_zero {P : MvPolynomial σ K} : fockNormSq P = 0 ↔ P = 0 := by
   refine ⟨fun h ↦ l2Norm_eq_zero.mp ?_, fun h ↦ h ▸ fockNormSq_zero⟩
   exact pow_eq_zero_iff two_ne_zero |>.mp
