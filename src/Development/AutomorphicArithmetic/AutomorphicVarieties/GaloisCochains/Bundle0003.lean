@@ -14,6 +14,7 @@ public import Mathlib.Topology.Algebra.ClopenNhdofOne
 
 -- bundled from Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisCochains.B1p
 section
+attribute [-instance] GlobalTheory.AllWt.subRulesModuleInt GlobalTheory.AllWt.subRulesTower
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Module UpperTheory.V UpperTheory.V.Fr UpperTheory.V.GC
 open scoped Pointwise
 
@@ -106,6 +107,7 @@ end
 
 -- bundled from Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisCochains.PsiLocalPairEqLocal
 section
+attribute [-instance] GlobalTheory.AllWt.subRulesModuleInt GlobalTheory.AllWt.subRulesTower
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Module UpperTheory.V UpperTheory.V.Fr UpperTheory.V.GC
 
 open scoped Pointwise in

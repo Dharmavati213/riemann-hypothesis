@@ -215,6 +215,7 @@ end
 
 -- bundled from Development.AutomorphicArithmetic.IdeleLatticeFacts.ExistsPlaceOfSplitIdempotentCmExt
 section
+attribute [-instance] GlobalTheory.AllWt.subRulesModuleInt GlobalTheory.AllWt.subRulesTower
 open scoped TensorProduct Matrix Topology Kronecker ComplexOrder Classical
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Matrix
 open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
