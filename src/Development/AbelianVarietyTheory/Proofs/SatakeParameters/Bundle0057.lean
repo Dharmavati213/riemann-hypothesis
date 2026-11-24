@@ -11,6 +11,7 @@ public import Formalism.LocalToGlobal.Columns.FiniteSumNonzeroLargeDepth
 
 -- bundled from Development.AbelianVarietyTheory.Proofs.SatakeParameters.H1H2LocalDuality
 section
+attribute [-instance] GlobalTheory.AdmLoc.modTens GlobalTheory.AdmLoc.modFun GlobalTheory.AdmLoc.modProd GlobalTheory.AdmLoc.modQuot GlobalTheory.AdmLoc.twistedModuleH1 GlobalTheory.AdmLoc.twistedSubmoduleH1 GlobalTheory.AdmLoc.moduleH1Alt
 noncomputable section
 
 namespace GlobalTheory.HOneTwoLevel
