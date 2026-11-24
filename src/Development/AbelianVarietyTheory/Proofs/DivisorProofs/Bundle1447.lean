@@ -345,10 +345,9 @@ theorem divisible_algClosure : ∀ (K Ω : Type) [Field K] [Field Ω] [Algebra K
   refine (GlobalTheory.TorsionDivisible.finite_torsion_and_divisible L _ hB m hmL).2 _ hFf ?_
   intro x hx
   apply e.injective
-  let : OfNat (Over.mk t ⟶ A) 1 := ⟨toUnit _ ≫ η⟩
-  have h1 : e x ^ m = 1 := by rw [← map_pow, hx, map_one]
+  have h1 : e x ^ m = 1 := by rw [← map_pow, hx, MulEquiv.map_one]
   have h2 : e x ≫ f = 1 := step1 (e x) h1
-  rw [map_one, ← h2]
+  rw [MulEquiv.map_one, ← h2]
   apply Over.OverMorphism.ext
   rw [he, Over.comp_left, Over.comp_left, he]
   simp
