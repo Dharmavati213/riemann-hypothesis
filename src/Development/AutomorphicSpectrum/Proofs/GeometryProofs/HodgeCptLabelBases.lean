@@ -29,6 +29,7 @@ public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieLatticeDo
 
 @[expose] public section
 
+attribute [-instance] GlobalTheory.CompHt.fintypePsi
 attribute [-instance] GlobalTheory.AdmLoc.modTens GlobalTheory.AdmLoc.modFun GlobalTheory.AdmLoc.modProd GlobalTheory.AdmLoc.modQuot GlobalTheory.AdmLoc.twistedModuleH1 GlobalTheory.AdmLoc.twistedSubmoduleH1 GlobalTheory.AdmLoc.moduleH1Alt
 noncomputable section
 
