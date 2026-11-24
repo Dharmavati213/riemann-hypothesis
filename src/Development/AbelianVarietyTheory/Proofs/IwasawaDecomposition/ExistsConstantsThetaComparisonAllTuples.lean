@@ -21,6 +21,7 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.Bundle1848
 public import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.Bundle0076
 
 @[expose] public section
+attribute [-instance] GlobalTheory.AdmLoc.modTens GlobalTheory.AdmLoc.modFun GlobalTheory.AdmLoc.modProd GlobalTheory.AdmLoc.modQuot GlobalTheory.AdmLoc.twistedModuleH1 GlobalTheory.AdmLoc.twistedSubmoduleH1 GlobalTheory.AdmLoc.moduleH1Alt
 
 attribute [-instance] GlobalTheory.CompHt.fintypePsi
 set_option autoImplicit false
