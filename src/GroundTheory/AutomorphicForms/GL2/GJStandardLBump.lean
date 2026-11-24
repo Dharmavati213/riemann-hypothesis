@@ -5,6 +5,7 @@ public import GroundTheory.AutomorphicForms.GL2.GJStandardLDefs
 
 @[expose] public section
 
+attribute [-instance] GroundTheory.Automorphic.GJMatrix.measurableSpace_matrix GroundTheory.Automorphic.GJMatrix.borelSpace_matrix
 open MeasureTheory Filter Set Topology Metric IsDedekindDomain NumberField NumberField.mixedEmbedding
 open scoped NumberField.AdeleRing SchwartzMap Classical ENNReal
 
