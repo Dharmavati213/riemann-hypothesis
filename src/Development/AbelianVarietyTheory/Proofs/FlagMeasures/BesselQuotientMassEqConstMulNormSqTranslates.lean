@@ -22,6 +22,7 @@ public import Formalism.HermitianCurvature.HermitianCurvatureProofs.Bundle0039
 
 @[expose] public section
 
+attribute [-instance] PI.WSF.instMeasurableSpaceMat PI.WSF.instBorelSpaceMat
 noncomputable section
 
 namespace GlobalTheory.BesselIsometry
