@@ -34,6 +34,7 @@ public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SecondCo
 
 -- bundled from Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LieActionSkewAdjointL2
 section
+attribute [-instance] Formalism.DoubleCosetMeasures.instMeasGL Formalism.DoubleCosetMeasures.instBorelGL
 attribute [-instance] GlobalTheory.CompanionTheory.QL.instMeasGL GlobalTheory.CompanionTheory.QL.instBorelGL
 noncomputable section
 

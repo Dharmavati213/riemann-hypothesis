@@ -18,6 +18,7 @@ public import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.FIwasawa
 
 @[expose] public section
 
+attribute [-instance] GlobalTheory.CompanionTheory.QL.instMeasGL GlobalTheory.CompanionTheory.QL.instBorelGL Formalism.DoubleCosetMeasures.instMeasGL Formalism.DoubleCosetMeasures.instBorelGL
 open GlobalTheory.PRep Formalism.UG GlobalTheory.LFun PositivityTheory.SphericalProduct
 open MeasureTheory GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.SatakeBound GlobalTheory.WeylCell GlobalTheory.WeylCell.WeylUnipotentShell
 

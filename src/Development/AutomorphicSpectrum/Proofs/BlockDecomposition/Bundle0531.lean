@@ -28,6 +28,7 @@ public import Development.WeilBound.RepresentationTheoryGL.RegularisedSiegelWeil
 
 -- bundled from Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DiscreteTopologyProdMap
 section
+attribute [-instance] GlobalTheory.CompanionTheory.QL.instMeasGL GlobalTheory.CompanionTheory.QL.instBorelGL Formalism.DoubleCosetMeasures.instMeasGL Formalism.DoubleCosetMeasures.instBorelGL
 attribute [-instance] PI.WSF.instMeasurableSpaceMat PI.WSF.instBorelSpaceMat
 noncomputable section
 
