@@ -114,6 +114,8 @@ theorem pet_kerInf_left {ω : HChar E} (hω : ω.IsUnitary) {F ψ : GA E a → �
       ((norm_nonneg _).trans (hC 1))) (norm_nonneg _)
   rw [(pet_eq_setIntegral hω (kerInf_mem_bddForms h hk) h' hD).2]
   simp only [kerInf, ← integral_mul_const]
+  have : SFinite (μ.restrict (stdDom (latticeGL E a))) :=
+    @instSFiniteOfSigmaFinite _ _ _ (IsFiniteMeasure.toSigmaFinite _)
   rw [integral_integral_swap hi]
   refine integral_congr_ae (.of_forall fun x => ?_)
   simp only [(pet_eq_setIntegral hω (mul_right_mem_bddForms h _) h' hD).2, ← integral_const_mul, mul_assoc]
@@ -188,6 +190,7 @@ end
 section
 attribute [-instance] Formalism.DoubleCosetMeasures.instMeasGL Formalism.DoubleCosetMeasures.instBorelGL
 attribute [-instance] GlobalTheory.CompanionTheory.QL.instMeasGL GlobalTheory.CompanionTheory.QL.instBorelGL
+attribute [local instance 2000] GlobalTheory.SplitWeil.matrixMeasurableSpace
 open scoped TensorProduct NNReal Matrix
 open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes ValuativeRel
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.StdPairCone
