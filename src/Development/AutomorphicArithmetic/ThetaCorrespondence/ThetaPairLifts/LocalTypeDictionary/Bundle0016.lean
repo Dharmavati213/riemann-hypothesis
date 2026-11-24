@@ -34,6 +34,7 @@ public import Development.AbelianVarietyTheory.Definitions.Foundations.NormSumPa
 
 -- bundled from Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.TwistLiftModerateGrowth
 section
+attribute [-instance] GroundTheory.Automorphic.GJMatrix.measurableSpace_matrix GroundTheory.Automorphic.GJMatrix.borelSpace_matrix
 attribute [-instance] PI.WSF.instMeasurableSpaceMat PI.WSF.instBorelSpaceMat
 attribute [-instance] Formalism.DoubleCosetMeasures.instMeasGL Formalism.DoubleCosetMeasures.instBorelGL
 attribute [-instance] GlobalTheory.CompanionTheory.QL.instMeasGL GlobalTheory.CompanionTheory.QL.instBorelGL
