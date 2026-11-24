@@ -86,7 +86,8 @@ theorem shell_lemma : ShellLemma := by
     · intro x hx
       refine (hint n z).mono_set ?_
       rw [heq]
-      exact Set.subset_biUnion_of_mem (u := fun x => {g : GL (Fin a) k | (x * diagGL (fun i => ϖ ^ n i))⁻¹ * g ∈ KO k (Fin a)}) hx
+      intro g hg
+      exact Set.mem_iUnion₂.2 ⟨x, hx, hg⟩
   have h3 := shell_eq_zero_of_support k ϖ hϖ ν a μ φ
   refine ⟨hint, h2, h3, ?_⟩
   obtain ⟨N, M, hN, hM⟩ := GlobalTheory.SBUniform.exists_bound_period k (Fin a) φ hφ
