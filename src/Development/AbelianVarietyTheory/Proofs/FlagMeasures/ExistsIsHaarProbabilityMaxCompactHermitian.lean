@@ -3,7 +3,7 @@ module
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsCompactKH
 
 @[expose] public section
-attribute [-instance] GlobalTheory.SplitWeil.matrixMeasurableSpace
+attribute [-instance] Formalism.DoubleCosetMeasures.instMeasMat GlobalTheory.SplitWeil.matrixMeasurableSpace
 
 open MeasureTheory Matrix Filter Topology
 
