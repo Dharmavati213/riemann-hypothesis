@@ -199,6 +199,8 @@ theorem exists_form_of_core : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsS
 
 end GlobalTheory.SplitPlaceForm
 end
+-- The `end` above closes this member's own `@[expose] public section`; this one closes the bundle's wrapper `section`.
+end
 
 -- bundled from Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsTraceZeroLocalNormMulIntegralUnit
 section
