@@ -93,6 +93,7 @@ end Faith
 
 variable (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+set_option synthInstance.maxHeartbeats 400000 in
 theorem formTraceDistrGL : FormTraceDistrGL k := by
   intro n V _ _ π hadm hirr ⟨B₀, _, h2, h3⟩
   borelize (GL (Fin (n + 1)) k)
