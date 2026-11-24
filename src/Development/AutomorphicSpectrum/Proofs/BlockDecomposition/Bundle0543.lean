@@ -25,6 +25,7 @@ public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SmoothVe
 
 -- bundled from Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MemLatticeOfDualPairing
 section
+attribute [-instance] GlobalTheory.AllWt.subRulesModuleInt GlobalTheory.AllWt.subRulesTower
 noncomputable section
 
 namespace GlobalTheory.CompanionTheory.SiegelND.Integ.Hua.HS.LatticeDualityAlt

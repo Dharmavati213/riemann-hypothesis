@@ -36,6 +36,7 @@ public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TensorLattic
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.Bundle0159
 
 @[expose] public section
+attribute [-instance] GlobalTheory.AllWt.subRulesModuleInt GlobalTheory.AllWt.subRulesTower
 attribute [-instance] GlobalTheory.CompHt.fintypePsi
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField Matrix Filter Topology

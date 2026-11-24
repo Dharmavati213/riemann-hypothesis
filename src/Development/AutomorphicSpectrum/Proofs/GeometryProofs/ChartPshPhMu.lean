@@ -18,6 +18,7 @@ public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.Bundle0047
 public import GroundTheory.HeightsAndTheta.Heights.StabilizerCovolume.Bundle0002
 
 @[expose] public section
+attribute [-instance] GlobalTheory.AllWt.subRulesModuleInt GlobalTheory.AllWt.subRulesTower
 attribute [-instance] GlobalTheory.CompHt.fintypePsi
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField Matrix Filter Topology

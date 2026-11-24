@@ -24,6 +24,7 @@ public import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.Bund
 
 -- bundled from Development.AutomorphicSpectrum.Proofs.AlgebraProofs.EigenLocalBasisLogNorm
 section
+attribute [-instance] GlobalTheory.AllWt.subRulesModuleInt GlobalTheory.AllWt.subRulesTower
 noncomputable section
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
