@@ -24,6 +24,7 @@ public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.Bundle014
 
 -- bundled from Development.AbelianVarietyTheory.Proofs.SatakeParameters.AbsNormEqOfSplitFactor
 section
+attribute [-instance] GlobalTheory.AllWt.subRulesModuleInt GlobalTheory.AllWt.subRulesTower
 namespace GlobalTheory.ColPeriod
 
 open NumberField IsDedekindDomain _root_.Formalism.L2.Col Formalism.L2.DIV
