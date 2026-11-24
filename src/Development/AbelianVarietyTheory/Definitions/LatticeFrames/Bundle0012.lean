@@ -74,6 +74,7 @@ end
 
 -- bundled from Development.AbelianVarietyTheory.Definitions.LatticeFrames.ContinuesConst
 section
+attribute [-instance] GlobalTheory.AllWt.subRulesModuleInt GlobalTheory.AllWt.subRulesTower
 noncomputable section
 
 open scoped NNReal
