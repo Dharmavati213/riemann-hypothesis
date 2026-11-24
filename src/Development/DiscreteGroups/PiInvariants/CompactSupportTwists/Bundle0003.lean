@@ -233,6 +233,7 @@ end
 
 -- bundled from Development.DiscreteGroups.PiInvariants.CompactSupportTwists.NoPiHk
 section
+attribute [-instance] GlobalTheory.AllWt.subRulesModuleInt GlobalTheory.AllWt.subRulesTower
 noncomputable section
 
 open NumberField IsDedekindDomain Matrix MeasureTheory
