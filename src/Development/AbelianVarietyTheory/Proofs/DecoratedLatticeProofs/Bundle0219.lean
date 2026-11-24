@@ -32,6 +32,7 @@ public import Development.AbelianVarietyTheory.Definitions.Foundations.GLintEqKO
 
 -- bundled from Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FockVectorPureTensorCoefficientSplitsTrivialPlac
 section
+attribute [-instance] GlobalTheory.AllWt.subRulesModuleInt GlobalTheory.AllWt.subRulesTower
 attribute [-instance] PI.WSF.instMeasurableSpaceMat PI.WSF.instBorelSpaceMat
 noncomputable section
 

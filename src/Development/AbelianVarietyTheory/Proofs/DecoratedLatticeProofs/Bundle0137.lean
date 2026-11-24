@@ -260,6 +260,7 @@ end
 
 -- bundled from Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ChainKernelBoundAtEmbeddingAnyLevelPrime
 section
+attribute [-instance] GlobalTheory.AllWt.subRulesModuleInt GlobalTheory.AllWt.subRulesTower
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.DIV Formalism.L2.Col Formalism.L2.Ker GlobalTheory.IndefiniteRowSideFullHecke.PlaceLogThetaBounds GlobalTheory.ColNorms
 open GlobalTheory.Core.Ht2
 open scoped ComplexOrder

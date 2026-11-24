@@ -421,6 +421,7 @@ end
 
 -- bundled from Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IsSelfDualAtSumLattice
 section
+attribute [-instance] GlobalTheory.AllWt.subRulesModuleInt GlobalTheory.AllWt.subRulesTower
 noncomputable section
 open scoped Matrix Classical TensorProduct
 open MeasureTheory NumberField IsDedekindDomain Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.Theta Formalism.L2.Pj Formalism.IndefR.Datum
