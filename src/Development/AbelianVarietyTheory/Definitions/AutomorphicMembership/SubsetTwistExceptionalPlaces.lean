@@ -9,6 +9,7 @@ public import Formalism.LocalToGlobal.IndefiniteReal.DoubleCosetOperators.NHkRow
 
 @[expose] public section
 
+attribute [-instance] GlobalTheory.IndefiniteRowSideFullHecke.UnipotentLatticeMembership.finiteLevelGroupFintype
 noncomputable section
 
 namespace GlobalTheory.HeightCounting
