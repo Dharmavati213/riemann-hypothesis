@@ -68,7 +68,7 @@ theorem stronglyMeasurable_rsHat {F F' : Sm E a} (h : Continuous F.1) (h' : Cont
     StronglyMeasurable fun g => rsHat ℓ F.1 F'.1 Φ J η g (y g) := by
   simp only [rsHat_eq J η F F' hΦ]
   have h1 : ∀ i, Continuous fun g => pInf E (y g i) := fun i =>
-    continuous_pInf.comp ((continuous_apply i).comp hy)
+    GlobalTheory.ShortVecDecay.continuous_pInf.comp ((continuous_apply i).comp hy)
   have h2 : ∀ i, Continuous fun g => pFin E (y g i) := fun i =>
     (continuous_snd : Continuous (pFin E)).comp ((continuous_apply i).comp hy)
   have h3 : Continuous ((latt a (traceDualIdeal E J)).indicator (1 : (Fin a → Af E) → ℂ)) :=
