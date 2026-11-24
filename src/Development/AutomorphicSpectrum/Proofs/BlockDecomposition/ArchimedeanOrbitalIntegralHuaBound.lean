@@ -9,6 +9,8 @@ public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ArchimedeanOrbit
 
 @[expose] public section
 
+attribute [-instance] PI.WSF.instMeasurableSpaceMat PI.WSF.instBorelSpaceMat
+
 open MeasureTheory
 open GlobalTheory.CompanionTheory.SiegelND.Integ.Arch
 open scoped ComplexOrder
