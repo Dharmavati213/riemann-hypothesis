@@ -289,7 +289,7 @@ theorem isValFam_spMap : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] 
   refine ⟨GlobalTheory.CompanionTheory.Ar.LieTangent.epsBase f hzz ≫ u, ?_, ?_⟩
   · exact lieValAt_spMap Z.M Z.gen f hzz rfl hval
   · simp only [GlobalTheory.CompanionTheory.Ar.Flat.SameVec]
-    refine ⟨spMap (GlobalTheory.CompanionTheory.Ar.dualMap f) ≫ t, ?_, ?_, ?_⟩
+    refine ⟨spMap (_root_.GlobalTheory.CompanionTheory.Ar.dualMap f) ≫ t, ?_, ?_, ?_⟩
     · rw [Category.assoc, ht1]
       simp only [ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap]
       rw [← Category.assoc, GlobalTheory.CompanionTheory.Ar.LieTangent.spec_dual_alg, Category.assoc]
