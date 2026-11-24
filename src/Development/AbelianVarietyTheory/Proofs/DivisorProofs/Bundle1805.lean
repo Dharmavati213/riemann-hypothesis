@@ -373,6 +373,7 @@ end
 
 -- bundled from Development.AbelianVarietyTheory.Proofs.DivisorProofs.KappaAtSmallPlace
 section
+attribute [-instance] GroundTheory.PAdicHodge.subfield_valuativeRel
 set_option autoImplicit false
 
 noncomputable section

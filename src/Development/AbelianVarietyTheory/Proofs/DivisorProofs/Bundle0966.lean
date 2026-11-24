@@ -42,6 +42,7 @@ public import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTenso
 
 -- bundled from Development.AbelianVarietyTheory.Proofs.DivisorProofs.MatrixAdjoinTensorUnramifiedToMatrixInjectiveStatement
 section
+attribute [-instance] GroundTheory.PAdicHodge.subfield_valuativeRel
 open Matrix GlobalTheory.LKRes GlobalTheory.LKMid
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in

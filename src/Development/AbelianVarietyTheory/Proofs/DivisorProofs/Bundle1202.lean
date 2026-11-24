@@ -72,6 +72,7 @@ end
 
 -- bundled from Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnramifiedLocalSituationOfEmbedding
 section
+attribute [-instance] GroundTheory.PAdicHodge.subfield_valuativeRel
 set_option autoImplicit false
 
 noncomputable section

@@ -444,6 +444,7 @@ end
 
 -- bundled from Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsMatrixAdjoinTensorUnramifiedOfCommuteSeparStatement
 section
+attribute [-instance] GroundTheory.PAdicHodge.subfield_valuativeRel
 open Matrix GlobalTheory.LKRes GlobalTheory.LKMid
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in

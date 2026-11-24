@@ -22,6 +22,7 @@ public import GroundTheory.AutomorphicForms.MultiplicityOne.Injective
 
 -- bundled from Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorusExtensionModuleStructure
 section
+attribute [-instance] GroundTheory.PAdicHodge.subfield_valuativeRel
 attribute [-instance] GlobalTheory.AdmLoc.modTens GlobalTheory.AdmLoc.modFun GlobalTheory.AdmLoc.modProd GlobalTheory.AdmLoc.modQuot
 open Matrix NumberField GlobalTheory.LKTrip GlobalTheory.LKRes GlobalTheory.LKMid GlobalTheory.LKCount GlobalTheory.LKCx GlobalTheory.TorCls
 open scoped TensorProduct Classical
