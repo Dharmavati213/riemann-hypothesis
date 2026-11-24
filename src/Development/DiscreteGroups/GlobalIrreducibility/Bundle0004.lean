@@ -129,6 +129,7 @@ end
 
 -- bundled from Development.DiscreteGroups.GlobalIrreducibility.LConvAltB
 section
+attribute [-instance] Formalism.BasicNotions.LocLat.modO Formalism.BasicNotions.LocLat.towO Formalism.BasicNotions.LocLat.modFun Formalism.BasicNotions.LocLat.modSubFun Formalism.BasicNotions.LocLat.modT
 noncomputable section
 
 open GlobalTheory.PRep
