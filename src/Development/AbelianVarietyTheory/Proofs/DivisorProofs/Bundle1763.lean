@@ -43,6 +43,7 @@ public import GroundTheory.AutomorphicForms.MultiplicityOne.Injective
 
 -- bundled from Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdaptedExistence
 section
+attribute [-instance] Formalism.BasicNotions.LocLat.modO Formalism.BasicNotions.LocLat.towO Formalism.BasicNotions.LocLat.modFun Formalism.BasicNotions.LocLat.modSubFun Formalism.BasicNotions.LocLat.modT
 attribute [-instance] GlobalTheory.IndefiniteRowSideFullHecke.UnipotentLatticeMembership.finiteLevelGroupFintype
 set_option autoImplicit false
 
