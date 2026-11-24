@@ -292,9 +292,8 @@ theorem sum_serCoef_rt : ∀ (D : D7) (X : HidaSetting D) (h : X.B.I = Formalism
     (fun kv β => (D.ntypes.eSer kv.1 (τ kv.1 kv.2)).coeff β) (fun γ => Formalism.L2.NG.rt D.host.E D.R.r (lf γ) φ) step
   have h1 : Formalism.L2.NG.rt D.host.E D.R.r (lf 1) φ = φ :=
     hfix (sec 1) ((hker _ (hsec 1).1).1 ((hsec 1).2)) _ (hlf 1)
-  letI : Fintype (G0g D.nd) := Pi.instFintype
-  rw [finsum_eq_sum_of_fintype]
-  exact hfin.trans h1
+  simpa only [_root_.GlobalTheory.LabPin.serCoef, ← finsum_eq_sum_of_fintype,
+    ← finprod_eq_prod_of_fintype] using hfin.trans h1
 
 end GlobalTheory.LabFix
 
