@@ -119,6 +119,7 @@ end
 
 -- bundled from Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.StandardMaximalParabolic
 section
+attribute [-instance] Formalism.DoubleCosetMeasures.instMeasGL Formalism.DoubleCosetMeasures.instBorelGL
 attribute [-instance] GlobalTheory.LGrp.locallyCompact_GL
 open MeasureTheory ValuativeRel GlobalTheory.SmGL GlobalTheory.SplitWeil
 
