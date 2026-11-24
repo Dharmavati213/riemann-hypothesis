@@ -351,6 +351,8 @@ end
 -- bundled from Development.AbelianVarietyTheory.Proofs.DivisorProofs.ZetaFunctionTransportLocalFieldIso
 section
 attribute [-instance] GlobalTheory.CompanionTheory.QL.instMeasGL GlobalTheory.CompanionTheory.QL.instBorelGL
+attribute [local instance 2000] _root_.Units.instTopologicalSpaceUnits _root_.Units.instMeasurableSpace
+  _root_.GlobalTheory.SplitWeil.matrixMeasurableSpace _root_.GlobalTheory.SplitFlip.borel_GL
 open MeasureTheory ValuativeRel Matrix
 open scoped Pointwise
 open GlobalTheory.SplitFlip GlobalTheory.FlipMatch GlobalTheory.FlipMatch.FieldTransport GlobalTheory.PureMatch.Transport
