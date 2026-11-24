@@ -62,7 +62,7 @@ theorem cxSys_cj_iff {K I : Type} [Field K] {σ τ : K →+* ℂ} {s : Bool} (h 
     refine ⟨x, hx, funext fun i => ?_⟩
     have := congrFun e i
     simp only [h] at this
-    simpa [cj_cj] using congrArg (cj s) this
+    simpa [Formalism.IndefR.Links.cj_cj] using congrArg (cj s) this
   · rintro ⟨x, hx, rfl⟩
     exact ⟨x, hx, funext fun i => (h _).symm⟩
 

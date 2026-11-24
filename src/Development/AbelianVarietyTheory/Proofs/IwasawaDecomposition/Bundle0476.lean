@@ -191,7 +191,7 @@ theorem complexPoints_baseLevelLift_readAtBaseEmbedding {D : D7} {G : Type} [Gro
   rw [Submodule.coe_smul, map_smulₛₗ, smul_comm]
   have he : cj s (cpt A3.fam3.base3.v0.embedding y k) = sg0 D A3.A (y k) := by
     show cj s (A3.A.v0.embedding (y k)) = _
-    rw [emb_eq D.what₂.embLL A3.A.v0 (y k), cj_cj]
+    rw [emb_eq D.what₂.embLL A3.A.v0 (y k), Formalism.IndefR.Links.cj_cj]
   rw [he]
   congr 1
   show ((Real.sqrt (RealDat.nP F.lv2 false) : ℝ) : ℂ) • ((((Real.sqrt (RealDat.nP F.lv2 false))⁻¹ : ℝ) : ℂ) • (R.FW i).j (sg0 D A3.A) (R.toRealDat.bL F.lv2 false i k)) = _
