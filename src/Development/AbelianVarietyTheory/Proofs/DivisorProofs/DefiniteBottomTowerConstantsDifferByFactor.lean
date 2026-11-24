@@ -18,6 +18,7 @@ public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.Bundle025
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.Bundle0338
 
 @[expose] public section
+attribute [-instance] GlobalTheory.AllWt.subRulesModuleInt GlobalTheory.AllWt.subRulesTower
 
 attribute [-instance] PI.WSF.instMeasurableSpaceMat PI.WSF.instBorelSpaceMat
 attribute [-instance] GlobalTheory.CompanionTheory.QL.instMeasGL GlobalTheory.CompanionTheory.QL.instBorelGL
