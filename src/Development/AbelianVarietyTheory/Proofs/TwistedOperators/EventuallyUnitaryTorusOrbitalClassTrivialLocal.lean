@@ -11,6 +11,7 @@ public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.Bundle024
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.Bundle0223
 
 @[expose] public section
+attribute [-instance] GroundTheory.Automorphic.GJMatrix.measurableSpace_matrix GroundTheory.Automorphic.GJMatrix.borelSpace_matrix
 
 attribute [-instance] GlobalTheory.AdmLoc.modTens GlobalTheory.AdmLoc.modFun GlobalTheory.AdmLoc.modProd GlobalTheory.AdmLoc.modQuot
 open MeasureTheory Set Filter Polynomial NumberField IsDedekindDomain
