@@ -4,7 +4,6 @@ public import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeil
 
 @[expose] public section
 
-attribute [-instance] GroundTheory.Automorphic.GJMatrix.measurableSpace_matrix GroundTheory.Automorphic.GJMatrix.borelSpace_matrix
 noncomputable section
 
 open scoped TensorProduct NNReal Matrix Classical
