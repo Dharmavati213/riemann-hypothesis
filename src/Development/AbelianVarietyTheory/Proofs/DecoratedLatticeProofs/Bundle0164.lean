@@ -308,6 +308,7 @@ end
 
 -- bundled from Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.DualDirectionDerivativeMixedCoordinateBound
 section
+attribute [-instance] PI.WSF.instMeasurableSpaceMat PI.WSF.instBorelSpaceMat
 namespace I195MixedCoordinates_e50a010289c1774166bfaddf
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH

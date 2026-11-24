@@ -161,6 +161,7 @@ end
 
 -- bundled from Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HeisenbergDerivativeDiagonalHalfEqSchrodingerDer
 section
+attribute [-instance] PI.WSF.instMeasurableSpaceMat PI.WSF.instBorelSpaceMat
 namespace I195MixedCoordinates_bf5641df9836f7a59c2c5fdd
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH
