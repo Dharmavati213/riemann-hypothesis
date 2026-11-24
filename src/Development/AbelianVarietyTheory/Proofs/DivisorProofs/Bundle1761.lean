@@ -245,6 +245,7 @@ end
 
 -- bundled from Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedKernelCharacterIsTameHeckeUnramified
 section
+attribute [-instance] GlobalTheory.CompHt.fintypePsi
 namespace GlobalTheory.TwistedKernelChar
 
 section General

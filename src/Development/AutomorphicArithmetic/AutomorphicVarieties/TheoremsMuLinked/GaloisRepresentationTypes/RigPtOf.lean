@@ -13,6 +13,7 @@ public import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibra
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.EigenbasisLifts.Bundle0005
 
 @[expose] public section
+attribute [-instance] GlobalTheory.CompHt.fintypePsi
 attribute [-instance] GroundTheory.PAdicHodge.subfield_valuativeRel
 
 attribute [-instance] UpperTheory.V.Pr.IsCD.toIsDiscreteValuationRing

@@ -15,6 +15,7 @@ public import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityA
 
 @[expose] public section
 
+attribute [-instance] GlobalTheory.CompHt.fintypePsi
 set_option maxHeartbeats 800000
 set_option synthInstance.maxHeartbeats 200000
 

@@ -24,6 +24,7 @@ public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.Bundl
 
 @[expose] public section
 
+attribute [-instance] GlobalTheory.CompHt.fintypePsi
 noncomputable section
 
 open Formalism.BasicNotions Formalism.MainNotions NumberField IsDedekindDomain

@@ -47,6 +47,7 @@ public import Formalism.LocalToGlobal.HermitianForms.IsLocBasis
 
 -- bundled from Development.AbelianVarietyTheory.Proofs.DivisorProofs.OneMapOfOneOfSerOf
 section
+attribute [-instance] GlobalTheory.CompHt.fintypePsi
 open NumberField Matrix Complex MeasureTheory IsDedekindDomain
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.FD GlobalTheory GlobalTheory.ThFr GlobalTheory.Dict GlobalTheory.AdTh GlobalTheory.ClsVal
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor hiding Level Host

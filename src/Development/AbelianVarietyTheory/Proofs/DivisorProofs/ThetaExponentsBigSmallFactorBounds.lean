@@ -6,6 +6,7 @@ public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PlaceDivisors
 
 @[expose] public section
 
+attribute [-instance] GlobalTheory.CompHt.fintypePsi
 open NumberField IsDedekindDomain Formalism.L2.Pj ReciprocityTheory.PGsh ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ GlobalTheory.FGDepth GlobalTheory.CharDepth GlobalTheory.FactorDepth GlobalTheory.RefSum
 open GlobalTheory.IndefiniteRowSideFullHecke.TypedPartSplitPrimes (IsIntHom IsOrbit FrobOnType embX primeBelow SplitInK InertInK)
 open GlobalTheory.IndefiniteRowSideFullHecke.BigBlockCharacters (HasChars)

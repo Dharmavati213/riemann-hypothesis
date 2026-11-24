@@ -22,6 +22,7 @@ public import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.Bundle
 
 @[expose] public section
 
+attribute [-instance] GlobalTheory.CompHt.fintypePsi
 set_option autoImplicit false
 set_option synthInstance.maxHeartbeats 200000
 
