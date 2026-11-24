@@ -12,6 +12,7 @@ public import Development.WeilBound.CoreStatements.GaussianSeminormBounds.RealSe
 
 -- bundled from Development.WeilBound.ThetaLifts.CartanFactorisation.ExistsBeta
 section
+attribute [-instance] PI.WSF.instMeasurableSpaceMat PI.WSF.instBorelSpaceMat
 noncomputable section
 
 namespace PositivityTheory.ThKF

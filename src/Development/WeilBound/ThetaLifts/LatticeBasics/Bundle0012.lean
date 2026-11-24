@@ -129,6 +129,7 @@ end
 
 -- bundled from Development.WeilBound.ThetaLifts.LatticeBasics.RealInv
 section
+attribute [-instance] PI.WSF.instMeasurableSpaceMat PI.WSF.instBorelSpaceMat
 noncomputable section
 
 namespace GlobalTheory.ThK.Dbl
