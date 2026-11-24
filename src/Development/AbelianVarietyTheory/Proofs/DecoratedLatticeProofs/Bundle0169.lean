@@ -35,6 +35,7 @@ public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.Bundle015
 
 -- bundled from Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IwasawaIsotropicStabiliserSplitPlace
 section
+attribute [-instance] GlobalTheory.AllWt.subRulesModuleInt GlobalTheory.AllWt.subRulesTower
 noncomputable section
 
 namespace GlobalTheory.Core.Rk.IwFlagSplit
