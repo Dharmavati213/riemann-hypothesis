@@ -6,6 +6,7 @@ public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.Bundle013
 
 @[expose] public section
 
+attribute [-instance] PI.WSF.instMeasurableSpaceMat PI.WSF.instBorelSpaceMat
 open Classical MeasureTheory
 
 noncomputable section
