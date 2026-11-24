@@ -20,6 +20,7 @@ public import Formalism.LocalToGlobal.Columns.Bundle0008
 
 -- bundled from Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.IntPOfKerP
 section
+attribute [-instance] GlobalTheory.AdmLoc.modTens GlobalTheory.AdmLoc.modFun GlobalTheory.AdmLoc.modProd GlobalTheory.AdmLoc.modQuot GlobalTheory.AdmLoc.twistedModuleH1 GlobalTheory.AdmLoc.twistedSubmoduleH1 GlobalTheory.AdmLoc.moduleH1Alt
 noncomputable section
 
 namespace GlobalTheory.LvT.Built.IntPPass
@@ -57,6 +58,7 @@ end
 
 -- bundled from Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.OffOfNotMem
 section
+attribute [-instance] GlobalTheory.AdmLoc.modTens GlobalTheory.AdmLoc.modFun GlobalTheory.AdmLoc.modProd GlobalTheory.AdmLoc.modQuot GlobalTheory.AdmLoc.twistedModuleH1 GlobalTheory.AdmLoc.twistedSubmoduleH1 GlobalTheory.AdmLoc.moduleH1Alt
 noncomputable section
 
 namespace GlobalTheory.LvT.Built.SplitPts
@@ -214,6 +216,7 @@ end
 
 -- bundled from Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.OrdSubEqOrdDet
 section
+attribute [-instance] GlobalTheory.AdmLoc.modTens GlobalTheory.AdmLoc.modFun GlobalTheory.AdmLoc.modProd GlobalTheory.AdmLoc.modQuot GlobalTheory.AdmLoc.twistedModuleH1 GlobalTheory.AdmLoc.twistedSubmoduleH1 GlobalTheory.AdmLoc.moduleH1Alt
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.HermitianLatticesTheory Formalism.L2.Col Formalism.L2.DIV Formalism.L2.Ker GlobalTheory.Mem.Col2
 
 noncomputable section
