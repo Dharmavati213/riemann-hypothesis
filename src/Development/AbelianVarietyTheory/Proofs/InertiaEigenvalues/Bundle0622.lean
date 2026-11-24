@@ -459,6 +459,7 @@ end
 
 -- bundled from Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LintegralThetaSeriesUnfoldMirabolicStatement
 section
+attribute [-instance] Formalism.DoubleCosetMeasures.instMeasGL Formalism.DoubleCosetMeasures.instBorelGL
 open NumberField MeasureTheory Matrix GlobalTheory.CuspRep GlobalTheory.MirTower
 open scoped ENNReal
 set_option maxHeartbeats 1000000 in
