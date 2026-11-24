@@ -135,6 +135,7 @@ end
 
 -- bundled from Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConjTorsionTranslateVacuumEntireGaussianGrowth
 section
+attribute [-instance] GlobalTheory.AllWt.subRulesModuleInt GlobalTheory.AllWt.subRulesTower
 namespace GlobalTheory.ConjTranslate
 
 section
