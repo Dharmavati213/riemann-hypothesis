@@ -10,6 +10,7 @@ public import Development.AutomorphicArithmetic.Foundations.Convolution.Convolut
 
 -- bundled from Development.AutomorphicArithmetic.Foundations.Convolution.GeneralizedMeasures.BcPoly
 section
+attribute [-instance] Formalism.BasicNotions.LocLat.modO Formalism.BasicNotions.LocLat.towO Formalism.BasicNotions.LocLat.modFun Formalism.BasicNotions.LocLat.modSubFun Formalism.BasicNotions.LocLat.modT
 open MeasureTheory NumberField IsDedekindDomain MvPolynomial Filter
 open GroundTheory.Automorphic GroundTheory.Automorphic.Reduction GroundTheory.Automorphic.RightCosetSpace
 open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalSpectrum UpperTheory.ConvolutionTheory.C PositivityTheory.Rg.Tf.Core PositivityTheory.Rg.Tf.Geo
@@ -56,6 +57,7 @@ end
 
 -- bundled from Development.AutomorphicArithmetic.Foundations.Convolution.GeneralizedMeasures.ContinuousMapGL
 section
+attribute [-instance] Formalism.BasicNotions.LocLat.modO Formalism.BasicNotions.LocLat.towO Formalism.BasicNotions.LocLat.modFun Formalism.BasicNotions.LocLat.modSubFun Formalism.BasicNotions.LocLat.modT
 open MeasureTheory NumberField IsDedekindDomain MvPolynomial Filter
 open GroundTheory.Automorphic GroundTheory.Automorphic.Reduction GroundTheory.Automorphic.RightCosetSpace
 open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalSpectrum UpperTheory.ConvolutionTheory.C PositivityTheory.Rg.Tf.Core PositivityTheory.Rg.Tf.Geo
@@ -290,6 +292,7 @@ end
 
 -- bundled from Development.AutomorphicArithmetic.Foundations.Convolution.GeneralizedMeasures.ConvSpec
 section
+attribute [-instance] Formalism.BasicNotions.LocLat.modO Formalism.BasicNotions.LocLat.towO Formalism.BasicNotions.LocLat.modFun Formalism.BasicNotions.LocLat.modSubFun Formalism.BasicNotions.LocLat.modT
 open MeasureTheory NumberField IsDedekindDomain MvPolynomial Filter
 open GroundTheory.Automorphic GroundTheory.Automorphic.Reduction GroundTheory.Automorphic.RightCosetSpace
 open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalSpectrum UpperTheory.ConvolutionTheory.C PositivityTheory.Rg.Tf.Core PositivityTheory.Rg.Tf.Geo
@@ -316,6 +319,7 @@ end
 
 -- bundled from Development.AutomorphicArithmetic.Foundations.Convolution.GeneralizedMeasures.LocHeightDiagPowLe
 section
+attribute [-instance] Formalism.BasicNotions.LocLat.modO Formalism.BasicNotions.LocLat.towO Formalism.BasicNotions.LocLat.modFun Formalism.BasicNotions.LocLat.modSubFun Formalism.BasicNotions.LocLat.modT
 open MeasureTheory NumberField IsDedekindDomain MvPolynomial Filter
 open GroundTheory.Automorphic GroundTheory.Automorphic.Reduction GroundTheory.Automorphic.RightCosetSpace
 open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalSpectrum UpperTheory.ConvolutionTheory.C PositivityTheory.Rg.Tf.Core PositivityTheory.Rg.Tf.Geo
@@ -418,6 +422,7 @@ end
 
 -- bundled from Development.AutomorphicArithmetic.Foundations.Convolution.GeneralizedMeasures.PolyMem
 section
+attribute [-instance] Formalism.BasicNotions.LocLat.modO Formalism.BasicNotions.LocLat.towO Formalism.BasicNotions.LocLat.modFun Formalism.BasicNotions.LocLat.modSubFun Formalism.BasicNotions.LocLat.modT
 attribute [-instance] GlobalTheory.LGrp.locallyCompact_GL GlobalTheory.SplitFlip.locallyCompact_GL GlobalTheory.SplitFlip.secondCountable_GL GlobalTheory.SplitFlip.t2Space_general_linear_group
 attribute [-instance] Formalism.DoubleCosetMeasures.instMeasGL Formalism.DoubleCosetMeasures.instBorelGL
 open MeasureTheory NumberField IsDedekindDomain MvPolynomial Filter

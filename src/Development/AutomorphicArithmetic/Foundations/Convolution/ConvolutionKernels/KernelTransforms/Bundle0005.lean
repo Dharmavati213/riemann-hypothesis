@@ -207,6 +207,7 @@ end
 
 -- bundled from Development.AutomorphicArithmetic.Foundations.Convolution.ConvolutionKernels.KernelTransforms.InnerOps
 section
+attribute [-instance] Formalism.BasicNotions.LocLat.modO Formalism.BasicNotions.LocLat.towO Formalism.BasicNotions.LocLat.modFun Formalism.BasicNotions.LocLat.modSubFun Formalism.BasicNotions.LocLat.modT
 attribute [-instance] Formalism.DoubleCosetMeasures.instMeasGL Formalism.DoubleCosetMeasures.instBorelGL
 open MeasureTheory NumberField IsDedekindDomain MvPolynomial
 open GroundTheory.Automorphic GroundTheory.Automorphic.Reduction GroundTheory.Automorphic.RightCosetSpace

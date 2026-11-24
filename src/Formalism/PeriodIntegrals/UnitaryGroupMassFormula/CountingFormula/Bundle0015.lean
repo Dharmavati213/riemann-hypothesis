@@ -10,6 +10,7 @@ public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.CountingFormula.
 
 -- bundled from Formalism.PeriodIntegrals.UnitaryGroupMassFormula.CountingFormula.FrIcFree
 section
+attribute [-instance] Formalism.BasicNotions.LocLat.modO Formalism.BasicNotions.LocLat.towO Formalism.BasicNotions.LocLat.modFun Formalism.BasicNotions.LocLat.modSubFun Formalism.BasicNotions.LocLat.modT
 noncomputable section
 
 namespace PI.UnitaryGroupMassFormula.CntFormula
