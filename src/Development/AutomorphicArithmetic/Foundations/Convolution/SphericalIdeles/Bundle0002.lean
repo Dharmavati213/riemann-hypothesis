@@ -18,6 +18,7 @@ public import Development.WeilBound.RepresentationTheoryGL.JacquetShalikaBounds.
 
 -- bundled from Development.AutomorphicArithmetic.Foundations.Convolution.SphericalIdeles.NormRam
 section
+attribute [-instance] GlobalTheory.AllWt.subRulesModuleInt GlobalTheory.AllWt.subRulesTower
 noncomputable section
 
 open NumberField IsDedekindDomain Formalism.L2.Host Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.HeckeGal GlobalTheory.CuspRep UpperTheory.V.Published
