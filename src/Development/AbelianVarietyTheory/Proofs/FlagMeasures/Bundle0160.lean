@@ -22,6 +22,7 @@ public import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.Bundl
 
 -- bundled from Development.AbelianVarietyTheory.Proofs.FlagMeasures.FixedVectorDifferentiable
 section
+attribute [-instance] Formalism.DoubleCosetMeasures.instMeasMat GlobalTheory.SplitWeil.matrixMeasurableSpace
 open MeasureTheory NumberField Matrix Formalism.MainNotions.S Formalism.REAL Formalism.QuantumDeterminants GlobalTheory.Count GlobalTheory.Dec GlobalTheory.DSId
 open Filter Topology
 open scoped InnerProductSpace ComplexOrder ContDiff
