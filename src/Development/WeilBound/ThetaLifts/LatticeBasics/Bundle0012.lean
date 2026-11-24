@@ -12,6 +12,7 @@ public import Development.AutomorphicSpectrum.Proofs.TwistedProofs.Bundle0001
 
 -- bundled from Development.WeilBound.ThetaLifts.LatticeBasics.PolZero
 section
+attribute [-instance] GlobalTheory.LGrp.locallyCompact_GL GlobalTheory.SplitFlip.locallyCompact_GL GlobalTheory.SplitFlip.secondCountable_GL GlobalTheory.SplitFlip.t2Space_general_linear_group
 noncomputable section
 
 namespace GlobalTheory.ThK.Dbl
