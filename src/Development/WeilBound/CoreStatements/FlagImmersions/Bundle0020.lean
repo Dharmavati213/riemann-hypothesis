@@ -12,6 +12,7 @@ public import Development.WeilBound.CoreStatements.FlagImmersions.Bundle0019
 
 -- bundled from Development.WeilBound.CoreStatements.FlagImmersions.CountableBall
 section
+attribute [-instance] GlobalTheory.AllWt.subRulesModuleInt GlobalTheory.AllWt.subRulesTower
 noncomputable section
 
 namespace RootFieldNumerics

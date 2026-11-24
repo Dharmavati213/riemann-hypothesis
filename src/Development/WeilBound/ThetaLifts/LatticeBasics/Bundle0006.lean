@@ -221,6 +221,7 @@ end
 
 -- bundled from Development.WeilBound.ThetaLifts.LatticeBasics.LeviEx
 section
+attribute [-instance] GlobalTheory.AllWt.subRulesModuleInt GlobalTheory.AllWt.subRulesTower
 noncomputable section
 
 namespace GlobalTheory.ThK.Dbl
