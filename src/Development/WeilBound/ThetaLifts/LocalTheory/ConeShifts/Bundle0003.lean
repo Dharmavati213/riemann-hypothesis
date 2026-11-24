@@ -130,6 +130,7 @@ end
 
 -- bundled from Development.WeilBound.ThetaLifts.LocalTheory.ConeShifts.PureIte
 section
+attribute [-instance] Formalism.DoubleCosetMeasures.instMeasMat GroundTheory.Automorphic.GJMatrix.measurableSpace_matrix GroundTheory.Automorphic.GJMatrix.borelSpace_matrix GlobalTheory.SplitWeil.matrixMeasurableSpace
 noncomputable section
 
 namespace PositivityTheory.ThKG.Loc.Cone

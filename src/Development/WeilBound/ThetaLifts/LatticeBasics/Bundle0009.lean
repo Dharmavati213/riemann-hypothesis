@@ -8,6 +8,7 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNatMul
 
 -- bundled from Development.WeilBound.ThetaLifts.LatticeBasics.ThConstAn
 section
+attribute [-instance] Formalism.DoubleCosetMeasures.instMeasMat
 noncomputable section
 
 namespace GlobalTheory.ThK.Dbl.TC

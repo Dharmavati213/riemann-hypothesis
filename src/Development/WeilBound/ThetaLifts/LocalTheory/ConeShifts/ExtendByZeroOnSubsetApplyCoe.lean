@@ -5,6 +5,7 @@ public import Development.WeilBound.ThetaLifts.LocalTheory.ConeShifts.FubGen
 
 @[expose] public section
 
+attribute [-instance] Formalism.DoubleCosetMeasures.instMeasMat
 noncomputable section
 
 namespace PositivityTheory.ThKG.Loc.Cone
