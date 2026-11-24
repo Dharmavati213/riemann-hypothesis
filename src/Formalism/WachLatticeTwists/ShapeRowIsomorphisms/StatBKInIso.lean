@@ -5,6 +5,7 @@ public import Formalism.WachLatticeTwists.CupProductVanishing.Bundle0001
 
 @[expose] public section
 
+attribute [-instance] Formalism.BasicNotions.LocLat.modO Formalism.BasicNotions.LocLat.towO Formalism.BasicNotions.LocLat.modFun Formalism.BasicNotions.LocLat.modSubFun Formalism.BasicNotions.LocLat.modT
 open Formalism.NG
 open ReciprocityTheory.Gal Formalism.RepresentationBoundsCohomology.LOC Formalism.RepresentationBoundsCohomology.JT Formalism.RepresentationBoundsCohomology.T2
 open ReciprocityTheory.ChartRestriction.T2 (GK PadicCoeff FracTop IsCyc RealLatG fracBilinear)
