@@ -16,6 +16,7 @@ public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.Bund
 
 -- bundled from Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FourierDescendedFunctionEqPartialFourier
 section
+attribute [-instance] GlobalTheory.SplitWeil.matrixMeasurableSpace
 open GlobalTheory.JR Matrix MeasureTheory Filter Topology
 
 noncomputable section
