@@ -10,6 +10,7 @@ public import Development.AbelianVarietyTheory.Definitions.Divisors.Bundle0036
 
 @[expose] public section
 
+attribute [-instance] GlobalTheory.CompanionTheory.QL.instMeasGL GlobalTheory.CompanionTheory.QL.instBorelGL Formalism.DoubleCosetMeasures.instMeasGL Formalism.DoubleCosetMeasures.instBorelGL
 noncomputable section
 
 open NumberField IsDedekindDomain Matrix MeasureTheory Filter Topology

@@ -10,6 +10,7 @@ public import Development.AutomorphicArithmetic.Foundations.Convolution.Integrab
 
 -- bundled from Development.AutomorphicArithmetic.Foundations.Convolution.IntegrableConvolution.LocHeckeSplit
 section
+attribute [-instance] Formalism.DoubleCosetMeasures.instMeasGL Formalism.DoubleCosetMeasures.instBorelGL
 noncomputable section
 
 open MeasureTheory NumberField IsDedekindDomain
