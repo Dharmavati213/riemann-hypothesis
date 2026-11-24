@@ -314,10 +314,10 @@ theorem comp_over : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : 
   obtain ⟨i1, -, i3, -, -, -⟩ := GlobalTheory.CompanionTheory.Ar.Rec.sections_generic_indicators E H Dw l Xo c r U h e hL
   have hone := hL.unTest σ hσ
   have hv0 : ∀ Z Z', Z' ≠ Z → ∀ x ∈ ((U σ).X (κ Z')).dom, rdU (U σ) (e Z) (κ Z') x = 0 :=
-    fun Z Z' hne x hx => (ht Z' 0 0 dom_zero (e Z) (hL.e_sec Z)).1 ((hL.e_val Z).2 Z' hne) x hx
+    fun Z Z' hne x hx => (ht Z' 0 0 CompOver.dom_zero (e Z) (hL.e_sec Z)).1 ((hL.e_val Z).2 Z' hne) x hx
   have hv1 : ∀ Z, ∀ x ∈ ((U σ).X (κ Z)).dom, rdU (U σ) (e Z) (κ Z) x = 1 := by
     intro Z x hx
-    have h0 := (ht Z 0 0 dom_zero (e Z - 1) (sub_mem (hL.e_sec Z) one_mem_weight_zero_sections)).1 (by
+    have h0 := (ht Z 0 0 CompOver.dom_zero (e Z - 1) (sub_mem (hL.e_sec Z) one_mem_weight_zero_sections)).1 (by
       show evA (genFr h Z) (hL.genT Z) (e Z - 1) = 0
       rw [map_sub, map_one]
       exact sub_eq_zero.2 (hL.e_val Z).1) x hx
