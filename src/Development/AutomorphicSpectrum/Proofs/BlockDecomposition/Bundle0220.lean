@@ -14,6 +14,7 @@ public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.Bundle02
 
 -- bundled from Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ColumnAverageQuasiInvariant
 section
+attribute [-instance] GlobalTheory.SplitWeil.matrixMeasurableSpace
 attribute [-instance] Formalism.DoubleCosetMeasures.instMeasGL Formalism.DoubleCosetMeasures.instBorelGL
 noncomputable section
 
