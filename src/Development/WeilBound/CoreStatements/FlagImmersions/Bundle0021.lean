@@ -14,6 +14,7 @@ public import Development.AutomorphicSpectrum.Proofs.MetricProofs.Bundle0014
 
 -- bundled from Development.WeilBound.CoreStatements.FlagImmersions.AnalyticAtAeval
 section
+attribute [-instance] GlobalTheory.CompHt.fintypePsi
 noncomputable section
 
 namespace RootFieldNumerics
@@ -146,6 +147,7 @@ end
 
 -- bundled from Development.WeilBound.CoreStatements.FlagImmersions.HasPerConj
 section
+attribute [-instance] GlobalTheory.CompHt.fintypePsi
 attribute [-instance] GlobalTheory.AllWt.subRulesModuleInt GlobalTheory.AllWt.subRulesTower
 noncomputable section
 
@@ -269,6 +271,7 @@ end
 
 -- bundled from Development.WeilBound.CoreStatements.FlagImmersions.IsHolToOfLocal
 section
+attribute [-instance] GlobalTheory.CompHt.fintypePsi
 noncomputable section
 
 namespace RootFieldNumerics
