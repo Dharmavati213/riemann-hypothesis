@@ -74,7 +74,7 @@ structure Rel {A J : Type} (m : A → A → A) (T : J → A) (e u u' : A) : Prop
   uT : ∀ j, m u (m (T j) e) = m (T j) (m u e)
   inv : m u' (m u e) = e
 
-def powFn {H : Type} [Group H] (K : Subgroup H) (u e : H → ℂ) (j : ℕ) : H → ℂ := (conv K u)^[j] e
+def powFn {H : Type} [Group H] (K : Subgroup H) (u e : H → ℂ) (j : ℕ) : H → ℂ := (_root_.Formalism.UG.conv K u)^[j] e
 
 def ForPlaces (q : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (Lv : G.Level) (_ : (G.GAf → ℂ) → Prop) (_ : G.GAf → Prop), Prop) : Prop :=
   ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p), G.a = 1 → ∀ (Lv : G.Level)
@@ -92,13 +92,13 @@ def VanPairs : Prop := ForPlaces fun _ _ G Lv C R => ∀ f ∈ Hecke ℂ Lv.K.to
   ∀ P : Pair G, (∃ μ, P.Mark μ) → ¬ Irreducible P.pol → P.term Lv.K.toSubgroup f 1 (Kp G) (oneP G) = 0
 
 def CuspIdeal : Prop := ForPlaces fun _ _ _ Lv C _ =>
-  (∀ a ∈ Hecke ℂ Lv.K.toSubgroup, ∀ f ∈ Hecke ℂ Lv.K.toSubgroup, C f → C (conv Lv.K.toSubgroup a f)) ∧ C 0 ∧
+  (∀ a ∈ Hecke ℂ Lv.K.toSubgroup, ∀ f ∈ Hecke ℂ Lv.K.toSubgroup, C f → C (_root_.Formalism.UG.conv Lv.K.toSubgroup a f)) ∧ C 0 ∧
   ∀ f ∈ Hecke ℂ Lv.K.toSubgroup, ∀ f' ∈ Hecke ℂ Lv.K.toSubgroup, ∀ c : ℂ, C f → C f' → C (c • f + f')
 
 def Words : Prop :=
   ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (Lv : G.Level) (J : Type) (ψ : J → G.GAf → ℂ) (e u u' : G.GAf → ℂ),
     (∀ j, ψ j ∈ Hecke ℂ Lv.K.toSubgroup) → e ∈ Hecke ℂ Lv.K.toSubgroup → u ∈ Hecke ℂ Lv.K.toSubgroup →
-    Rel (conv Lv.K.toSubgroup) ψ e u u' → ∀ n : ℕ,
+    Rel (_root_.Formalism.UG.conv Lv.K.toSubgroup) ψ e u u' → ∀ n : ℕ,
     powFn Lv.K.toSubgroup u e n ∈ Hecke ℂ Lv.K.toSubgroup ∧
     (∀ s, polyFn Lv.K.toSubgroup ψ s (powFn Lv.K.toSubgroup u e n) ∈ Hecke ℂ Lv.K.toSubgroup) ∧
     (∀ j j' w, wordFn Lv.K.toSubgroup ψ (j :: j' :: w) (powFn Lv.K.toSubgroup u e n) =
@@ -116,7 +116,7 @@ def OpAlg : Prop :=
     ∃ T : (G.GAf → ℂ) → Module.End ℂ (HeckeTraceForms.forms B.emb (Lv.K.toSubgroup.prod (Kp G)) (ξ.comp (grp G B.β).subtype)), T 0 = 0 ∧
       ∀ f ∈ Hecke ℂ Lv.K.toSubgroup, (∀ Φ, (T f Φ : G.GAf × Gr G 1 → V) = op Lv.K.toSubgroup f Φ) ∧
         B.trace ξ Lv.K.toSubgroup f (Kp G) (oneP G) = LinearMap.trace ℂ _ (T f) ∧
-        ∀ f' ∈ Hecke ℂ Lv.K.toSubgroup, T (conv Lv.K.toSubgroup f f') = T f * T f' ∧ ∀ c : ℂ, T (c • f + f') = c • T f + T f'
+        ∀ f' ∈ Hecke ℂ Lv.K.toSubgroup, T (_root_.Formalism.UG.conv Lv.K.toSubgroup f f') = T f * T f' ∧ ∀ c : ℂ, T (c • f + f') = c • T f + T f'
 
 def SpecAlg : Prop :=
   ∀ (Q J : Type) [Fintype Q] (W : Q → Type) [∀ q, AddCommGroup (W q)] [∀ q, Module ℂ (W q)] [∀ q, FiniteDimensional ℂ (W q)]
