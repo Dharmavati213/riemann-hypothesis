@@ -257,8 +257,10 @@ theorem hw_le_span_sup_coinv : ∀ (P Q R S : ℕ) (x : ℚ) (μ' : Ix R S → �
   intro P Q R S x μ' hJ
   set L := hwSub (fockAct1 P Q R S) (fun _ => x) ⊓ hwSub (fockAct2 P Q R S) μ' ⊓
     Submodule.span ℂ (jointHarm P Q R S) with hL
-  letI : Module.Free ℂ ↥L := Module.Free.of_divisionRing ℂ ↥L
-  obtain ⟨v, -, hv⟩ := finrank_eq_one_iff'.1 (GlobalTheory.JointHarm.finrank_joint_highest_of_shape P Q R S _ _ hJ)
+  have hdim : Module.finrank ℂ ↥L = 1 :=
+    GlobalTheory.JointHarm.finrank_joint_highest_of_shape P Q R S _ _ hJ
+  obtain ⟨v, -, hv⟩ :=
+    (@_root_.finrank_eq_one_iff' ℂ ↥L _ _ _ _ (Module.Free.of_divisionRing ℂ ↥L)).1 hdim
   refine ⟨v.1, fun g hg => ?_⟩
   set C := coinv P Q R S (x : ℂ) with hC
   let pr := C.mkQ
