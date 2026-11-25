@@ -134,6 +134,9 @@ theorem second_step_alt : GlobalTheory.Published.GlobalArtinReciprocity → ∀ 
     fun i j b k Q ψ h1 h2 hadm => _root_.GlobalTheory.T.places_over_real_subfield_split_alt hGAR D cf jE A S In Pq b0 b1 Sx T Sp hPq hsplit wt
       (fun i j b h1 h2 => ⟨(hwt i j b h1 h2).1, (hwt i j b h1 h2).2.1⟩) A.bare (mkF D T S In hfg' hst sd rho hrho)
       i j b k Q ψ h1 h2 hadm.1 hadm.2.1 hadm.2.2.1 hadm.2.2.2.1 hadm.2.2.2.2.1 hadm.2.2.2.2.2
+  have hgV : ∀ (i : T.Tw) (k : ℕ) (b : Bool) kv s red τ x,
+      gValT D T In.θ i k b kv s red τ x = NX.gVal N.toD7 i k b kv s red τ x := fun i k b kv s red τ x => by
+    unfold gValT NX.gVal; congr
   let E : NExpTied N.toD7 :=
     { U_eq := hU.1
       psiU_gen := hU.2.1
@@ -191,7 +194,10 @@ theorem second_step_alt : GlobalTheory.Published.GlobalArtinReciprocity → ∀ 
           (hLev i j b k Q ψ h1 h2 hadm).choose_spec.1.2.2.2.2.2.2.2.2.2.2.1
           (hLev i j b k Q ψ h1 h2 hadm).choose.redG
           (hLev i j b k Q ψ h1 h2 hadm).choose_spec.1.2.2.2.2.2.2.2.2.2.2.2.1
-          (hLev i j b k Q ψ h1 h2 hadm).choose_spec.1.2.2.2.2.2.2.2.2.2.2.2.2
+          (fun κ hκ => by
+            have h := (hLev i j b k Q ψ h1 h2 hadm).choose_spec.1.2.2.2.2.2.2.2.2.2.2.2.2 κ hκ
+            simp only [hgV] at h
+            exact h)
           (LinearEquiv.ofEq (MtSubT D T wt i j b k (LevLawsT D T Pq In.θ i j b k Q ψ))
             (NX.TypeSpF D.host.E D.R.nV (FractionRing (T.Ok i k)) (rhoKT D T wt i j b k)
               (hLev i j b k Q ψ h1 h2 hadm).choose.J (hLev i j b k Q ψ h1 h2 hadm).choose.χ)
