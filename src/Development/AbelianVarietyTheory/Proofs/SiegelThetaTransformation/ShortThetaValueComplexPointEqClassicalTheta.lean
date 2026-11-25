@@ -260,7 +260,7 @@ theorem GlobalTheory.Dict.shortValAt_eq_thP : Formalism.MainNotions.ModuliIntegr
     have := isSB_smul (((⟨Λ⟩ : GenLat E n).zCard N (Dw.p + Dw.q) : ℕ) : ℂ)⁻¹
       (hsum' ▸ isSB_sum Finset.univ _ fun i => (hh (u i) v hv.1).1)
     rwa [inv_smul_smul₀ hz'] at this
-  have hhom := (isHomogeneous_of_rowDeg hP.2.2).map (algebraMap c.F ℂ)
+  have hhom := (_root_.GlobalTheory.Dict.ShortVal.isHomogeneous_of_rowDeg hP.2.2).map (algebraMap c.F ℂ)
   have hg : IsSB (∑ q, algebraMap c.F ℂ (wq q) • heisG X bas (Y q) (projA X bas (H.w0 : E) (tens Λ L) v)) :=
     isSB_sum _ _ fun q => isSB_smul _ (hh _ _ hp).1
   simp only [hval]
