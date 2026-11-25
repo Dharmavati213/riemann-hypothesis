@@ -68,7 +68,6 @@ public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.Bundle004
 
 -- bundled from Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsNormRsHatLeConst
 section
-attribute [-instance] Formalism.DoubleCosetMeasures.instMeasGL Formalism.DoubleCosetMeasures.instBorelGL
 attribute [-instance] GlobalTheory.CompanionTheory.QL.instMeasGL GlobalTheory.CompanionTheory.QL.instBorelGL
 noncomputable section
 
