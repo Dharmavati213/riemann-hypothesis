@@ -154,13 +154,13 @@ theorem UpperTheory.V.Z.Kato.Joint.thOp :
         (((χ q : ℤ_[l]) : Qbar l) *
           (if q ∣ i then j ((thN X A N l n 1 b).coeff (((i / q : ℕ) : ℚ) / ((1 : ℕ) : ℚ))) else 0)) := by
       have ha := cg_j hj (hrel.2.2 q hqN ((i : ℚ) / q))
-      have hc := cg_trans (cg_symm ha) (diam_cg X A N w j χ hS n q b hqN hb ((i : ℚ) / q))
+      have hc := UpperTheory.V.Z.Kato.Joint.ThetaOperator.cg_trans (UpperTheory.V.Z.Kato.Joint.ThetaOperator.cg_symm ha) (diam_cg X A N w j χ hS n q b hqN hb ((i : ℚ) / q))
       rw [one_mul] at hc
       split_ifs with hdiv
       · rwa [Nat.cast_one, div_one, Nat.cast_div hdiv (by exact_mod_cast hqp.ne_zero)]
       · rw [mul_zero]
         rwa [coeff_div_prime_eq_zero_of_not_dvd_of_isLat _ (hψ n).2 hqp hdiv, map_zero, mul_zero] at hc
-    have key := cg_trans h1' (cg_lin _ _ (norm_natCast_pow_le_one q (w + 1)) hx)
+    have key := UpperTheory.V.Z.Kato.Joint.ThetaOperator.cg_trans h1' (cg_lin _ _ (norm_natCast_pow_le_one q (w + 1)) hx)
     have hw2 : w + 2 - 1 = w + 1 := by omega
     simp only [Nat.cast_one, div_one, Nat.cast_mul, hw2]
     convert key using 2
@@ -175,7 +175,7 @@ theorem UpperTheory.V.Z.Kato.Joint.thOp :
     have h3 := cg_j hj (GlobalTheory.T.cgA_coeff_of_isThB_succ Ω ε X A N l hl2 hlN (by omega) hl n _ _ _ (hψ (n + 1)).1 (hψ n).1
       ((l : ℚ) * i))
     simp only [Nat.cast_one, div_one, Nat.cast_mul]
-    exact cg_trans h2 h3
+    exact UpperTheory.V.Z.Kato.Joint.ThetaOperator.cg_trans h2 h3
   | D d =>
     simp only [th, seqN, fop, Tower.op, LinearMap.smul_apply, Module.End.one_apply, Pi.smul_apply,
       smul_eq_mul]
