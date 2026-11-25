@@ -50,6 +50,7 @@ private theorem rc_of_intermediateField_stable_under_complexConj {F M : Type} [F
   have hext : ∀ φ : K →+* ℂ, ∃ Φ : M →+* ℂ, ∀ x : K, Φ x = φ x := by
     intro φ
     letI : Algebra K ℂ := φ.toAlgebra
+    haveI : Module.IsTorsionFree K ℂ := DivisionSemiring.to_moduleIsTorsionFree
     refine ⟨(IsAlgClosed.lift : M →ₐ[K] ℂ).toRingHom, fun x => ?_⟩
     exact (IsAlgClosed.lift : M →ₐ[K] ℂ).commutes x
   let τ : K ≃+* K :=
