@@ -214,6 +214,7 @@ theorem exists_ext_of_le {K L : IntermediateField ℚ ℂ} [FiniteDimensional �
     IsScalarTower.of_algebraMap_eq (fun x => ((IntermediateField.inclusion hle).commutes x).symm)
   haveI : Module.Finite K L := Module.Finite.of_restrictScalars_finite ℚ K L
   haveI : Algebra.IsAlgebraic K L := Algebra.IsAlgebraic.of_finite K L
+  haveI := @DivisionSemiring.to_moduleIsTorsionFree K ℂ _ _ Algebra.toModule
   refine ⟨(IsAlgClosed.lift : L →ₐ[K] ℂ).toRingHom, ?_⟩
   ext x
   exact (IsAlgClosed.lift : L →ₐ[K] ℂ).commutes x
