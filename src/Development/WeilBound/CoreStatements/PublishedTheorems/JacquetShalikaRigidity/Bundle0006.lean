@@ -403,7 +403,6 @@ end
 
 -- bundled from Development.WeilBound.CoreStatements.PublishedTheorems.JacquetShalikaRigidity.RhoSigmaFinite
 section
-attribute [-instance] Formalism.DoubleCosetMeasures.instMeasGL Formalism.DoubleCosetMeasures.instBorelGL
 attribute [-instance] GlobalTheory.CompanionTheory.QL.instMeasGL GlobalTheory.CompanionTheory.QL.instBorelGL
 noncomputable section
 
