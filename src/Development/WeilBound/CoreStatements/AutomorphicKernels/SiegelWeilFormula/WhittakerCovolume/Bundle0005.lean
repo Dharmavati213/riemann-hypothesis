@@ -8,7 +8,6 @@ public import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeil
 
 -- bundled from Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.WhittakerCovolume.DictAsm
 section
-attribute [-instance] GroundTheory.Automorphic.GJMatrix.measurableSpace_matrix GroundTheory.Automorphic.GJMatrix.borelSpace_matrix
 noncomputable section
 
 open scoped TensorProduct NNReal Matrix
