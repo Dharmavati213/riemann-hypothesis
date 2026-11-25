@@ -7,6 +7,7 @@ public import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.Unita
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.UnitaryHaarProducts.HermitianETransportInvariant
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.UnitaryHaarProducts.LevelSubgroupCharacterUnitary
 public import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Bundle0002
+public import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.NormCut
 
 @[expose] public section
 
