@@ -54,7 +54,6 @@ public import Formalism.SharpRestriction.Divisibility.JumpSets
 
 -- bundled from Development.AbelianVarietyTheory.Definitions.Divisors.EightDvdNCol
 section
-attribute [-instance] GlobalTheory.CompHt.fintypePsi
 set_option autoImplicit false
 set_option synthInstance.maxHeartbeats 400000
 
