@@ -275,16 +275,14 @@ open GlobalTheory.GalLift
 
 namespace GlobalTheory.GalLift
 
-theorem hypConj_of_chars_ofFive : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.Core5 R F → ∀ (i : Fin D.R.m), ∀ (σ : D.what₂.LL →+* ℂ), Function.Bijective (lab (D := D) σ) → (∀ ρ, labE σ (lab σ ρ) = tauE D ρ) → logHookSum i (lab σ) = logHookSum i id ∧ ∀ (μ' η' : (AE D)ˣ →* Circle), ChiAt R i σ μ' → IsEtaConj σ R.eta η' → ResEta D η' 1 → (∀ ρ, HasInfExp D η' ρ (1 / 2)) → HypConj R i σ μ' η' := by
-  intro D G _ _ Pl0 T0 A Ks _ _ _ R F hC i σ hb hat
+theorem hypConj_of_chars_ofFive : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (i : Fin D.R.m), ∀ (σ : D.what₂.LL →+* ℂ), Function.Bijective (lab (D := D) σ) → (∀ ρ, labE σ (lab σ ρ) = tauE D ρ) → logHookSum i (lab σ) = logHookSum i id ∧ ∀ (μ' η' : (AE D)ˣ →* Circle), ChiAt R i σ μ' → IsEtaConj σ R.eta η' → ResEta D η' 1 → (∀ ρ, HasInfExp D η' ρ (1 / 2)) → HypConj R i σ μ' η' := by
+  intro D G _ _ Pl0 T0 A Ks _ _ _ R i σ hb hat
   refine ⟨logHookSum_of_bijective i _ hb, fun μ' η' hμ hη hres hinf => ?_⟩
   exact
-    { vpos := hC.models.vpos i
-      sig := fun ρ => D.sp.W_sigval _ (Nat.le_add_left _ _) i.2 _
+    { sig := fun ρ => D.sp.W_sigval _ (Nat.le_add_left _ _) i.2 _
       lab_bij := hb
       lab_at := hat
       par := fun ρ => if_pos (hat ρ)
-      gap := fun ρ n hn => GlobalTheory.IndefiniteRowSideFullHecke.ThetaAdjointScalarOnComponents.gap (D.hc (lab σ ρ)) i hn
       mu_res := ⟨hres.1, fun η _ a => (hμ.2.1 a).trans (pow_zero _).symm⟩
       mu_inf := hμ.2.2.1
       mu_cond := fun x hx => (hμ.2.2.2.1 x hx.1).elim fun y hy =>
@@ -403,7 +401,7 @@ theorem factsAt_ofFive : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 :
     rw [(GlobalTheory.ConjCharUnique.conjChar_unique_ofFive R F hR i σ).1 _ _ hμ h]
     exact FactsLat.muVal_cast hV (tie.laws.muVal _ hin _ hg')
   · have h := GlobalTheory.EtaConjType.resEta_hasInfExp_of_isEtaConj_ofFive R F hR i σ hK η' hη
-    exact (hypConj_of_chars_ofFive R F hR i σ hl.1 hl.2).2 μ' η' hμ hη h.1 h.2
+    exact (hypConj_of_chars_ofFive R i σ hl.1 hl.2).2 μ' η' hμ hη h.1 h.2
 
 end GlobalTheory.GalOne.Facts
 
@@ -614,7 +612,7 @@ theorem vec_conj_ofFive : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 
       ((D.sp.W_rank _ (Nat.le_add_left _ _) i.2).trans_le (r_le_V i)) hvec
   have hl := (labels_overK σ).1 hK
   have he := GlobalTheory.EtaConjType.resEta_hasInfExp_of_isEtaConj_ofFive R F hC i σ hK η' hη
-  have hH : HypConj R i σ μ' η' := (hypConj_of_chars_ofFive R F hC i σ hl.1 hl.2).2 μ' η' hμ hη he.1 he.2
+  have hH : HypConj R i σ μ' η' := (hypConj_of_chars_ofFive R i σ hl.1 hl.2).2 μ' η' hμ hη he.1 he.2
   have hr : Odd D.R.r := by
     have := D.R.m_add_three_le_k
     obtain ⟨a, ha⟩ := D.R.k_even

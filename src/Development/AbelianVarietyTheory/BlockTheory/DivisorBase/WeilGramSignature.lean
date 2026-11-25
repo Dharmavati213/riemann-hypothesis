@@ -99,13 +99,10 @@ def IsConjDatum (c₀ : VsV D i D.what₂.LL →ₛₗ[D.what₂.embLL] (R.cV i)
   ChiAt R i σ μ' ∧ IsEtaConj σ R.eta η' ∧ IsConjForms R i σ c₀ c c₁ H j ∧ IsConjLift R i σ μ' η' c H th
 
 structure HypConj (μ' η' : (AE D)ˣ →* Circle) : Prop where
-  vpos : (Vc D i).IsPosDef
   sig : ∀ ρ, (Wc D i).sig (tauE D ρ) = D.R.sigW ((i : ℕ) + 1)
   lab_bij : Function.Bijective (lab (D := D) σ)
   lab_at : ∀ ρ, labE σ (lab σ ρ) = tauE D ρ
   par : ∀ ρ, parAt (Wc D i) σ ρ = Formalism.L2.NTheta.holPar _ _ (kapAt (Wc D i) σ ρ)
-  gap : ∀ ρ n, n < D.R.r →
-    ((D.R.t : ℚ) + 3) / 2 ≤ |Formalism.L2.NTheta.lamAt (D.hc (lab σ ρ)) n + (D.hc (lab σ ρ)).e i|
   mu_res : ResEta D μ' 0
   mu_inf : ∀ ρ, HasInfExp D μ' ρ (-(D.hc (lab σ ρ)).e i)
   mu_cond : ∀ x, FinUnit x → (μ' x = 1 ↔ R.mu0 ((i : ℕ) + 1) x = 1)
