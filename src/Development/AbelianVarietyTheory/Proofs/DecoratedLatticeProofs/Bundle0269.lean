@@ -417,6 +417,7 @@ end GlobalTheory.Unf.FB
 
 end
 end
+end
 
 -- bundled from Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.DoubleStepEqTwoThetaColumnLiftsStatement
 section

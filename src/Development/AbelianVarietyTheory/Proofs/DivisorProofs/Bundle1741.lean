@@ -190,6 +190,7 @@ end GlobalTheory.ThetaCuspInteg
 
 end
 end
+end
 
 -- bundled from Development.AbelianVarietyTheory.Proofs.DivisorProofs.TransportedWeilDatumDoubledTargetRestrictBoxTens
 section

@@ -366,6 +366,7 @@ end GlobalTheory.BumpMix
 
 end
 end
+end
 
 -- bundled from Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsUnitaryCoordinateOfRationalPointDefiniteVe
 section

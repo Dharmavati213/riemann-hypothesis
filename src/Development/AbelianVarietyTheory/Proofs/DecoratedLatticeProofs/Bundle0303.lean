@@ -211,6 +211,7 @@ theorem mixS_tsum_le : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar 
 end GlobalTheory.MixSumBound
 end
 end
+end
 
 -- bundled from Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.OfRealQuotHeightPow
 section

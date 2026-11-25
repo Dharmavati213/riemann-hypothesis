@@ -296,6 +296,7 @@ theorem mixT_bump_smul : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdCha
 
 end GlobalTheory.MixAdj
 end
+end
 
 -- bundled from Development.AbelianVarietyTheory.Proofs.TwistedOperators.MovedTensorFactorMemCoeffFieldStatement
 section

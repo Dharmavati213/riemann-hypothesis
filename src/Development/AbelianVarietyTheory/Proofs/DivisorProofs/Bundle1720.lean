@@ -352,6 +352,7 @@ theorem _root_.GlobalTheory.T.torus_mixedCoordinate_sum_rapid_decay : ∀ {D : D
           ENNReal.ofReal (C * (n : ℝ) ^ A * (GlobalTheory.Size.sobO (V := V) (W := X) ψ θ μ 𝓕 k Ψ).toReal) := by
   first | exact @GlobalTheory.TorusMixedDecay.prod_mul_sum_mixS_le | exact GlobalTheory.TorusMixedDecay.prod_mul_sum_mixS_le | (intros; apply GlobalTheory.TorusMixedDecay.prod_mul_sum_mixS_le <;> assumption)
 end
+end
 
 -- bundled from Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedPlacesBoundChainTwoRunChain
 section

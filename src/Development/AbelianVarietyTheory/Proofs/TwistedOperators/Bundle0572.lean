@@ -209,6 +209,7 @@ end GlobalTheory.MixCondT
 
 end
 end
+end
 
 -- bundled from Development.AbelianVarietyTheory.Proofs.TwistedOperators.UnfoldingConditionsOfFlatMapWeilActionNeZero
 section
@@ -375,6 +376,7 @@ theorem cond_of_flatS_ne : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (V V₀
     exact (eq_one_of_smul hne e).symm
 
 end GlobalTheory.AscFinCond
+end
 end
 end
 

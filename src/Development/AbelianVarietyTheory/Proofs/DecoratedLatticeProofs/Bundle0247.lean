@@ -222,6 +222,7 @@ end GlobalTheory.Core.Rk.ThetaOf
 
 end
 end
+end
 
 -- bundled from Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ThetaTensorRuleOrthogonalSumSource
 section

@@ -124,6 +124,7 @@ theorem mixS_half : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D �
 
 end GlobalTheory.MixHalf
 end
+end
 
 -- bundled from Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.InnerPoincareSeriesEqSetIntegralUnfolding
 section
