@@ -382,7 +382,7 @@ theorem flagMap_chernRoots_pointPoly {H : Host E} (Dw : Datum H) :
     GlobalTheory.Schubert.flagMap Dw (GlobalTheory.GoodMetric.chernRoots Dw.mult (GlobalTheory.LieBase.pointPoly H Dw)) =
       ∏ τ : GlobalTheory.AllWt.Psi H, (∏ i : Fin Dw.p, (-X (τ, Fin.castAdd Dw.q i))) ^ Dw.q := by
   rw [GlobalTheory.LieBase.pointPoly, map_prod, map_prod]
-  refine Finset.prod_congr rfl fun τ _ => ?_
+  refine Finset.prod_congr (Finset.ext fun _ => by simp only [Finset.mem_univ]) fun τ _ => ?_
   have hm : Dw.mult τ.1 = Dw.p := GlobalTheory.PointChern.mult_of_mem Dw τ.2
   have he : Dw.p + Dw.q - Dw.mult τ.1 = Dw.q := by omega
   rw [he, map_pow, map_pow]
