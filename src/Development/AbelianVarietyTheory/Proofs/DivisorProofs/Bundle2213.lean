@@ -215,6 +215,8 @@ theorem ringKrullDim_add_trdeg {k R Ω : Type} [Field k] [CommRing R] [IsDomain 
 
   haveI : FaithfulSMul A R := (faithfulSMul_iff_algebraMap_injective _ _).2 Subtype.val_injective
   haveI : Algebra.IsAlgebraic A R := IsLocalization.isAlgebraic R (EssFiniteType.submonoid k R)
+  haveI : FaithfulSMul k A :=
+    (faithfulSMul_iff_algebraMap_injective k A).2 (algebraMap k A).injective
   have hAR := trdeg_add_eq k A (A := R)
   rw [trdeg_eq_zero (R := A) (A := R), add_zero, hs2, hm] at hAR
 
