@@ -186,6 +186,8 @@ theorem trdeg_lt_aleph0_of_essFiniteType (F W : Type) [Field F] [CommRing W] [Is
   set W₀ := Algebra.EssFiniteType.subalgebra F W
   haveI : FaithfulSMul W₀ W := (faithfulSMul_iff_algebraMap_injective _ _).2 Subtype.val_injective
   haveI : Algebra.IsAlgebraic W₀ W := IsLocalization.isAlgebraic W (Algebra.EssFiniteType.submonoid F W)
+  haveI : FaithfulSMul F W₀ :=
+    (faithfulSMul_iff_algebraMap_injective F W₀).2 (algebraMap F W₀).injective
   have h := trdeg_add_eq F W₀ (A := W)
   rw [trdeg_eq_zero (R := W₀) (A := W), add_zero] at h
   rw [← h]
