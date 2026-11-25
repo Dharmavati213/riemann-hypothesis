@@ -36,7 +36,7 @@ public import Formalism.GaloisCohomology.LocalTateDualityK
 
 -- bundled from Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SumLieCoord
 section
-attribute [-instance] GlobalTheory.CompanionTheory.QL.instMeasGL GlobalTheory.CompanionTheory.QL.instBorelGL Formalism.DoubleCosetMeasures.instMeasGL Formalism.DoubleCosetMeasures.instBorelGL
+attribute [-instance] GlobalTheory.CompanionTheory.QL.instMeasGL GlobalTheory.CompanionTheory.QL.instBorelGL
 noncomputable section
 
 open NumberField MeasureTheory GlobalTheory.CuspRep
