@@ -285,8 +285,8 @@ theorem LevelTowerAlt.exists_potential_charts : ∀ (K : Type) [Fintype K] (J : 
   choose ε hε0 hεr hε4 hεs using fun p : I => exists_eps p.1.2 (hr0 p.1.1 p.1.2)
   let g : I → (Fin D.n → ℂ) → (Σ k, J k) → ℂ := fun p t => (D.chart p.1.1).γ (p.1.2 + (ε p : ℂ) • t)
   let g' : I × Bool → (Fin D.n → ℂ) → (Σ k, J k) → ℂ := fun i => cond i.2 (cj (g i.1)) (g i.1)
-  have hg : ∀ p, Good (mCoordIdeal D.y) (g p) := fun p => (good_chart D p.1.1).affine p.2 (hε0 p) (hε4 p)
-  have hg' : ∀ i, Good (mCoordIdeal D.y) (g' i) := by
+  have hg : ∀ p, _root_.LevelTowerAlt.Charts.Good (mCoordIdeal D.y) (g p) := fun p => (good_chart D p.1.1).affine p.2 (hε0 p) (hε4 p)
+  have hg' : ∀ i, _root_.LevelTowerAlt.Charts.Good (mCoordIdeal D.y) (g' i) := by
     rintro ⟨p, _ | _⟩
     exacts [hg p, (hg p).cj]
   have hg0 : ∀ p, g p 0 = (D.chart p.1.1).γ p.1.2 := fun p =>

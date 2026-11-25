@@ -232,12 +232,12 @@ theorem exists_series_comm : ∀ {l : ℕ} [Fact l.Prime] (K : FinExt l) (π : �
   have hm := map_ltSeries K hp
   have hes : (intEquiv K).symm (e π) = π := e.symm_apply_apply π
   rw [hes] at hm
-  have hF : PowerSeries.map es (ltPoly (e π) : PowerSeries 𝒪[↥K.1]) = ltSeries π := by
+  have hF : PowerSeries.map es (_root_.GroundTheory.LocalField.FormalGroup.ltPoly (e π) : PowerSeries 𝒪[↥K.1]) = ltSeries π := by
     rw [← hm]
     refine PowerSeries.ext fun n => ?_
     rw [PowerSeries.coeff_map, PowerSeries.coeff_map]
     exact e.symm_apply_apply _
-  have hF0 : PowerSeries.constantCoeff (ltPoly (e π) : PowerSeries 𝒪[↥K.1]) = 0 :=
+  have hF0 : PowerSeries.constantCoeff (_root_.GroundTheory.LocalField.FormalGroup.ltPoly (e π) : PowerSeries 𝒪[↥K.1]) = 0 :=
     hf.constantCoeff_eq_zero
   let h := lubinTateHom hp hf hf (e a)
   have h0 : PowerSeries.constantCoeff h.toPowerSeries = 0 := h.constantCoeff_eq_zero
