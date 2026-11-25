@@ -283,7 +283,7 @@ theorem exists_lift_lam : ∀ (R R₀ : Type) [CommRing R] [IsLocalRing R] [IsNo
   have hred : Function.Surjective red := by
     intro y
     let l : primDR A' →ₗ[R] R₀ :=
-      { toFun c := y ((redMor h').pull c)
+      { toFun c := y ((_root_.GlobalTheory.Published.GrothendieckMessing.redMor h').pull c)
         map_add' := by simp
         map_smul' r c := by rw [LinearMap.map_smulₛₗ, map_smul]; rfl }
     obtain ⟨xA, hx⟩ := Module.projective_lifting_property (Algebra.linearMap R R₀) l hπ

@@ -224,7 +224,7 @@ theorem GlobalTheory.extend_class_of_locally_trivial : ∀ (X : Scheme.{0}) [IsL
     (cls_eq_zero_iff (pull_isLB hM _)).1 (ht x)
   choose t htg using ht'
   choose σ hσ using fun x => exists_sigma W (N x) (t x) (htg x)
-  choose r hr using exists_ratio W hM N σ hσ
+  choose r hr using _root_.GlobalTheory.ExtendClass.exists_ratio W hM N σ hσ
   choose g hg using fun x y => exists_ext W hbij (N x) (N y) (r x y)
   let L : LB X := ⟨↥X, N, g⟩
   have hgr : ∀ x y (z : W.toScheme) k, W.ι z ∈ N x → W.ι z ∈ N y → z ∈ M.U k →
