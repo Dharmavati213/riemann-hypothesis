@@ -5,7 +5,7 @@ public import Development.AutomorphicArithmetic.Foundations.Convolution.TraceSpl
 
 @[expose] public section
 
-attribute [-instance] GlobalTheory.CompanionTheory.QL.instMeasGL GlobalTheory.CompanionTheory.QL.instBorelGL Formalism.DoubleCosetMeasures.instMeasGL Formalism.DoubleCosetMeasures.instBorelGL
+attribute [-instance] GlobalTheory.CompanionTheory.QL.instMeasGL GlobalTheory.CompanionTheory.QL.instBorelGL
 noncomputable section
 
 open MeasureTheory NumberField IsDedekindDomain Filter
