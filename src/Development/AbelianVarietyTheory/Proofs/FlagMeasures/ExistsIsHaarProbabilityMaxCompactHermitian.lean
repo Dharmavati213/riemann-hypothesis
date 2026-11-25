@@ -3,7 +3,6 @@ module
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsCompactKH
 
 @[expose] public section
-attribute [-instance] Formalism.DoubleCosetMeasures.instMeasMat GlobalTheory.SplitWeil.matrixMeasurableSpace
 
 open MeasureTheory Matrix Filter Topology
 
@@ -71,7 +70,7 @@ theorem exists_isHaarKH : ∀ k r : ℕ, ∃ μ : Measure (Matrix (Fin (2 * r + 
     simpa using this⟩
   have hKm : MeasurableSet (GlobalTheory.ThA.KH k r) := (isCompact_KH k r).isClosed.measurableSet
   refine ⟨ν.map (incKH k r), ?_, ?_, ?_, ?_⟩
-  · exact (Measure.isProbabilityMeasure_map_iff hmeas.aemeasurable).2 hν
+  · infer_instance
   · rw [Measure.map_apply hmeas hKm.compl]
     have : incKH k r ⁻¹' (GlobalTheory.ThA.KH k r)ᶜ = ∅ := by
       ext u
