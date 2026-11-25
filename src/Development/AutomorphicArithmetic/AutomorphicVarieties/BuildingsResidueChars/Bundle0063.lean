@@ -330,7 +330,7 @@ theorem UpperTheory.hilbertHolomorphic_invariant_integralTranslation :
           rw [pLoc_locGL, pLoc_sLoc, sub_self, aff_zero', one_mul]
         · rw [pLoc_locGL_of_ne hu, pLoc_sLoc_of_ne hu, sub_zero, mul_one]
       have hK : aff 1 (pLoc F w x) ∈ K1 w (c w) := by
-        refine ⟨aff 1 ⟨pLoc F w x, mem_Ohat.1 hx w⟩, ?_, map_aff' _ _⟩
+        refine ⟨aff 1 ⟨pLoc F w x, _root_.UpperTheory.V.Af.GlobalFixedVectors.mem_Ohat.1 hx w⟩, ?_, map_aff' _ _⟩
         change Matrix.GeneralLinearGroup.map _ _ ∈ mirab _
         rw [map_aff']
         exact aff_mirab' _
@@ -344,7 +344,7 @@ theorem UpperTheory.hilbertHolomorphic_invariant_integralTranslation :
       · rw [pLoc_sLoc_of_ne huw, sub_zero]
         exact hS u ((Finset.mem_insert.1 hu).resolve_left huw)
   obtain ⟨S, hS⟩ := exists_KAway_subset (M := 1) (hφ.aut.level.mem_nhds (show (1 : GL (Fin 2) (Af F)) ∈ _ by simp))
-  refine key S (fun x hx h0 => hS (mem_KAway.2 ⟨⟨aff 1 ⟨x, hx⟩, ?_, map_aff' _ _⟩, fun w hw => ?_⟩)) o (mem_Ohat.2 ho)
+  refine key S (fun x hx h0 => hS (mem_KAway.2 ⟨⟨aff 1 ⟨x, hx⟩, ?_, map_aff' _ _⟩, fun w hw => ?_⟩)) o (_root_.UpperTheory.V.Af.GlobalFixedVectors.mem_Ohat.2 ho)
   · haveI : Subsingleton (Ohat F ⧸ Ideal.span {((1 : ℕ) : ↥(Ohat F))}) :=
       Ideal.Quotient.subsingleton_iff.2 (by simp)
     ext i j
