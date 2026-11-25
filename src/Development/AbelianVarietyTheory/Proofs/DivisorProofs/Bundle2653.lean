@@ -355,6 +355,7 @@ theorem finrank_ratF_eq_mul_rank (k K : Type) [CommRing k] [IsDomain k] [Module.
     · refine Subfield.closure_le.2 (Set.union_subset ?_ ?_)
       · exact fun z hz => IntermediateField.subset_adjoin F _ hz
       · rintro _ ⟨j, rfl⟩; exact E.algebraMap_mem ⟨y j, hyF j⟩
+  haveI : Module.Free E K := Module.Free.of_divisionRing E K
   have htow := Module.finrank_mul_finrank F E K
   have hEK : Module.finrank E.toSubfield K = Module.finrank E K := rfl
   rw [← hsub, hEK, ← htow, hEF, mul_comm]
