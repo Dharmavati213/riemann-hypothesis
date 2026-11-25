@@ -201,6 +201,7 @@ end
 -- bundled from Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.MatrixMeasureTopBlockIntegralGLMaxIdeal
 section
 attribute [-instance] GlobalTheory.LGrp.locallyCompact_GL
+attribute [-instance] GroundTheory.Automorphic.GJMatrix.measurableSpace_matrix GroundTheory.Automorphic.GJMatrix.borelSpace_matrix
 open MeasureTheory Matrix Formalism.IndefR.Datum
 open scoped NNReal ENNReal
 
