@@ -13,6 +13,7 @@ open GroundTheory.Automorphic.GodementJacquet
 open scoped NNReal Classical ValuativeRel
 
 attribute [-instance] Formalism.DoubleCosetMeasures.instMeasGL
+attribute [-instance] GlobalTheory.CompanionTheory.QL.instMeasGL GlobalTheory.CompanionTheory.QL.instBorelGL
 
 section SlopeTestRemainingChoices
 

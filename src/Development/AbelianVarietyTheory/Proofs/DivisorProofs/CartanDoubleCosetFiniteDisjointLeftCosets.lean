@@ -9,6 +9,7 @@ public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.Bundle004
 
 open MeasureTheory ValuativeRel Matrix GlobalTheory.SplitWeil GlobalTheory.SplitFlip GlobalTheory.KSplit
 attribute [-instance] Formalism.DoubleCosetMeasures.instMeasGL Formalism.DoubleCosetMeasures.instMeasMat
+attribute [-instance] GlobalTheory.CompanionTheory.QL.instMeasGL GlobalTheory.CompanionTheory.QL.instBorelGL
 open GlobalTheory.IndefiniteRowSideFullHecke.ScaledIntegerPeriodic
 
 namespace GlobalTheory.ShellCosets

@@ -11,6 +11,7 @@ open GroundTheory.Automorphic.GodementJacquet GroundTheory.Automorphic.GJStandar
 open scoped NNReal Classical ValuativeRel
 
 attribute [-instance] Formalism.DoubleCosetMeasures.instMeasGL
+attribute [-instance] GlobalTheory.CompanionTheory.QL.instMeasGL GlobalTheory.CompanionTheory.QL.instBorelGL
 
 theorem UpperTheory.V.Z.Gam.gamLocOf :
     UpperTheory.V.Z.Gam.GamLocOf := by

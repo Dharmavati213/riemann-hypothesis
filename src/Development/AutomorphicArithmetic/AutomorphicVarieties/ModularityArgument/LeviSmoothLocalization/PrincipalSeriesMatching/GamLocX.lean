@@ -18,6 +18,7 @@ open GroundTheory.Automorphic.GodementJacquet GroundTheory.Automorphic.GJStandar
 open scoped NNReal Classical ValuativeRel
 
 attribute [-instance] Formalism.DoubleCosetMeasures.instMeasGL
+attribute [-instance] GlobalTheory.CompanionTheory.QL.instMeasGL GlobalTheory.CompanionTheory.QL.instBorelGL
 
 private theorem UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter.kappa_one {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
     [MeasurableSpace F] [BorelSpace F] {n : ℕ} {β : Fin n → ℕ} (a : Set.range β) (ha : blockSize β a = 1) :

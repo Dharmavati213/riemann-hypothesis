@@ -19,6 +19,7 @@ open GroundTheory.Automorphic.Parabolic (levi parabolicInd mem_levi leviUnipoten
 open scoped Classical
 
 attribute [-instance] Formalism.DoubleCosetMeasures.instMeasGL
+attribute [-instance] GlobalTheory.CompanionTheory.QL.instMeasGL GlobalTheory.CompanionTheory.QL.instBorelGL
 
 namespace UpperTheory.V.Z.Gam
 
