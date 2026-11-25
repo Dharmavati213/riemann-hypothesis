@@ -179,6 +179,7 @@ theorem trace_eq (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F �
   haveI : FiniteDimensional F Q.K := Module.finite_of_finrank_pos (by rw [Q.two]; norm_num)
   haveI : FiniteDimensional F Q'.K := Module.finite_of_finrank_pos (by rw [Q'.two]; norm_num)
   haveI : NumberField M := NumberField.of_module_finite F M
+  haveI : Module.IsTorsionFree M Ω := DivisionSemiring.to_moduleIsTorsionFree
   haveI : IsAlgClosure M Ω := ⟨IsAlgClosure.isAlgClosed F,
     haveI : Algebra.IsAlgebraic F Ω := IsAlgClosure.isAlgebraic; Algebra.IsAlgebraic.tower_top (K := F) _⟩
   haveI : Algebra.IsQuadraticExtension F Q.K := { finrank_eq_two' := Q.two }
