@@ -32,7 +32,6 @@ structure FullTied (D : D7) extends AllTied D where
   cof : CofTied D base.toHermCols atT
   piG : PiGConst D base.toHermCols atT levelZeroCompatibility
   stabMap : StabMapTied D base.toHermCols atT
-  fvI : FvStepTied D base.toHermCols atT
   relDet : RelativeDeterminantCompatible D base
   std : StdTied D
   vpos : PositiveVolumeCompatible D
@@ -46,7 +45,6 @@ structure ColsHerm (D : D7) where
   cof : CofTied D base atT
   piG : PiGConst D base atT levelZeroCompatibility
   stabMap : StabMapTied D base atT
-  fvI : FvStepTied D base atT
   std : StdTied D
   baseL : BaseTied D base atT
 
@@ -58,7 +56,6 @@ def FullTied.cols {D : D7} (X : FullTied D) : ColsHerm D where
   cof := X.cof
   piG := X.piG
   stabMap := X.stabMap
-  fvI := X.fvI
   std := X.std
   baseL := X.baseL
 

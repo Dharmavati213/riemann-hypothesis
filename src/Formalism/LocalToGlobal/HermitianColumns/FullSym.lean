@@ -43,7 +43,6 @@ structure FullTiedS (D : D7) extends SymmetricCompatibleData D where
   cof : SymmetricCofactorCompatibility D base.toHermColsCh atT
   piG : PiGConstS D base.toHermColsCh atT levelZeroCompatibility
   stabMap : SymmetricStabilizerMapCompatibility D base.toHermColsCh atT
-  fvI : SymmetricResidueFieldLevels D base.toHermColsCh atT
   relDet : SymmetricRelativeDeterminant D base
   std : StdTied D
   baseL : SymmetricBaseCompatibility D base.toHermColsCh atT

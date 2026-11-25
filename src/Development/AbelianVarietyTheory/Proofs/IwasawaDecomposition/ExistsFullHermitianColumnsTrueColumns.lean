@@ -299,8 +299,7 @@ theorem relDet_std (hI : I.Ok) (hS : I.StdC l Z C) : Formalism.L2.Herm.Symmetric
 theorem exists_colsFullS_of_compat (hI : I.Ok) (hS : I.StdC l Z C)
     (g : Formalism.L2.Herm.SymmetricGroupCompatibility (I.rec7 l Z) C.herm.base)
     (cof : Formalism.L2.Herm.SymmetricCofactorCompatibility (I.rec7 l Z) C.herm.base C.herm.atT)
-    (stabMap : Formalism.L2.Herm.SymmetricStabilizerMapCompatibility (I.rec7 l Z) C.herm.base C.herm.atT)
-    (fvI : Formalism.L2.Herm.SymmetricResidueFieldLevels (I.rec7 l Z) C.herm.base C.herm.atT) :
+    (stabMap : Formalism.L2.Herm.SymmetricStabilizerMapCompatibility (I.rec7 l Z) C.herm.base C.herm.atT) :
     ∃ Fu : ColsFullS C, HEq Fu.1.g g ∧ I.StdDt l Z Fu.1.base.dt := by
   let Fu : Formalism.L2.Herm.FullTiedS (I.rec7 l Z) :=
     { base := hermS I l Z C hI hS
@@ -310,7 +309,6 @@ theorem exists_colsFullS_of_compat (hI : I.Ok) (hS : I.StdC l Z C)
       cof := cof
       piG := C.herm.piG
       stabMap := stabMap
-      fvI := fvI
       relDet := relDet_std I l Z C hI hS
       std := C.herm.std
       baseL := C.herm.baseL }
@@ -331,7 +329,6 @@ theorem exists_colsFullS : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} (I
         (∀ u (w : HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F)) (h : ((((I.rec7 l Z).mem u).A.T : ℕ) : 𝓞 (I.rec7 l Z).host.F) ∈ w.asIdeal) (a : intV (I.rec7 l Z).host.E w), (a : TensorProduct (I.rec7 l Z).host.F (I.rec7 l Z).host.E (w.adicCompletion (I.rec7 l Z).host.F)) = inclE (F := (I.rec7 l Z).host.F) (w.adicCompletion (I.rec7 l Z).host.F) ((A u).piU : (I.rec7 l Z).host.E) → ∀ m : (C.herm.base.lev0 u).fM w h, a • m = 0) →
         Formalism.L2.Herm.SymmetricCofactorCompatibility (I.rec7 l Z) C.herm.base A ∧
           Formalism.L2.Herm.SymmetricBaseCompatibility (I.rec7 l Z) C.herm.base A ∧
-          Nonempty (Formalism.L2.Herm.SymmetricResidueFieldLevels (I.rec7 l Z) C.herm.base A) ∧
           ∃ X0 : Formalism.L2.Herm.SymmetricLevelZeroData (I.rec7 l Z) C.herm.base A, ∀ u, (X0 u).piG = X.piG),
     ∃ C' : ColsTiedSym (I.rec7 l Z),
       (⟨C'.herm.base, C'.forms⟩ : Σ H : Formalism.L2.Herm.HermColsCh (I.rec7 l Z), ∀ u, FormsTiedSym (I.rec7 l Z) u (H.Ch u) (H.chOf u)) = ⟨C.herm.base, C.forms⟩ ∧
@@ -349,7 +346,7 @@ theorem exists_colsFullS : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} (I
       fr0 := C.fr0 }
   obtain ⟨A, hT, hSt⟩ := hA hF hH
   have hpi : ∀ u, (A u).piU = (C.herm.atT u).piU := fun u => (hT.piU u).symm.trans (C.piU u)
-  obtain ⟨hCof, hBase, ⟨hFv⟩, X0, hX0⟩ := hB A hF hH hT
+  obtain ⟨hCof, hBase, X0, hX0⟩ := hB A hF hH hT
     (fun u w h a ha m => (C.herm.levelZeroCompatibility u).fM_pi w h a (by rw [ha, hpi u]) m)
   let C' : ColsTiedSym (I.rec7 l Z) :=
     { herm :=
@@ -380,7 +377,7 @@ theorem exists_colsFullS : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} (I
       chi := C.chi
       frame_level_zero_const := C.frame_level_zero_const
       frP_const := C.frP_const }
-  exact ⟨C', rfl, hS, hL,exists_colsFullS_of_compat I l Z C' hI hS g hCof hSt hFv⟩
+  exact ⟨C', rfl, hS, hL,exists_colsFullS_of_compat I l Z C' hI hS g hCof hSt⟩
 
 end Main
 

@@ -25,7 +25,6 @@ structure FullTiedNoG (D : D7) extends AllTied D where
   cof : CofTied D base.toHermCols atT
   piG : PiGConst D base.toHermCols atT levelZeroCompatibility
   stabMap : StabMapTied D base.toHermCols atT
-  fvI : FvStepTied D base.toHermCols atT
   relDet : RelativeDeterminantCompatible D base
   std : StdTied D
   vpos : PositiveVolumeCompatible D

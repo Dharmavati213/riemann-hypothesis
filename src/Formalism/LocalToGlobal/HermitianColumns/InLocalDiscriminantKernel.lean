@@ -112,17 +112,6 @@ structure ClassTie (hc : CMData F E) (S : HSpace E) (Lb : Submodule (𝓞 E) (Fi
     bc (inclE (F := F) (Af F)) (γ : GL (Fin S.rank) E) ∈
       U.map (MulAut.conj (y c : GL (Fin S.rank) (E ⊗[F] Af F))).toMonoidHom
 
-structure FvTie (hc : CMData F E) (S : HSpace E) (Lb : Submodule (𝓞 E) (Fin S.rank → E)) {cls : Type}
-    (y : cls → UAf hc S) (lat : cls → Submodule (𝓞 E) S.V) (w : HeightOneSpectrum (𝓞 F))
-    (k : Type) [AddCommGroup k] (fz : ∀ c, Formalism.HermitianLatticesTheory.dual S.hT (lat c) → k) where
-
-  fb : locL w (dualL hc S Lb) →+ k
-  fvI : ∀ c (z : Formalism.HermitianLatticesTheory.dual S.hT (lat c)) (t : locL w (dualL hc S Lb)),
-    ((bc (prV (E := E) w) (y c : GL (Fin S.rank) (E ⊗[F] Af F)) : GL (Fin S.rank) (E ⊗[F] w.adicCompletion F)) :
-      Matrix (Fin S.rank) (Fin S.rank) (E ⊗[F] w.adicCompletion F)).mulVec t.1 =
-      (fun a => inclE (F := F) (w.adicCompletion F) (crd S z.1 a)) →
-    fz c z = fb t
-
 def IsStd (S : HSpace E) : Prop :=
   ∃ b : Module.Basis (Fin S.rank) E S.V, (∀ a a', S.hT (b a) (b a') = if a = a' then 1 else 0) ∧
     S.L0 = Submodule.span (𝓞 E) (Set.range b)
