@@ -713,20 +713,7 @@ theorem holo_mdel_entry {n : ℕ} {K : Type} {P : ReciprocityTheory.L2DbarEstima
     mdel P u w i k = fderiv ℂ (fun x => P x i k) u w :=
   holo_del_eq_on hU (hP i k) hu w
 
-theorem holo_mdel_mdel_entry {n : ℕ} {K : Type} {P : ReciprocityTheory.L2DbarEstimates.V n → Matrix K K ℂ}
-    {U : Set (ReciprocityTheory.L2DbarEstimates.V n)} (hU : IsOpen U) (hP : ∀ i k, DifferentiableOn ℂ (fun u => P u i k) U)
-    {u : ReciprocityTheory.L2DbarEstimates.V n} (hu : u ∈ U) (w w' : ReciprocityTheory.L2DbarEstimates.V n) (i k : K) :
-    mdel (fun x => mdel P x w') u w i k =
-      fderiv ℂ (fun x => fderiv ℂ (fun y => P y i k) x w') u w := by
-  change GlobalTheory.del (fun x => GlobalTheory.del (fun y => P y i k) x w') u w = _
-  have hev : (fun x => GlobalTheory.del (fun y => P y i k) x w') =ᶠ[𝓝 u]
-      (fun x => fderiv ℂ (fun y => P y i k) x w') := by
-    filter_upwards [hU.mem_nhds hu] with x hx
-    exact holo_del_eq_on hU (hP i k) hx w'
-  rw [GlobalTheory.del_congr hev]
-  exact holo_del_eq_on hU (holo_fderiv_apply_on hU (hP i k) w') hu w
-
-theorem holoFrame_local_bounds : ∀ (n : ℕ) (K : Type) [Fintype K] [DecidableEq K] (P : ReciprocityTheory.L2DbarEstimates.V n → Matrix K K ℂ) (r : ℝ), 0 < r → (∀ i k, DifferentiableOn ℂ (fun u => P u i k) (Metric.ball 0 r)) → IsUnit (P 0).det → ∃ r' : ℝ, 0 < r' ∧ r' ≤ r ∧ ∃ B : ℝ, ∀ v : ReciprocityTheory.L2DbarEstimates.V n, ‖v‖ < r' → IsUnit (P v).det ∧ (∀ i k, ContDiffAt ℝ 2 (fun u => P u i k) v) ∧ (∀ᶠ u in nhds v, ∀ η, GlobalTheory.HermFrame.mdbar P u η = 0) ∧ (∀ i k, ‖P v i k‖ ≤ B) ∧ (∀ i k, ‖(P v)⁻¹ i k‖ ≤ B) ∧ (∀ a i k, ‖GlobalTheory.HermFrame.mdel P v (GlobalTheory.GoodMetric.coordVec a) i k‖ ≤ B) ∧ (∀ a b i k, ‖GlobalTheory.HermFrame.mdel (fun u => GlobalTheory.HermFrame.mdel P u (GlobalTheory.GoodMetric.coordVec b)) v (GlobalTheory.GoodMetric.coordVec a) i k‖ ≤ B) := by
+theorem holoFrame_local_bounds : ∀ (n : ℕ) (K : Type) [Fintype K] [DecidableEq K] (P : ReciprocityTheory.L2DbarEstimates.V n → Matrix K K ℂ) (r : ℝ), 0 < r → (∀ i k, DifferentiableOn ℂ (fun u => P u i k) (Metric.ball 0 r)) → IsUnit (P 0).det → ∃ r' : ℝ, 0 < r' ∧ r' ≤ r ∧ ∃ B : ℝ, ∀ v : ReciprocityTheory.L2DbarEstimates.V n, ‖v‖ < r' → IsUnit (P v).det ∧ (∀ i k, ContDiffAt ℝ 2 (fun u => P u i k) v) ∧ (∀ᶠ u in nhds v, ∀ η, GlobalTheory.HermFrame.mdbar P u η = 0) ∧ (∀ i k, ‖P v i k‖ ≤ B) ∧ (∀ i k, ‖(P v)⁻¹ i k‖ ≤ B) ∧ (∀ a i k, ‖GlobalTheory.HermFrame.mdel P v (GlobalTheory.GoodMetric.coordVec a) i k‖ ≤ B) := by
   intro n K _ _ P r hr hP h0
   set U : Set (ReciprocityTheory.L2DbarEstimates.V n) := Metric.ball 0 r with hUdef
   have hU : IsOpen U := Metric.isOpen_ball
@@ -755,8 +742,6 @@ theorem holoFrame_local_bounds : ∀ (n : ℕ) (K : Type) [Fintype K] [Decidable
   let G2 : ReciprocityTheory.L2DbarEstimates.V n → (K → K → ℂ) := fun u i k => (P u)⁻¹ i k
   let G3 : ReciprocityTheory.L2DbarEstimates.V n → (Fin n → K → K → ℂ) := fun u a i k =>
     mdel P u (GlobalTheory.GoodMetric.coordVec a) i k
-  let G4 : ReciprocityTheory.L2DbarEstimates.V n → (Fin n → Fin n → K → K → ℂ) := fun u a b i k =>
-    mdel (fun u => mdel P u (GlobalTheory.GoodMetric.coordVec b)) u (GlobalTheory.GoodMetric.coordVec a) i k
   have hG1 : ContinuousOn G1 S :=
     continuousOn_pi.2 fun i => continuousOn_pi.2 fun k => ((hP i k).continuousOn).mono hSU
   have hG2 : ContinuousOn G2 S := by
@@ -768,23 +753,15 @@ theorem holoFrame_local_bounds : ∀ (n : ℕ) (K : Type) [Fintype K] [Decidable
     refine ((holo_fderiv_apply_on hU (hP i k) (GlobalTheory.GoodMetric.coordVec a)).continuousOn.mono
       hSU).congr fun u hu => ?_
     exact holo_mdel_entry hU hP (hSU hu) _ i k
-  have hG4 : ContinuousOn G4 S := by
-    refine continuousOn_pi.2 fun a => continuousOn_pi.2 fun b => continuousOn_pi.2 fun i =>
-      continuousOn_pi.2 fun k => ?_
-    refine ((holo_fderiv_apply_on hU (holo_fderiv_apply_on hU (hP i k)
-      (GlobalTheory.GoodMetric.coordVec b)) (GlobalTheory.GoodMetric.coordVec a)).continuousOn.mono hSU).congr
-      fun u hu => ?_
-    exact holo_mdel_mdel_entry hU hP (hSU hu) _ _ i k
   obtain ⟨C1, hC1⟩ := hSc.exists_bound_of_continuousOn hG1
   obtain ⟨C2, hC2⟩ := hSc.exists_bound_of_continuousOn hG2
   obtain ⟨C3, hC3⟩ := hSc.exists_bound_of_continuousOn hG3
-  obtain ⟨C4, hC4⟩ := hSc.exists_bound_of_continuousOn hG4
-  refine ⟨ρ, hρpos, hρr.le, max (max C1 C2) (max C3 C4), fun v hv => ?_⟩
+  refine ⟨ρ, hρpos, hρr.le, max (max C1 C2) C3, fun v hv => ?_⟩
   have hvS : v ∈ S := by
     rw [hSdef, Metric.mem_closedBall, dist_zero_right]; exact hv.le
   have hvU : v ∈ U := hSU hvS
   refine ⟨isUnit_iff_ne_zero.2 (hSdet v hvS), fun i k => ?_, ?_, fun i k => ?_, fun i k => ?_,
-    fun a i k => ?_, fun a b i k => ?_⟩
+    fun a i k => ?_⟩
   · exact ((holo_contDiffOn hU (hP i k)).contDiffAt (hU.mem_nhds hvU)).restrict_scalars ℝ
   · filter_upwards [hU.mem_nhds hvU] with u hu η
     ext i k
@@ -795,10 +772,7 @@ theorem holoFrame_local_bounds : ∀ (n : ℕ) (K : Type) [Fintype K] [Decidable
     exact h.trans ((le_max_right _ _).trans (le_max_left _ _))
   · have h := (norm_le_pi_norm (G3 v a i) k).trans ((norm_le_pi_norm (G3 v a) i).trans
       ((norm_le_pi_norm (G3 v) a).trans (hC3 v hvS)))
-    exact h.trans ((le_max_left _ _).trans (le_max_right _ _))
-  · have h := (norm_le_pi_norm (G4 v a b i) k).trans ((norm_le_pi_norm (G4 v a b) i).trans
-      ((norm_le_pi_norm (G4 v a) b).trans ((norm_le_pi_norm (G4 v) a).trans (hC4 v hvS))))
-    exact h.trans ((le_max_right _ _).trans (le_max_right _ _))
+    exact h.trans (le_max_right _ _)
 
 end GlobalTheory.HermFrame
 end -- clump:auto
@@ -1001,15 +975,6 @@ theorem goodBound_of_blockDiagonal' : ∀ (n : ℕ) (S : Finset (Fin n)) (ι : T
   have hcurv : ∀ ξ η, GlobalTheory.HermFrame.curv (fun u => Matrix.blockDiagonal' fun τ => G τ u) v ξ η =
       Matrix.blockDiagonal' fun τ => GlobalTheory.HermFrame.curv (G τ) v ξ η := fun ξ η =>
     GlobalTheory.HermFrame.curv_blockDiagonal' hCτ hunit ξ η
-  have hdel : ∀ ξ η, GlobalTheory.HermFrame.mdel (fun u => GlobalTheory.HermFrame.conn
-      (fun u => Matrix.blockDiagonal' fun τ => G τ u) u ξ) v η =
-      Matrix.blockDiagonal' fun τ => GlobalTheory.HermFrame.mdel (fun u => GlobalTheory.HermFrame.conn (G τ) u ξ) v η := by
-    intro ξ η
-    have he : (fun u => GlobalTheory.HermFrame.conn (fun u => Matrix.blockDiagonal' fun τ => G τ u) u ξ) =ᶠ[𝓝 v]
-        fun u => Matrix.blockDiagonal' fun τ => GlobalTheory.HermFrame.conn (G τ) u ξ :=
-      (Filter.eventually_all.2 fun i => (hCτ i).eventually_isUnit (hunit i)).mono
-        fun x hx => GlobalTheory.HermFrame.conn_blockDiagonal' hx ξ
-    rw [GlobalTheory.HermFrame.mdel_congr he, GlobalTheory.HermFrame.mdel_blockDiagonal']
 
   set e := c * L ^ N
   set M := max 1 e
@@ -1045,7 +1010,7 @@ theorem goodBound_of_blockDiagonal' : ∀ (n : ℕ) (S : Finset (Fin n)) (ι : T
     rcases le_total 1 (L ^ N) with h | h
     · rw [max_eq_right h, ← pow_mul]; exact key _ le_rfl
     · rw [max_eq_left h, one_pow]; simpa using key 0 (Nat.zero_le _)
-  refine ⟨fun i j => ?_, ?_, fun a i j => ?_, fun a b i j => ?_, fun a b i j => ?_⟩
+  refine ⟨fun i j => ?_, ?_, fun a i j => ?_, fun a b i j => ?_⟩
   · calc ‖G τ v i j‖ ≤ c * L ^ N := hent τ i j
       _ ≤ c * (D * L ^ N') := mul_le_mul_of_nonneg_left (key N (by simp [N']; exact Nat.le_mul_of_pos_right _ (by omega))) hc.le
       _ = c * D * L ^ N' := by ring
@@ -1066,10 +1031,6 @@ theorem goodBound_of_blockDiagonal' : ∀ (n : ℕ) (S : Finset (Fin n)) (ι : T
     exact this.trans hcc'
   · have := hG.dbar a b ⟨τ, i⟩ ⟨τ, j⟩
     rw [hcurv, Matrix.blockDiagonal'_apply_eq] at this
-    exact this.trans hcc'
-  · have := hG.del a b ⟨τ, i⟩ ⟨τ, j⟩
-    rw [hdel, hdel, Matrix.sub_apply, Matrix.blockDiagonal'_apply_eq, Matrix.blockDiagonal'_apply_eq,
-      ← Matrix.sub_apply] at this
     exact this.trans hcc'
 
 end GlobalTheory.GoodMetric
@@ -1101,9 +1062,6 @@ theorem EntryLe.mono (h : EntryLe M x) (hxy : x ≤ y) : EntryLe M y := fun i j 
 
 theorem EntryLe.add (h : EntryLe M x) (h' : EntryLe N y) : EntryLe (M + N) (x + y) :=
   fun i j => (norm_add_le _ _).trans (add_le_add (h i j) (h' i j))
-
-theorem EntryLe.sub (h : EntryLe M x) (h' : EntryLe N y) : EntryLe (M - N) (x + y) :=
-  fun i j => (norm_sub_le _ _).trans (add_le_add (h i j) (h' i j))
 
 theorem EntryLe.mul (hx : 0 ≤ x) (h : EntryLe M x) (h' : EntryLe N y) :
     EntryLe (M * N) (Fintype.card K * x * y) := by
@@ -1150,80 +1108,6 @@ theorem EntryLe.norm_det_le [DecidableEq K] (h : EntryLe M x) :
           _ = x ^ Fintype.card K := by rw [Finset.prod_const, Finset.card_univ]
     _ = _ := by rw [Finset.sum_const, Finset.card_univ, Fintype.card_perm, nsmul_eq_mul]
 
-theorem mdel_conn_changeFrame : ∀ (n : ℕ) (K : Type) [Fintype K] [DecidableEq K] (G₀ A : ReciprocityTheory.L2DbarEstimates.V n → Matrix K K ℂ) (v : ReciprocityTheory.L2DbarEstimates.V n), GlobalTheory.HermFrame.MContDiffAt 2 G₀ v → IsUnit (G₀ v).det → GlobalTheory.HermFrame.MContDiffAt 2 A v → IsUnit (A v).det → (∀ᶠ u in nhds v, ∀ η, GlobalTheory.HermFrame.mdbar A u η = 0) → ∀ ξ ζ : ReciprocityTheory.L2DbarEstimates.V n, GlobalTheory.HermFrame.mdel (fun u => GlobalTheory.HermFrame.conn (fun x => (A x)ᵀ * G₀ x * (A x)ᴴᵀ) u ζ) v ξ = (A v)⁻¹ * (GlobalTheory.HermFrame.mdel (fun u => GlobalTheory.HermFrame.conn G₀ u ζ) v ξ * A v + GlobalTheory.HermFrame.conn G₀ v ζ * GlobalTheory.HermFrame.mdel A v ξ + GlobalTheory.HermFrame.mdel (fun u => GlobalTheory.HermFrame.mdel A u ζ) v ξ) - (A v)⁻¹ * GlobalTheory.HermFrame.mdel A v ξ * (A v)⁻¹ * (GlobalTheory.HermFrame.conn G₀ v ζ * A v + GlobalTheory.HermFrame.mdel A v ζ) := by
-  intro n K _ _ G₀ A v hG hGu hA hAu hA0 ξ ζ
-  have hA1 : GlobalTheory.HermFrame.MContDiffAt 1 A v := hA.of_le one_le_two
-  have hc : GlobalTheory.HermFrame.MContDiffAt 1 (fun x => GlobalTheory.HermFrame.conn G₀ x ζ) v :=
-    hG.conn hGu (by norm_num) ζ
-  have hd : GlobalTheory.HermFrame.MContDiffAt 1 (fun x => GlobalTheory.HermFrame.mdel A x ζ) v := hA.mdel (by norm_num) ζ
-  have he : (fun x => GlobalTheory.HermFrame.conn (fun x => (A x)ᵀ * G₀ x * (A x)ᴴᵀ) x ζ) =ᶠ[nhds v]
-      fun x => (A x)⁻¹ * (GlobalTheory.HermFrame.conn G₀ x ζ * A x + GlobalTheory.HermFrame.mdel A x ζ) := by
-    filter_upwards [hG.eventually_two, hG.eventually_isUnit hGu, hA.eventually_two,
-      hA.eventually_isUnit hAu, hA0] with x h1 h2 h3 h4 h5
-    exact GlobalTheory.HermFrame.conn_changeFrame (h1.of_le one_le_two) h2 (h3.of_le one_le_two) h4 h5 ζ
-  rw [GlobalTheory.HermFrame.mdel_congr he, GlobalTheory.HermFrame.mdel_mul (hA1.inv hAu) ((hc.mul hA1).add hd),
-    GlobalTheory.HermFrame.mdel_inv hA1 hAu, GlobalTheory.HermFrame.mdel_add (hc.mul hA1) hd,
-    GlobalTheory.HermFrame.mdel_mul hc hA1]
-  noncomm_ring
-
-theorem entryLe_antisymm_del : ∀ (K : Type) [Fintype K] (X A Ta Tb Dab Dba dAa dAb ddAab ddAba : Matrix K K ℂ) (wa wb b c : ℝ), 0 ≤ wa → wa ≤ 1 → 0 ≤ wb → wb ≤ 1 → 0 ≤ b → 0 ≤ c → GlobalTheory.GoodMetric.FrameChange.EntryLe X b → GlobalTheory.GoodMetric.FrameChange.EntryLe A b → GlobalTheory.GoodMetric.FrameChange.EntryLe dAa b → GlobalTheory.GoodMetric.FrameChange.EntryLe dAb b → GlobalTheory.GoodMetric.FrameChange.EntryLe ddAab b → GlobalTheory.GoodMetric.FrameChange.EntryLe ddAba b → GlobalTheory.GoodMetric.FrameChange.EntryLe ((wa : ℂ) • Ta) c → GlobalTheory.GoodMetric.FrameChange.EntryLe ((wb : ℂ) • Tb) c → GlobalTheory.GoodMetric.FrameChange.EntryLe (((wa * wb : ℝ) : ℂ) • (Dab - Dba)) c → GlobalTheory.GoodMetric.FrameChange.EntryLe (((wa * wb : ℝ) : ℂ) • ((X * (Dab * A + Tb * dAa + ddAab) - X * dAa * X * (Tb * A + dAb)) - (X * (Dba * A + Ta * dAb + ddAba) - X * dAb * X * (Ta * A + dAa)))) (3 * (Fintype.card K : ℝ) ^ 2 * b ^ 2 * c + 2 * (Fintype.card K : ℝ) ^ 4 * b ^ 4 * c + 2 * (Fintype.card K : ℝ) ^ 3 * b ^ 4 + 2 * (Fintype.card K : ℝ) * b ^ 2) := by
-  intro K _ X A Ta Tb Dab Dba dAa dAb ddAab ddAba wa wb b c hwa0 hwa1 hwb0 hwb1 hb hc hX hA hdAa hdAb hddab hddba hTa hTb hD
-  set k : ℝ := (Fintype.card K : ℝ) with hk
-  have hk0 : 0 ≤ k := Nat.cast_nonneg _
-  have e : (((wa * wb : ℝ) : ℂ) • ((X * (Dab * A + Tb * dAa + ddAab) - X * dAa * X * (Tb * A + dAb)) -
-      (X * (Dba * A + Ta * dAb + ddAba) - X * dAb * X * (Ta * A + dAa)))) =
-      X * (((wa * wb : ℝ) : ℂ) • (Dab - Dba)) * A + X * ((wb : ℂ) • Tb) * ((wa : ℂ) • dAa)
-        - X * ((wa : ℂ) • Ta) * ((wb : ℂ) • dAb)
-        - X * ((wa : ℂ) • dAa) * X * ((wb : ℂ) • Tb) * A + X * ((wb : ℂ) • dAb) * X * ((wa : ℂ) • Ta) * A
-        - ((wa * wb : ℝ) : ℂ) • (X * dAa * X * dAb) + ((wa * wb : ℝ) : ℂ) • (X * dAb * X * dAa)
-        + ((wa * wb : ℝ) : ℂ) • (X * (ddAab - ddAba)) := by
-    push_cast
-    simp only [Matrix.smul_mul, Matrix.mul_smul, smul_smul, smul_sub, smul_add, Matrix.mul_add,
-      Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_assoc, mul_comm (wb : ℂ) (wa : ℂ)]
-    abel
-  have hwa : wa * b ≤ b := by nlinarith
-  have hwb : wb * b ≤ b := by nlinarith
-  have hw0 : 0 ≤ wa * wb := mul_nonneg hwa0 hwb0
-  have hw1 : wa * wb ≤ 1 := by nlinarith
-  have hkb : 0 ≤ k * b * b := by positivity
-  have t1 : GlobalTheory.GoodMetric.FrameChange.EntryLe (X * (((wa * wb : ℝ) : ℂ) • (Dab - Dba)) * A) (k ^ 2 * b ^ 2 * c) :=
-    ((hX.mul hb hD).mul (by positivity) hA).mono (le_of_eq (by ring))
-  have t2 : GlobalTheory.GoodMetric.FrameChange.EntryLe (X * ((wb : ℂ) • Tb) * ((wa : ℂ) • dAa)) (k ^ 2 * b ^ 2 * c) :=
-    ((hX.mul hb hTb).mul (by positivity) (hdAa.smul hwa0)).mono (by
-      have := mul_le_mul_of_nonneg_left hwa (by positivity : 0 ≤ k * (k * b * c))
-      nlinarith)
-  have t3 : GlobalTheory.GoodMetric.FrameChange.EntryLe (X * ((wa : ℂ) • Ta) * ((wb : ℂ) • dAb)) (k ^ 2 * b ^ 2 * c) :=
-    ((hX.mul hb hTa).mul (by positivity) (hdAb.smul hwb0)).mono (by
-      have := mul_le_mul_of_nonneg_left hwb (by positivity : 0 ≤ k * (k * b * c))
-      nlinarith)
-  have t4 : GlobalTheory.GoodMetric.FrameChange.EntryLe (X * ((wa : ℂ) • dAa) * X * ((wb : ℂ) • Tb) * A) (k ^ 4 * b ^ 4 * c) := by
-    have h := ((((hX.mul hb (hdAa.smul hwa0)).mul (by positivity) hX).mul (by positivity) hTb).mul
-      (by positivity) hA)
-    refine h.mono ?_
-    have := mul_le_mul_of_nonneg_left hwa (by positivity : 0 ≤ k ^ 4 * b ^ 2 * c)
-    nlinarith
-  have t5 : GlobalTheory.GoodMetric.FrameChange.EntryLe (X * ((wb : ℂ) • dAb) * X * ((wa : ℂ) • Ta) * A) (k ^ 4 * b ^ 4 * c) := by
-    have h := ((((hX.mul hb (hdAb.smul hwb0)).mul (by positivity) hX).mul (by positivity) hTa).mul
-      (by positivity) hA)
-    refine h.mono ?_
-    have := mul_le_mul_of_nonneg_left hwb (by positivity : 0 ≤ k ^ 4 * b ^ 2 * c)
-    nlinarith
-  have t6 : GlobalTheory.GoodMetric.FrameChange.EntryLe (((wa * wb : ℝ) : ℂ) • (X * dAa * X * dAb)) (k ^ 3 * b ^ 4) := by
-    refine ((((hX.mul hb hdAa).mul (by positivity) hX).mul (by positivity) hdAb).smul hw0).mono ?_
-    have := mul_le_mul_of_nonneg_right hw1 (by positivity : 0 ≤ k ^ 3 * b ^ 4)
-    nlinarith
-  have t7 : GlobalTheory.GoodMetric.FrameChange.EntryLe (((wa * wb : ℝ) : ℂ) • (X * dAb * X * dAa)) (k ^ 3 * b ^ 4) := by
-    refine ((((hX.mul hb hdAb).mul (by positivity) hX).mul (by positivity) hdAa).smul hw0).mono ?_
-    have := mul_le_mul_of_nonneg_right hw1 (by positivity : 0 ≤ k ^ 3 * b ^ 4)
-    nlinarith
-  have t8 : GlobalTheory.GoodMetric.FrameChange.EntryLe (((wa * wb : ℝ) : ℂ) • (X * (ddAab - ddAba))) (2 * k * b ^ 2) := by
-    refine ((hX.mul hb (hddab.sub hddba)).smul hw0).mono ?_
-    have := mul_le_mul_of_nonneg_right hw1 (by positivity : 0 ≤ 2 * k * b ^ 2)
-    nlinarith
-  rw [e]
-  refine (((((((t1.add t2).sub t3).sub t4).add t5).sub t6).add t7).add t8).mono (le_of_eq ?_)
-  ring
-
 theorem poinWt_mem {n : ℕ} (S : Finset (Fin n)) {v : ReciprocityTheory.L2DbarEstimates.V n} (hv : ‖v‖ < 1) (a : Fin n) :
     0 ≤ poinWt S v a ∧ poinWt S v a ≤ 1 := by
   unfold poinWt
@@ -1237,14 +1121,13 @@ theorem poinWt_mem {n : ℕ} (S : Finset (Fin n)) {v : ReciprocityTheory.L2DbarE
       linarith
   · exact ⟨zero_le_one, le_rfl⟩
 
-theorem goodBound_changeFrame : ∀ (n : ℕ) (K : Type) [Fintype K] [DecidableEq K] (S : Finset (Fin n)) (c : ℝ) (N : ℕ) (B : ℝ), ∃ c' : ℝ, ∀ (G₀ P : ReciprocityTheory.L2DbarEstimates.V n → Matrix K K ℂ) (v : ReciprocityTheory.L2DbarEstimates.V n), ‖v‖ < 1 → (G₀ v).det ≠ 0 → (∀ i k, ContDiffAt ℝ 2 (fun u => G₀ u i k) v) → (∀ i k, ContDiffAt ℝ 2 (fun u => P u i k) v) → (∀ᶠ u in nhds v, ∀ η, GlobalTheory.HermFrame.mdbar P u η = 0) → IsUnit (P v).det → (∀ i k, ‖P v i k‖ ≤ B) → (∀ i k, ‖(P v)⁻¹ i k‖ ≤ B) → (∀ a i k, ‖GlobalTheory.HermFrame.mdel P v (GlobalTheory.GoodMetric.coordVec a) i k‖ ≤ B) → (∀ a b i k, ‖GlobalTheory.HermFrame.mdel (fun u => GlobalTheory.HermFrame.mdel P u (GlobalTheory.GoodMetric.coordVec b)) v (GlobalTheory.GoodMetric.coordVec a) i k‖ ≤ B) → GlobalTheory.GoodMetric.GoodBound S c N G₀ v → (P v * G₀ v * (P v)ᴴ).det ≠ 0 ∧ (∀ i k, ContDiffAt ℝ 2 (fun u => (P u * G₀ u * (P u)ᴴ) i k) v) ∧ GlobalTheory.GoodMetric.GoodBound S c' N (fun u => P u * G₀ u * (P u)ᴴ) v := by
+theorem goodBound_changeFrame : ∀ (n : ℕ) (K : Type) [Fintype K] [DecidableEq K] (S : Finset (Fin n)) (c : ℝ) (N : ℕ) (B : ℝ), ∃ c' : ℝ, ∀ (G₀ P : ReciprocityTheory.L2DbarEstimates.V n → Matrix K K ℂ) (v : ReciprocityTheory.L2DbarEstimates.V n), ‖v‖ < 1 → (G₀ v).det ≠ 0 → (∀ i k, ContDiffAt ℝ 2 (fun u => G₀ u i k) v) → (∀ i k, ContDiffAt ℝ 2 (fun u => P u i k) v) → (∀ᶠ u in nhds v, ∀ η, GlobalTheory.HermFrame.mdbar P u η = 0) → IsUnit (P v).det → (∀ i k, ‖P v i k‖ ≤ B) → (∀ i k, ‖(P v)⁻¹ i k‖ ≤ B) → (∀ a i k, ‖GlobalTheory.HermFrame.mdel P v (GlobalTheory.GoodMetric.coordVec a) i k‖ ≤ B) → GlobalTheory.GoodMetric.GoodBound S c N G₀ v → (P v * G₀ v * (P v)ᴴ).det ≠ 0 ∧ (∀ i k, ContDiffAt ℝ 2 (fun u => (P u * G₀ u * (P u)ᴴ) i k) v) ∧ GlobalTheory.GoodMetric.GoodBound S c' N (fun u => P u * G₀ u * (P u)ᴴ) v := by
   intro n K _ _ S c N B
   set k : ℝ := (Fintype.card K : ℝ) with hk
   set b : ℝ := |B| with hb
   set D : ℝ := ((Fintype.card K).factorial : ℝ) * b ^ Fintype.card K with hD
-  refine ⟨D ^ 2 * c + k ^ 2 * b ^ 2 * c + (k ^ 2 * b ^ 2 * c + k * b ^ 2) + k ^ 2 * b ^ 2 * c +
-    (3 * k ^ 2 * b ^ 2 * c + 2 * k ^ 4 * b ^ 4 * c + 2 * k ^ 3 * b ^ 4 + 2 * k * b ^ 2), ?_⟩
-  intro G₀ P v hv hdet hG hP hhol hPu hPb hPib hdPb hddPb hgb
+  refine ⟨D ^ 2 * c + k ^ 2 * b ^ 2 * c + (k ^ 2 * b ^ 2 * c + k * b ^ 2) + k ^ 2 * b ^ 2 * c, ?_⟩
+  intro G₀ P v hv hdet hG hP hhol hPu hPb hPib hdPb hgb
   have hk0 : 0 ≤ k := Nat.cast_nonneg _
   have hb0 : 0 ≤ b := abs_nonneg _
   have hD0 : 0 ≤ D := by positivity
@@ -1280,8 +1163,6 @@ theorem goodBound_changeFrame : ∀ (n : ℕ) (K : Type) [Fintype K] [DecidableE
   have hAb : EntryLe (A v) b := (eB _ hPb).transpose
   have hdA : ∀ a, EntryLe (GlobalTheory.HermFrame.mdel A v (coordVec a)) b := fun a =>
     (eB _ (hdPb a)).transpose
-  have hddA : ∀ a b', EntryLe (GlobalTheory.HermFrame.mdel (fun u => GlobalTheory.HermFrame.mdel A u (coordVec b')) v
-      (coordVec a)) b := fun a b' => (eB _ (hddPb a b')).transpose
   have hw := poinWt_mem S hv
   have hconn : ∀ ξ, GlobalTheory.HermFrame.conn (fun u => P u * G₀ u * (P u)ᴴ) v ξ =
       (A v)⁻¹ * (GlobalTheory.HermFrame.conn G₀ v ξ * A v + GlobalTheory.HermFrame.mdel A v ξ) := fun ξ => by
@@ -1303,8 +1184,6 @@ theorem goodBound_changeFrame : ∀ (n : ℕ) (K : Type) [Fintype K] [DecidableE
     have : 0 ≤ D ^ 2 * c := by positivity
     have : 0 ≤ k ^ 2 * b ^ 2 * c + k * b ^ 2 := by positivity
     have : 0 ≤ k ^ 2 * b ^ 2 * c := by positivity
-    have : 0 ≤ 3 * k ^ 2 * b ^ 2 * c + 2 * k ^ 4 * b ^ 4 * c + 2 * k ^ 3 * b ^ 4 + 2 * k * b ^ 2 := by
-      positivity
     linarith
   ·
     have hPi : ‖(P v).det‖⁻¹ ≤ D := by
@@ -1322,8 +1201,6 @@ theorem goodBound_changeFrame : ∀ (n : ℕ) (K : Type) [Fintype K] [DecidableE
         refine mul_le_mul_of_nonneg_right ?_ hs0
         have : 0 ≤ k ^ 2 * b ^ 2 * c + k * b ^ 2 := by positivity
         have : 0 ≤ k ^ 2 * b ^ 2 * c := by positivity
-        have : 0 ≤ 3 * k ^ 2 * b ^ 2 * c + 2 * k ^ 4 * b ^ 4 * c + 2 * k ^ 3 * b ^ 4 + 2 * k * b ^ 2 := by
-          positivity
         linarith
   ·
     intro a i j
@@ -1346,8 +1223,6 @@ theorem goodBound_changeFrame : ∀ (n : ℕ) (K : Type) [Fintype K] [DecidableE
     refine (h1.of_smul (hw a).1 i j).trans ?_
     have : 0 ≤ D ^ 2 * c := by positivity
     have : 0 ≤ k ^ 2 * b ^ 2 * c := by positivity
-    have : 0 ≤ 3 * k ^ 2 * b ^ 2 * c + 2 * k ^ 4 * b ^ 4 * c + 2 * k ^ 3 * b ^ 4 + 2 * k * b ^ 2 := by
-      positivity
     linarith
   ·
     intro a b' i j
@@ -1368,33 +1243,6 @@ theorem goodBound_changeFrame : ∀ (n : ℕ) (K : Type) [Fintype K] [DecidableE
     have : 0 ≤ k ^ 2 * b ^ 2 * c := by positivity
     have : 0 ≤ D ^ 2 * c := by positivity
     have : 0 ≤ k ^ 2 * b ^ 2 * c + k * b ^ 2 := by positivity
-    have : 0 ≤ 3 * k ^ 2 * b ^ 2 * c + 2 * k ^ 4 * b ^ 4 * c + 2 * k ^ 3 * b ^ 4 + 2 * k * b ^ 2 := by
-      positivity
-    linarith
-  ·
-    intro a b' i j
-    set wa := poinWt S v a
-    set wb := poinWt S v b'
-    have hw0 : 0 ≤ wa * wb := mul_nonneg (hw a).1 (hw b').1
-    have e1 := mdel_conn_changeFrame n K G₀ A v hG2 hGu hA2 hAu hAhol (coordVec a) (coordVec b')
-    have e2 := mdel_conn_changeFrame n K G₀ A v hG2 hGu hA2 hAu hAhol (coordVec b') (coordVec a)
-    rw [← hGA] at e1 e2
-    have h1 := entryLe_antisymm_del K (A v)⁻¹ (A v) (GlobalTheory.HermFrame.conn G₀ v (coordVec a))
-      (GlobalTheory.HermFrame.conn G₀ v (coordVec b'))
-      (GlobalTheory.HermFrame.mdel (fun u => GlobalTheory.HermFrame.conn G₀ u (coordVec b')) v (coordVec a))
-      (GlobalTheory.HermFrame.mdel (fun u => GlobalTheory.HermFrame.conn G₀ u (coordVec a)) v (coordVec b'))
-      (GlobalTheory.HermFrame.mdel A v (coordVec a)) (GlobalTheory.HermFrame.mdel A v (coordVec b'))
-      (GlobalTheory.HermFrame.mdel (fun u => GlobalTheory.HermFrame.mdel A u (coordVec b')) v (coordVec a))
-      (GlobalTheory.HermFrame.mdel (fun u => GlobalTheory.HermFrame.mdel A u (coordVec a)) v (coordVec b'))
-      wa wb b c (hw a).1 (hw a).2 (hw b').1 (hw b').2 hb0 hc0 hX hAb (hdA a) (hdA b') (hddA a b')
-      (hddA b' a) (entryLe_smul_of (hw a).1 (hgb.form a)) (entryLe_smul_of (hw b').1 (hgb.form b'))
-      (entryLe_smul_of hw0 (hgb.del a b'))
-    rw [← e1, ← e2] at h1
-    refine (h1.of_smul hw0 i j).trans ?_
-    rw [← hk]
-    have : 0 ≤ D ^ 2 * c := by positivity
-    have : 0 ≤ k ^ 2 * b ^ 2 * c + k * b ^ 2 := by positivity
-    have : 0 ≤ k ^ 2 * b ^ 2 * c := by positivity
     linarith
 
 end GlobalTheory.GoodMetric.FrameChange
@@ -1420,7 +1268,7 @@ open ReciprocityTheory.L2DbarEstimates (V)
 theorem goodBound_submatrix {n : ℕ} {K L : Type} [Fintype K] [DecidableEq K] [Fintype L] [DecidableEq L]
     (e : K ≃ L) {S : Finset (Fin n)} {c : ℝ} {N : ℕ} {G : V n → Matrix L L ℂ} {v : V n}
     (h : GoodBound S c N G v) : GoodBound S c N (fun u => (G u).submatrix e e) v := by
-  refine ⟨fun i j => h.entry (e i) (e j), ?_, ?_, ?_, ?_⟩
+  refine ⟨fun i j => h.entry (e i) (e j), ?_, ?_, ?_⟩
   · simpa only [det_submatrix_equiv_self] using h.det
   · intro a i j
     simpa only [GlobalTheory.HermFrame.conn_submatrix_equiv, Matrix.submatrix_apply]
@@ -1428,12 +1276,6 @@ theorem goodBound_submatrix {n : ℕ} {K L : Type} [Fintype K] [DecidableEq K] [
   · intro a b i j
     simpa only [GlobalTheory.HermFrame.curv_submatrix_equiv, Matrix.submatrix_apply]
       using h.dbar a b (e i) (e j)
-  · intro a b i j
-    have h1 : ∀ ξ, (fun u => GlobalTheory.HermFrame.conn (fun x => (G x).submatrix e e) u ξ) =
-        fun u => (GlobalTheory.HermFrame.conn G u ξ).submatrix e e :=
-      fun ξ => funext fun u => GlobalTheory.HermFrame.conn_submatrix_equiv G e u ξ
-    simp only [h1]
-    exact h.del a b (e i) (e j)
 
 theorem frame_summands_goodBound : ∀ (n g : ℕ) (S : Finset (Fin n)) (W : Set (ReciprocityTheory.L2DbarEstimates.V n)) (G₀ : ReciprocityTheory.L2DbarEstimates.V n → Matrix (Fin g) (Fin g) ℂ) (c : ℝ) (N : ℕ) (ι : Type) [Fintype ι] [DecidableEq ι] (m : ι → ℕ) (Q : ∀ τ : ι, ReciprocityTheory.L2DbarEstimates.V n → Matrix (Fin (m τ)) (Fin g) ℂ) (r : ℝ), IsOpen W → 0 < r → (∀ τ i k, DifferentiableOn ℂ (fun u => Q τ u i k) (Metric.ball 0 r)) → Fintype.card (Σ τ, Fin (m τ)) = g → LinearIndependent ℂ (fun p : Σ τ, Fin (m τ) => Q p.1 0 p.2) → (∀ v ∈ W, (G₀ v).det ≠ 0 ∧ (∀ i k, ContDiffAt ℝ 2 (fun u => G₀ u i k) v) ∧ GlobalTheory.GoodMetric.GoodBound S c N G₀ v) → (∀ v ∈ W, ∀ τ τ', τ ≠ τ' → Q τ v * G₀ v * (Q τ' v)ᴴ = 0) → ∃ r' : ℝ, 0 < r' ∧ ∃ (c' : ℝ) (N' : ℕ), ∀ v ∈ W, ‖v‖ < r' → ∀ τ, GlobalTheory.GoodMetric.GoodBound S c' N' (fun u => Q τ u * G₀ u * (Q τ u)ᴴ) v := by
   intro n g S W G₀ c N ι _ _ m Q r hW hr hQ hcard hind hG₀ horth
@@ -1461,9 +1303,9 @@ theorem frame_summands_goodBound : ∀ (n g : ℕ) (S : Finset (Fin n)) (W : Set
   refine ⟨min r₁ (1 / 2), by positivity, c', N', fun v hv hvr τ => ?_⟩
   have hv1 : ‖v‖ < r₁ := hvr.trans_le (min_le_left _ _)
   have hv2 : ‖v‖ < 1 / 2 := hvr.trans_le (min_le_right _ _)
-  obtain ⟨hPu, hPc, hPd, hPb, hPib, hPdb, hPddb⟩ := hB v hv1
+  obtain ⟨hPu, hPc, hPd, hPb, hPib, hPdb⟩ := hB v hv1
   obtain ⟨hdet, hC, hgb⟩ := hG₁ v hv
-  obtain ⟨d1, c1, g1⟩ := hc₁ G₁ P v (by linarith) hdet hC hPc hPd hPu hPb hPib hPdb hPddb hgb
+  obtain ⟨d1, c1, g1⟩ := hc₁ G₁ P v (by linarith) hdet hC hPc hPd hPu hPb hPib hPdb hgb
   have heq : ∀ u ∈ W, P u * G₁ u * (P u)ᴴ = Gb u := by
     intro u hu
     ext ⟨τ, i⟩ ⟨τ', j⟩

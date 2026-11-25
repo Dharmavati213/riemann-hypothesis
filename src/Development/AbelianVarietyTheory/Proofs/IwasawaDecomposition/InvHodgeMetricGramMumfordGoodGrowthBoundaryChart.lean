@@ -473,70 +473,6 @@ end -- clump:auto
 section -- clump:auto
 @[expose] public section
 
-open Matrix
-open scoped ComplexOrder Topology
-
-namespace GlobalTheory.HermFrame
-
-open Filter
-
-theorem del_del_comm {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedSpace ℝ E]
-    [IsScalarTower ℝ ℂ E] {u : E → ℂ} {z : E} (hu : ContDiffAt ℝ 2 u z) (v w : E) :
-    GlobalTheory.del (fun x => GlobalTheory.del u x w) z v = GlobalTheory.del (fun x => GlobalTheory.del u x v) z w := by
-  have h := GlobalTheory.differentiableAt_fderiv_of_contDiffAt_two hu
-  have h1 : ∀ a, DifferentiableAt ℝ (fun x => fderiv ℝ u x a) z :=
-    fun a => h.clm_apply (differentiableAt_const _)
-  have hs := hu.isSymmSndFDerivAt (by simp)
-  have e : ∀ w, (fun x => GlobalTheory.del u x w) =
-      fun x => (1 / 2 : ℂ) • (fderiv ℝ u x w - Complex.I • fderiv ℝ u x (Complex.I • w)) :=
-    fun w => funext fun x => GlobalTheory.del_apply u x w
-  have d : ∀ w, GlobalTheory.del (fun x => (1 / 2 : ℂ) • (fderiv ℝ u x w - Complex.I • fderiv ℝ u x (Complex.I • w))) z
-      = (1 / 2 : ℂ) • (GlobalTheory.del (fun x => fderiv ℝ u x w) z
-          - Complex.I • GlobalTheory.del (fun x => fderiv ℝ u x (Complex.I • w)) z) := fun w => by
-    rw [GlobalTheory.del_const_smul _ ((h1 _).fun_sub ((h1 _).fun_const_smul Complex.I)),
-      GlobalTheory.del_sub (h1 _) ((h1 _).fun_const_smul Complex.I), GlobalTheory.del_const_smul _ (h1 _)]
-  rw [e w, e v, d w, d v]
-  simp only [ContinuousLinearMap.smul_apply, ContinuousLinearMap.sub_apply, GlobalTheory.del_apply,
-    GlobalTheory.fderiv_fderiv_apply hu]
-  rw [hs.eq v w, hs.eq (Complex.I • v) w, hs.eq v (Complex.I • w),
-    hs.eq (Complex.I • v) (Complex.I • w)]
-  match_scalars <;> ring
-
-theorem mdel_mdel_comm {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedSpace ℝ E]
-    [IsScalarTower ℝ ℂ E] {m n : Type*} {A : E → Matrix m n ℂ} {z : E} (h : MContDiffAt 2 A z)
-    (ξ η : E) : mdel (fun x => mdel A x η) z ξ = mdel (fun x => mdel A x ξ) z η := by
-  ext a b
-  exact del_del_comm (h a b) ξ η
-
-theorem mdel_conn_inv_sub {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedSpace ℝ E]
-    [IsScalarTower ℝ ℂ E] {g : ℕ} (H : E → Matrix (Fin g) (Fin g) ℂ) (z : E)
-    (h2 : MContDiffAt 2 H z) (hu : IsUnit (H z).det) (hs : ∀ᶠ x in 𝓝 z, (H x).IsSymm) (ξ η : E) :
-    mdel (fun x => conn (fun y => (H y)⁻¹) x η) z ξ
-      - mdel (fun x => conn (fun y => (H y)⁻¹) x ξ) z η
-      = -(conn H z η * conn H z ξ - conn H z ξ * conn H z η)ᵀ := by
-  have h1 : MContDiffAt 1 H z := h2.of_le one_le_two
-  have hloc : ∀ ζ, (fun x => conn (fun y => (H y)⁻¹) x ζ) =ᶠ[𝓝 z]
-      fun x => -((H x)⁻¹ * mdel H x ζ)ᵀ := fun ζ => by
-    filter_upwards [h2.eventually_two, h2.eventually_isUnit hu, hs.eventually_nhds]
-      with x hx2 hxu hxs
-    have e : (fun y => (H y)⁻¹) =ᶠ[𝓝 x] fun y => GlobalTheory.HermFrame.dualGram (H y) :=
-      hxs.mono fun y hy => by
-        change (H y)⁻¹ = (H y)⁻¹ᵀ
-        rw [transpose_nonsing_inv, hy.eq]
-    rw [conn_congr e, conn_dual (hx2.of_le one_le_two) hxu, conn_eq_of_isSymm hxs]
-  have hP : ∀ ζ, MContDiffAt 1 (fun x => mdel H x ζ) z := fun ζ => h2.mdel (by norm_num) ζ
-  rw [mdel_congr (hloc η), mdel_congr (hloc ξ), mdel_neg, mdel_neg,
-    mdel_transpose (fun x => (H x)⁻¹ * mdel H x η), mdel_transpose (fun x => (H x)⁻¹ * mdel H x ξ),
-    mdel_mul (h1.inv hu) (hP η), mdel_mul (h1.inv hu) (hP ξ), mdel_inv h1 hu, mdel_inv h1 hu,
-    mdel_mdel_comm h2 ξ η, conn_eq_of_isSymm hs, conn_eq_of_isSymm hs]
-  have key : (H z)⁻¹ * mdel (fun x => mdel H x ξ) z η + -((H z)⁻¹ * mdel H z ξ * (H z)⁻¹) * mdel H z η
-      - ((H z)⁻¹ * mdel (fun x => mdel H x ξ) z η + -((H z)⁻¹ * mdel H z η * (H z)⁻¹) * mdel H z ξ)
-      = (H z)⁻¹ * mdel H z η * ((H z)⁻¹ * mdel H z ξ) - (H z)⁻¹ * mdel H z ξ * ((H z)⁻¹ * mdel H z η) := by
-    noncomm_ring
-  rw [← key, transpose_sub]
-  abel
-
-end GlobalTheory.HermFrame
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HolomorphicDerivChernConnectionInverseSymmetricG =====
@@ -1020,9 +956,6 @@ theorem inv_hodgeGram_goodBound : ∀ (n a : ℕ) (ha : a ≤ n) (g rk : ℕ) (�
     conn_inv Yv v (hYv2.of_le one_le_two) hu hevS
   have hcurvG : ∀ ξ η, curv (fun u : ReciprocityTheory.L2DbarEstimates.V n => (Y u.ofLp)⁻¹) v ξ η =
       -((conn Yv v η)ᵀᴴ * conn Yv v ξ)ᵀ := _root_.GlobalTheory.RealGram.curv_inv_of_real Yv v hYv2 hu hevS hevH hddv
-  have hdelG : ∀ ξ η, mdel (fun x => conn (fun u : ReciprocityTheory.L2DbarEstimates.V n => (Y u.ofLp)⁻¹) x η) v ξ -
-      mdel (fun x => conn (fun u : ReciprocityTheory.L2DbarEstimates.V n => (Y u.ofLp)⁻¹) x ξ) v η =
-      -(conn Yv v η * conn Yv v ξ - conn Yv v ξ * conn Yv v η)ᵀ := _root_.GlobalTheory.HermFrame.mdel_conn_inv_sub Yv v hYv2 hu hevS
 
   obtain ⟨hts, hlog⟩ := _root_.GlobalTheory.Proof.puncturedPolydisc_sum_negLog_eq_and_ge_logTwo.tlog_sum_eq_and_log_two_le n a ha ρ hρ2 v hv
   have hs0 : 0 ≤ s := Finset.sum_nonneg fun _ _ => abs_nonneg _
@@ -1069,7 +1002,7 @@ theorem inv_hodgeGram_goodBound : ∀ (n a : ℕ) (ha : a ≤ n) (g rk : ℕ) (�
           _ = ((g.factorial : ℝ) * D ^ g) * s ^ g := by rw [mul_pow]; ring
           _ ≤ c * s ^ g := mul_le_mul_of_nonneg_right hcB (by positivity)
   refine ⟨hpd, fun i k => (hYv2.inv hu) i k, ?_⟩
-  refine ⟨fun i j => ?_, ?_, fun k i j => ?_, fun k l i j => ?_, fun k l i j => ?_⟩
+  refine ⟨fun i j => ?_, ?_, fun k i j => ?_, fun k l i j => ?_⟩
   · show ‖((imPeriod ha τ₀ B z).map Complex.ofReal)⁻¹ i j‖ ≤ _
     exact (_root_.GlobalTheory.inv_entry_norm_le_of_sub_posSemidef g (imPeriod ha τ₀ B z) c₀ hc₀ (h1 z hv) i j).trans hE.1
   · show ‖((Y z)⁻¹).det‖⁻¹ ≤ _
@@ -1106,19 +1039,6 @@ theorem inv_hodgeGram_goodBound : ∀ (n a : ℕ) (ha : a ≤ n) (g rk : ℕ) (�
       _ ≤ g * ((5 * C') * (5 * C')) := mul_le_mul_of_nonneg_left
           (mul_le_mul (hKw k) (hKw l) (mul_nonneg (hKf0 l) (hw0 l)) (by positivity)) hg0
       _ ≤ 50 * g * C' ^ 2 := by nlinarith [sq_nonneg C']
-      _ ≤ c := hc50
-  · rw [hdelG, Matrix.neg_apply, transpose_apply, norm_neg, Matrix.sub_apply]
-    have hg0 : (0 : ℝ) ≤ g := Nat.cast_nonneg _
-    have hA := norm_mul_apply_le _ _ (Kf l) (Kf k) (hCe l) (hCe k) j i
-    have hB := norm_mul_apply_le _ _ (Kf k) (Kf l) (hCe k) (hCe l) j i
-    calc ‖(conn Yv v (coordVec l) * conn Yv v (coordVec k)) j i - (conn Yv v (coordVec k) * conn Yv v (coordVec l)) j i‖
-          * (poinWt S v k * poinWt S v l)
-        ≤ (g * (Kf l * Kf k) + g * (Kf k * Kf l)) * (poinWt S v k * poinWt S v l) :=
-          mul_le_mul_of_nonneg_right ((norm_sub_le _ _).trans (add_le_add hA hB)) (mul_nonneg (hw0 k) (hw0 l))
-      _ = 2 * g * ((Kf k * poinWt S v k) * (Kf l * poinWt S v l)) := by ring
-      _ ≤ 2 * g * ((5 * C') * (5 * C')) := mul_le_mul_of_nonneg_left
-          (mul_le_mul (hKw k) (hKw l) (mul_nonneg (hKf0 l) (hw0 l)) (by positivity)) (by positivity)
-      _ = 50 * g * C' ^ 2 := by ring
       _ ≤ c := hc50
 
 end GlobalTheory.HodgeInvGood

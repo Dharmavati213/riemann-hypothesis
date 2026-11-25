@@ -378,20 +378,6 @@ theorem norm_lie_mul_le (ρ : PolyRep m) (A : Mat m ℂ) {t c : ℝ} (ht : 0 ≤
 theorem lie_neg (ρ : PolyRep m) (A : Mat m ℂ) : ρ.lie (fun τ => -A τ) = -ρ.lie A := by
   ext i j; simp [lie_apply, Finset.sum_neg_distrib]
 
-theorem lie_sub (ρ : PolyRep m) (A B : Mat m ℂ) : ρ.lie (fun τ => A τ - B τ) = ρ.lie A - ρ.lie B := by
-  ext i j; simp [lie_apply, mul_sub, Finset.sum_sub_distrib]
-
-theorem mdel_lie (ρ : PolyRep m) {n : ℕ} {A : V n → Mat m ℂ} {v : V n}
-    (h : ∀ τ, MContDiffAt 1 (fun u => A u τ) v) (ξ : V n) :
-    mdel (fun u => ρ.lie (A u)) v ξ = ρ.lie (fun τ => mdel (fun u => A u τ) v ξ) := by
-  ext i j
-  simp only [mdel_apply, lie_apply]
-  rw [del_sum (fun w _ => (differentiableAt_const _).mul ((h w.1).diff w.2.1 w.2.2)),
-    ContinuousLinearMap.sum_apply]
-  refine Finset.sum_congr rfl fun w _ => ?_
-  rw [del_mul (differentiableAt_const _) ((h w.1).diff w.2.1 w.2.2)]
-  simp
-
 theorem mdbar_lie (ρ : PolyRep m) {n : ℕ} {A : V n → Mat m ℂ} {v : V n}
     (h : ∀ τ, MContDiffAt 1 (fun u => A u τ) v) (ξ : V n) :
     mdbar (fun u => ρ.lie (A u)) v ξ = ρ.lie (fun τ => mdbar (fun u => A u τ) v ξ) := by
@@ -443,7 +429,7 @@ theorem goodBound_ev : ∀ (ι : Type) [Fintype ι] (m : ι → ℕ) (ρ : PolyR
       (fun u => ρ.lie (fun τ => conn (fun w => G w τ) u ξ)) := fun ξ => hcv.mono fun u hu => hu ξ
   have hc1 : ∀ τ ξ, MContDiffAt 1 (fun u => conn (fun w => G w τ) u ξ) v :=
     fun τ ξ => (hG τ).conn (hu τ) (by norm_num) ξ
-  refine ⟨?_, ?_, ?_, ?_, ?_⟩
+  refine ⟨?_, ?_, ?_, ?_⟩
   · intro i j
     have := h1 B hB1 (fun w : EntIx m => G v w.1 w.2.1 w.2.2) hx (i, j)
     refine le_mul_pow_of_le (K := C1 * max c 1 ^ d1) (e := N * d1) ?_ (by linarith) hK1 hL (by omega)
@@ -496,11 +482,6 @@ theorem goodBound_ev : ∀ (ι : Type) [Fintype ι] (m : ι → ℕ) (ρ : PolyR
     rw [e]
     exact (norm_lie_mul_le ρ _ (mul_nonneg (poinWt_nonneg S v a) (poinWt_nonneg S v b))
       (fun w => (hB w.1).dbar a b w.2.1 w.2.2) i j).trans (by linarith)
-  · intro a b i j
-    rw [mdel_congr (hcvE (coordVec b)), mdel_congr (hcvE (coordVec a)),
-      mdel_lie ρ (fun τ => hc1 τ (coordVec b)), mdel_lie ρ (fun τ => hc1 τ (coordVec a)), ← lie_sub]
-    exact (norm_lie_mul_le ρ _ (mul_nonneg (poinWt_nonneg S v a) (poinWt_nonneg S v b))
-      (fun w => (hB w.1).del a b w.2.1 w.2.2) i j).trans (by linarith)
 
 end GlobalTheory.RepBound
 end -- clump:auto

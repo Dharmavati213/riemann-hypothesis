@@ -138,8 +138,6 @@ structure GoodBound (S : Finset (Fin n)) (c : ℝ) (N : ℕ) (G : V n → Matrix
   det : ‖(G v).det‖⁻¹ ≤ c * (∑ a ∈ S, |Real.log ‖v a‖|) ^ N
   form : ∀ a i j, ‖conn G v (coordVec a) i j‖ * poinWt S v a ≤ c
   dbar : ∀ a b i j, ‖curv G v (coordVec a) (coordVec b) i j‖ * (poinWt S v a * poinWt S v b) ≤ c
-  del : ∀ a b i j, ‖(mdel (fun u => conn G u (coordVec b)) v (coordVec a) -
-    mdel (fun u => conn G u (coordVec a)) v (coordVec b)) i j‖ * (poinWt S v a * poinWt S v b) ≤ c
 
 end Forms
 
