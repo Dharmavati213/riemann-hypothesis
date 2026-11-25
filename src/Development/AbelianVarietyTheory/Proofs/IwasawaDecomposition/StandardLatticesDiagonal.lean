@@ -191,11 +191,9 @@ theorem hostHyp_of_gaps (D : D7) (h Δ : ℕ)
   set N : ℝ := ((D.R.N D.R.m : ℕ) : ℝ) with hN
   have n1 : (1 : ℝ) ≤ N := by rw [hN]; exact_mod_cast hN1
   have nt : (D.R.t : ℝ) ≤ N := by rw [hN]; exact_mod_cast htN
-  have nr : (D.R.r : ℝ) ≤ N := by rw [hN]; exact_mod_cast hrN
   have p3 : N ^ 3 ≤ N ^ 4 := pow_le_pow_right₀ n1 (by norm_num)
   have p1 : N ≤ N ^ 4 := le_self_pow₀ n1 (by norm_num)
   have p0 : 1 ≤ N ^ 4 := one_le_pow₀ n1
-  have pr : (D.R.r : ℝ) ^ 4 ≤ N ^ 4 := pow_le_pow_left₀ (by positivity) nr 4
   have eh : ∀ τ, D.hc τ = D.hcW D.u₀ τ := fun τ => (congrFun D.hcW_base τ).symm
   have two : ∀ u τ (j : Fin D.R.m) (hj : j.1 + 1 < D.R.m),
       (D.hcW u τ).b ⟨j.1 + 1, hj⟩ - (D.hcW u τ).b j = 2 * (h : ℚ) := by
@@ -227,16 +225,7 @@ theorem hostHyp_of_gaps (D : D7) (h Δ : ℕ)
     have := hb D.u₀ τ hm
     have q : (100 * (D.R.r : ℚ) ^ 4 : ℚ) ≤ (D.hcW D.u₀ τ).b ⟨0, hm⟩ := by exact_mod_cast this
     linarith
-  refine ⟨fun τ => ⟨fun i => ⟨(D.hc τ).u_gt_v i, (D.hc τ).v_gt_u i⟩, (D.hc τ).u_last_gt, fun j => ?_, fun j hj => ?_⟩,
-    fun τ j => ⟨(D.hc τ).gap_be j, fun hj => (D.hc τ).gap_eb j hj⟩, fun τ n hn => ?_, cloud, nodeAll _ ?_, nodeAll _ ?_⟩
-  · have := (D.hc τ).gap_be j
-    have t0 : (0 : ℚ) < ((D.R.t : ℚ) + 3) / 2 := by positivity
-    show (D.hc τ).b j < (D.hc τ).e j
-    linarith
-  · have := (D.hc τ).gap_eb j hj
-    have t0 : (0 : ℚ) < ((D.R.t : ℚ) + 3) / 2 := by positivity
-    show (D.hc τ).e j < (D.hc τ).b ⟨j.1 + 1, hj⟩
-    linarith
+  refine ⟨fun τ j => ⟨(D.hc τ).gap_be j, fun hj => (D.hc τ).gap_eb j hj⟩, fun τ n hn => ?_, nodeAll _ ?_⟩
   · rcases lt_trichotomy (n + 1) (D.R.k - 1) with c | c | c
     · have a1 : n < D.R.k - 1 := by omega
       rw [Formalism.L2.NTheta.lamAt, Formalism.L2.NTheta.lamAt, dite_eq_left a1, dite_eq_left c, eh, (hg _ τ).2.2 ⟨n, a1⟩, (hg _ τ).2.2 ⟨n + 1, c⟩]
@@ -264,7 +253,6 @@ theorem hostHyp_of_gaps (D : D7) (h Δ : ℕ)
       have q : (256 * (D.R.N D.R.m : ℚ) ^ 4 : ℚ) ≤ h := by exact_mod_cast hhN
       have qr : (D.R.r : ℚ) ^ 4 ≤ (D.R.N D.R.m : ℚ) ^ 4 := by exact_mod_cast prN
       nlinarith
-  · nlinarith
   · nlinarith
 
 theorem stdLat_of_eq {D : D7} (V : HSp D) (hstar : ∀ x : D.host.E, IsIntegral ℤ x → IsIntegral ℤ (star x)) (N : ℕ)

@@ -518,12 +518,6 @@ def ofWord (D : D7) (w : D.what₂.Word) (eta : D.what₂.Tau → ℚ)
   eta := eta
   eta_half := h
 
-def Interlace : Prop :=
-  ∀ τ, (∀ i : Fin (D.R.k - 1), P.v τ i < P.u τ ⟨i.1, by omega⟩ ∧ P.u τ ⟨i.1 + 1, by omega⟩ < P.v τ i) ∧
-    (∀ (h : 0 < D.R.k) (h' : 0 < D.R.m), -P.b τ ⟨0, h'⟩ < P.u τ ⟨D.R.k - 1, by omega⟩) ∧
-    (∀ j : Fin D.R.m, P.b τ j < P.e τ j) ∧
-    (∀ j : Fin D.R.m, ∀ h : j.1 + 1 < D.R.m, P.e τ j < P.b τ ⟨j.1 + 1, h⟩)
-
 def block (c : ℚ) (len : ℕ) : Finset ℚ :=
   (Finset.range len).image fun a : ℕ => c + ((len : ℚ) - 1) / 2 - (a : ℚ)
 

@@ -369,14 +369,11 @@ section Host
 
 variable (D) in
 structure HostHyp : Prop where
-  interlace : (Ptw D).Interlace
   gap : ∀ (τ : D.what₂.Tau) (j : Fin D.R.m), ((D.R.t : ℚ) + 3) / 2 ≤ (D.hc τ).e j - (D.hc τ).b j ∧
     ∀ h : (j : ℕ) + 1 < D.R.m, ((D.R.t : ℚ) + 3) / 2 ≤ (D.hc τ).b ⟨(j : ℕ) + 1, h⟩ - (D.hc τ).e j
   gapR : ∀ (τ : D.what₂.Tau) (n : ℕ), n + 1 < D.R.r →
     100 * (D.R.r : ℚ) ^ 4 ≤ Formalism.L2.NTheta.lamAt (D.hc τ) n - Formalism.L2.NTheta.lamAt (D.hc τ) (n + 1)
-  cloudGap : ∀ τ : D.what₂.Tau, 100 * (D.R.r : ℚ) ^ 4 ≤ Formalism.L2.NTheta.lamAt (D.hc τ) (D.R.k - 2) - Formalism.L2.NTheta.lamAt (D.hc τ) (D.R.k - 1)
   nodeGap : D.NodeGap (4 * ((D.R.N D.R.m : ℕ) : ℝ) ^ 3 + 2 * D.R.t + 6)
-  nodeGapR : D.NodeGap (256 * (D.R.r : ℝ) ^ 4)
 
 
 end Host
