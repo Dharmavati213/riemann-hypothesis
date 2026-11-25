@@ -12,6 +12,7 @@ public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.Bundle0
 public import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.Proportional
 
 @[expose] public section
+attribute [-instance] GlobalTheory.CompHt.fintypePsi
 
 noncomputable section
 

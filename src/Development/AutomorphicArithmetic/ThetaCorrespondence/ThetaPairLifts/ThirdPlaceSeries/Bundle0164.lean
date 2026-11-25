@@ -439,6 +439,7 @@ end
 
 -- bundled from Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.GoodRowCuspParamOfLiftStatement
 section
+attribute [-instance] GlobalTheory.CompHt.fintypePsi
 set_option synthInstance.maxHeartbeats 200000
 
 section
