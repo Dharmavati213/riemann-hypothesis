@@ -250,6 +250,9 @@ theorem core {r : ℕ} {U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r} {h : GenFrEx 
   · rw [norm_mul, norm_prod, norm_prod]
     simp only [norm_zpow, hwn]
     rw [prod_exZ Dw a fun j => ‖toC (t j : CAt σ)‖, hpn, lieFacZ_eq Dw hx0, prod_root, prod_root]
+    have hfin : (@Finset.univ (RootIx Dw) (@instFintypeProd _ _ GlobalTheory.CompHt.fintypePsi _)) =
+        (Finset.univ : Finset (RootIx Dw)) := Finset.ext fun _ => by simp only [Finset.mem_univ]
+    rw [hfin]
     exact norm_alg _ _ _ _ _ _ _ (fun _ => htpos t _) (rootSgn_mul_self Dw) hsome
   · rw [hdeg, mul_right_comm]
     simp only [hev']
