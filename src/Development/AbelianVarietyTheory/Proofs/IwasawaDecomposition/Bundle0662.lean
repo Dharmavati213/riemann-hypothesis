@@ -70,6 +70,8 @@ theorem add_mul_pred_div_two : ∀ (a b : ℕ), (a + b) * (a + b - 1) / 2 = a * 
 theorem pointPoly_isWeightedHomogeneous : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H), IsWeightedHomogeneous Prod.snd (pointPoly H Dw) (Fintype.card (GlobalTheory.AllWt.Psi H) * (Dw.p * Dw.q)) := by
   intro E _ _ _ H Dw
   unfold pointPoly
+  rw [Finset.prod_congr (s₂ := (Finset.univ : Finset (GlobalTheory.AllWt.Psi H)))
+    (Finset.ext fun _ => by simp only [Finset.mem_univ]) (fun _ _ => rfl)]
   have hs : Fintype.card (GlobalTheory.AllWt.Psi H) * (Dw.p * Dw.q) = ∑ τ : GlobalTheory.AllWt.Psi H, Dw.p * Dw.q := by simp
   rw [hs]
   apply IsWeightedHomogeneous.prod
