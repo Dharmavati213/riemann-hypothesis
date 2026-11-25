@@ -473,7 +473,7 @@ theorem valOne_all : ∀ D : D7, ValOne D := by
   rw [← FIN γ β]
   simp only [QStep.w₁, QStep.w₂]
   push_cast
-  ring
+  rfl
 
 end GlobalTheory.ValOneAt
 end
