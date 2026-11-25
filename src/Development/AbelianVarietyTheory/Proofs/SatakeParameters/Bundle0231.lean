@@ -254,7 +254,7 @@ theorem le_conjField [IsCMField E] (M : IntermediateField E Ω) [NumberField M] 
 
 theorem isCMField_of_le [IsCMField E] (M : IntermediateField E Ω) [NumberField M]
     (h : M ≤ conjField E Ω) : IsCMField M := by
-  haveI : IsTotallyComplex M := isTotallyComplex_of_algebra E M
+  haveI : IsTotallyComplex M := _root_.NumberField.isTotallyComplex_of_algebra E M
   have hc : ∀ x : M, ∃ y : M, ∀ φ : Ω →+* ℂ, φ y = starRingEnd ℂ (φ x) := fun x => by
     obtain ⟨y, hy⟩ := h x.2
     exact ⟨⟨y, mem_of_conj x.2 hy⟩, hy⟩
