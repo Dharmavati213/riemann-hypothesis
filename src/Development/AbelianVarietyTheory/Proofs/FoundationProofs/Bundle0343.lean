@@ -14,7 +14,7 @@ public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsLat
 
 -- bundled from Development.AbelianVarietyTheory.Proofs.FoundationProofs.NormLeOneOfMem
 section
-attribute [-instance] Formalism.BasicNotions.LocLat.modO Formalism.BasicNotions.LocLat.towO Formalism.BasicNotions.LocLat.modFun Formalism.BasicNotions.LocLat.modSubFun Formalism.BasicNotions.LocLat.modT
+attribute [-instance] Formalism.BasicNotions.LocLat.modFun Formalism.BasicNotions.LocLat.modSubFun
 namespace GlobalTheory.IntegralElementNorm
 
 theorem norm_algebraMap_le_one {l : ℕ} [Fact l.Prime] (a : ℤ_[l]) :
