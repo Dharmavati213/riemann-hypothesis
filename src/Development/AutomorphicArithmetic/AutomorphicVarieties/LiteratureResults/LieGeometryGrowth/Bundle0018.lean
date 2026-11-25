@@ -187,7 +187,7 @@ theorem UpperTheory.V.Lit.Geo.Cs.galois_twist_preserves_siegel_bound (h1 : LamEx
   have hdw : (geo ho U Ξ).dOm q w = 0 := by
     have c1 := UpperTheory.V.Lit.Dr.corrD E a ho U Ξ q ω w hw
     rw [hd] at c1
-    exact (UpperTheory.V.Lit.Dr.corrUniq E a ho U Ξ (q + 1)).2 _ _ _ c1 (corr_zero ho U Ξ _)
+    exact (UpperTheory.V.Lit.Dr.corrUniq E a ho U Ξ (q + 1)).2 _ _ _ c1 (_root_.corr_zero ho U Ξ _)
   obtain ⟨B, hB, hrap⟩ := h4 E a U Ξ f lam C hl hS.f_le q ω hω hR
   obtain ⟨u, u0, us⟩ : ∃ u : ℕ → (geo ho U Ξ).Om q, u 0 = w ∧ ∀ j, u (j + 1) = pbOm (geo ho U Ξ) W (u j) :=
     ⟨fun j => (pbOm (geo ho U Ξ) W)^[j] w, rfl, fun j => Function.iterate_succ_apply' _ _ _⟩
@@ -265,7 +265,7 @@ theorem UpperTheory.V.Lit.Geo.Cs.galois_twist_preserves_siegel_bound (h1 : LamEx
       h11 E a U Ξ f Y C c f₀ hS Φ hΦ _ _ _ (f₀ + C + 1) cs fun s p hp hlt => ?_, η, lη, (sub_sub_cancel _ _).symm⟩
     · have c1 := UpperTheory.V.Lit.Dr.corrD E a ho U Ξ _ _ _ cs
       rw [map_sub, hdw, hH.2.1, sub_zero] at c1
-      exact (UpperTheory.V.Lit.Dr.corrUniq E a ho U Ξ _).1 _ _ _ c1 (corr_zero ho U Ξ _)
+      exact (UpperTheory.V.Lit.Dr.corrUniq E a ho U Ξ _).1 _ _ _ c1 (_root_.corr_zero ho U Ξ _)
     · change w.1 s p - ((geo ho U Ξ).dOm q z').1 s p = 0
       rw [hz'' s p hp hlt, sub_self]
 end

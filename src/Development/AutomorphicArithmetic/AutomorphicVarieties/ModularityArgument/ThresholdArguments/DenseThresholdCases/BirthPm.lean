@@ -54,7 +54,7 @@ theorem UpperTheory.V.Th.local_zero_of_modular_p :
   have hmul : ∀ g, IsGSp (algebraMap c'.O (PadicAlgCl l) (inc h (D.th (resQ T.F g))))
       ((X.P.map (y : X.A →+* PadicAlgCl l)).r g) := fun g => by
     rw [← y.commutes]
-    exact gsp_map (y : X.A →+* PadicAlgCl l) (X.pair.mult g)
+    exact _root_.gsp_map (y : X.A →+* PadicAlgCl l) (X.pair.mult g)
   have hunr := Pt.ptUnr K n (X.P.map (y : X.A →+* PadicAlgCl l)).r fun g hg => by
     change (y : X.A →+* PadicAlgCl l).mapMatrix (X.P.r g) = 1
     rw [X.pair.kill g hg, map_one]

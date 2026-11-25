@@ -117,7 +117,7 @@ theorem UpperTheory.V.Z.Sym.So.weakOne :
     field_simp
   · intro w hw
     obtain ⟨hne, hnS, hconj⟩ := hub w hw
-    apply mem_Uc w (c w)
+    apply UpperTheory.V.Z.Sym.So.WeakMultiplicityOne.mem_Uc w (c w)
     have hA := ha w (Finset.mem_union_left _ hw)
     have hB := ha (ub w) (Finset.mem_union_right _ (Finset.mem_image_of_mem ub hw))
     simp only [hw, hnS, if_true, if_false, inv_one, Units.val_one, mul_one] at hA hB
