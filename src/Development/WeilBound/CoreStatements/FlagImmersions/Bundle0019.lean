@@ -16,6 +16,7 @@ public import Development.AutomorphicSpectrum.Proofs.MetricProofs.Bundle0014
 
 -- bundled from Development.WeilBound.CoreStatements.FlagImmersions.EqZeroOfTri
 section
+attribute [-instance] GlobalTheory.CompHt.fintypePsi
 noncomputable section
 
 namespace RootFieldNumerics

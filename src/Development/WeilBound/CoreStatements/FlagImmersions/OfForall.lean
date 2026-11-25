@@ -6,6 +6,7 @@ public import Development.WeilBound.CoreStatements.VolumeEquality.Pieces
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeCptFiniteExtension
 
 @[expose] public section
+attribute [-instance] GlobalTheory.CompHt.fintypePsi
 
 noncomputable section
 
