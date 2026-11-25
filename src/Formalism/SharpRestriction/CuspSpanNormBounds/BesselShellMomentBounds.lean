@@ -8,7 +8,7 @@ public import Formalism.SharpRestriction.CuspSpanNormBounds.Bundle0004
 
 @[expose] public section
 
-attribute [-instance] Formalism.BasicNotions.LocLat.modO Formalism.BasicNotions.LocLat.towO Formalism.BasicNotions.LocLat.modFun Formalism.BasicNotions.LocLat.modSubFun Formalism.BasicNotions.LocLat.modT
+attribute [-instance] Formalism.BasicNotions.LocLat.modFun Formalism.BasicNotions.LocLat.modSubFun
 section PieceB2a
 
 open Finset
