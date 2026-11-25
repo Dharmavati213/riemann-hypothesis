@@ -169,6 +169,10 @@ theorem band_eq (hQ2 : Q2) (hD0 : D0) (hN3 : N3) (hk : 1 ≤ k) (μ : Measure (G
   have hint : Integrable Φ (μ.withDensity ((stdDom (latticeGL E k)).indicator 1)) := by
     rw [withDensity_indicator hD, withDensity_one]
     exact hi
+  haveI hdirac : ∀ x : GA E k, SFinite (Measure.dirac x) := fun x =>
+    haveI : SigmaFinite (Measure.dirac x) := IsFiniteMeasure.toSigmaFinite _
+    instSFiniteOfSigmaFinite
+  haveI : SFinite ν := inferInstance
   obtain ⟨-, hE⟩ := hQ2 (GA E k) μ ν (Measure.dirac 1) (latticeGL E k : Set (GA E k))
     ((stdDom (latticeGL E k)).indicator 1) ((band E k).indicator β) hmap hae hwt (hβ.1.indicator hband) hone Φ hm
     (fun h hh g => hl h hh g) hint
