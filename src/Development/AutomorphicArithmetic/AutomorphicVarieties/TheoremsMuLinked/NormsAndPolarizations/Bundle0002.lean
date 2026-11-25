@@ -108,6 +108,8 @@ private theorem emb_ne (H : GlobalTheory.Published.GlobalArtinReciprocity) {L Ω
     exact lt_irrefl _ this)).1 h1
   exact (GlobalTheory.PlaceBridge.norm_l_lt_one (l := l)).ne h2
 
+namespace RegArithAux
+
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField in
 open GlobalTheory.WeilDeligne GlobalTheory.LocLanglands in
 private theorem main (H : GlobalTheory.Published.GlobalArtinReciprocity) {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω]
@@ -173,12 +175,14 @@ private theorem main (H : GlobalTheory.Published.GlobalArtinReciprocity) {F Ω :
     Finset.sum_lt_sum_of_nonempty Finset.univ_nonempty fun τ _ => neg_lt_neg (hm τ hij)
   exact hs.injective h6
 
+end RegArithAux
+
 theorem UpperTheory.V.Th.Nm.regArith :
     GlobalTheory.Mem.LiteralAutomorphy.LitN → ∀ {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (s : HidaSetting l L Ω) {n : ℕ} (h : s.Wt n) (v : Vl l L) (ψ : Fin n → Dec (F := L) (s.A v) →* (Qbar l)ˣ), h.Incr → (∀ j, IsLocAlg (s.hw v) (ψ j) (h v j)) → ∃ g, Function.Injective fun i => ψ i g := by
   intro H l _ L Ω _ _ _ _ _ _ s n h v ψ hI hψ
   obtain ⟨a, ha⟩ := UpperTheory.V.Loc.localArtinReciprocity H (s.hw v)
   have h1 := (s.hA v.1 ((l : ℕ) : 𝓞 (W.Lp L))).2 v.2
-  exact main H.aut.art (s.hw v) ((s.hw v.1 _).1 (by simpa using h1)) ha (h v) (hI v) ψ hψ
+  exact RegArithAux.main H.aut.art (s.hw v) ((s.hw v.1 _).1 (by simpa using h1)) ha (h v) (hI v) ψ hψ
 end
 
 -- bundled from Development.AutomorphicArithmetic.AutomorphicVarieties.TheoremsMuLinked.NormsAndPolarizations.ResidPush
