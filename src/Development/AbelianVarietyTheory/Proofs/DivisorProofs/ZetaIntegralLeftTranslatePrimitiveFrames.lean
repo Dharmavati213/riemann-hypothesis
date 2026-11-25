@@ -55,7 +55,7 @@ theorem GlobalTheory.LeftTranslateZeta.bigF_phiA_left : ∀ (k : Type) [Field k]
     have hgX : g₀.val * (g.val * (X0 k σ * (invT h).val)) = g₀.val * g.val * (X0 k σ * (invT h).val) :=
       (Matrix.mul_assoc _ _ _).symm
     rw [hgX]
-    have key := fFun_mul_left (μ := μ) (σ := σ) (ν := ν) (Ψ := Ψ) (g := g₀ * g) (h := h)
+    have key := GlobalTheory.OneSquareZeta.fFun_mul_left (μ := μ) (σ := σ) (ν := ν) (Ψ := Ψ) (g := g₀ * g) (h := h)
     simp only [apow_mul, map_mul, Units.val_mul] at key
     by_cases hS : g₀ * g * g₁⁻¹ ∈ KO k (Fin a)
     · have hP : IsPrimFrame (latA ϖ n (diagLat c)) ((g₀ * g).val * (X0 k σ * (invT h).val)) :=
