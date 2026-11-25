@@ -422,6 +422,7 @@ end
 section
 open NumberField IsDedekindDomain Matrix GlobalTheory.UPel.HT GlobalTheory.LKTrip GlobalTheory.LKMid GlobalTheory.LKDef GlobalTheory.CuspRep GlobalTheory.UnitaryBC UpperTheory.Gal.W2.Seed UpperTheory.Gal.G1
 open scoped TensorProduct
+attribute [-instance] GlobalTheory.SelfDualFirstProj.charZero_Fv MassDataIdxSteps.charZero_adicCompletion GlobalTheory.LTRecip.charZero_adicCompletion GroundTheory.Global.charZero_adicCompletion Formalism.BasicNotions.Examples₂.LocF.instCharZeroAdicCompletionRingOfIntegers_formalism
 
 theorem UpperTheory.Gal.G1.pPadMap :
     PadMap := by
