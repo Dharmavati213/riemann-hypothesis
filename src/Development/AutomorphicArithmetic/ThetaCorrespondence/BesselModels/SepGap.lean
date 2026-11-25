@@ -79,6 +79,8 @@ theorem sepLine_gap (hB : BurGapPos) (D : D7) (V A : HSp D) (S : D.what₂.Tau �
   classical
   have hr := fun τ => burGap_model hB M τ (h τ).1 (hc τ) (h τ).2.1 (hg τ).1 (hg τ).2.choose_spec.1 (hg τ).2.choose_spec.2
     (h τ).2.2
+  haveI : ∀ τ, Module.Free ℂ (GlobalTheory.RealBessel.besselForms (gramAt D V τ) (gramAt D A τ) (F τ) (e τ) (χ τ)
+      (M.rep τ) (π τ) (M.sm τ)) := fun τ => Module.Free.of_divisionRing _ _
   choose b hb using fun τ => rank_le_one_iff.1 (hr τ)
   refine ⟨fun x v => ∏ τ, (b τ).1 (x τ) (v τ), fun β hβ => ?_⟩
   obtain ⟨l, hl⟩ := mul_prod_of_separately (X := fun τ => Wt τ × M.sm τ) (fun τ p => (b τ).1 p.1 p.2)
