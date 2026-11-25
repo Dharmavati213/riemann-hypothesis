@@ -152,7 +152,7 @@ theorem xiStd_eq_const_mul_locXi_alt : ∀ {B : GlobalTheory.Mem.Base} {X : PreX
   have hqv : HeightOneSpectrum.valuation B.fields.E P.1 (Formalism.L2.Col.qOf P.1 : B.fields.E) = WithZero.exp (-1 : ℤ) := by
     obtain ⟨i, g1, -, -, g4, -⟩ := GlobalTheory.SeeSaw.LevelData.type_prime hPv
     exact GlobalTheory.AtTypeExists.valuation_norm P.1 (g1 ▸ g4)
-  have hy : (Submodule.Quotient.mk ((a.G n).S.y0 (Fin B.R.t)) : _ ⧸ box _ (1 : (a.G n).kˣ)) =
+  have hy : (Submodule.Quotient.mk ((a.G n).S.y0 (Fin B.R.t)) : _ ⧸ box (XIx (Fin B.R.k) (Fin B.R.t) ((a.G n).s + 1)) (1 : (a.G n).kˣ)) =
       Submodule.Quotient.mk fun r => _root_.GlobalTheory.Fam.TopLoc.embeddingAtLocalFactor a n (f.symm y (e' r)) := by
     refine GlobalTheory.SeeSaw.StdMatch.mk_eq_mk_of_int fun c => ?_
     have h1 := (hint _).2 (intAt_sub_of_near hqv hF hq (e' c))
