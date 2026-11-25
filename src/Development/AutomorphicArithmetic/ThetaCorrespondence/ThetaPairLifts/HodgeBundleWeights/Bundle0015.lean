@@ -127,7 +127,7 @@ theorem weight_line_bundle_isNef : _root_.GlobalTheory.CovTop.Hypotheses'' → G
   conv_lhs => rw [key]
   set_option synthInstance.maxHeartbeats 100000 in
     rw [map_sum]
-  refine Finset.sum_congr rfl fun x _ => ?_
+  refine Finset.sum_congr (Finset.ext fun _ => by simp only [Finset.mem_disjSum, Finset.mem_product, Finset.mem_univ]) fun x _ => ?_
   rw [map_nsmul]
   rcases x with ⟨τ, k⟩ | ⟨τ, b⟩ <;> rfl
 end GlobalTheory.NefWt
