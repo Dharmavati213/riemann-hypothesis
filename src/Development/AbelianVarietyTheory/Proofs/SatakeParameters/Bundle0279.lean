@@ -102,19 +102,18 @@ theorem finPart_eq_one : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] 
   · intro P
     by_cases hP : P = w'.under (𝓞 (maximalRealSubfield E))
     · subst hP
-      rw [GlobalTheory.HeckeProduct.localIdele_snd_self]
+      rw [GlobalTheory.Mem.Chr.Model.localIdele_snd_self]
       exact hxu
-    · rw [GlobalTheory.HeckeProduct.localIdele_snd_ne (maximalRealSubfield E) _ _ hP]
+    · rw [GlobalTheory.Mem.Chr.Model.localIdele_snd_ne (maximalRealSubfield E) _ _ hP]
       exact map_one _
   · intro w
-    rw [GlobalTheory.HeckeProduct.localIdele_fst]
     rfl
   · intro P
     by_cases hP : P = w'.under (𝓞 (maximalRealSubfield E))
     · subst hP
-      rw [GlobalTheory.HeckeProduct.localIdele_snd_self]
+      rw [GlobalTheory.Mem.Chr.Model.localIdele_snd_self]
       exact hxc
-    · rw [GlobalTheory.HeckeProduct.localIdele_snd_ne (maximalRealSubfield E) _ _ hP, sub_self, map_zero]
+    · rw [GlobalTheory.Mem.Chr.Model.localIdele_snd_ne (maximalRealSubfield E) _ _ hP, sub_self, map_zero]
       exact zero_le
 
 end GlobalTheory.HeckeFinTriv
