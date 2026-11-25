@@ -110,6 +110,8 @@ theorem setIntegral_rsHat_zero_of_bdd {ℓ : Fin a} {Φ : (Fin a → Cinf E) →
   haveI := GlobalTheory.CovolGL.isFiniteMeasure_quotMeasure E a μ
   haveI : IsFiniteMeasure (μ.restrict 𝓕') :=
     ⟨by rw [Measure.restrict_apply_univ, ← GlobalTheory.AutomorphicL2Unitary.quotMeasure_univ h𝓕]; exact measure_lt_top _ _⟩
+  haveI : SigmaFinite (μ.restrict 𝓕') := IsFiniteMeasure.toSigmaFinite _
+  haveI : SFinite (μ.restrict 𝓕') := instSFiniteOfSigmaFinite
   haveI : SFinite (infMeasure E a) := by unfold infMeasure; infer_instance
   obtain ⟨C, hC⟩ := hb.2.2.2
   obtain ⟨D, hD⟩ := hb'.2.2.2
