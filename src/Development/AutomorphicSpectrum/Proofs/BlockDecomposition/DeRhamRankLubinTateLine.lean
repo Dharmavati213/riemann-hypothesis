@@ -216,6 +216,7 @@ theorem genCoord_law (ψ : ↥(GK K) →* (↥LL.1)ˣ) {σ₀ : ↥LL.1 →ₐ[�
     rw [genCoord, dif_neg h2, genCoord, dif_neg hσ, map_zero, mul_zero]
 
 
+attribute [local instance 1100] TensorProduct.leftHasSMul in
 set_option maxHeartbeats 1600000 in
 set_option synthInstance.maxHeartbeats 200000 in
 theorem component_line {AI : LocAinf l P} (T : LocTied6 l P AI) (ψ : ↥(GK K) →* (↥LL.1)ˣ)
