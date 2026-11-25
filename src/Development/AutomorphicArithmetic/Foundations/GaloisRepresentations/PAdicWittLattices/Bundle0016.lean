@@ -283,7 +283,7 @@ private theorem isAdmissible_flagPair_of_unitriangular_left_automorphism {B : Sc
   rw [e]
   exact h3
 
-private theorem pl_left {B : Scheme.{0}} {G : Type} [Group G] (X : Tower B G) {F : Type} [Field F] (T : Th.{u} B F)
+private theorem pl_left {B : Scheme.{0}} {G : Type} [Group G] (X : Tower B G) {F : Type} [Field F] (T : UpperTheory.Gal.G3.Th.{u} B F)
     {m j : X.ι} {k h : G} (hk : k ∈ X.K j) (hh : X.admitted m j h) : X.pl T m j (k * h) = X.pl T m j h := by
   have a := isAdmissible_flagPair_of_unitriangular_left_automorphism X hk hh
   have e : X.tr m j (k * h) a.1 a.2 = X.tr m j h hh.1 hh.2 := by
