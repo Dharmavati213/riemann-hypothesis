@@ -145,7 +145,8 @@ theorem pointPoly_isWeightedHomogeneous (H : Host E) (Dw : Datum H) :
   have h2 := IsWeightedHomogeneous.prod Finset.univ _ _ h
   rw [pointPoly]
   convert h2 using 1
-  simp [Finset.sum_const, Finset.card_univ, smul_eq_mul]
+  · exact Finset.prod_congr (Finset.ext fun _ => by simp only [Finset.mem_univ]) fun _ _ => rfl
+  · simp [Finset.sum_const, Finset.card_univ, smul_eq_mul]
 
 theorem mem_of_forall_dual {V : Type} [AddCommGroup V] [Module ℝ V] (S : Submodule ℝ V) (v : V)
     (h : ∀ f : Module.Dual ℝ (V ⧸ S), f (S.mkQ v) = 0) : v ∈ S := by
