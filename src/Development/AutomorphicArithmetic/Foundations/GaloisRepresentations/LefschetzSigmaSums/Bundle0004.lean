@@ -208,7 +208,7 @@ def FnDecomp : Prop :=
     (f ∈ Formalism.UG.Hecke ℂ (X.K j) → (∀ g, f g ≠ 0 → g⁻¹ ∈ X.Δ) → X.IsFn j f)
 
 def HopWord : Prop :=
-  ∀ (B : Scheme.{0}) (Γ : Type) [Group Γ] (X : Tower B Γ) (T : Th.{0} B ℂ), T.Good → ∀ j : X.ι,
+  ∀ (B : Scheme.{0}) (Γ : Type) [Group Γ] (X : Tower B Γ) (T : UpperTheory.Gal.G3.Th.{0} B ℂ), T.Good → ∀ j : X.ι,
     (∀ (m : ℕ) (f : Fin m → Γ → ℂ) (c : Fin m → ℂ), (∀ i, X.IsFn j (f i)) →
       X.IsFn j (∑ i, c i • f i) ∧ X.hecke T j (∑ i, c i • f i) = ∑ i, c i • X.hecke T j (f i)) ∧
     ∀ (J : Type) (ψ : J → Γ → ℂ) (f : Γ → ℂ), (∀ i, X.IsFn j (ψ i)) → X.IsFn j f →
@@ -237,7 +237,7 @@ def MemOp : Prop :=
   ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (G : HTGroup p) (L : GlobalTheory.LKGeo.Link D G) (R : Type) [Field R] [Algebra ℚ R]
     (gb : GBase D.toG R) (k : ℕ) (T : KS L gb k) (N : Lv p) (J : Type) (g : J → Mem L N) (j : J),
     T.X.IsFn (T.lev N) (g j).fn ∧ IsFinite ((T.tower N g).s j) ∧ Etale ((T.tower N g).s j) ∧
-    ∀ Θ : Th.{0} (Sp R) ℂ, Θ.Good → Θ.IsOp (T.X.q (T.lev N)) (T.X.q (T.lev N)) ((T.tower N g).s j) ((T.tower N g).t j)
+    ∀ Θ : UpperTheory.Gal.G3.Th.{0} (Sp R) ℂ, Θ.Good → Θ.IsOp (T.X.q (T.lev N)) (T.X.q (T.lev N)) ((T.tower N g).s j) ((T.tower N g).t j)
       (T.X.hecke Θ (T.lev N) (g j).fn)
 
 def OccOf : Prop :=
