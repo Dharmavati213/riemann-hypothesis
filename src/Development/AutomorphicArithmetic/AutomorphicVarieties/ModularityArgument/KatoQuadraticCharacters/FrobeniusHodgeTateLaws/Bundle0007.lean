@@ -176,7 +176,7 @@ theorem lamEig2 : LamEig2 := by
   rw [hEig T hT b hb.1, map_smul] at h1
   rw [hlam, hlam, ← smul_eq_mul, ← map_smul, ← Nat.sub_sub, ← Nat.sub_sub]
   refine hk (n - c - k') (by omega) _ _ fun i => ?_
-  have h3 := cg_mul_left (k := k') (by omega) (hev T hT) (h2 i)
+  have h3 := GlobalTheory.KummerEisensteinGalois.cg_mul_left (k := k') (by omega) (hev T hT) (h2 i)
   have h4 := cg_mono (Nat.sub_le (n - c) k') (h1 i)
   simp only [Pi.smul_apply, smul_eq_mul] at h4 ⊢
   unfold Cg at h3 h4 ⊢
