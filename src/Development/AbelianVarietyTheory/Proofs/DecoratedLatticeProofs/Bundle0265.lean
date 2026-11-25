@@ -403,6 +403,7 @@ end GlobalTheory.MixTargetProof
 
 end
 end
+end
 
 -- bundled from Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.RowGen1POfSteps
 section

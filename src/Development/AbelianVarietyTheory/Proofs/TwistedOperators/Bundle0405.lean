@@ -343,6 +343,7 @@ end GlobalTheory.BumpMixSum
 
 end
 end
+end
 
 -- bundled from Development.AbelianVarietyTheory.Proofs.TwistedOperators.PairTable
 section

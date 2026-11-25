@@ -108,6 +108,7 @@ end GlobalTheory.FlatHeis
 
 end
 end
+end
 
 -- bundled from Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FockPartitionRowsNumericDatumMemIcc
 section

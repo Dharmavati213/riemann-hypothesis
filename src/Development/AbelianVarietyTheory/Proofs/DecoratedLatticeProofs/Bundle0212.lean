@@ -429,6 +429,7 @@ end GlobalTheory.Unf.DoubleSum
 
 end
 end
+end
 
 -- bundled from Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.WeilOperatorSourceRealPointCommuteHeisenbergComb
 section

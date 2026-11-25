@@ -274,6 +274,7 @@ theorem flatShift : ∀ D : D7, GlobalTheory.FinPl.FlatShift D := by
 end GlobalTheory.FlatShiftPf
 end
 end
+end
 
 -- bundled from Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FourierPairingDualIndicatorAddNonzeroCosets
 section

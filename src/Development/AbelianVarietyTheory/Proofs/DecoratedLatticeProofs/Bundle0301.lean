@@ -260,6 +260,7 @@ end GlobalTheory.FlatAdd
 
 end
 end
+end
 
 -- bundled from Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.LawLoc
 section
@@ -469,5 +470,6 @@ theorem mixS_support_inBox : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsSt
   exact sub_eq_zero.mp ((mul_eq_zero.mp h1).resolve_right hne)
 
 end GlobalTheory.Unf
+end
 end
 
