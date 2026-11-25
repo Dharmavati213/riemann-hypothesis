@@ -6,6 +6,7 @@ public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.Bundle0
 
 @[expose] public section
 attribute [-instance] Formalism.L2.Pj.rulesCommRing Formalism.L2.Pj.rulesAlgebra Formalism.L2.Pj.rulesModule Formalism.L2.Pj.rulesSMul Formalism.L2.Pj.rulesAlgebraInt Formalism.L2.Pj.rulesModuleInt Formalism.L2.Pj.rulesTower
+attribute [-instance] Formalism.L2.Pj.rulModule
 
 set_option linter.unusedSectionVars false
 
