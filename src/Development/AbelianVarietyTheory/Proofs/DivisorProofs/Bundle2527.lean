@@ -205,6 +205,8 @@ theorem trdeg_of_lift (ψ : L ⊗[K] F →ₐ[L] W) (hψ : Function.Injective ψ
       _ = Algebra.trdeg L E := by
           haveI : FaithfulSMul E (algebraicClosure E W) :=
             (faithfulSMul_iff_algebraMap_injective _ _).2 (algebraMap E (algebraicClosure E W)).injective
+          haveI : FaithfulSMul L E :=
+            (faithfulSMul_iff_algebraMap_injective L E).2 (algebraMap L E).injective
           rw [← trdeg_add_eq L E (A := algebraicClosure E W), trdeg_eq_zero (R := E) (A := algebraicClosure E W), add_zero]
       _ ≤ _ := hE
   · have : AlgebraicIndependent L fun i => (⟨ψ (1 ⊗ₜ x i), h1 _⟩ : M) :=
