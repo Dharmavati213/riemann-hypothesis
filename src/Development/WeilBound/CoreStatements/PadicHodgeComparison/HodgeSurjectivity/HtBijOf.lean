@@ -675,7 +675,6 @@ abbrev dcx (A : Sy.{w} R ι) : DCx.{w} R where
 abbrev zpm (A : Sy.{w} R ι) (a : ℕ) : PM.{w} R ι where
   M S := (A.K S).Z a
   res h := (A.res h).mapZ a
-  res_id S h x := Subtype.ext (A.res_id S h a x.1)
   res_comp h h' x := Subtype.ext (A.res_comp h h' a x.1)
 
 theorem isB_of (A : Sy.{w} R ι) (p q : ℕ) (y : (dcx A).X p q) (h : ∀ i, y i ∈ (A.K (ent i)).B q) : IsB (dcx A) p q y := by

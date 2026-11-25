@@ -87,7 +87,6 @@ def Sh.map (ς : ℤˣ) (k : ℕ) {C C' : Cx.{w} K} (f : Cx.Hom C C' (RingHom.id
 def shSy (ς : ℤˣ) (k : ℕ) (A : Sy.{w} K ι) : Sy.{w} K ι where
   K S := Sh ς k (A.K S)
   res h := Sh.map ς k (A.res h)
-  res_id S h n x := funext fun m => A.res_id S h _ _
   res_comp h h' n x := funext fun m => A.res_comp h h' _ _
 
 def Dsum.map {I : Type w} [DecidableEq I] {E E' : I → Cx.{w} K} (f : ∀ i, Cx.Hom (E i) (E' i) (RingHom.id K)) :
@@ -104,13 +103,6 @@ def Dsum.map {I : Type w} [DecidableEq I] {E E' : I → Cx.{w} K} (f : ∀ i, Cx
 def sumSy {I : Type w} [DecidableEq I] (A : I → Sy.{w} K ι) : Sy.{w} K ι where
   K S := Dsum fun i => (A i).K S
   res h := Dsum.map fun i => (A i).res h
-  res_id S h n x := by
-    induction x using DirectSum.induction_on with
-    | zero => simp
-    | of i x =>
-      change DirectSum.lmap _ _ = _
-      simp [← DirectSum.lof_eq_of K, DirectSum.lmap_lof, (A i).res_id]
-    | add x y hx hy => simp only [map_add (f := _), hx, hy]
   res_comp h h' n x := by
     induction x using DirectSum.induction_on with
     | zero => simp

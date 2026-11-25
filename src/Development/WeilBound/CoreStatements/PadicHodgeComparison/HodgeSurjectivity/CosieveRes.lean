@@ -24,7 +24,6 @@ structure PM (R : Type) [CommRing R] (ι : Type) : Type (w + 1) where
   [ab : ∀ S, AddCommGroup (M S)]
   [md : ∀ S, Module R (M S)]
   res : ∀ {S T : Finset ι}, S ⊆ T → (M S →ₗ[R] M T)
-  res_id : ∀ (S : Finset ι) (h : S ⊆ S) x, res h x = x
   res_comp : ∀ {S T U : Finset ι} (h : S ⊆ T) (h' : T ⊆ U) x, res h' (res h x) = res (h.trans h') x
 
 attribute [instance] PM.ab PM.md
@@ -58,21 +57,16 @@ def PM.Ex (P : PM.{w} R ι) : Prop := P.cech.cx.ResUpTo 1 P.aug
 structure Sy (R : Type) [CommRing R] (ι : Type) : Type (w + 1) where
   K : Finset ι → Cx.{w} R
   res : ∀ {S T : Finset ι}, S ⊆ T → Cx.Hom (K S) (K T) (RingHom.id R)
-  res_id : ∀ (S : Finset ι) (h : S ⊆ S) n x, (res h).f n x = x
   res_comp : ∀ {S T U : Finset ι} (h : S ⊆ T) (h' : T ⊆ U) n x, (res h').f n ((res h).f n x) = (res (h.trans h')).f n x
 
 abbrev Sy.term (A : Sy.{w} R ι) (n : ℕ) : PM.{w} R ι where
   M S := (A.K S).X n
   res h := (A.res h).f n
-  res_id S h := A.res_id S h n
   res_comp h h' := A.res_comp h h' n
 
 abbrev Sy.coh (A : Sy.{w} R ι) (n : ℕ) : PM.{w} R ι where
   M S := (A.K S).H n
   res h := (A.res h).mapH n
-  res_id S h x := by
-    obtain ⟨z, rfl⟩ := Submodule.Quotient.mk_surjective _ x
-    exact congrArg Submodule.Quotient.mk (Subtype.ext (A.res_id S h n z.1))
   res_comp h h' x := by
     obtain ⟨z, rfl⟩ := Submodule.Quotient.mk_surjective _ x
     exact congrArg Submodule.Quotient.mk (Subtype.ext (A.res_comp h h' n z.1))
@@ -132,7 +126,6 @@ def capU (U : ι → ObjectProperty C) (S : Finset ι) : ObjectProperty C := fun
 def covSy (U : ι → ObjectProperty C) {Q : ObjectProperty C} (hQ : Cosieve Q) : Sy.{max u v w} R ι where
   K S := RC F (capU U S) hQ
   res h := RC.res F hQ fun _ hT => ⟨hT.1, fun α hα => hT.2 α (h hα)⟩
-  res_id _ _ _ _ := rfl
   res_comp _ _ _ _ := rfl
 
 end Rel

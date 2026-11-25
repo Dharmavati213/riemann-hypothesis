@@ -95,10 +95,6 @@ theorem rel_pm (hH : ChartFormsCechExact) (K : Type) [Field K] [CharZero K] (A :
   let P : PM.{0} K (Fin d) :=
     { M := fun S => relOm K (C.I S) a
       res := fun {S T} h => GlobalTheory.CompanionTheory.SurjectionOntoH4.relMap (C.res h) (GlobalTheory.CompanionTheory.SurjectionOntoH4.res_mem_I C h) a
-      res_id := fun S h y => by
-        apply Subtype.ext
-        change omMap (C.res h) a y.1 = y.1
-        rw [show C.res h = AlgHom.id K (C.R S) from AlgHom.ext fun z => C.res_id S h z, omMap_id]
       res_comp := fun {S T U} h h' y => by
         apply Subtype.ext
         change omMap (C.res h') a (omMap (C.res h) a y.1) = omMap (C.res _) a y.1

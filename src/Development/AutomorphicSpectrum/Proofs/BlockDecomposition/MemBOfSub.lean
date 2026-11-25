@@ -357,7 +357,6 @@ theorem cech_nat (P Q : PM.{w} R ι) (f : ∀ S, P.M S →ₗ[R] Q.M S)
 def prodP (P Q : PM.{w} R ι) : PM.{w} R ι where
   M S := P.M S × Q.M S
   res h := (P.res h).prodMap (Q.res h)
-  res_id S h x := Prod.ext (P.res_id S h x.1) (Q.res_id S h x.2)
   res_comp h h' x := Prod.ext (P.res_comp h h' x.1) (Q.res_comp h h' x.2)
 
 theorem d_fst (P Q : PM.{w} R ι) (n : ℕ) (z : (prodP P Q).cech.X n) :
@@ -417,10 +416,6 @@ theorem Ex_of_sub (P : PM.{w} R ι) (h : ∀ S, Subsingleton (P.M S)) : P.Ex := 
 def shSy (A : Sy.{w} R ι) : Sy.{w} R ι where
   K S := sh (A.K S)
   res h := shF (A.res h)
-  res_id S h n x := by
-    cases n with
-    | zero => exact Subsingleton.elim (α := PUnit.{w + 1}) _ _
-    | succ n => exact A.res_id S h n x
   res_comp h h' n x := by
     cases n with
     | zero => exact Subsingleton.elim (α := PUnit.{w + 1}) _ _
@@ -449,7 +444,6 @@ theorem Dat.compat (D : Dat A B) {S T : Finset ι} (h : S ⊆ T) (n : ℕ) (x : 
 def Dat.sy (D : Dat A B) : Sy.{w} R ι where
   K S := cone (D.ad S)
   res h := coneHom _ _ (shF (A.res h)) (B.res h) (D.compat h)
-  res_id S h n x := Prod.ext (B.res_id S h n x.1) ((shSy A).res_id S h n x.2)
   res_comp h h' n x := Prod.ext (B.res_comp h h' n x.1) ((shSy A).res_comp h h' n x.2)
 
 def Dat.m (D : Dat A B) : D.sy.Hom (shSy A) where

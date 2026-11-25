@@ -161,13 +161,6 @@ variable {K : Type} [Field K] {ι : Type} [DecidableEq ι] {I : Type 1} [Decidab
 def sumPM (P : I → PM.{1} K ι) : PM.{1} K ι where
   M S := ⨁ i, (P i).M S
   res h := DirectSum.lmap fun i => (P i).res h
-  res_id S h x := by
-    induction x using DirectSum.induction_on with
-    | zero => simp
-    | of i x =>
-      change DirectSum.lmap _ _ = _
-      simp [← DirectSum.lof_eq_of K, DirectSum.lmap_lof, (P i).res_id]
-    | add x y hx hy => simp only [map_add (f := _), hx, hy]
   res_comp h h' x := by
     induction x using DirectSum.induction_on with
     | zero => simp
