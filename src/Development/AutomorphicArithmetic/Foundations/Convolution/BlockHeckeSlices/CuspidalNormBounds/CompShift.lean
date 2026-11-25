@@ -74,7 +74,9 @@ private theorem main : ∀ {n : ℕ} (d : Dat S n) (φ : Sm E n) (t : Fin d.len 
     ∀ j, HasDerivAt (fun x : ℝ => d.comp φ.1 (t + Pi.single j x)) (d.comp (d.J j φ).1 t) 0 := by
   intro n d
   induction d with
-  | nil => exact fun φ t _ => ⟨fun v => congrArg φ.1 (Subsingleton.elim _ _), fun j => j.elim0⟩
+  | nil =>
+    haveI : Subsingleton (GA E 0) := ⟨fun a b => Units.ext (Matrix.ext fun i _ => i.elim0)⟩
+    exact fun φ t _ => ⟨fun v => congrArg φ.1 (Subsingleton.elim _ _), fun j => j.elim0⟩
   | @cons r s b d ih =>
     intro φ t hφ
     refine ⟨fun v => ?_, Dat.sc_cases b d ?_ fun j => ?_⟩
