@@ -5,7 +5,6 @@ public import GroundTheory.AutomorphicForms.GL2.IsAddHaarMeasureMatrixMeasureFin
 
 @[expose] public section
 
-attribute [-instance] GroundTheory.Automorphic.GJMatrix.measurableSpace_matrix GroundTheory.Automorphic.GJMatrix.borelSpace_matrix
 noncomputable section
 
 namespace GroundTheory.Automorphic
