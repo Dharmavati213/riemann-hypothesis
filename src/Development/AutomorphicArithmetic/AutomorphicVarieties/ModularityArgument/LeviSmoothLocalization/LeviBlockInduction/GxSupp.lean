@@ -21,6 +21,7 @@ open GroundTheory.Automorphic.GodementJacquet (centralUnif coe_centralUnif)
 open scoped Classical
 
 attribute [-instance] Formalism.DoubleCosetMeasures.instMeasGL
+attribute [-instance] GlobalTheory.CompanionTheory.QL.instMeasGL GlobalTheory.CompanionTheory.QL.instBorelGL
 
 namespace UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter
 

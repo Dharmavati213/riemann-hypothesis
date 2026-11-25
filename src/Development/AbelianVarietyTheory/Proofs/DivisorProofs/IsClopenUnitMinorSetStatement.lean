@@ -11,6 +11,7 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LastColsVal
 open MeasureTheory GlobalTheory.SplitFlip ValuativeRel
 open scoped Matrix
 attribute [-instance] Formalism.DoubleCosetMeasures.instMeasGL
+attribute [-instance] GlobalTheory.CompanionTheory.QL.instMeasGL GlobalTheory.CompanionTheory.QL.instBorelGL
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.isClopen_unit_minor_set : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n d : ℕ),
     IsClopen (GlobalTheory.FullRankCoinv.UnitMinor.unitMinorSet k n d) := by

@@ -11,6 +11,7 @@ open GroundTheory.Automorphic.GodementJacquet
 open scoped NNReal Classical ValuativeRel
 
 attribute [-instance] Formalism.DoubleCosetMeasures.instMeasGL
+attribute [-instance] GlobalTheory.CompanionTheory.QL.instMeasGL GlobalTheory.CompanionTheory.QL.instBorelGL
 
 theorem UpperTheory.local_zeta_integral_laurent_expansion :
     UpperTheory.V.Z.Gam.LdLaurent := by

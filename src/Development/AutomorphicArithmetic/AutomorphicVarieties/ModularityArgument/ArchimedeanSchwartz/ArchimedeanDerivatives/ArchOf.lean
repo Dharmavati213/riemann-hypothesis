@@ -13,6 +13,7 @@ open GroundTheory.Automorphic.GLnLocal
 open scoped SchwartzMap Classical
 
 attribute [-instance] Formalism.DoubleCosetMeasures.instMeasGL
+attribute [-instance] GlobalTheory.CompanionTheory.QL.instMeasGL GlobalTheory.CompanionTheory.QL.instBorelGL
 
 theorem UpperTheory.V.Z.Inf.archOf :
     UpperTheory.V.Z.Inf.ArchOf := by
