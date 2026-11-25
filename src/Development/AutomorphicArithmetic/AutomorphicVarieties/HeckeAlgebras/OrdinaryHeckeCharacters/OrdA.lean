@@ -239,6 +239,7 @@ theorem UpperTheory.V.Hi.ordA :
       hN y ((mem_unipB k).2 ⟨(mem_borel k).1 hy', (GlAx.mem_low.1 hy.1).2⟩), one_mul, one_mul])
   haveI : FiniteDimensional ℂ (GlobalTheory.PRep.fixed (PS ω) ((glIwa k n).I1 c)) :=
     (GlobalTheory.SmGL.ParIndAdm.isAdmissible_parInd _ _).2 _ (hI c).1 (hI c).2
+  haveI : IsNoetherian ℂ (GlobalTheory.PRep.fixed (PS ω) ((glIwa k n).I1 c)) := IsNoetherian.iff_fg.2 ‹_›
   haveI : FiniteDimensional ℂ (fixd π ((glIwa k n).I1 c)) :=
     Module.Finite.of_injective (e.toLinearEquiv.toLinearMap.restrict (p := fixd π ((glIwa k n).I1 c))
       (q := GlobalTheory.PRep.fixed (PS ω) ((glIwa k n).I1 c)) fun v hv u => by
