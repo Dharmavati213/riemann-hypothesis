@@ -394,13 +394,13 @@ theorem isParamFun_one_trivPar : ∀ {D : D7} (A : HSp D) (LA : Lat A) (Sf : Fin
   rcases (LFun.exists_isInertChart _ (isCMExt_host D) v).1 hun with hs | ⟨w', hw'⟩
   · obtain ⟨e, he, -, -⟩ := LFun.SplitChart.exists_isSplitChart (isCMExt_host D) hH hL.fg (hfull V L hLd).span_eq_top h hs hd
     exact Or.inl ⟨hs, e, he, ((LFun.Model.hasSatGL_trivial w V.rank).2 1 (GlobalTheory.LGrp.mem_fixed.2 fun _ _ => rfl)
-      one_ne_zero).map (LinearMap.pi fun _ => LinearMap.id) (fun _ _ => rfl) h0⟩
+      one_ne_zero).map (LinearMap.pi fun _ => LinearMap.id : ℂ →ₗ[ℂ] (GA D V → ℂ)) (fun _ _ => rfl) h0⟩
   · obtain rfl := (GlobalTheory.LFun.InertChart.under_eq_iff hw' w).1 h
     obtain ⟨-, ⟨τ, hτ, -⟩, -, -, hconj⟩ := (LFun.exists_isInertChart _ (isCMExt_host D) v).2 w h hw'
     obtain ⟨⟨ϖ, hϖ⟩, hch⟩ := hconj τ hτ
     obtain ⟨e, he, -, -⟩ := hch V.rank V.gram L hH hL.fg (hfull V L hLd).span_eq_top hd
     refine Or.inr ⟨hw', τ, ϖ, e, _, hϖ, he, ((LFun.Model.hasSatU_trivial hϖ (LFun.qV_ne_zero v) V.rank).2 1
-      (GlobalTheory.LGrp.mem_fixed.2 fun _ _ => rfl) one_ne_zero).map hϖ (LinearMap.pi fun _ => LinearMap.id) (fun _ _ => rfl) h0, ?_⟩
+      (GlobalTheory.LGrp.mem_fixed.2 fun _ _ => rfl) one_ne_zero).map hϖ (LinearMap.pi fun _ => LinearMap.id : ℂ →ₗ[ℂ] (GA D V → ℂ)) (fun _ _ => rfl) h0, ?_⟩
     rw [GlobalTheory.Core.Rk.Exh.Model.bcParam_rho]
     exact GlobalTheory.Core.Rk.Exh.Model.seg_eq_str (LFun.qV_ne_zero v) (LFun.InertChart.absNorm_eq D.sp.cm.deg2 hw') _
 
