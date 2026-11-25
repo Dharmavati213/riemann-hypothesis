@@ -150,7 +150,7 @@ theorem chernTop_pointPoly_eq (H : Host E) (Dw : Datum H) {n : ℕ} (G : Recipro
   unfold chernTop
   congr 3
   rw [pointPoly, map_prod, map_prod]
-  refine Finset.prod_congr rfl fun τ _ => ?_
+  refine Finset.prod_congr (Finset.ext fun _ => by simp only [Finset.mem_univ]) fun τ _ => ?_
   rw [aeval_term, aeval_term]
   erw [chernPoly_cast (GlobalTheory.HodgeGenUnf.mult_psi τ) (fun u => G u τ.1) v Dw.p]
   exact congrArg (fun m => (algebraMap ℝ (MvPolynomial (Fin n × Fin n) ℂ) ((-1 : ℝ) ^ m) *
