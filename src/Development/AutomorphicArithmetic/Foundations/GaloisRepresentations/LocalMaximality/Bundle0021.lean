@@ -210,12 +210,12 @@ theorem UpperTheory.Gal.productCup_of_system.omLoc_of :
     OmLoc := by
   intro L _ _ B e q
   have hle : B ≤ loc B e := fun v hv => ⟨1, by simp, by simpa using hv⟩
-  refine ⟨le_antisymm ?_ ?_, fun r hr m hm => omB_stab B q hr hm, fun B' h => omB_mono h q⟩
+  refine ⟨le_antisymm ?_ ?_, fun r hr m hm => omB_stab B q hr hm, fun B' h => _root_.omB_mono h q⟩
   · refine Submodule.span_le.2 ?_
     rintro v ⟨b, hb, hv⟩
     have hb0 : (b : L) ≠ 0 := fun h => hb (by rw [show b = 0 from Subtype.ext h, map_zero])
     have hinv : (b : L)⁻¹ ∈ loc B e := ⟨b, hb, by rw [mul_inv_cancel₀ hb0]; exact B.one_mem⟩
-    have h := omB_stab (loc B e) q hinv (omB_mono hle q hv)
+    have h := omB_stab (loc B e) q hinv (_root_.omB_mono hle q hv)
     rwa [smul_smul, inv_mul_cancel₀ hb0, one_smul] at h
   · refine Submodule.span_le.2 ?_
     rintro _ ⟨c, hc, v, hv, rfl⟩

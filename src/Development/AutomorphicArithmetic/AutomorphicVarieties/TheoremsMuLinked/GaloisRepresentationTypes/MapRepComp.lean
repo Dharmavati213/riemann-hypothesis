@@ -253,7 +253,7 @@ theorem UpperTheory.V.Th.spPt :
   have hfit := (leFit D hG T₀ T le).2.2.2.2.1 hF₀
   obtain ⟨P'', sm, pr'', er, -, rs, ine⟩ := restrQ D hG T₀ T hF₀ le 𝔞 P' qP' lP'
   refine ⟨T, hfit, deep, fun c₁ => ?_⟩
-  obtain ⟨c', h, X, y, hc₁, hy, k5⟩ := point hC T hfit 𝔞 sm pr'' rs c₁
+  obtain ⟨c', h, X, y, hc₁, hy, k5⟩ := _root_.point hC T hfit 𝔞 sm pr'' rs c₁
   have hconj := conj_trans cP cP'
   have hmult := qP'.pair.mult
   have hres : P'.r.comp (resQ T.F) = (X.P.map y).r := by rw [k5, er]

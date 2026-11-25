@@ -240,7 +240,7 @@ theorem UpperTheory.V.Ws.aut_n_alt :
   have hcont : Continuous (mapRep f r) := cont_small 𝔞 e he (⟨r, fun _ => u⟩ : PD Unit _ _) hK.small
   have hiL := irr_L T hfit.1 𝔞 f (e.injective.comp Subtype.val_injective) r hK.red hi
   have hm : D.Mult (mapRep f r₁) := fun g => by
-    have h1 := gsp_map f (hmult g)
+    have h1 := _root_.gsp_map f (hmult g)
     rw [show f (𝔞.a c (D.th g)) = algebraMap c.O (PadicAlgCl l) (D.th g) from he.1 c _] at h1
     exact h1
   have hr : (mapRep f r₁).comp (resQ T.F) = (X.P.map (y' : X.A →+* PadicAlgCl l)).r := by

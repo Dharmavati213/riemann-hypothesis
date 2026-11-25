@@ -168,7 +168,7 @@ theorem UpperTheory.V.Th.eigenbasis_rank_four :
       exact hkk v i g hg)
     (bkAw V hV r R z hz (fun u g hg => (hzy g).trans (tan_one htan g (hI u g hg)))
       fun g hg => (hzy g).trans (cocycle_vanishes_on_inertia_of_point_pseudodeformation V B x ρ₀ h0 hD hcont y hy g hg))
-  have hapt : _root_.UpperTheory.V.Th.AutomorphicPointGalois ι x ρ₀ := ⟨hcont, hx, ⟨_, arith hU.pr x m hm k hk hkk⟩, haut, by
+  have hapt : _root_.UpperTheory.V.Th.AutomorphicPointGalois ι x ρ₀ := ⟨hcont, hx, ⟨_, _root_.arith hU.pr x m hm k hk hkk⟩, haut, by
     rintro _ ⟨g, hg, rfl⟩
     exact hv0 g hg, hfl⟩
   have hirr₀ : U3.MatIrr ⊤ (W.mat ρ₀) := fun N hN => (AlgebraTools.Det.irrIffSpan (W.mat ρ₀)).2 hfull N fun g v hv => hN g trivial v hv

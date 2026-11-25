@@ -88,9 +88,9 @@ private lemma key {F K : Type} [Field F] [Field K] [Algebra ℂ F] [Algebra ℂ 
         omB ℂ K (rB ℂ K (xv x) {i}) (d - a) := by
       have e : N + d + 1 = (N + d + 1 - N1) + N1 := by omega
       rw [e, pow_add, ← smul_smul]
-      exact omB_smul_mem _ _ (pow_mem hu _) hN1'
+      exact _root_.omB_smul_mem _ _ (pow_mem hu _) hN1'
     have h2 : algebraMap F K ((x i : F) / x j) ^ N • z ∈ omB ℂ K (rB ℂ K (xv x) {j}) a :=
-      omB_smul_mem _ _ (pow_mem hv _) hz
+      _root_.omB_smul_mem _ _ (pow_mem hv _) hz
     exact Submodule.apply_mem_map₂ _ h1 h2
   unfold MZ at hm
   rw [Submodule.map₂_eq_span_image2] at hm

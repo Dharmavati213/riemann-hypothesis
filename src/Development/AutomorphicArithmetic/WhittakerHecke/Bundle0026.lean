@@ -102,7 +102,7 @@ theorem UpperTheory.integral_tsum_ideleCovering_eq_const_mul :
     have h : Continuous (fun t : ℝ => (iy (Real.exp t) : IdeleGroup ℚ)) := UpperTheory.realIdele_mul_abs_continuous_and_unit_abs_eq_one.2.2.1
     exact h.measurable
   have hd : Measurable (fun α : ℚˣ => (IdeleGroup.diagonal ℚ α : IdeleGroup ℚ)) := measurable_from_top
-  refine gen volume U.υ ((ideleMeasure ℚ).prod κ) (ideleMeasure ℚ)
+  refine _root_.gen volume U.υ ((ideleMeasure ℚ).prod κ) (ideleMeasure ℚ)
     (fun t u p α => Un.cov t u α * (p.1 * p.1)⁻¹) ?_ c ?_ H hH hI
   · have h1 : Measurable fun x : ℝ × IdeleGroup ℚ × (IdeleGroup ℚ × G1 ℚ) × ℚˣ => x.2.2.1.1 := by fun_prop
     exact (((hd.comp (measurable_snd.comp (measurable_snd.comp measurable_snd))).mul

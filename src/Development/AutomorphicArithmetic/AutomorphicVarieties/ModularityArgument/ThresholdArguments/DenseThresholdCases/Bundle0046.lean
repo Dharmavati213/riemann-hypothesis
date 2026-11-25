@@ -44,11 +44,11 @@ private theorem isPair_map {O Γ : Type} [CommRing O] [Group Γ] (Φ : Fr O Γ) 
   obtain ⟨h1, h2, h3, h4, h5, h6⟩ := h
   have hr : ∀ g, (P.map f).r g = (P.r g).map f := fun _ => rfl
   have hn : ∀ v, (P.map f).n v = (P.n v).map f := fun _ => rfl
-  refine ⟨fun g => isGSp_map f (h1 g), fun g hg => ?_, ?_, fun v => ⟨?_, fun i => ?_, fun i j hij => ?_⟩,
+  refine ⟨fun g => _root_.isGSp_map f (h1 g), fun g hg => ?_, ?_, fun v => ⟨?_, fun i => ?_, fun i j hij => ?_⟩,
     fun v s hs i j hij => ?_, fun v s hs i => ?_⟩
   · rw [hr, h2 g hg, Matrix.map_one _ (map_zero f) (map_one f)]
   · rw [hr]; exact h3.map (map_zero f)
-  · have := isGSp_map f (h4 v).1
+  · have := _root_.isGSp_map f (h4 v).1
     rwa [map_one] at this
   · rw [hn, Matrix.map_apply, (h4 v).2.1, map_one]
   · rw [hn, Matrix.map_apply, (h4 v).2.2 i j hij, map_zero]
