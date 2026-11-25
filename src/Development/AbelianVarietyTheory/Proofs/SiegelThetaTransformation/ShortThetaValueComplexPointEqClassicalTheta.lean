@@ -271,7 +271,4 @@ theorem GlobalTheory.Dict.shortValAt_eq_thP : Formalism.MainNotions.ModuliIntegr
   simp only [map_mul, map_inv₀, map_pow, map_natCast]
   have key (a b c d t s : ℂ) : a * b * c * ((N : ℂ) ^ P.totalDegree)⁻¹ * ((N : ℂ) ^ P.totalDegree * d * t * s) =
       a * b * c * d * t * s := by field_simp
-  by_cases hzero : P = 0
-  · simp [hzero, I2.polyDeriv] <;> exact mul_zero _
-  · rw [← (isHomogeneous_rowTotal hP.2.2).totalDegree hzero]
-    exact key _ _ _ _ _ _
+  exact key _ _ _ _ _ _
