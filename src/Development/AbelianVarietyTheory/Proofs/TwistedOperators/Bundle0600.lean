@@ -369,7 +369,7 @@ theorem dual_frame {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)} {Λ : Submodul
   obtain ⟨β', h1, -⟩ := exists_dual_frame V β
   have h' : IsFrame β' Λ := by
     intro y
-    rw [← hd, ← mem_hat, mem_hat_dualL_iff (selfDual_isFullLattice hsd)]
+    rw [← hd, ← mem_hat, mem_hat_dualL_iff (_root_.GlobalTheory.AdIsom.selfDual_isFullLattice hsd)]
     rw [← dual_frame_gen (OA D) (cjA D) (fun _ => cjA_mem) h1]
     refine forall_congr' fun x => ?_
     rw [mem_hat, hβ, ← cjA_mem_iff, cjA_hA, hA_eq]
