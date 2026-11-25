@@ -132,7 +132,7 @@ theorem UpperTheory.V.Sd.Hm.fixunit :
     rwa [hu, mul_one] at this
   have m1 : ∀ w, pLoc F w (u : Af F) ∈ w.adicCompletionIntegers F := fun w => (hu w).le
   have m2 : ∀ w, pLoc F w ((u⁻¹ : (Af F)ˣ) : Af F) ∈ w.adicCompletionIntegers F := fun w => (hi w).le
-  let u0 : (Ohat F)ˣ := ⟨⟨u, mem_Ohat.2 m1⟩, ⟨((u⁻¹ : (Af F)ˣ) : Af F), mem_Ohat.2 m2⟩, Subtype.ext u.mul_inv, Subtype.ext u.inv_mul⟩
+  let u0 : (Ohat F)ˣ := ⟨⟨u, _root_.UpperTheory.V.Af.GlobalFixedVectors.mem_Ohat.2 m1⟩, ⟨((u⁻¹ : (Af F)ˣ) : Af F), _root_.UpperTheory.V.Af.GlobalFixedVectors.mem_Ohat.2 m2⟩, Subtype.ext u.mul_inv, Subtype.ext u.inv_mul⟩
   have e := key S (fun k hk _ => hS hk) (aff u 0) (mem_KAway.2 ⟨⟨aff u0 0, ?_, ?_⟩, by simp⟩) fun w => ?_
   · exact congrFun (congrArg Subtype.val e) g
   · haveI : Subsingleton (Ohat F ⧸ Ideal.span {((1 : ℕ) : ↥(Ohat F))}) :=
