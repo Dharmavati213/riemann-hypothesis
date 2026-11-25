@@ -165,7 +165,7 @@ private theorem smooth_dl (v : Pl K) : IsSmoothChar (dl v) :=
 private theorem smooth_dS {r : ℕ} (w : Fin r → Pl K) : IsSmoothChar (dS w) := by
   unfold dS
   refine Finset.prod_induction _ IsSmoothChar (fun _ _ => IsSmoothChar.mul) ?_ fun i _ => ?_
-  · unfold IsSmoothChar; simp
+  · unfold IsSmoothChar; simp only [Nat.reduceAdd, MonoidHom.ker_one, Subgroup.coe_top, isOpen_univ]
   · exact (smooth_dl (w i)).comp _ (continuous_apply i)
 
 private noncomputable def L₁ {r : ℕ} (w : Fin r → Pl K) : (∀ i, PW (w i)) →* GS 2 w :=
