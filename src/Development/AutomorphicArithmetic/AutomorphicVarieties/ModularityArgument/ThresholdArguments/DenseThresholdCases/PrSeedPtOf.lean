@@ -89,7 +89,7 @@ private theorem pt_ex {c : Coef l} [Fr.IsCoef l c.O] {F : Fr.Frame l (ResidueFie
         algebraMap c.O (Qbar l) (T.G.eps c.O c.O g ^ (1 - (n : ℤ)) : c.Oˣ) :=
       congrArg Units.val (map_zpow (Units.map (algebraMap c.O (Qbar l) : c.O →* Qbar l)) (T.G.eps c.O c.O g) _).symm
     rw [e, ← h, hρ]
-    change (tw _ _ g).valᵀ * _ * (tw _ _ _).val = _
+    change (UpperTheory.V.Af.tw _ _ g).valᵀ * _ * (UpperTheory.V.Af.tw _ _ _).val = _
     rw [tw_val, tw_val, MonoidHom.comp_apply, MonoidHom.comp_apply, T.K.π_conj, Matrix.transpose_smul, Matrix.smul_mul,
       Matrix.smul_mul, Matrix.mul_smul, hP, smul_smul, Units.val_mul, map_mul]
     rfl
@@ -152,6 +152,9 @@ private theorem beta_ex (R : CReal k c₁ f n ka) : ∃ β : Fin n → G L Ω �
       (congrArg (· * _) (map_zpow _ _ _)))).trans ?_
     rw [Units.val_mul, Units.val_zpow_eq_zpow_val]
     rfl
+
+namespace PrSeedPtOfAux
+
 private theorem main (H : GlobalTheory.Published.GlobalArtinReciprocity) (ι : Qbar l ≃+* ℂ) (hM : l ∣ M) (R : CReal k c₁ f n ka)
     (hka : IsKa σ M ι n ka) (χ' : G ℚ Ω →* (Qbar l)ˣ) (j : ℕ) (hχ : ¬ l ∣ orderOf χ')
     (hc : ∀ s, ‖((cycBar ℚ Ω l ^ j * χ') s).val - (Ψ s).val.1‖ < 1) (m : ℕ) (hm : 2 ≤ m) (r : G L Ω →* GL (Fin n) (Qbar l))
@@ -190,7 +193,7 @@ private theorem main (H : GlobalTheory.Published.GlobalArtinReciprocity) (ι : Q
   have hρc : ∀ a b, Continuous fun g => (ρ g).val a b := fun a b => by
     haveI := t2_space_open_subgroup R.T.G
     have hp : Continuous (prT R) := R.V.pr_cont W.continuous_resP
-    have hq : Topology.IsQuotientMap (prT R) := hp.isClosedMap.isQuotientMap hp (pr_surj R.V)
+    have hq : Topology.IsQuotientMap (prT R) := hp.isClosedMap.isQuotientMap hp (_root_.pr_surj R.V)
     rw [hq.continuous_iff]
     simp only [Function.comp_def, hρr]
     exact (Units.continuous_val.comp htw).matrix_elem a b
@@ -239,7 +242,7 @@ private theorem main (H : GlobalTheory.Published.GlobalArtinReciprocity) (ι : Q
     · exact (funext (hψ v) : _ = ψ v) ▸ hfl v
     · rw [hψ, hψ]
       exact (hA v).2 a b
-  · obtain ⟨s, rfl⟩ : ∃ s, prT R s = g := pr_surj R.V g
+  · obtain ⟨s, rfl⟩ : ∃ s, prT R s = g := _root_.pr_surj R.V g
     refine ⟨fun i => β i s, fun i => hβ1 i s, fun a => ?_⟩
     rw [hρr]
     refine hS5' _ (fun i => W.pushCh (c₁.O.val : c₁.O →+* Qbar l) (β i)) 1 (fun i t => ?_) (hS4 _ hkn hr.res) (fun i t => ?_) s a
@@ -254,9 +257,12 @@ private theorem main (H : GlobalTheory.Published.GlobalArtinReciprocity) (ι : Q
   · refine ⟨β i g.1, hβ1 i g.1, ?_⟩
     rw [hβ2]
     exact near_mul (a' := (ka g.1).val) (tri (hκc v i g) (hX i g.1)) (by simp) (hzn _ _) (hkn _)
+
+end PrSeedPtOfAux
+
 end SlopeTestRemainingChoices
 theorem UpperTheory.V.Pr.seedPtOf_alt :
     GlobalTheory.Published.GlobalArtinReciprocity → _root_.UpperTheory.V.Pr.SeedPtOfAlt := by
   intro H Ω _ _ _ l _ ι c _ N _ e ψ η σ g₁ B M hL L _ _ _ _ _ Φ k c₁ _ f n ka R hka χ' j hχ hc m hm r hr J hJ
-  exact main H ι ((Dvd.intro _ rfl).trans hL.dvd) R hka χ' j hχ hc m hm r hr J hJ
+  exact PrSeedPtOfAux.main H ι ((Dvd.intro _ rfl).trans hL.dvd) R hka χ' j hχ hc m hm r hr J hJ
 end
