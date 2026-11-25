@@ -59,6 +59,7 @@ variable {p : ℕ} [Fact p.Prime]
 theorem base_integralClosure (K : IntermediateField ℚ_[p] (PadicAlgCl p)) [FiniteDimensional ℚ_[p] K] :
     ∃ _ : IsDiscreteValuationRing (integralClosure ℤ_[p] K), GlobalTheory.Mum.Base (integralClosure ℤ_[p] K) := by
   haveI := GlobalTheory.isDiscreteValuationRing_integralClosure_padicInt p K
+  haveI : IsNoetherianRing (integralClosure ℤ_[p] K) := PrincipalIdealRing.isNoetherianRing
   exact ⟨inferInstance, ⟨inferInstance, inferInstance, inferInstance,
     GlobalTheory.DiscEval.isAdicComplete_integralClosure K⟩, GlobalTheory.charZero_integralClosure_padicInt⟩
 
