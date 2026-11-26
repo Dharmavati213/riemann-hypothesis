@@ -303,7 +303,6 @@ lemma IsMarked.mul_sum_heckeScalingExponent_le_loss (hΛ : D.IsMarked Λ) :
       1 / (D.m ^ 2 * D.f) * D.collisionExponent p : ℝ) ≤ D.loss p := by
   have hp_pos : (0 : ℝ) < p := mod_cast hp.1.pos
   have hm_pos : (0 : ℝ) < D.m := HasLogBound.pos D
-  have hf_pos : (0 : ℝ) < D.f := HasLogBound.pos D
   -- Each a-place induces one prime, so the `A_l` add up to at most `a f`.
   have h_sum : ∑ l ∈ Λ, heckeScalingExponent l ≤ D.a * D.f :=
     (sum_heckeScalingExponent Λ).trans_le (Nat.mul_le_mul_left _ (card_le_univ _))
@@ -375,6 +374,13 @@ lemma chiK_eq_one_or_le_of_notMem_smallNonsplitPrimes (h_notMem : p ∉ D.smallN
   rwa [mem_smallNonsplitPrimes_iff_isSmallNonsplit, not_and_or, not_lt, not_ne_iff, or_comm]
     at h_notMem
 
+omit [PadicPlace p] in
+/-- Outside the small non-split primes and the level prime, neither a gain nor a loss occurs. -/
+lemma gain_allowedLoss_eq_zero (h_notMem : p ∉ D.smallNonsplitPrimes) (hN : p ≠ D.N) :
+    D.gain p = 0 ∧ D.allowedLoss p = 0 :=
+  ⟨D.gain_eq_zero (chiK_eq_one_or_le_of_notMem_smallNonsplitPrimes h_notMem),
+    by simp [allowedLoss, h_notMem, hN]⟩
+
 open scoped Pointwise in
 /-- Let `Ψ` be a chain datum for the twist `ϑ`, with `p` prime to the norm of the level of `ϑ`. Let
 `Λ` be a full mark: a set of primes above the exceptional non-split prime `p < x₁`, disjoint from
@@ -429,7 +435,8 @@ theorem exists_colengthDvd_gaugeLe_compositeLift {P : Parameters} {D : Data P} {
     tauto
   obtain ⟨h_mem, hN⟩ | ⟨h_mem, h_exc⟩ | ⟨h_mem, h_exc⟩ | ⟨h_mem, hN⟩ := h_cases
   · -- `p ≠ N` is split or at least `x₁`, so it differs from `d` and has no gain.
-    rw [allowedLoss, ite_eq_right h_mem, ite_eq_right hN]
+    obtain ⟨h_gain, h_loss_zero⟩ := gain_allowedLoss_eq_zero h_mem hN
+    rw [h_loss_zero]
     have hd : p ≠ P.d := by
       rintro rfl
       exact h_mem (mem_smallNonsplitPrimes_iff_isSmallNonsplit.2
@@ -438,8 +445,7 @@ theorem exists_colengthDvd_gaugeLe_compositeLift {P : Parameters} {D : Data P} {
     obtain ⟨Ψ', hΨ', h_eq⟩ : ∃ Ψ' : D.Translations →₀ ℂ, IsWeakChainDatum ϑ Ψ' ∧
         ∀ φ : D.SourceForm, compositeLift ϑ Ψ φ = restrictedChain ϑ Ψ' φ :=
       hΨ.exists_isWeakChainDatum_compositeLift_eq
-    rw [h_eq, D.gain_eq_zero (chiK_eq_one_or_le_of_notMem_smallNonsplitPrimes h_mem), sub_zero,
-      rpow_zero]
+    rw [h_eq, h_gain, sub_zero, rpow_zero]
     exact hΨ'.gaugeLe_restrictedChain_one hQ hφ hN hd
   · -- `p < x₁` is not exceptional: the loss pays for the collisions on all integral source forms.
     rw [allowedLoss, ite_eq_left h_mem]

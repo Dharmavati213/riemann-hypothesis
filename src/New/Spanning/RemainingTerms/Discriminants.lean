@@ -255,7 +255,7 @@ lemma _root_.New.IsValuationPair.exists_square_colLattice_eq (hR : IsValuationPa
   let D : Matrix m m A := (X * V.1).toCols₁
   have hD : Y * V.1.toBlocks₂₁ = D := by
     ext i j
-    simp [D, X, toCols₁, toBlocks₂₁, Matrix.mul_apply]
+    simp [D, X, toBlocks₂₁, Matrix.mul_apply]
   have hY : D * V⁻¹.1.toBlocks₁₂ = Y := by
     ext i j
     have h_cancel : (X * V.1 * V⁻¹.1) i (.inr j) = Y i j := by simp [X, Matrix.mul_assoc]

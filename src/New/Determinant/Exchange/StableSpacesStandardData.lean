@@ -346,7 +346,7 @@ lemma IntegralFrame.match_mem_of_isPrimitiveMatrix_vanishing
   let l (r : Matrix b b R) : Matrix b b V.O := if r = 1 then 1 else r.map (surjInv h_surj)
   have hl (r : Matrix b b R) : (l r).map π = r := by
     ext i j
-    by_cases hr : r = 1 <;> simp [l, hr, Matrix.one_apply, apply_ite π, surjInv_eq h_surj]
+    by_cases hr : r = 1 <;> simp [l, hr, Matrix.one_apply, surjInv_eq h_surj]
   let f (r : Matrix b b R) : Matrix n b F → ℂ := η r.det • S (V.ϖ.inv • (l r).map Subtype.val)
   have h_avg : ∑ r, f r ∈ P := by
     refine h_kill _ (sum_mem fun r _ ↦ M.smul_mem _ (h_shear_mem _)) ?_
@@ -660,7 +660,7 @@ lemma New.Exchange.IsEquivariantLift.exists_linear_partialMean
     { toFun Ψ := A.partialMean B D T (𝒟 Ψ) x
       map_add' Ψ Φ := by
         simpa using partialMean_add hD (h_lift.isAutFunction Ψ.2) (h_lift.isAutFunction Φ.2) x
-      map_smul' := by simp [partialMean, centreCoeff, ← quotMean_const_mul, mul_left_comm] }
+      map_smul' := by simp [partialMean, centreCoeff, mul_left_comm] }
   obtain ⟨L, hL₀ : L ∘ₗ M.subtype = L₀⟩ := L₀.exists_extend
   have hL (Ψ : Matrix m b (LocProd 𝔠.ramifiedPlaces) → ℂ) (hΨ : Ψ ∈ M) :
       L Ψ = A.partialMean B D T (𝒟 Ψ) x := LinearMap.congr_fun hL₀ ⟨Ψ, hΨ⟩

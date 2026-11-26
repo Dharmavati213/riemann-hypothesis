@@ -400,7 +400,7 @@ lemma genIndex_sq_mul_abs_norm_eq [HasPrimitiveRoot5040 E] (u : Gf E κ) {t s : 
       rw [Matrix.mul_one, conjTranspose_fromCols_eq_fromRows_conjTranspose, fromRows_mul_fromCols]
       simp [fromBlocks_add]
     rw [h_index, h_block] at h_jacobi
-    simpa [w, Matrix.mul_assoc] using h_jacobi
+    simpa [w] using h_jacobi
   have h_conj : wᴴ * w = a.valᴴ * finAdeleMatrix (yᴴ * y) * a.val := by
     simp [w, finAdeleMatrix_conjTranspose, Matrix.mul_assoc]
   rw [h_gram, h_gram, h_conj, det_mul, det_mul, det_conjTranspose] at h_disc

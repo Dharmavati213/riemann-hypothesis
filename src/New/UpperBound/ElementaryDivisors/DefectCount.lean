@@ -313,7 +313,6 @@ lemma FrobeniusCycle.exists_eq_add_of_coeff_polyAction_powerPacking (T : Frobeni
       α = m • exponentOf δ + ε ∧
       (T.letterRep n g *ᵥ F u) δ ≠ 0 ∧
       ∀ s : ZMod N, ∑ b : Fin k, ε (b, s) ∈ Set.Icc (m * k) (m * k + m) := by
-  classical
   obtain ⟨u, δ, hδ⟩ : ∃ (u : Fin k × ZMod N → Fin m) (δ : Exponents N k n),
       (monomial (m • exponentOf δ) ((T.letterRep n g *ᵥ F u) δ) *
         T.polyAction g (monomial (residueExponent a u) 1)).coeff α ≠ 0 := by

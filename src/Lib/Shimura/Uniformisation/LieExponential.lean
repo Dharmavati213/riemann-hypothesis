@@ -479,10 +479,6 @@ private lemma surjective_fderiv_relations {V : (Spec (CommRingCat.of ℂ)).Opens
   ext
   simp [h_eval, ← ofSection_eq hx, vecMul_eq_sum, Pi.single_apply, pderiv_map]
 
-private lemma concreteCategory_hom_eq_hom {R S : CommRingCat} (f : R ⟶ S) :
-    ConcreteCategory.hom f = f.hom :=
-  rfl
-
 /-- Let `P` present `Γ(A, U)` over `Γ(Spec ℂ, V)`, the algebra map being `A.hom.appLE V U e`, for
 affine opens `U` and `V`. Every zero `p` of the relations of `P`, read as polynomial functions on
 `ℂ^ι`, is the vector of coordinates of a complex point of `U`. -/
@@ -512,7 +508,7 @@ private lemma exists_point_of_relations_eq_zero {V : (Spec (CommRingCat.of ℂ))
     landsIn_fromSpec hU _, funext fun i ↦ ?_⟩
   · -- The point lies over `Spec ℂ`, since the constants are evaluated as before.
     rw [← ofSection_appLE A.hom e r (landsIn_fromSpec hU _)]
-    simpa [landsIn_fromSpec hU, ofSection_eq hV1, h_alg, ev, concreteCategory_hom_eq_hom] using
+    simpa [landsIn_fromSpec hU, ofSection_eq hV1, h_alg, ev] using!
       h_lift (C r)
   · -- Its `i`-th coordinate is `p i`: the generator `X i` evaluates to `p i`.
     simpa [Algebra.Generators.algebraMap_apply, ev] using h_lift (X i)

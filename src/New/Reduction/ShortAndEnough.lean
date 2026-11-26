@@ -121,9 +121,8 @@ lemma norm_invGainFactor (l : ℕ) [hl : Fact l.Prime] :
   · -- If `l` is not in the product, then `g_l = 0`.
     rw [notMem_union, notMem_singleton]
     rintro ⟨h_notMem, hN⟩
-    have h_cases : chiK P.d l = 1 ∨ D.x₁ ≤ l :=
-      chiK_eq_one_or_le_of_notMem_smallNonsplitPrimes h_notMem
-    simp [gainExponent, D.gain_eq_zero h_cases, allowedLoss, h_notMem, hN]
+    obtain ⟨h_gain, h_loss⟩ := gain_allowedLoss_eq_zero h_notMem hN
+    simp [gainExponent, h_gain, h_loss]
 
 /-- A non-zero constant `c_ss` for which the seesaw identity `New.Data.seesaw_identity` holds with
 the linear form `D.besselForm` and the archimedean point `D.besselPoint`. -/

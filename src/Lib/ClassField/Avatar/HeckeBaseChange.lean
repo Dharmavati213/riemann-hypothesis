@@ -356,7 +356,6 @@ lemma polyKillsAt_scalarRep_cyclotomicCharIn_pow_mul [PadicIso ℓ]
     have h_cyc : (q : PadicAlgCl ℓ) = algebraMap ℤ_[ℓ] (PadicAlgCl ℓ) (cyclotomicChar Ω ℓ s⁻¹) := by
       rw [hs.cyclotomicChar_eq ℓ hℓ]
       simp
-    have h_val : aeval (scalarRep μ s).val (X - C (q ^ d * c)) = 0 := h_away hℓ
     -- `simp_all` unfolds the scalar representations and uses `h_cyc` and `h_val`.
     simp_all [sub_eq_zero, Matrix.algebraMap_eq_diagonal, scalarRep, Matrix.diagonal_pow,
       funext_iff]

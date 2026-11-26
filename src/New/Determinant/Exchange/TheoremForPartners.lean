@@ -1055,8 +1055,7 @@ lemma exchange_theorem (σ : b ⊕ a ≃ n) (h_signs : negCount s = negCount t +
         (∀ x, modDatum W V 𝔪 Φ x = localDatum W V x Φ' 𝔠.readsAt) ∧
         ∀ v, modDatum V' W 𝔪 Ψ v = localDatum V' W v Ψ' 𝔠.readsAt :=
     exists_areMatched_modDatum_eq W V V' σ 𝔪 𝔠 h_places (by rwa [hχ] at h_matched)
-  rw [hΦ, hΨ]
-  exact h_exch Φ' Ψ' h_locally_const h_matched'
+  simpa only [hΦ, hΨ] using h_exch Φ' Ψ' h_locally_const h_matched'
 
 /-- Let `W`, `V`, `V'` have ranks `|n| = |b| + |a|` (split by `σ`), `|a| = |b| + 2e`, `|b|`. Let `W`
 have as many negative signs `q` as `V` and `V'` together, with `2q + 2 ≤ |n| ≤ 2 μ + 2q`, and let

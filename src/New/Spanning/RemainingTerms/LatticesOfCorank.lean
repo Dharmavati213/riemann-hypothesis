@@ -693,7 +693,7 @@ omit [HasPrimitiveRoot5040 E]
 `b ^ f H ^ (2 ϱ + 6) 2 ^ k` is at most `tailScale = b ^ (k f / 4)`. Here `b` is the size parameter
 of `S`, `k = #κ`, `f` is the number of infinite places of `E`, and
 `H = discriminantBound = b ^ (n ^ 3 f)` with `n = ϱ + 1`. -/
-lemma pow_mul_discriminantBound_pow_le (S : Filling E 𝔰) [S.IsAdmissible] :
+lemma pow_mul_discriminantBound_pow_le (S : Filling E 𝔰) :
     S.b ^ numInfPlaces E * S.discriminantBound ^ (2 * 𝔰.ϱ + 4 + 2) * 2 ^ 𝔰.k ≤ S.tailScale := by
   have hb : 2 ≤ S.b := by linarith [S.thousand_le_b]
   have discriminantBound_nonneg : 0 ≤ S.discriminantBound := pow_nonneg (zero_le_two.trans hb) _

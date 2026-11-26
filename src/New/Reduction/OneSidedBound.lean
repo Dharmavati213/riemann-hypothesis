@@ -166,19 +166,18 @@ log y / φ(q) - c_q`. Then `R_q(y) - R_q(⌊y⌋) ≤ 26 / y` for `y ≥ 2`. -/
 lemma primeRemainder_sub_primeRemainder_floor_le {d : ℕ} [Fact d.Prime] {q : ℕ} [NeZero q] {y : ℝ}
     (hy : 2 ≤ y) : primeRemainder d q y - primeRemainder d q ⌊y⌋₊ ≤ 26 / y := by
   have h_le : (⌊y⌋₊ : ℝ) ≤ y := Nat.floor_le (zero_le_two.trans hy)
-  have h_lt : y < ⌊y⌋₊ + 1 := Nat.lt_floor_add_one y
-  have h_one : (1 : ℝ) ≤ ⌊y⌋₊ := by linarith
+  have h_half := Nat.div_two_lt_floor (one_le_two.trans hy)
   calc primeRemainder d q y - primeRemainder d q ⌊y⌋₊ ≤ 13 * ((y - ⌊y⌋₊) / ⌊y⌋₊) :=
-        (le_abs_self _).trans (abs_primeRemainder_sub_le h_one h_le)
-    _ ≤ 13 * (1 / (y / 2)) := by gcongr <;> linarith
+        (le_abs_self _).trans (abs_primeRemainder_sub_le (by linarith) h_le)
+    _ ≤ 13 * (1 / (y / 2)) := by gcongr; linarith [Nat.self_sub_floor_lt_one y]
     _ = 26 / y := by field
 
 /-- For `y ≥ 2` and `-1 ≤ t ≤ 0` we have `⌊y⌋ ^ t ≤ 2 y ^ t`, since `y / 2 ≤ ⌊y⌋`. -/
 lemma natFloor_rpow_le_two_mul_rpow {y t : ℝ} (hy : 2 ≤ y) (ht_ge : -1 ≤ t) (ht_le : t ≤ 0) :
     (⌊y⌋₊ : ℝ) ^ t ≤ 2 * y ^ t := by
   have hy_pos : 0 < y := two_pos.trans_le hy
-  have h_half : y / 2 ≤ ⌊y⌋₊ := by linarith [Nat.lt_floor_add_one y]
-  calc (⌊y⌋₊ : ℝ) ^ t ≤ (y / 2) ^ t := rpow_le_rpow_of_nonpos (half_pos hy_pos) h_half ht_le
+  calc (⌊y⌋₊ : ℝ) ^ t ≤ (y / 2) ^ t :=
+    rpow_le_rpow_of_nonpos (half_pos hy_pos) (Nat.div_two_lt_floor (one_le_two.trans hy)).le ht_le
     _ = y ^ t / 2 ^ t := div_rpow hy_pos.le zero_le_two t
     _ ≤ y ^ t / 2 ^ (-1 : ℝ) := by
         gcongr

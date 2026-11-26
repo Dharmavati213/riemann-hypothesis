@@ -22,8 +22,8 @@ one formula serves both grids. An offset `o` shifts the second kind of block; th
 * `New.Data.gridCentres`, `New.Data.isParam_gridParam`: the parameter of a node consists of a stem
   and the blocks of a set of centres (`New.CentreSystem`).
 * `New.Data.paramsCorrespond_grid_succ_left`, `New.Data.paramsCorrespond_grid_succ_right`,
-  `New.Data.paramsCorrespond_leftPair`: each step inserts a block, so the parameters correspond
-  (`New.ParamsCorrespond`).
+  `New.Data.paramsCorrespond_neg_gridParam_insert_first`: each step inserts a block, so the
+  parameters correspond (`New.ParamsCorrespond`).
 
 Notions from other files:
 * `New.Data`: the admissible data `D`, with `m` (even) lifts, the rank `r` (odd), `k = r + 1 - m`,
@@ -912,26 +912,6 @@ lemma paramsCorrespond_neg_gridParam_insert_first {j : ℕ} {P : Parameters} (D 
     (gridBlocks_succ_right_eq_insert_first i 0 j) (D.isSeparated_gridCentres τ z)
     (D.gridBlocks_subset τ z D.m.zero_le (by omega)) h_centre (by simp [gridBlocks])
     (D.mul_card_gridIndex_add_pow_three_le D.m.zero_le (by omega) D.m.zero_le (by omega)) rfl
-
-/-- Adding or removing the first block of an interval, for `i + j < m`: the negated parameters of
-the node `(0, j)` with offset `i + 1` and of the node `(0, j + 1)` with offset `i` correspond, in
-both directions. -/
-lemma paramsCorrespond_leftPair {j : ℕ} {P : Parameters} (D : Data P) {i : ℕ} (z : Bool)
-    (hij : i + j < D.m) :
-    ParamsCorrespond
-        (fun τ : D.Φ ↦ card (D.GridIndex z 0 j) - D.gridWeight (!z) i (D.GridIndex z 0 j) τ)
-        (fun τ : D.Φ ↦
-          card (D.GridIndex z 0 (j + 1)) - D.gridWeight (!z) i (D.GridIndex z 0 (j + 1)) τ)
-        (-D.gridParam z (i + 1) 0 j) (-D.gridParam z i 0 (j + 1))
-        (D.gridSigns z (i + 1) 0 j) (D.gridSigns z i 0 (j + 1)) ∧
-      ParamsCorrespond
-        (fun τ : D.Φ ↦
-          card (D.GridIndex z 0 (j + 1)) - D.gridWeight (!z) i (D.GridIndex z 0 (j + 1)) τ)
-        (fun τ : D.Φ ↦ card (D.GridIndex z 0 j) - D.gridWeight (!z) i (D.GridIndex z 0 j) τ)
-        (-D.gridParam z i 0 (j + 1)) (-D.gridParam z (i + 1) 0 j)
-        (D.gridSigns z i 0 (j + 1)) (D.gridSigns z (i + 1) 0 j) :=
-  ⟨D.paramsCorrespond_neg_gridParam_insert_first hij,
-    (D.paramsCorrespond_neg_gridParam_insert_first hij).symm⟩
 
 end New.Data
 

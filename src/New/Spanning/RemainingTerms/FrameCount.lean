@@ -373,7 +373,7 @@ lemma frameProducts_mul_of_mem_besselU0 {S : Filling E 𝔰} {u : S.G E} (hu : u
 elements that fix each vector of the frame `f`. Then `u γ` and `γ` have the same shared vectors (the
 first `ϱ` coordinates of the columns `k ≥ j` of `γ f · adj Y`, see `sharedVectors`), as these
 columns lie in the span of `f`. -/
-lemma HasCellRank.sharedVectors_mul_of_mem_besselU0 {S : Filling E 𝔰} [HasPrimitiveRoot5040 E]
+lemma HasCellRank.sharedVectors_mul_of_mem_besselU0 {S : Filling E 𝔰}
     {j : Fin (𝔰.ϱ + 2)} {γ : S.G E} (h : S.HasCellRank j γ) {u : S.G E} (hu : u ∈ besselU0) :
     S.sharedVectors j (u * γ) = S.sharedVectors j γ := by
   ext a k

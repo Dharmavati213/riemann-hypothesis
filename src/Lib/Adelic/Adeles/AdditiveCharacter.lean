@@ -444,7 +444,7 @@ instance isCovolOneLattice_ratMatrices [Fintype m] : IsCovolOneLattice (ratMatri
 /-- An injective additive map `f` into a Hausdorff topological group, with discrete image, sends
 only finitely many points into a given compact set. -/
 lemma finite_preimage_of_discreteTopology_range {B I : Type*} [AddCommGroup B] [AddCommGroup I]
-    [TopologicalSpace B] [IsTopologicalAddGroup B] [T2Space B] {f : I →+ B} {C : Set B}
+    [TopologicalSpace B] [IsTopologicalAddGroup B] {f : I →+ B} {C : Set B}
     (hf_inj : Function.Injective f) (h_disc : DiscreteTopology f.range) (hC : IsCompact C) :
     (f ⁻¹' C).Finite := by
   -- `f` tends to infinity along the cofinite filter

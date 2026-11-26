@@ -145,7 +145,7 @@ lemma HasAbsUpToNormPower.const (a : ℂ) : D.HasAbsUpToNormPower (fun _ : D.MFo
 
 lemma HasAbsUpToNormPower.inv (h : D.HasAbsUpToNormPower c f) : D.HasAbsUpToNormPower c⁻¹ f⁻¹ := by
   obtain ⟨C, k, hc⟩ := h
-  exact ⟨C⁻¹, -k, fun ϑ ↦ by simp [hc, zpow_neg, mul_comm, mul_left_comm]⟩
+  exact ⟨C⁻¹, -k, fun ϑ ↦ by simp [hc, zpow_neg, mul_comm]⟩
 
 /-- If each `γ a` has absolute value `F a` up to a norm power, then the product of the `γ a` has as
 absolute value up to a norm power the product of the `F a`. -/

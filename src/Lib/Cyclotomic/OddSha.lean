@@ -511,7 +511,7 @@ lemma New.exists_character_components {N : ℕ} [NeZero N] {E : Type} [Field E] 
   have h_sum (h : Gal(Ω/E)) : ∑ ψ : DirichletCharacter O N, z ψ (ι h) =
       ((φ N : ℕ) : QuotSpan (l ^ n : O)) * x (conjGal h) () -
         ((φ N : ℕ) : QuotSpan (l ^ n : O)) * x h () := by
-    simp [sum_characters_eq, cast_smul_eq_nsmul, z, T, σ, hS, cyclotomicPowDirichlet, ← sum_smul,
+    simp [cast_smul_eq_nsmul, z, T, σ, hS, cyclotomicPowDirichlet, ← sum_smul,
       ← mul_sum, sum_comm, fun g ↦ h_add 1 (ι g) g (conjGal g), smul_sub]
   have h_conj_conj (g : Gal(Ω/E)) : conjGal (conjGal g) = g := hι.injective (by simp)
   exact four_mul_totient_smul_eq_zero_of_sum_eq (h_minus he) h_sum h_even h_conj_conj

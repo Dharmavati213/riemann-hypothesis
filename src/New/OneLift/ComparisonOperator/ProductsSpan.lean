@@ -221,7 +221,7 @@ lemma polyMatrixCoeff_paddedMinorProd_ne_zero_and_bounded (γ e : D.Φ → ℤ) 
         ‖inner ℂ (l v) (l (realWeil (pairHomInf (h, h')) v))‖ := by
       simp [polyMatrixCoeff, realPairWeil, v, ε, ← h_inner]
     have h_iso : ‖l (realWeil (pairHomInf (h, h')) v)‖ = ‖l v‖ := by
-      simpa [ε] using h_unitary (pairHomInf (h, h')) v
+      simpa using h_unitary (pairHomInf (h, h')) v
     grw [h_phase, norm_inner_le_norm, h_iso]
 
 /-- The product of minors `paddedMinorProd j` is homogeneous of degree at most `b ^ (3 / 2)`, where

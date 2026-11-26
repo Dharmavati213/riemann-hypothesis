@@ -118,7 +118,7 @@ lemma integrable_gammaWeight_mul_rpow (hk : ∀ w : InfinitePlace E, k ≤ m w) 
   have h_sq (w : InfinitePlace E) : 0 < ‖a.val w‖ ^ 2 := by
     simp [piUnits_val_apply_ne_zero a w]
   have h_abs : ideleAbs (realIdele a) = ∏ w : InfinitePlace E, ‖a.val w‖ ^ 2 := by
-    simp [ideleAbs, finAdele_one_apply]
+    simp [ideleAbs]
   change ∏ w : InfinitePlace E, rexp (-‖a.val w‖ ^ 2) * (‖a.val w‖ ^ 2) ^ (m w + x) =
     gammaWeight E m a * ideleAbs (realIdele a) ^ x
   simp only [gammaWeight, h_abs, ← finsetProd_rpow _ _ (fun w _ ↦ (h_sq w).le),

@@ -84,7 +84,7 @@ lemma finrank_eq_two_mul_card_infinitePlace [IsTotallyComplex K] :
     finrank ℚ K = 2 * Core.numInfPlaces K := by simp [← sum_mult_eq, mul_comm]
 
 /-- The root discriminant `|disc K| ^ (1 / [K : ℚ])` of a totally complex field is positive. -/
-lemma rootDiscr_pos [IsTotallyComplex K] : 0 < rootDiscr K := by
+lemma rootDiscr_pos : 0 < rootDiscr K := by
   rw [rootDiscr_def]
   exact rpow_pos_of_pos (by simp [discr_ne_zero]) _
 

@@ -289,8 +289,7 @@ lemma someUnitLocus_le_unimodularLocus {v : Fin d → c.baseAlg}
   have h_fst : (∑ l, inl (σ.down.fst (M i l)) * g' l).fst = σ.down.fst (v i) := by
     simp [g', hM, mulVec, dotProduct, fst_sum, HodgeTest.sqZeroExt]
   refine eq_top_of_isUnit_mem (span (Set.range g')) h_mem ?_
-  rw [isUnit_iff_isUnit_fst, h_fst]
-  exact hi
+  simpa only [isUnit_iff_isUnit_fst, h_fst] using! hi
 
 section Symbol
 

@@ -329,8 +329,8 @@ closed point of `α` is `z`, through `ρ`. (b) Whenever `C.point b ≫ u` is the
 `U.datumPoint 𝔪 a`, the composite of `α` and `u` is a point of the universal family for `a` at level
 `𝔪`. -/
 lemma exists_arc (C : U.GraphClosure γ ν) (z : C.scheme.left) :
-    ∃ᵉ (V : ValuationSubring ℂ) (α : Spec (CommRingCat.of V) ⟶ C.scheme.left)
-      (b : ModuliPoint E D.Index ν) (ρ : C.scheme.left.residueField z →+* ResidueField V),
+    ∃ (V : ValuationSubring ℂ), ∃ (α : Spec (CommRingCat.of V) ⟶ C.scheme.left),
+      ∃ (b : ModuliPoint E D.Index ν), ∃ (ρ : C.scheme.left.residueField z →+* ResidueField V),
       -- (a)
       specMap ρ ≫ C.scheme.left.fromSpecResidueField z = specMap (residue V) ≫ α ∧
       -- (b)
@@ -378,8 +378,8 @@ closed point of `α`, seen through `φ`, is `t`. (b) Whenever `C.point b ≫ u` 
 `𝔪`. -/
 lemma exists_arc_centre_eq (C : U.GraphClosure γ ν)
     (t : Over.mk (Spec.map (CommRingCat.ofHom (algebraMap R ℂ))) ⟶ C.scheme) :
-    ∃ᵉ (V : ValuationSubring ℂ) (α : Spec (CommRingCat.of V) ⟶ C.scheme.left)
-      (b : ModuliPoint E D.Index ν) (φ : ResidueField V →+* ℂ),
+    ∃ (V : ValuationSubring ℂ), ∃ (α : Spec (CommRingCat.of V) ⟶ C.scheme.left),
+      ∃ (b : ModuliPoint E D.Index ν), ∃ (φ : ResidueField V →+* ℂ),
       -- (a)
       specMap (φ.comp (residue V)) ≫ α = t.left ∧
       -- (b)

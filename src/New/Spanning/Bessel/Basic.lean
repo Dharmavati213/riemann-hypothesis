@@ -321,8 +321,7 @@ lemma gramSchmidt_eq_of_sub_mem_span {ι V : Type*} [LinearOrder ι] [LocallyFin
         h_perp.ge (Submodule.mem_span_singleton_self _)
       refine Submodule.isOrtho_span.2 ?_
       rintro _ ⟨b, hb, rfl⟩ _ rfl
-      rw [← hx b hb]
-      exact gramSchmidt_orthogonal ℂ x (ne_of_lt hb)
+      simpa only [hx b hb] using gramSchmidt_orthogonal ℂ x (ne_of_lt hb)
   obtain ⟨hv_span, hv_orth⟩ := h_proj v ih
   obtain ⟨hw_span, hw_orth⟩ := h_proj w fun _ _ ↦ rfl
   have h_diff : v a - w a ∈ B := (span_gramSchmidt_Iio ℂ w a).ge (h_sub a)

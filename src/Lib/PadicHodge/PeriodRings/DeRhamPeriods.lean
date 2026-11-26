@@ -230,8 +230,6 @@ lemma smul_tPeriodAmax (g : Gp p) : g • tPeriodAmax = (cyclotomicGp g : ℤ_[p
 /-- The image of `tPeriodAmax` in `B_dR⁺`. It plays the role of `p` times Fontaine's period `t`. -/
 noncomputable def tPeriod : BdRPlus := algebraMap Amax BdRPlus tPeriodAmax
 
-lemma tPeriod_def : tPeriod = algebraMap Amax BdRPlus tPeriodAmax := rfl
-
 end PeriodT
 
 /-!
@@ -311,7 +309,6 @@ instance : IsScalarTower ℤ_[p] (PadicAlgCl p) BdRPlus := to₁₃₄ _ ℚ_[p]
 This is Fontaine's result that the period t is a uniformiser of B_dR^+, in the form that t and ξ
 agree up to a unit. -/
 lemma BdRPlus.associated_xi_tPeriod : Associated (xi : BdRPlus) tPeriod := by
-  classical
   -- `tPeriod` is associated to `μ * p = ξ * τ * p`, and `τ`, `p` are units of `BdRPlus` since
   -- `thetaBdR` does not kill them.
   have h_xi : Associated (xi : BdRPlus) (algebraMap Amax BdRPlus (mu * p)) := by
@@ -323,7 +320,7 @@ lemma BdRPlus.associated_xi_tPeriod : Associated (xi : BdRPlus) tPeriod := by
 by χ(`g`) ∈ ℤ_p, where χ = `cyclotomicGp` is the p-adic cyclotomic character. Here `tPeriod` is the
 image of `tPeriodAmax` in B_dR⁺, which plays the role of p times Fontaine's t. -/
 lemma smul_tPeriod (g : Gp p) : g • tPeriod = (cyclotomicGp g : ℤ_[p]) • tPeriod := by
-  simp [tPeriod_def, smul_tPeriodAmax, smul_def, ← IsScalarTower.algebraMap_apply]
+  simp [tPeriod, smul_tPeriodAmax, smul_def, ← IsScalarTower.algebraMap_apply]
 
 /-! ### θ, the embedding of Q̄_p, and the fundamental sequence -/
 

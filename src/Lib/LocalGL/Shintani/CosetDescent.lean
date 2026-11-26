@@ -260,7 +260,7 @@ lemma Lift.exists_lift_of_descendsTo [Finite k']
 /-- Suppose Gal(k'/k) is trivial, F' on GL_n(k') is a Z-combination of characters, and F' agrees
 with F on GL_n(k). Then some Z-combination of characters of GL_n(k') ⋊ Gal(k'/k) descends
 (`New.DescendsTo`) to both F and F'. -/
-lemma hasCommonLift_of_gal_trivial [Finite k'] (h_triv : ∀ σ : Gal(k'/k), σ = 1)
+lemma hasCommonLift_of_gal_trivial (h_triv : ∀ σ : Gal(k'/k), σ = 1)
     (h : F'.evalGL ∈ virtualChars Z (GL n k'))
     (h_ev : ∀ g : GL n k, F'.evalGL (g.map (algebraMap k k')) = F.evalGL g) :
     HasCommonLift Z F F' n := by

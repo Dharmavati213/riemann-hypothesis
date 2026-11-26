@@ -707,13 +707,6 @@ theorem exists_mem_coe_eq_norm_aeval_of_forall_det_aeval_mem {R A : Type*} [Comm
   rw [Algebra.norm_eq_matrix_det b, ← aeval_algHom_apply]
   exact hd_det
 
-/-- The `i`-th power of `Polynomial.mapRingHom f` maps the coefficients by `f ^ i`. -/
-theorem Polynomial.mapRingHom_pow_apply {R : Type*} [Semiring R] (f : R →+* R) (i : ℕ)
-    (p : R[X]) : (mapRingHom f ^ i) p = p.map (f ^ i) :=
-  let F : (R →+* R) →* R[X] →+* R[X] :=
-    ⟨⟨mapRingHom, mapRingHom_id⟩, fun f g ↦ (mapRingHom_comp f g).symm⟩
-  DFunLike.congr_fun (map_pow F f i).symm p
-
 /-- The finite idele of `y` in `Lˣ` is the image of `y` in the finite adeles. -/
 private lemma New.coe_principalIdele {L : Type*} [Field L] [NumberField L] (y : Lˣ) :
     ((principalIdele y : (𝔸f L)ˣ) : 𝔸f L) = algebraMap L (𝔸f L) y :=

@@ -612,7 +612,7 @@ lemma finite_classUnipotent_inter_compact (c : S.Classes) {m : Type*} [Finite m]
   rintro _ ⟨hu, ⟨u, hu_unip, k, hk_ker, hk⟩, rfl⟩ v i j
   let z : InfinitePlace E → Matrix m m ℂ := fun w ↦ (S.ratToInf u w).val.val.submatrix f f
   -- The element `k` of K(M) is `h_c⁻¹ u h_c`, so `(z, k)` gives the adele of the entry.
-  have hk_eq : k.val = (S.classRep c)⁻¹ * S.ratToFin u * S.classRep c := by simpa using hk
+  have hk_eq : k.val = (S.classRep c)⁻¹ * S.ratToFin u * S.classRep c := hk
   have h_entry : entry i j (z, k.val.val) = toAdele (u.val (f i) (f j)) := by
     simp [entry, z, hk_eq, coe_ratToFin, mul_assoc, Prod.ext_iff, funext_iff]
   exact ⟨u.val (f i) (f j), ⟨(z, k.val.val), ⟨hu, k.2⟩, h_entry⟩, by simp⟩
@@ -769,7 +769,7 @@ def Agrees (s : S.ResidueGL) : Prop :=
 /-- A set T of rational elements is stable if, for all rational points u, u' of 𝖴 and every γ,
 u⁻¹γu' lies in T if and only if γ does. -/
 def IsStable (T : Set (S.G E)) : Prop :=
-  ∀ᵉ (u ∈ besselU) (u' ∈ besselU) (γ : S.G E), u⁻¹ * γ * u' ∈ T ↔ γ ∈ T
+  ∀ u ∈ besselU, ∀ u' ∈ besselU, ∀ γ : S.G E, u⁻¹ * γ * u' ∈ T ↔ γ ∈ T
 
 /-- The set of rational elements γ of the unitary group with `termDisc γ ≠ 0` whose link
 (`New.link`) is the given submodule `Λ`. -/

@@ -196,7 +196,6 @@ lemma IsSeparated.rank_mod_two (hX : X.IsSeparated h) (hB : B ⊆ X.centres) :
   | insert c B hcB ih =>
     obtain ⟨hc, hB⟩ := insert_subset_iff.1 hB
     have h_length : X.length c % 2 = #X.stem % 2 := hX.length_mod_two c hc
-    have h_rank : (X.rank B : ℤ) % 2 = #X.stem % 2 - X.lowering B := ih hB
     rw [rank_insert hcB]
     grind [lowering]
 

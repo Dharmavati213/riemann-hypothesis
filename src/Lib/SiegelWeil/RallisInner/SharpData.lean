@@ -240,7 +240,6 @@ lemma IsSharp.hasSum_integral_weilMatrixCoeff_mul (hF : IsSharp b S₀ F J c) [b
         (vacuumCoeff (card m) b (cosetRep q).val * P (cosetRep q).val)))
       (∫ g : Gf E n,
         weilMatrixCoeff b (integrated (S.hom T) v F) (integrated (S.hom T) v F) (x, g) * P g) := by
-  classical
   -- Cut the finite points into the cosets; on each, `weilMatrixCoeff_integrated_mul` gives the
   -- integrand, a multiple of the function whose integral is the mass.
   let φ : 𝒮 (S.hom T) := integrated (S.hom T) v F
@@ -880,7 +879,6 @@ theorem vacuumSum_eq_L_div_eulerProd {k : ℕ} (hν : ν.HasWeight l ψ) {S : Se
     (hψ : ∀ w : FinPlace E, w ∉ S → ψ w = 1) (h_rank : card m = 2 * k) (hk : 1 < k) :
     vacuumSum Unit (card m) (ν * upsilonU1 ^ k) S.conjClosureᶜ =
       ν⁻¹.L S k / eulerProd (S.conjClosureᶜ.indicator placeSign) k := by
-  classical
   -- Both sides are products over the pairs `{w, w̄}` off `D`, and `vacuumSum_pair` compares the
   -- factors.
   let D : Set (FinPlace E) := S.conjClosure

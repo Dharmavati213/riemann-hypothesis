@@ -312,7 +312,7 @@ lemma posPart_sub_weight_le_posPart_longRow (hj : j < D.m) (hp : D.IsSmallNonspl
   · simp only [h_aPlace, mem_inter, false_and, and_false, ite_false, add_zero]
     positivity
   have h_nonneg : (0 : ℝ) ≤ D.weight τ' := Nat.cast_nonneg _
-  simp only [IsCollision, ← hτ', mem_inter, mem_sdiff, h_aPlace, he, posPart_def, longRow]
+  simp only [IsCollision, ← hτ', mem_inter, h_aPlace, he, posPart_def, longRow]
   by_cases h_removed : τ ∈ S
   · -- A removed row: only the surplus at `e = 1` is to be absorbed.
     have h_surplus (h_one : e = 1) : (D.a / D.x₁ : ℝ) ≤ D.a / p ^ e := by

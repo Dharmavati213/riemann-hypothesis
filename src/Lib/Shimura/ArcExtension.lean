@@ -8,6 +8,7 @@ import Lib.General.Geometry.GeometricPoints
 import Lib.PadicComparison.Descent.TestCategory
 import Lib.Shimura.AbelianScheme.Pairings
 import Lib.Shimura.ThetaNormality.NormalGeneration
+import TauCeti.AlgebraicGeometry.Morphisms.Smooth.GeometricallyReduced
 
 /-!
 # Uniformisations over an arc: theta coordinates, Weil pairing and extension of maps

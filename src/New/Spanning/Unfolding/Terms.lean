@@ -138,7 +138,7 @@ def IsNear (γ : S.G E) : Prop :=
 /-- The finite character `New.Filling.unipotentChar` takes the same value at u and at γ⁻¹uγ for
 every rational u in 𝖴 ∩ γ𝖴γ⁻¹. -/
 def CharsAgree (γ : S.G E) : Prop :=
-  ∀ᵉ (u ∈ besselU) (u' ∈ besselU), u * γ = γ * u' →
+  ∀ u ∈ besselU, ∀ u' ∈ besselU, u * γ = γ * u' →
     S.unipotentChar (S.ratToFin u) = S.unipotentChar (S.ratToFin u')
 
 end Filling

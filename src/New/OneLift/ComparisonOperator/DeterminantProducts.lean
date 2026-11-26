@@ -167,7 +167,7 @@ lemma twoSidedSubst_firstColsCoord {p : ℕ} [Fintype Φ] (c : Φ → Matrix N N
   have h_adjoint : fockPairing R (inFirstCols (s • F)) (v l) =
       ∑ l', schur κ c l l' • fockPairing R (map φ (inFirstCols F')) (v l') := by
     rw [← h_subst, ← inFirstCols.comp_apply, h_split]
-    simp [φ, R, fockPairing_rowSubst, h_schur, C_mul']
+    simp [φ, fockPairing_rowSubst, h_schur, C_mul']
   have h_smul : s • firstColsCoord κ F l = firstColsCoord κ (s • F) l := by
     simp [firstColsCoord, smul_comm s]
   rw [h_smul, firstColsCoord, h_adjoint]

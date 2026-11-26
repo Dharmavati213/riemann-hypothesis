@@ -110,21 +110,24 @@ lemma iCoord_levi_iAdelic (m : GL Unit (𝔸 E)) (g : G E s) :
   simp [Splitting.levi, Matrix.mul_assoc, G.adeleMatrix_ofMatrix, Matrix.add_mul, coord_mul_frame,
     coord_mul_frame_mul]
 
+private lemma lineLevi_inv (c : (𝔸 E)ˣ) (h : G E t) :
+    (lineLevi X (c, h))⁻¹ = X.levi (GeneralLinearGroup.scalar Unit c, h⁻¹) := by
+  rw [← map_inv]
+  change X.levi (GeneralLinearGroup.scalar Unit ((c⁻¹)⁻¹), h⁻¹) = _
+  rw [inv_inv]
+
 /-- The Levi element of `A` acting by the scalar `u` on its line, on the right, and the inverse of
 `lineLevi X (c, h)`, on the left, scale the rank-one map `X.kAdelic * A.kCoord` by `c * u`. -/
 lemma lineLevi_inv_mul_kAdelic_mul_levi (u c : (𝔸 E)ˣ) (g : G E s) (h : G E t) :
     (lineLevi X (c, h))⁻¹.adeleMatrix *
         (X.kAdelic * (A.kCoord * (A.levi (GeneralLinearGroup.scalar Unit u, g)).adeleMatrix)) =
       (↑(c * u) : 𝔸 E) • (X.kAdelic * A.kCoord) := by
-  simp only [lineLevi, Splitting.levi, Matrix.mul_assoc, coe_units_inv, inv_subsingleton,
-    diagonal_conjTranspose, Pi.star_def, MonoidHom.coe_comp, MonoidHom.mk'_apply,
-    MonoidHom.coe_prodMap, coe_invMonoidHom, MonoidHom.coe_id, Function.comp_apply, Prod.map_apply,
-    map_inv, id_eq, GeneralLinearGroup.coe_scalar, scalar_apply, diagonal_apply_eq,
-    Ring.inverse_invertible, invOf_units, ← smul_eq_diagonal_mul, Matrix.mul_smul, inv_inv,
-    G.adeleMatrix_inv, G.adeleMatrix_ofMatrix, conjTranspose_add, conjTranspose_smul,
-    conjTranspose_mul, conjTranspose_coord, star_star, Matrix.mul_add, Algebra.mul_smul_comm,
-    stdForm_mul_stdForm_mul, Matrix.add_mul, Algebra.smul_mul_assoc, coord_mul_frame_mul, add_zero,
-    smul_zero, smul_mul, Matrix.mul_zero, zero_add, smul_smul, mul_comm, Units.val_mul]
+  rw [lineLevi_inv, ← Matrix.mul_assoc, X.actsOnFrame_levi _ _]
+  simp only [GeneralLinearGroup.coe_scalar, scalar_apply, Splitting.levi, Matrix.mul_assoc,
+    coe_units_inv, inv_subsingleton, diagonal_conjTranspose, MonoidHom.mk'_apply,
+    ← smul_eq_diagonal_mul, Matrix.mul_smul, diagonal_apply_eq, Ring.inverse_invertible,
+    invOf_units, G.adeleMatrix_ofMatrix, Matrix.mul_add, coord_mul_frame_mul, add_zero, smul_smul,
+    mul_comm, Units.val_mul]
 
 /-- The Levi element of `A` acting by the scalar `u` on its line, on the right, and the inverse of
 `lineLevi X (c, h)`, on the left, scale the rank-one map `X.lAdelic * A.lCoord` by the conjugate of
@@ -133,16 +136,12 @@ lemma lineLevi_inv_mul_lAdelic_mul_levi (u c : (𝔸 E)ˣ) (g : G E s) (h : G E 
     (lineLevi X (c, h))⁻¹.adeleMatrix *
         (X.lAdelic * (A.lCoord * (A.levi (GeneralLinearGroup.scalar Unit u, g)).adeleMatrix)) =
       star (↑(c * u)⁻¹ : 𝔸 E) • (X.lAdelic * A.lCoord) := by
-  simp only [lineLevi, Splitting.levi, Matrix.mul_assoc, coe_units_inv, inv_subsingleton,
-    diagonal_conjTranspose, Pi.star_def, MonoidHom.coe_comp, MonoidHom.mk'_apply,
-    MonoidHom.coe_prodMap, coe_invMonoidHom, MonoidHom.coe_id, Function.comp_apply, Prod.map_apply,
-    map_inv, id_eq, GeneralLinearGroup.coe_scalar, scalar_apply, diagonal_apply_eq,
-    Ring.inverse_invertible, invOf_units, ← smul_eq_diagonal_mul, Matrix.mul_smul, inv_inv,
-    G.adeleMatrix_inv, G.adeleMatrix_ofMatrix, conjTranspose_add, conjTranspose_smul,
-    conjTranspose_mul, conjTranspose_coord, star_star, Matrix.mul_add, Algebra.mul_smul_comm,
-    stdForm_mul_stdForm_mul, Matrix.add_mul, Algebra.smul_mul_assoc, coord_mul_frame_mul, smul_zero,
-    add_zero, zero_add, smul_mul, Matrix.mul_zero, smul_smul, mul_comm, _root_.mul_inv_rev,
-    Units.val_mul, star_mul']
+  rw [lineLevi_inv, ← Matrix.mul_assoc, X.levi_mul_lAdelic _ _,
+    A.lCoord_mul_adeleMatrix (A.actsOnFrame_levi _ _)]
+  simp only [coe_units_inv, GeneralLinearGroup.coe_scalar, scalar_apply, inv_subsingleton,
+    diagonal_apply_eq, Ring.inverse_invertible, invOf_units, diagonal_conjTranspose, Pi.star_def,
+    ← smul_eq_diagonal_mul, Matrix.mul_smul, Matrix.mul_assoc, smul_smul, mul_comm,
+    _root_.mul_inv_rev, Units.val_mul, star_mul']
 
 end
 

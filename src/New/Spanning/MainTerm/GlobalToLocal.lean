@@ -693,7 +693,7 @@ lemma hasSum_besselOrbitalIntegral_cosetAmplitude [WeilData E]
         Subtype.ext_iff, exists_and_left, exists_and_right]
       simp
     obtain ⟨⟨v, hv, v_unique⟩, v', hv', v'_unique⟩ :=
-      h_rep _ (inv_mem u.2) _ (inv_mem u'.2) (by simpa [f] using h_over)
+      h_rep _ (inv_mem u.2) _ (inv_mem u'.2) (by simpa using h_over)
     rw [tsum_eq_single (v, v'), indicator_of_mem ((h_iff (v, v')).2 ⟨hv, hv'⟩), Pi.one_apply]
     refine fun z hz ↦ indicator_of_notMem (fun h_mem ↦ hz ?_) _
     exact Prod.ext (v_unique _ ((h_iff z).1 h_mem).1) (v'_unique _ ((h_iff z).1 h_mem).2)

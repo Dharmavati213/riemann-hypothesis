@@ -756,8 +756,7 @@ lemma EtaleChart.mem_locus_prod_iff (a : EtaleChart d X) (b : EtaleChart n Y) {x
   have h_locus : (a.prod b).locus = a.locus.preimage (SemiCartesianMonoidalCategory.fst X Y) ⊓
       b.locus.preimage (SemiCartesianMonoidalCategory.snd X Y) :=
     range_pointMap_prod a b
-  rw [h_locus]
-  exact Iff.rfl
+  exact h_locus.symm ▸ Iff.rfl
 
 /-- If `X` has an atlas of dimension d, charts of dimension d cover the field-valued points of
 `X`. -/

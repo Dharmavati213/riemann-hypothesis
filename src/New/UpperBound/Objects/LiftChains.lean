@@ -258,7 +258,7 @@ theorem IsJointlyInvariant.sum_chain_eq_sum_kernelProduct [WeilData E]
       obtain ⟨β, hβ⟩ := exists_linearMap_chain_eq_apply_pure k j φ a
       have h_eq := h_inv (Pi.mulSingle j ⟨b, hb⟩) (by simp +contextual [ne_of_gt]) (T a β)
       simp only [hT, ← hβ, chain_equivariant k hφ] at h_eq
-      simpa [F, integrand, omega_omega] using h_eq
+      simpa [integrand, omega_omega] using h_eq
     have h_classes : classIntegral stdRatPoints (K j) F = ∑ r : StdClasses (K j), F r.out := by
       rw [classIntegral_eq_classSum h_const, classSum, finsum_eq_sum_of_fintype]
       exact sum_congr rfl fun r _ ↦ by simp [h_free j]

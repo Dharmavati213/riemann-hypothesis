@@ -244,7 +244,6 @@ lemma exists_isIntegralMeasure_norm_sq_detPeriod (p : D.CriticalPair) :
         detPeriod (Fin 2) (p.character * ϑ'.toAutChar * upsilonU1 ^ 1)
           (fun τ : D.Φ ↦ p.negWeight τ - 1)
           (D.twistModulus ϑ' 2) (p.tamePart * ϑ'.tamePart)‖ ^ 2 := by
-  classical
   -- The period is a weighted sum of kernel values at points `g x` that depend only on the modulus,
   -- and `N` times such a value is integral once `g x` is moved to an integral point.
   let c (τ : D.Φ) : ℕ := p.negWeight τ - 1

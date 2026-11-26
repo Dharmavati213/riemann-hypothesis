@@ -3,6 +3,7 @@ module
 public import Lib.Cohomology.Etale.Basic
 public import Lib.General.Geometry.DenseComplexPoints
 public import Lib.Shimura.AbelianScheme.Basic
+import TauCeti.AlgebraicGeometry.Morphisms.Smooth.GeometricallyReduced
 
 /-!
 # Geometric points, specialisation, separating products and integral abelian varieties
@@ -10,10 +11,10 @@ public import Lib.Shimura.AbelianScheme.Basic
 Let `k` be an algebraically closed field. For schemes and morphisms locally of finite type, points
 with values in `k` detect nonempty locally closed sets and images of morphisms, and this is used to
 spread properties over commutative group schemes.
-Smooth morphisms are shown to be geometrically reduced, and abelian schemes over `k` are shown to be
-integral. The file also records that flat morphisms are injective on stalks. Finally it gives
-criteria for families of complex points to be separating over a stalk of the base and on a product
-of flat schemes.
+Abelian schemes over `k` are shown to be integral, using that smooth morphisms are geometrically
+reduced (`TauCeti.AlgebraicGeometry.Smooth.geometricallyReduced`). The file also records that flat
+morphisms are injective on stalks. Finally it gives criteria for families of complex points to be
+separating over a stalk of the base and on a product of flat schemes.
 
 ## Main definitions and results
 
@@ -205,11 +206,11 @@ end GeometricPoints
 /-!
 ## Geometric reducedness of smooth morphisms and integral abelian varieties
 
-Two instances. A smooth morphism of schemes is geometrically reduced (locally it is étale over a
-polynomial ring, `New.Variety.isReduced_of_etale`). An abelian scheme over an algebraically
-closed field is integral. Here `New.IsAbelianScheme` asks a commutative group scheme to be smooth,
-proper and divisible (multiplication by each `m ≠ 0` is onto); divisibility takes the place of the
-usual connectedness of the fibres, and the second instance recovers it.
+An étale algebra over a domain is reduced (`New.Variety.isReduced_of_etale`), and an
+abelian scheme over an algebraically closed field is integral. Here `New.IsAbelianScheme` asks a
+commutative group scheme to be smooth, proper and divisible (multiplication by each `m ≠ 0` is
+onto); divisibility takes the place of the usual connectedness of the fibres, and the instance
+recovers it.
 -/
 
 section AbelianIntegral
@@ -227,23 +228,6 @@ lemma isReduced_of_etale {A B : Type*} [CommRing A] [CommRing B] [IsDomain A] {a
   let K : Type _ := FractionRing A
   have : IsReduced (K ⊗[A] B) := FormallyUnramified.isReduced_of_field K _
   exact isReduced_of_injective _ (includeRight_injective (IsFractionRing.injective A K))
-
-/-- A smooth morphism of schemes is geometrically reduced. -/
-instance {X Y : Scheme.{0}} (s : X ⟶ Y) [hs : Smooth s] : GeometricallyReduced s := by
-  -- The base change `t` to a field is smooth, so locally it is étale over a polynomial ring over
-  -- the field, which is a domain; reducedness passes to the stalks.
-  refine ⟨fun K _ y Z _ t h_pullback ↦ ?_⟩
-  have : AlgebraicGeometry.Smooth t := of_isPullback h_pullback hs
-  suffices ∀ x : Z, _root_.IsReduced (Z.presheaf.stalk x) from isReduced_of_isReduced_stalk Z
-  intro x
-  obtain ⟨U, -, V, hV, hx, hVU, h_smooth⟩ := Smooth.exists_isStandardSmooth t x
-  have : Nonempty U := ⟨⟨t x, hVU hx⟩⟩
-  obtain ⟨n, g, -, h_etale : g.Etale⟩ := h_smooth.exists_etale_mvPolynomial
-  have h_red : _root_.IsReduced Γ(Z, V) := isReduced_of_etale h_etale
-  -- The stalk at `x` is a localization of `Γ(Z, V)`.
-  let : Algebra Γ(Z, V) (Z.presheaf.stalk x) := Z.presheaf.algebra_section_stalk (⟨x, hx⟩ : V)
-  have := hV.isLocalization_stalk ⟨x, hx⟩
-  exact isReduced_localizationPreserves (hV.primeIdealOf ⟨x, hx⟩).asIdeal.primeCompl _ h_red
 
 /-- An abelian scheme (`New.IsAbelianScheme`: smooth, proper and divisible) over an algebraically
 closed field is integral. -/

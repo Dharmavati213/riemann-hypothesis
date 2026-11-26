@@ -964,9 +964,8 @@ lemma _root_.New.Lift.KummerChart.Letter.IsNearestCut.hasSignBefore_or_isLongGap
       i.IsLongGap ε s β η V 1 (b / p + 12 * K) (G + W) l 0 := by
   have hl_le : l ≤ 2 := by
     by_contra hl_gt
-    obtain h_one | h_two := i.cut_stepBack_one_or_two h_cut_thick h_cut_thin_succ
-    · exact h_nearest.not_cut 1 (by grind) h_one
-    · exact h_nearest.not_cut 2 (by grind) h_two
+    obtain h_cut | h_cut := i.cut_stepBack_one_or_two h_cut_thick h_cut_thin_succ <;>
+      exact h_nearest.not_cut _ (by grind) h_cut
   by_cases h_opposite : l = 2 ∧ ε (i.stepBack 1) ≠ ε (i.stepBack 0)
   · -- The letter before `i` is not a cut, so it is not a b-letter and `i` is a b-letter.
     obtain ⟨rfl, h_sign⟩ := h_opposite

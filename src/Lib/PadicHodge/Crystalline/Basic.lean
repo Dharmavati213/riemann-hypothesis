@@ -513,11 +513,6 @@ lemma exists_tate_twist_unit (c : ℤ)
   | add y z hy hz => simp only [smul_add, map_add, hy, hz]
   | _ => simp [hσ, mul_zpow, ← map_zpow, tensorAction, smul_tmul', mul_smul]
 
-/-- `tensorAction` for the pair `(1, g)` of `FrobGal` is `tensorAction` for `g`: `φ ^ 0` is the
-identity. -/
-private lemma tensorAction_mk_one (g : Gp p) (f : End R T) :
-    tensorAction Bmax ((1, g) : FrobGal) f = tensorAction Bmax g f := rfl
-
 /-- Let `ρ` be a representation of `Γ` on `T`, where `Γ` maps to Gal(ℚ̄_p/ℚ_p) by `j`. Say `ρ` is
 admissible along a filter `F` on `Γ` if the elements of `Bmax ⊗ T` fixed by `j(g) ⊗ ρ(g)` for
 `F`-almost all `g` span `Bmax ⊗ T` over `Bmax`. If `ρ` is admissible along `F`, then so is every
@@ -535,7 +530,7 @@ lemma IsAdmissible.tate_twist (h_adm : IsAdmissible ρ F) (c : ℤ)
   have h_twist_zero (g : Γ) (y : Bmax ⊗[ℤ_[p]] T) :
       tensorAction Bmax (toGp g) (σ g) ((t : Bmax) • y) =
         (t : Bmax) • tensorAction Bmax (toGp g) (ρ g) y := by
-    simpa [tensorAction_mk_one] using h_twist 0 g y
+    simpa using! h_twist 0 g y
   have h_fix : ∀ y ∈ fixedPeriods ρ Bmax F, (t : Bmax) • y ∈ fixedPeriods σ Bmax F := by
     intro y hy
     filter_upwards [hy] with g hg

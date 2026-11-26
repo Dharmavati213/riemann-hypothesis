@@ -200,7 +200,6 @@ lemma convIndicator_mapDomain_liftResidue_of_notMem [hw : IsConjApart w]
     (a : ℂ[∀ i : ι, GL n (ResField (w i))]) {g : Gf E n} (hg : g ∉ stdLevel E n) :
     (convIndicator hK_open hK_compact
       (mapDomain (fun s : ∀ i : ι, GL n (ResField (w i)) ↦ (liftResidue s).1) a)).1 g = 0 := by
-  classical
   induction a using induction_linear with
   | zero => simp
   | add a b ha hb => simp [mapDomain_add, ha, hb]

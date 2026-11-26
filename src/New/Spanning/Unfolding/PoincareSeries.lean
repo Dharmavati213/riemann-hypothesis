@@ -183,7 +183,7 @@ theorem realHomeomorph_mul (g' : New.G E ε) :
   let x : GL 𝔰.BesselIndex ℂ := (S.basisScaleGL v)⁻¹ * GeneralLinearGroup.map (evalInf v) V.x
   change x * p.matrix⁻¹ * (p.matrix * (g * g').1 v * p.matrix⁻¹) =
     S.adelicToInf (X.adelicEquiv g) v * (x * p.matrix⁻¹ * (p.matrix * g'.1 v * p.matrix⁻¹))
-  simp [x, adelicToInf, adelicEquiv, U.map, U.conj, Space.toRatCoords, mul_assoc, h_comp]
+  simp [x, adelicToInf, adelicEquiv, U.map, Space.toRatCoords, mul_assoc, h_comp]
 
 /-- The isomorphism from the standard finite adelic unitary group onto that of S in the lattice
 basis: conjugate by the finite point of V, change to the lattice basis, then conjugate by the

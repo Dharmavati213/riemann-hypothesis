@@ -931,8 +931,7 @@ instance [FaithfulSMul R BPlus] : FaithfulSMul R BdRPlus := by
   intro n
   have hy_zero : (y : BdRPlus) = 0 := by simpa using hy
   have h_dvd : (xi : BdRPlus) ^ n ∣ y := by
-    rw [hy_zero]
-    exact dvd_zero _
+    simp [hy_zero]
   simpa using xi_pow_dvd_iff.mp h_dvd
 
 /-! ### `B_dR⁺` is a discrete valuation ring; the period rings are domains -/

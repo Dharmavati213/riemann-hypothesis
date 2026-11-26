@@ -635,12 +635,6 @@ def residueRep : (∀ j : J, GL (Fin (card n)) (ResField (Q.place j))) →* D.in
 
 variable {D Q j}
 
-private lemma residueRep_apply_coe (g : ∀ j : J, GL (Fin (card n)) (ResField (Q.place j)))
-    (y : ↥(formsOfLevel Q.place)) :
-    ((D.residueRep Q g).val y : V.forms κ) =
-      D.repOff (liftResidue ((reindexResidueGL Q).toMonoidHom g)) y :=
-  rfl
-
 /-- A form of principal level at the auxiliary places has the maximal level `stdLevel` off
 `D.places` and its conjugates exactly when it is fixed by the group ∏_j GL_N(k_{w_j}), N = |n|. -/
 lemma mem_formsOfLevel_empty_iff_residueRep_fixed {y : ↥(formsOfLevel Q.place)} :
@@ -652,7 +646,8 @@ lemma mem_formsOfLevel_empty_iff_residueRep_fixed {y : ↥(formsOfLevel Q.place)
     -- places and so fixes a form of base level
     have hk_level : (liftResidue ((reindexResidueGL Q).toMonoidHom g) : Gf E n) ∈ levelOf ![] ⊥ :=
       mem_levelOf.2 ⟨(liftResidue _).prop, Subgroup.mem_bot.2 (funext nofun)⟩
-    simpa [residueRep_apply_coe] using
+    change D.repOff (liftResidue ((reindexResidueGL Q).toMonoidHom g)) y = (y : V.forms κ)
+    simpa using
       mem_levelSpace.1 (Submodule.mem_inf.1 hy).2 ⟨_, hk_level⟩
   · -- an element `k` of `stdLevel` acts on `y` as its reduction at the auxiliary places does
     rintro ⟨_, k, hk, rfl⟩

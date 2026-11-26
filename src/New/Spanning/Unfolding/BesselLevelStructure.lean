@@ -130,7 +130,7 @@ lemma ratToFin_mem_besselU_iff {γ : S.G E} : S.ratToFin γ ∈ besselU ↔ γ �
   -- The conditions on the entries are reflected by the injective map `E → 𝔸f E`.
   have h_one (i j : 𝔰.BesselIndex) : (1 : Matrix 𝔰.BesselIndex 𝔰.BesselIndex (𝔸f E)) i j =
       algebraMap E (𝔸f E) ((1 : Matrix 𝔰.BesselIndex 𝔰.BesselIndex E) i j) := by
-    simp [Matrix.one_apply, apply_ite]
+    simp [Matrix.one_apply]
   simp only [mem_besselU, h_entry, h_one, (algebraMap E (𝔸f E)).injective.eq_iff]
 
 /-- The inclusion `S.inclHFin` of the finite adelic points of the unitary group of `X₀` lands in
@@ -389,7 +389,7 @@ lemma isUnimodular_latticeMiddleGram [StarRing A] (𝔰 : Shape) {N : A} (hN : N
     ext i j
     aesop (add simp [latticeMiddleGram, diagonal, Function.swap])
   have h_mem (a b : 𝔰.MiddleIndex) : latticeMiddleGram 𝔰 N a b ∈ R ∧ inv a b ∈ R := by
-    aesop (add simp [inv, latticeMiddleGram, diagonal, Function.swap])
+    aesop (add simp [latticeMiddleGram, diagonal, Function.swap])
   let u : GL 𝔰.MiddleIndex A := ⟨latticeMiddleGram 𝔰 N, inv, h_inv, mul_eq_one_comm.1 h_inv⟩
   exact ⟨h_herm, u, mem_intGL.2 ⟨fun a b ↦ (h_mem a b).1, fun a b ↦ (h_mem a b).2⟩, rfl⟩
 
@@ -637,7 +637,7 @@ lemma reduction_eq_one_iff (k : S.latticeStabilizer) :
       simp only [intGL.map_eq_one, forall_comm (α := (Σ i : Fin 2, S.chosenPlaces i) × Bool)]
     _ ↔ _ := forall₂_congr fun a b ↦ by
       rw [← inv_ideleM_smul_mem_iff]
-      by_cases hab : a = b <;> simp [k', toMatrix, hab, Units.smul_def]
+      by_cases hab : a = b <;> simp [k', toMatrix, Units.smul_def]
 
 /-- The image `S.principalLevel` of the kernel of the reduction at the chosen places equals
 `unitaryLevel`: the isometries of the Gram matrix `(S.latticeMiddle (𝔸f E)).splitGram` that are
@@ -777,7 +777,7 @@ lemma exists_besselU_approx {x : S.GFin} (hx : x ∈ besselU) (y : S.GFin) :
     apply S.toLatticeBasis.symm.injective
     ext
     simp [φ, ratToFin, adelicToFin, ratToAdelic, U.map]
-  exact ⟨u, hu, by simpa [V, f, h_map] using hzV⟩
+  exact ⟨u, hu, by simpa [V, h_map] using hzV⟩
 
 /-- Let `u`, `v` lie in the unipotent group `besselU` inside the finite adelic unitary group
 `S.GFin`. Let `g` be a finite adelic point of U(X₀), the unitary group `U 1` of the identity form on

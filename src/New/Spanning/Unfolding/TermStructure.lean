@@ -360,12 +360,6 @@ lemma inv_mulVec_z_eq_of_pairOccursAt {ζ : E} (h_pair : PairOccursAt γ ζ 1 �
   simp only [form_frameImage_one, h_dual, hγ_dual, hx, hx'] at h_form
   simpa [S.N_prime.ne_zero] using h_form.symm
 
-/-- If `γ` has cell rank `j` (`S.HasCellRank j γ`), which includes that `j = ϱ + 1` exactly when
-`gr(γ) = S.termDisc γ ≠ 0`, and `S.termDisc γ = 0`, then `j ≤ ϱ`. -/
-lemma HasCellRank.le_of_termDisc_eq_zero {j : Fin (𝔰.ϱ + 2)} (h_rank : S.HasCellRank j γ)
-    (h_disc : S.termDisc γ = 0) : j.val ≤ 𝔰.ϱ :=
-  not_lt.1 fun h_lt ↦ h_rank.lt_iff_termDisc_ne_zero.1 h_lt h_disc
-
 /-- If `γ` has cell rank `j` and `S.termDisc γ = 0`, then the link isometry `Υ_γ` maps `X₀` into
 itself: `linkedX₀ γ` is all of `X₀`. -/
 lemma HasCellRank.linkedX₀_eq_top {j : Fin (𝔰.ϱ + 2)} (h_rank : S.HasCellRank j γ)
@@ -553,47 +547,6 @@ lemma _root_.New.NormOnePairOccursFrom.flagSpan_one_sup_commonIsotropic {j : Fin
     rw [frameImage_mulVec _ w, h_inv, frameImage_mulVec (γ⁻¹ : S.G E) x']
     simp [mulVec_mulVec]
   exact ⟨x', hx', frameImage_mulVec_mem_commonIsotropic h_shared (.inl ((hx' 𝔰.top hj).trans hx))⟩
-
-omit [CMType E] in
-/-- If a square matrix `Z` kills a nonzero vector `x` whose coefficients vanish from the index `j`
-on, then the leading minor of order `j` of `Z` vanishes. -/
-lemma leadingMinor_eq_zero_of_mulVec_eq_zero {j : Fin (𝔰.ϱ + 2)}
-    {Z : Matrix (Fin (𝔰.ϱ + 1)) (Fin (𝔰.ϱ + 1)) E} {x : Fin (𝔰.ϱ + 1) → E} (hx_ne : x ≠ 0)
-    (hZx : Z *ᵥ x = 0) (h_above : ∀ b : Fin (𝔰.ϱ + 1), j.val ≤ b.val → x b = 0) :
-    leadingMinor Z j = 0 := by
-  have h_padded : paddedLeading j Z *ᵥ x = 0 := by
-    funext b
-    have hb_row : (Z *ᵥ x) b = 0 := congrFun hZx b
-    by_cases hb : b.val < j.val <;> simp_all [paddedLeading, mulVec, dotProduct]
-  rw [← det_paddedLeading]
-  exact exists_mulVec_eq_zero_iff.1 ⟨x, hx_ne, h_padded⟩
-
-/-- Let `δ_i` be the leading minor of order `i` of the matrix `S.frameProducts γ` of the hermitian
-products of the frame `e_1, …, e_ϱ, z_N` with its image under `γ`, and let
-`gr(γ) = S.termDisc γ = |δ_n|² - N² |δ_{n-1}|²` vanish. Let `γ` have the cell rank `j`: a norm-one
-pair occurs from the index `j` on, `δ_j ≠ 0`, and `j = n` exactly when `gr(γ) ≠ 0`. Then `j` is the
-least index from which a norm-one pair occurs for `γ`, since a smaller index would give
-`δ_j = 0`. -/
-lemma HasCellRank.isLeast_normOnePairOccursFrom {j : Fin (𝔰.ϱ + 2)} (h_rank : S.HasCellRank j γ)
-    (h_disc : S.termDisc γ = 0) : IsLeast {i : ℕ | NormOnePairOccursFrom i γ} j.val := by
-  have hj_le : j.val ≤ 𝔰.ϱ := h_rank.le_of_termDisc_eq_zero h_disc
-  obtain ⟨h_occurs, h_minor, -⟩ := h_rank
-  refine ⟨h_occurs, ?_⟩
-  rintro i ⟨ζ, -, h_pairs⟩
-  by_contra! hij : i < j.val
-  -- The vector shared at the index `i < j` gives a nonzero `x'` in the kernel of the products.
-  let a : Fin (𝔰.ϱ + 1) := ⟨i, by lia⟩
-  obtain ⟨x, x', hxx', -, hx', h_above⟩ : ∃ x x' : Fin (𝔰.ϱ + 1) → E,
-      frameImage 1 *ᵥ x = frameImage γ *ᵥ x' ∧ x a = ζ ∧ x' a = 1 ∧
-        ∀ b > a, x b = 0 ∧ x' b = 0 :=
-      h_pairs a le_rfl
-  have hx_top : x 𝔰.top = 0 := (h_above 𝔰.top (Fin.lt_def.2 (hij.trans_le hj_le))).1
-  have h_products : S.frameProducts γ *ᵥ x' = 0 := by
-    rw [frameProducts_mulVec_of_frameImage_eq hxx', hx_top, mul_zero, Pi.single_zero]
-  have hx'_ne : x' ≠ 0 := fun h ↦ by simp [h] at hx'
-  have hx'_above (b : Fin (𝔰.ϱ + 1)) (hb : j.val ≤ b.val) : x' b = 0 :=
-    (h_above b (Fin.lt_def.2 (hij.trans_le hb))).right
-  exact h_minor (leadingMinor_eq_zero_of_mulVec_eq_zero hx'_ne h_products hx'_above)
 
 /-- Assume `S.CharsAgree γ`, so `unipotentChar` takes the same value at `u` and at `γ⁻¹uγ`
 for every rational `u` in

@@ -630,17 +630,13 @@ theorem exists_transfersPeriods_of_turn {j i : ℕ} (hi : i < D.m) (hj : j < D.m
   have h_one_le : (1 : D.MFoldTwist → ℕ) ≤ vectorCountBound := fun _ ↦ pow_pos Fintype.card_pos _
   obtain hij | rfl | hij := lt_trichotomy i j
   · obtain ⟨c, hc, h_transfer⟩ := exists_transfersPeriods_off_diagonal false hij hj
-    refine ⟨c, hc, fun Γ' Γ h_turn ↦ ?_⟩
-    obtain ⟨q, r, hΓ', rfl⟩ := h_turn.exists_corner_of_lt hij
-    exact (h_transfer Γ' q r hΓ').mono h_one_le
+    exact ⟨c, hc, fun Γ' Γ h_turn ↦ (h_transfer Γ' Γ h_turn).mono h_one_le⟩
   · obtain ⟨c, hc, h_transfer⟩ := exists_transfersPeriods_diagonal hj
     refine ⟨c, hc, fun Γ' Γ h_turn ↦ ?_⟩
     obtain ⟨q, rfl, rfl⟩ := h_turn.exists_eq_down_and_eq_right
     exact h_transfer q
   · obtain ⟨c, hc, h_transfer⟩ := exists_transfersPeriods_off_diagonal true hij hi
-    refine ⟨c, hc, fun Γ' Γ h_turn ↦ ?_⟩
-    obtain ⟨q, r, hΓ', rfl⟩ := h_turn.exists_half_true_eq_of_gt hij
-    exact (h_transfer Γ' q r hΓ').mono h_one_le
+    exact ⟨c, hc, fun Γ' Γ h_turn ↦ (h_transfer Γ' Γ h_turn).mono h_one_le⟩
 
 /-- There are numbers `c ϑ ≠ 0` whose absolute value is the product over `i, j < m` of
 `turnRatio i j ϑ`, up to a constant and a power of `Nm Q`, with `Q` the modulus of the twist `ϑ`,

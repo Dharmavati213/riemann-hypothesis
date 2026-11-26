@@ -574,7 +574,7 @@ lemma algFormRep_conj_block_apply_eq_self (Ξ : O.FormV) (ε : N ⊕ l ≃ n) {x
       (1 : ∀ i : O.ChosenIndex, GL r (ResField (O.chosenPlace i))) := rfl
   rw [h_one, map_one] at h_act
   change _ = _ • Ξ.val at h_act
-  simpa [c, mul_assoc] using h_act
+  simpa [c] using h_act
 
 open scoped Classical in
 /-- Periods against point forms vanish. Let `O` be a descent pair `(W, I_n)`; its level `O.places`

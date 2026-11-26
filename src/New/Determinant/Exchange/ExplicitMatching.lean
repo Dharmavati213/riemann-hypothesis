@@ -171,8 +171,8 @@ abbrev posFockVector :
 variable `x` multiplied by `s ^ w x` is differentiable in `s`. -/
 lemma differentiable_apply_bind₁_pow_smul {σ : Type} (L : MvPolynomial σ ℂ →ₗ[ℂ] ℂ) (w : σ → ℕ)
     (P : MvPolynomial σ ℂ) :
-    Differentiable ℂ fun s : ℂ ↦ L (P.bind₁ fun x : σ ↦ s ^ w x • X x) := by
-  simp only [← aeval_eq_bind₁, aeval_def, eval₂_eq, algebraMap_eq, C_mul', smul_pow, prod_smul,
+    Differentiable ℂ fun s : ℂ ↦ L (aeval (fun x : σ ↦ s ^ w x • X (R := ℂ) x) P) := by
+  simp only [aeval_def, eval₂_eq, algebraMap_eq, C_mul', smul_pow, prod_smul,
     map_sum, map_smul, smul_eq_mul]
   fun_prop
 
@@ -322,13 +322,13 @@ lemma exists_mul_eq_circle_mean (j : m ⊕ l ≃ n) (e : p ⊕ a ≃ m)
   -- `P₀` is `P` with variables outside the columns `cols` set to zero. Averaged over U(`a`) with
   -- the weight `∏ τ, det (u τ) ^ (-card (ι τ))`, it is `κ` times `∏ τ, det ^ card (ι τ)`.
   let P₀ : MvPolynomial (InfinitePlace E × a × a) ℂ :=
-    P.bind₁ fun (τ, i, k) ↦ extend cols (fun k' ↦ X (τ, i, k')) 0 k
+    aeval (fun (τ, i, k) ↦ extend cols (fun k' ↦ X (τ, i, k')) 0 k) P
   obtain ⟨κ, hκ⟩ := exists_forall_eq_mul_map_det_pow (fun τ ↦ card (ι τ)) P₀
   refine ⟨κ, funext fun ⟨ℓ, hℓ⟩ ↦ ?_⟩
   -- The torus scales the variables outside the columns `cols` by `z`; the result is polynomial in
   -- `z`, so its circle mean is the value `scaled 0`.
   let scaled (s : ℂ) : ℂ :=
-    ℓ (polyVector _ (P.bind₁ fun (τ, i, k) ↦ s ^ extend cols 0 1 k • X (τ, i, k)))
+    ℓ (polyVector _ (aeval (fun (τ, i, k) ↦ s ^ extend cols 0 1 k • X (R := ℂ) (τ, i, k)) P))
   have h_torus (z : Circle) : ℓ (orbit (polyVector _ P) z) = scaled z := by
     simp [orbit, hγ, principalMinor_of_forall, DiscreteSeries.principalMinor_of_forall_not,
       ↓coe_inv_posBlockEmb, ↓posBlockEmb_mem_blockDiagAlg, ↓principalMinor_posBlockEmb_eq_det,
@@ -355,7 +355,7 @@ lemma exists_mul_eq_circle_mean (j : m ⊕ l ≃ n) (e : p ⊕ a ≃ m)
     have h_det : ∏ τ, (u τ : Matrix a a ℂ).det ^ card (ι τ) ≠ 0 :=
       prod_ne_zero_iff.2 fun τ _ ↦ pow_ne_zero _ (GeneralLinearGroup.det_ne_zero _)
     simp [hγ, field, rename_eq_aeval, evalCols, P₀, principalMinor_of_forall,
-      DiscreteSeries.principalMinor_of_forall_not, ← aeval_eq_bind₁, ↓comp_aeval_apply,
+      DiscreteSeries.principalMinor_of_forall_not, ↓comp_aeval_apply,
       ↓realPairWeil_polyVector, ↓prod_pair, ↓Nat.card_eq_fintype_card, Matrix.one_apply]
     -- Both substitutions keep the columns `cols`, mixed by `u`, and kill the other variables.
     congr

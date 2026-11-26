@@ -1,9 +1,9 @@
 module
 
 public import Lib.Shimura.AbelianScheme.Basic
-import Lib.General.Geometry.GeometricPoints
 import Lib.General.Geometry.PointsOfProperSchemes
 import TauCeti.AlgebraicGeometry.Morphisms.Flat.Descent
+import TauCeti.AlgebraicGeometry.Morphisms.Smooth.GeometricallyReduced
 
 /-!
 # Isogenies: factorisation of homomorphisms, finiteness and flatness

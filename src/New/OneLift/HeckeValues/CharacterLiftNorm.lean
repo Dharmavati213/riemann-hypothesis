@@ -414,7 +414,7 @@ in which `(x, y)` acts by the Fock operator times `∏ τ, det (y τ) ^ γ τ * 
 `γ' τ = -X.rowLength τ`, so that `ω(x, 1)` fixes `v`. Then the integral over the real points `x` of
 `U(1)` of `⟨v, ω(x, 1) v⟩` times the Petersson product `⟨1, 1⟩` on `W` is the hook number times the
 volume of the adelic quotient `[U(1)]`, the total mass of `quotMeasure` of `stdSpace E Unit`. -/
-lemma LValueData.integral_fockInner_realPairWeil [WeilData E] :
+lemma LValueData.integral_fockInner_realPairWeil :
     ∫ x : GInf E X.descentPair.signs,
         fockInner (polyVector (realSigns E (homSigns 1 1))
             (X.descentPair.fockPoly (highestVector X.descentPair.columnCount X.descentPair.paramV)))

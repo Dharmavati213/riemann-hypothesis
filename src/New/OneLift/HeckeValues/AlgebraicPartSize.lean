@@ -367,7 +367,6 @@ lemma New.Data.CriticalPair.exists_log_norm_map_norm_sq_trivialLift_eq_add_sum_j
   obtain ⟨h_ne, r, hr_ge, hr_le : (∀ τ : D.Φ, Y.rowLength τ = 0) → r ≤ 4 * D.f,
     h_log : log N = c + r + ∑ τ : D.Φ, log (Y.rowLength τ).factorial⟩ :=
     h_size Y p.z h_places H.1 H.2
-  have hN_pos : 0 < N := norm_pos_iff.2 h_ne
   refine ⟨r, hr_ge, fun ⟨h_flat, _⟩ ↦ hr_le fun τ ↦ ?_, ?_⟩
   · obtain ⟨τ, rfl⟩ := (placePerm D.towerExp σ).surjective τ
     rw [h_deg, h_flat, Nat.sub_self]

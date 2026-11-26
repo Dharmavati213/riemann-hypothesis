@@ -405,8 +405,7 @@ lemma dataInner_vacElem_omega_vacElem :
   -- Pairing with the vacuum evaluates `ω g vacElem` at `0`.
   have h_eval : V.dataInner V.vacElem (V.ω g V.vacElem) =
       weilRep adelicAction g Heisenberg.IsVacuum.vacElem 0 := modelInner_vacElem ..
-  rw [h_eval]
-  exact eq_inv_of_mul_eq_one_right (conj_delta_mul_weilRep_vacElem adelicAction g)
+  exact h_eval.trans (eq_inv_of_mul_eq_one_right (conj_delta_mul_weilRep_vacElem adelicAction g))
 
 /-- The operator norm of `ω g` is at most the norm of the vacuum times `|Δ g|`. -/
 lemma norm_omega_le : ‖V.ω g‖ ≤ ‖V.vacElem‖ * ‖weilMultiplier g‖ :=

@@ -139,7 +139,7 @@ lemma LatticeSplitsAt.conj_scalarFin_mem {Y : Grading V N X s} {w : FinPlace E} 
       (h_split.idem_smul_sub_stringProj_mem hy) (h_split.conj.idem_smul_sub_stringProj_mem hy)))
   · -- The conjugate is trivial at a place other than `w` and `w̄`, where `z` is `1`.
     have h_scaling : atPlace u (Y.inclXFin (scalarFin X z)) = 1 := by
-      simpa [atPlace, mul_eq_one_iff_eq_inv] using inclXFin_scalarFin_map_evalAt (hz_off u hu hu')
+      simpa [atPlace] using inclXFin_scalarFin_map_evalAt (hz_off u hu hu')
     simp [h_scaling]
 
 end Splitting

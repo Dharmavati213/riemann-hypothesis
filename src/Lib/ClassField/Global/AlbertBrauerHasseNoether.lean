@@ -95,7 +95,7 @@ variable (Γ) in
 /-- If the number field `K` has a real place `w`, some `c` in `Γ` acts on the field `Ω` (`New.Ω`,
 the algebraic closure of `ℚ`) as complex conjugation (`New.IsComplexConj`: under some embedding
 `j : Ω →+* ℂ`, `j (c • x)` is the complex conjugate of `j x`). -/
-lemma exists_isComplexConj [NumberField K] {w : InfinitePlace K} (hw : w.IsReal) :
+lemma exists_isComplexConj {w : InfinitePlace K} (hw : w.IsReal) :
     ∃ c : Γ, IsComplexConj c := by
   -- An extension `j` of the real embedding to `Ω` and its conjugate agree on `K`, so they differ
   -- by an element `c` of `Γ`.

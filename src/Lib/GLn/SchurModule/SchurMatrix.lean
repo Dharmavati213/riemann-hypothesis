@@ -799,7 +799,7 @@ omit [∀ τ : Φ, DecidableEq (n τ)] in
 /-- For every array y over R with rows (τ, a), the kernel `New.weylKernel` at y lies in the module
 ∇ = `New.nablaFamily` of Borel semi-invariants: it is a substitution of the product of leading
 minors `New.highestPoly`. -/
-lemma weylKernel_mem_nablaFamily [DecidableEq Φ] (y : ((τ : Φ) × n τ) × ℕ → R) :
+lemma weylKernel_mem_nablaFamily (y : ((τ : Φ) × n τ) × ℕ → R) :
     weylKernel n κ y ∈ nablaFamily R n κ := by
   rw [weylKernel, highestPoly]
   exact rowSubst_mem_nabla _ prod_tableauPoly_mem_nabla

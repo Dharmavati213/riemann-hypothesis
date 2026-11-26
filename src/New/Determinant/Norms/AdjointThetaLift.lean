@@ -845,8 +845,8 @@ theorem inner_singleLift {j : D.LiftIndex} (y : D.principalForms (D.spaceW j))
     (Ξ : (D.descentPair ϑ j).FormV) :
     inner ℂ (D.singleLift ϑ j y) Ξ = (D.spaceW j).petersson y.val
       ((D.descentPair ϑ j).normalizedDescent Ξ) := by
-  rw [D.singleLift_apply]
-  exact (D.descentPair ϑ j).inner_thetaLift (D.fitsParams_descentPair ϑ j) y.val Ξ
+  simpa only [D.singleLift_apply] using!
+    (D.descentPair ϑ j).inner_thetaLift (D.fitsParams_descentPair ϑ j) y.val Ξ
 
 /-- The adjoint of the theta lift `D.singleLift ϑ j` sends a form `Ξ` on `V_j` to the form on `W_j`
 whose function on the adelic group `U(W_j)(𝔸)` is `θ Ξ`: at `g` it is the sum, over the classes `h`
@@ -1065,8 +1065,8 @@ theorem singleLift_principalRep (ϑ : D.TameChar) {j : D.LiftIndex} (s : D.chose
     (y : D.principalForms (D.spaceW j)) :
     D.singleLift ϑ j (D.principalRep (D.spaceW j) s y) =
       (D.descentPair ϑ j).formAction s (D.singleLift ϑ j y) := by
-  rw [D.singleLift_apply, D.singleLift_apply]
-  exact (D.descentPair ϑ j).thetaLift_formRep (D.fitsParams_descentPair ϑ j) _
+  simpa only [D.singleLift_apply] using!
+    (D.descentPair ϑ j).thetaLift_formRep (D.fitsParams_descentPair ϑ j) _
     (reduceFamily_liftResidue (w := D.chosenPlace) s) y.val
 
 end Data

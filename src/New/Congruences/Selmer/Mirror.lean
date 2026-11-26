@@ -383,7 +383,7 @@ lemma dualSelmer_frob_add_conj_frob_eq_zero {hp : IsTiedPrimes ℓ S₀ V W N P�
       unionWithConj T.places (J.erase P₀) ∪ Set.range fun j : Fin 2 ↦ (![p, p'] j).prime := by
     intro v hv
     have hv_cases : v ∈ unionWithConj T.places (J.erase P₀) ∨ v = P ∨ v = star P := by grind
-    simpa [p, p', Matrix.range_cons, or_comm, eq_comm] using hv_cases
+    simpa [p, p', Matrix.range_cons, eq_comm] using hv_cases
   have h_mem : t • k • z ∈ (T.tiedSetting hp hV hN ha A).cocycles
       (Set.range fun j : Fin 2 ↦ (![p, p'] j).prime) :=
     T.mem_cocycles_tiedSetting hp hV hN ha A

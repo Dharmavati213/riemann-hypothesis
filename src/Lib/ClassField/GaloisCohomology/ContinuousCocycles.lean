@@ -14,6 +14,7 @@ modules, and counts continuous 1-cocycles along exact sequences.
 
 ## Main definitions and results
 
+* `New.B1`: the 1-coboundaries among the continuous 1-cocycles `New.Z1`.
 * `New.Z2`, `New.B2`, `New.H2`: continuous 2-cocycles, coboundaries and their quotient.
 * `New.QZ`, `New.QZ.carry`, `New.QZChar`: the discrete group `ℚ/ℤ`, the carry of two representatives
   in `[0, 1)`, and continuous characters into `ℚ/ℤ`.
@@ -78,6 +79,14 @@ def Z1 : Submodule R (G → M) :=
 /-- The coboundary map in degree 0: the `R`-linear map from `M` to functions `G → M` sending `m`
 to `g ↦ ρ g m - m`. -/
 abbrev coboundaryMap : M →ₗ[R] G → M := LinearMap.pi fun g ↦ ρ g - LinearMap.id
+
+/-- The 1-coboundaries of `ρ`, as a submodule of the continuous 1-cocycles: the cocycles of the form
+`g ↦ ρ g m - m` for some `m : M`. -/
+def B1 : Submodule R (Z1 ρ) := (LinearMap.range (coboundaryMap ρ)).comap (Z1 ρ).subtype
+
+variable {ρ} in
+lemma mem_B1_iff {z : Z1 ρ} : z ∈ B1 ρ ↔ ∃ m : M, ∀ g : G, ρ g m - m = (z : G → M) g := by
+  simp [B1, funext_iff]
 
 /-- The continuous 2-cocycles of `ρ`: continuous `f : G × G → M` with
 `f (g * h, k) = f (g, h * k) - f (g, h) + ρ g (f (h, k))`. -/

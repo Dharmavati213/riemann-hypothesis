@@ -56,13 +56,6 @@ Known; see `Lib.GaloisRep.Main.OddRank` for sources.
 
 open NumberField Matrix New Variety Period IsLocalization RingHom Subgroup Gf
 
-/-- `conjAtSplit w g` is the inverse transpose of the unitary element `ofSplitPlace w g`. -/
-private lemma New.GaloisRep.invTransposeGL_ofSplitPlace_eq_conjAtSplit {E : Type} [Field E]
-    [CMBase E] {n : Type} [Fintype n] [DecidableEq n] {w : SplitFinPlace E}
-    (g : GL n (LocField (w : FinPlace E))) :
-    invTransposeGL (ofSplitPlace w.prop g).val = conjAtSplit w g :=
-  rfl
-
 /-- Moving a coset representative at a split place. Let the cosets modulo the level `levelGU n 𝔑`
 of `toFinGL y₀ * invTransposeGL u₀` and of `x` agree, and let `𝔑 ∉ star w` for the split place `w`.
 Then for some `c` at `w` and all `y : GL n E` and `g` at `w`, the cosets of
@@ -87,7 +80,7 @@ private lemma New.GaloisRep.exists_forall_mk_eq_mk_mul_conjAtSplit {E : Type} [F
   refine ⟨c, fun y g ↦ QuotientGroup.eq.mpr ?_⟩
   have h_elt : (toFinGL (y * y₀) * invTransposeGL (u₀ * ofSplitPlace w.prop (c * g)).val)⁻¹ *
       (toFinGL y * (x * conjAtSplit w g)) = (conjAtSplit w c)⁻¹ * κ := by
-    simpa [mul_assoc, κ, invTransposeGL_ofSplitPlace_eq_conjAtSplit] using
+    simpa [mul_assoc, κ] using!
       (h_comm g).symm.inv_mul_cancel
   rw [h_elt]
   exact mul_mem (inv_mem h_loc) h_mem

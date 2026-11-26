@@ -182,8 +182,7 @@ lemma algHom_sub_mem_of_mem_gaussFiltration (χ : MvPolynomial σ R →ₐ[R] A)
     have hp : p ∈ gaussFiltration F c (t - c i) := fun α ↦ by
       have h_level : t - c i - weight c α = t - weight c (α + .single i 1) := by
         simp [weight_single, sub_add_eq_sub_sub_swap]
-      rw [h_level, ← coeff_mul_X α i p]
-      exact hf _
+      simpa only [h_level, coeff_mul_X α i p] using hf (α + .single i 1)
     obtain ⟨hψp, h_diff⟩ : ψ p ∈ G (t - c i) ∧ ψ p - χ p ∈ G (t - c i + 20⁻¹) := ih hp
     have hψX : ψ (X i) ∈ G (c i) := by simpa using add_mem (hχ i) (antitone (by simp) (hψ i))
     refine ⟨by simpa using mul_mem_graded hψp hψX, ?_⟩

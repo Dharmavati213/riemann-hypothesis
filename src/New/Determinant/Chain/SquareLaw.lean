@@ -405,7 +405,7 @@ lemma matrixFourier_nextDatum_fromBlocks {R a b n : Type} [CommRing R] [Fintype 
   have h_trace (η : Matrix n a R) (s : Matrix n b R) :
       (fromBlocks A B C D * fromBlocks η s (0 : Matrix b a R) (1 : Matrix b b R)).trace =
         (A * η).trace + (C * s).trace + D.trace := by
-    simp [fromBlocks_multiply, trace, sum_add_distrib, add_assoc]
+    simp [fromBlocks_multiply, sum_add_distrib, add_assoc]
   have h_neg : ∑ η : Matrix n a R, p (-η) * ψ (A * η).trace = matrixFourier ψ p (-A) :=
     sum_bijective _ neg_bijective _ _ fun η ↦ by simp
   calc _ = ∑ s : Matrix n b R, ∑ η : Matrix n a R, p (-η) / card (Matrix n b R) *

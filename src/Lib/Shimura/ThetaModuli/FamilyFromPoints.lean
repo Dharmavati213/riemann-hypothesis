@@ -213,8 +213,7 @@ lemma smooth_of_allSpecializeTo_isReduced {A : Over S} [AddObj A] [Flat A.hom] [
     simp [π, ← smoothLocus_eq_top_iff, ← preimage_smoothLocus_eq]
   obtain ⟨U, hU, htU⟩ : ∃ V : S.Opens, IsAffineOpen V ∧ LandsIn t V := exists_isAffineOpen_landsIn t
   have hxU : π x ∈ U := by
-    rw [hx]
-    exact landsIn_iff_mem.mp htU
+    simpa only [hx] using landsIn_iff_mem.mp htU
   obtain ⟨W, hW, hxW, hWU⟩ : ∃ W : A.left.Opens, IsAffineOpen W ∧ x ∈ W ∧ W ≤ π ⁻¹ᵁ U :=
     exists_isAffineOpen_mem_and_subset (π.mem_preimage.mpr hxU)
   -- Smoothness descends from k to the residue field of the image of t.

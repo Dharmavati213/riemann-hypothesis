@@ -366,7 +366,7 @@ lemma finite_Z1 [IsLocalGalois Γ k A] ⦃R : Type⦄ [CommRing R] (M : Discrete
       f (M.ρ u x) = unitsRep u.val (f x) := by
     simpa using! congr($(hU _ u.property f) (M.ρ u x)).symm
   -- Over the fixed field of `U` the cocycles killed by `#M` form a finite group.
-  letI := (of_finite U).isLocalGalois.finite_ker_natCast_Z1_unitsModule (Nat.card M)
+  let := (of_finite U).isLocalGalois.finite_ker_natCast_Z1_unitsModule (Nat.card M)
   have hz_mul (z : Z1 M.ρ) (g h : Γ) : z.val (g * h) = z.val g + M.ρ g (z.val h) :=
     z.property.right g h
   -- Restrict to `U` and compose with each character of `M`. The resulting cocycles lie in

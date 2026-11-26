@@ -720,7 +720,6 @@ lemma Space.lintegral_encard_ne_top {t : Type*} [Fintype t] {Ω : Set (Matrix n 
     (hΩ : IsCompact Ω) (h_rank : Nonempty n → 2 * card t < card n) :
     ∫⁻ g : G E s, {ξ : Matrix n t E | (V.toRatCoords g).val⁻¹.val * ξ.map toAdele ∈ Ω}.encard
       ∂V.quotMeasure ≠ ⊤ := by
-  classical
   -- Reduction theory gives each `g` a profile `x : n → ℤ` of a rational basis. The count at `g` is
   -- at most a weight `ω x` times the number of bases of profile `x` at `g`, and `ω x` times the
   -- bound for the number of Gram matrices is summable over `x`.

@@ -104,9 +104,9 @@ lemma card_le_mul_finrank_of_dual_rows {O X I E : Type*} [CommRing O] [IsLocalRi
       simpa [v] using congrArg (fun f : X → S ↦ S.subtype (f y.1) y.2) hc
     -- Pair the relation with row `i` of `R`: only the coefficient `c i` survives.
     calc c i = ∑ j : s, c j * residue O ((R * Q) i j) := by
-          simp [h_dual, apply_ite (residue O)]
+          simp [h_dual]
       _ = ∑ y : X × I, residue O (R i y) * ∑ j : s, c j * residue O (Q y j) := by
-          simp only [Matrix.mul_apply, map_sum, map_mul, mul_sum, mul_left_comm]
+          simp only [Matrix.mul_apply, map_sum, mul_sum, mul_left_comm]
           exact sum_comm
       _ = 0 := by simp only [h_entry, mul_zero, sum_const_zero]
   simpa [finrank_pi_fintype] using h_indep.fintype_card_le_finrank

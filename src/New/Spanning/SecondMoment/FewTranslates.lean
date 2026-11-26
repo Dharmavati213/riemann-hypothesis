@@ -335,7 +335,6 @@ theorem isSpread_of_second_moment [Fintype Γ]
   -- dimension of that preimage. Here `W₀` is `W` inside `T₀`, and `α = dim W / dim T₀`.
   intro W₀ α
   set W : Submodule ℂ T := W₀.map (range pr₀).subtype
-  have hα : 0 ≤ α := by positivity
   have h_dim : (finrank ℂ W : ℝ) = α * finrank ℂ (range pr₀) := by
     rw [Submodule.finrank_map_subtype_eq]
     have h_zero (h : (finrank ℂ (range pr₀) : ℝ) = 0) : (finrank ℂ W₀ : ℝ) = 0 :=

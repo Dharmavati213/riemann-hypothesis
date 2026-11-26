@@ -177,7 +177,7 @@ lemma hasIntegrableTerms_localDatum_of_eq_stdDatum (hπ : ReadsAt A π) (β γ :
   have h_inv : M * M⁻¹ = 1 := mul_nonsing_inv M (.of_mul_eq_one_right d h_det)
   -- the frame at the point enters `M`, so the right inverse is a triangular matrix times `N M⁻¹`
   simp only [M, ← coordMatrix_mul_fromBlocks_eq_fromCols W₁ D c z q g, Matrix.map_mul] at h_inv
-  exact ⟨_, by simpa [← Matrix.mul_assoc, fromBlocks_map] using congrArg transpose h_inv⟩
+  exact ⟨_, by simpa [← Matrix.mul_assoc] using congrArg transpose h_inv⟩
 
 open scoped Classical in
 omit [Nontrivial (LocProd P)] in

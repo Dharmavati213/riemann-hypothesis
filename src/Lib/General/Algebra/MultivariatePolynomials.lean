@@ -97,7 +97,7 @@ lemma New.bind₁_monomial_mem_vanishingIdeal_pow {K ι : Type} [Field K] {w : �
 
 /-- Chinese remainder theorem for jets: at finitely many distinct points `z t`, the coefficients
 of degree below `d` after translation to the origin can be prescribed arbitrarily. -/
-lemma New.exists_forall_coeff_translate_eq {K ι S : Type} [Field K] [Fintype ι] [Fintype S]
+lemma New.exists_forall_coeff_translate_eq {K ι S : Type} [Field K] [Fintype S]
     {z : S → ι → K} (hz_inj : z.Injective) {d : ℕ} {Γ : Finset (ι →₀ ℕ)}
     (hΓ : ∀ γ ∈ Γ, γ.degree < d) (y : S × Γ → K) :
     ∃ p : MvPolynomial ι K, ∀ (t : S) (γ : Γ), (aeval (X + C ∘ z t) p).coeff γ = y (t, γ) := by

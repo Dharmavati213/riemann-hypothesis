@@ -396,15 +396,6 @@ lemma card_detIndex_le (j : D.LiftIndex) (τ : NumberField.InfinitePlace D.E) :
   have h_mul : j * D.gap ≤ D.m * D.gap := mul_le_mul_left j.2.2 D.gap
   grind [card_detIndex_add_firstFactorCharExp j τ, D.weight_le_natB_add_offWeight τ]
 
-/-- The number `card (DetIndex j τ)` of determinants at the infinite place `τ` is the number of
-columns of μ⁺. This is the sum of `(untwistedDescentPair j).colsPlus τ h` over heights
-`h < card (FirstFactorIndex j)`. It is at most `D.natB + D.offWeight + D.gap + D.m * D.gap`. -/
-lemma card_detIndex (j : D.LiftIndex) (τ : NumberField.InfinitePlace D.E) :
-    Fintype.card (DetIndex j τ) =
-        ∑ h ∈ range (Fintype.card (FirstFactorIndex j)), (untwistedDescentPair j).colsPlus τ h ∧
-      Fintype.card (DetIndex j τ) ≤ D.natB + D.offWeight + D.gap + D.m * D.gap :=
-  ⟨card_detIndex_eq_sum j τ, card_detIndex_le j τ⟩
-
 /-- Let `Z` have the `2 m + card (FirstFactorIndex j)` rows of a determinant det(𝖼; X z) at `j`, and
 as columns the last `D.posRank j - h ≤ j` of the `D.posRank j` positive indices of W_j and the
 indices `AddedIndex j` of W^add = E^{3m−j} ⊕ W♭ ⊕ E^{3m}, at most `12 m + 1` columns in all. If its

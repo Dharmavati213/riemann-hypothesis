@@ -278,9 +278,7 @@ lemma Pairing.isCupCoboundary_of_eq_coboundary [TopologicalSpace Γ]
     exact congrArg (Quotient.mk _) h_kill
   have h_zero : cls = 0 :=
     (nsmul_eq_zero_iff_of_coprime (k.index_coprime.pow_right _)).1 ⟨h_index, h_pow⟩
-  have h_B2 : zmodPowToUnits P.exponent ∘ b ∈ B2 (unitsRep.comp toGp) := by
-    exact Submodule.mem_comap.1 ((Submodule.Quotient.mk_eq_zero _).1 h_zero)
-  exact h_B2
+  exact Submodule.mem_comap.1 ((Submodule.Quotient.mk_eq_zero _).1 h_zero)
 
 /-- `smul_comm` oriented for `simp`: an element of `FrobGroup Γ` moves inside any commuting
 scalar `a`. -/
@@ -1074,7 +1072,7 @@ lemma p_pow_mul_z_pow_div_mem_liftIdeal {S : PairingSide O} {r c n ω : ℕ} {j 
       k.z.val ^ (n + ω) ∈ S.liftIdeal r 1 (k.letterFrob j) :=
     mem_liftIdeal_of_mul_E_pow h_one le_rfl le_rfl
   exact mem_liftIdeal_zero_of_mem_liftIdeal_one_letterFrob _ _ (Nat.mul_div_le (n + ω) p)
-    (by simpa using h_traded)
+    (h_traded)
     (by simp only [Nat.padicValNat_def, multiplicity_mul_div_factorial, le_refl])
 
 /-- Let `k` be a Kummer chart with coordinate `z = k.z`, an element of `Ainf`, the ring A_inf. Let

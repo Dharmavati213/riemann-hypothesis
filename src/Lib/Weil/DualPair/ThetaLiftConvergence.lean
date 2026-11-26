@@ -8,6 +8,7 @@ import Lib.Adelic.Unitary.RationalPoints
 import Lib.DiscreteSeries.CuspKernel
 import Lib.DiscreteSeries.Haar.TotalMass
 import Lib.Weil.DualPair.WeilAction
+import TauCeti.RepresentationTheory.Continuous.StronglyContinuous
 
 /-!
 # Growth of theta kernels and convergence of theta lifts
@@ -70,13 +71,9 @@ variable {E n n' : Type} [Field E] [CMType E] [Fintype n] [DecidableEq n] [Finty
 /-- The operator norms ‖ω(k)‖ of a theta kernel on a Banach space are bounded for k in a compact
 subset of the product of the two adelic groups (Banach–Steinhaus). -/
 lemma exists_norm_le_of_isCompact {K : Set (G E s × G E t)} (hK : IsCompact K) :
-    ∃ C : ℝ, ∀ k ∈ K, ‖Θ.ω k‖ ≤ C := by
-  -- Each orbit map is continuous, hence bounded on `K`; then apply the Banach–Steinhaus theorem.
-  have orbit_bdd (φ : X) : ∃ C : ℝ, ∀ k : K, ‖Θ.ω k φ‖ ≤ C := by
-    simpa only [Subtype.forall] using
-      hK.exists_bound_of_continuousOn (f := fun k ↦ Θ.ω k φ)
-        (Θ.continuous.comp₂ continuous_id continuous_const).continuousOn
-  simpa only [Subtype.forall] using banach_steinhaus orbit_bdd
+    ∃ C : ℝ, ∀ k ∈ K, ‖Θ.ω k‖ ≤ C :=
+  ContRepresentation.exists_norm_le_of_isCompact (π := .ofMonoidHom Θ.ω)
+    (fun _ ↦ Θ.continuous.comp₂ continuous_id continuous_const) hK
 
 /-- One step of reduction: for `g` an adelic point of the unitary group of `V`, there is an
 archimedean point `y` with operator norm at most `2` at every infinite place such that the height of

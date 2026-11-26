@@ -241,7 +241,7 @@ lemma omega_mem_raises_of_schurJet_le
       simp [hΨ', hg₀, hg₁, k.omega_omega, mul_assoc, η]
     _ = weylGauge κ ea d⁻¹ (k.jetMap Ψ' η) := by
       rw [← weylGauge_mul_of_mem_integralAbove (hk := div_mem hx hεd)]
-      simp [hg₁, ← mul_assoc, div_eq_mul_inv]
+      simp [hg₁, ← mul_assoc]
     _ = ‖A *ᵥ ιₚ ∘ η‖ := by
       simp [A, V, k, thetaKernel, ιₚ.map_mulVec, weylGauge, comp_def, weylRep, hu, Units.smul_def,
         schur_diagonal_eq_prod]
@@ -351,7 +351,7 @@ lemma mem_raises_predictedDivisibility
   rw [← h_one]
   refine omega_mem_raises_of_jet_minorProd_le hΦ (one_mem _) (one_mem _) (d := 1) (u := 1) (by simp)
     fun f hf i' w ↦ ?_
-  simpa [N, diagonalWeight_one] using norm_jet_minorProd_jetSeries_le hp hf hc i' w
+  simpa [diagonalWeight_one] using norm_jet_minorProd_jetSeries_le hp hf hc i' w
 
 /-- Take the theta kernel (`New.thetaKernel`) of weight `(κ, e)`, with `κ` giving the column numbers
 of the diagrams, and of scale `c * P.jetScale s`, where `P.jetScale s` is the scale of Taylor series
