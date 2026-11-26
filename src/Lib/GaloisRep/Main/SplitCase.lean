@@ -400,6 +400,7 @@ private lemma New.GaloisRep.exists_isTypeLevel {E : Type} {a : ℕ} [Field E] [C
       IsTypeLevel v_split ϑ x H.toSubgroup K χ U := by
   classical
   -- Off `v` the level is the group of integral points whose part off `x` lies in `H`.
+  -- Integral points trivial at some finite set `S` of places have their part off `x` in `H`.
   obtain ⟨S, S_min, S_level⟩ := exists_inf_trivialOn_le (offPartComap x_split H).isOpen'
   -- A point supported at `x` and its conjugate has trivial part off `x`.
   obtain ⟨x_off, star_x_off⟩ := S_min x <|
