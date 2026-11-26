@@ -649,7 +649,7 @@ images, in the links of `γ` and `γ'`, of vectors of the lattice of `c`. Then t
 columns of `w` with those of `w'` for the form `S.linkForm / M` are integral adeles. Here
 `S.linkForm = diag(T, -T)` on two copies of `X₀ ⊕ E z`, of Gram matrix `T`. -/
 lemma HasIntegralLifts.isIntMatrix_linkForm {c c' : S.Classes} {s : S.ResidueGL} {γ γ' : S.G E}
-    {σ : Type} [Fintype σ] {w : Matrix (𝔰.MiddleIndex ⊕ 𝔰.MiddleIndex) τ (𝔸f E)}
+    {σ : Type} {w : Matrix (𝔰.MiddleIndex ⊕ 𝔰.MiddleIndex) τ (𝔸f E)}
     {w' : Matrix (𝔰.MiddleIndex ⊕ 𝔰.MiddleIndex) σ (𝔸f E)} (h_lift : HasIntegralLifts c γ w)
     (hγ : γ ∈ S.termsOver c s c') (hγ' : γ' ∈ S.termsOver c s c')
     (h_lift' : HasIntegralLifts c γ' w') :

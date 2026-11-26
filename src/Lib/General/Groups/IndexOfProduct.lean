@@ -1,6 +1,5 @@
 module
 
-public import Lib.Base
 public import Mathlib.GroupTheory.Index
 
 /-!

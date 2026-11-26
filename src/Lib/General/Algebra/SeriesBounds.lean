@@ -126,11 +126,6 @@ namespace New
 variable {p : ℕ} [Fact p.Prime]
 
 
-/-- If `g(0) = 0`, then `exp g` has constant term `1`. -/
-lemma constantCoeff_expSubst {g : ℂ_[p]⟦X⟧} (hg_zero : constantCoeff g = 0) :
-    constantCoeff (expSubst g) = 1 :=
-  PowerSeries.constantCoeff_subst_exp hg_zero
-
 /-- If `g(0) = 0`, then `s g(X) - g(δ X)` has constant term `0`. -/
 lemma constantCoeff_smul_sub_rescale {g : ℂ_[p]⟦X⟧} (hg_zero : constantCoeff g = 0)
     (s δ : ℂ_[p]) : constantCoeff (s • g - rescale δ g) = 0 := by
@@ -140,15 +135,6 @@ lemma constantCoeff_smul_sub_rescale {g : ℂ_[p]⟦X⟧} (hg_zero : constantCoe
 lemma mul_derivative_logOf {f : ℂ_[p]⟦X⟧} (hf : constantCoeff f = 1) :
     f * d⁄dX (logOf f) = d⁄dX f := by
   rw [← PowerSeries.logDeriv_def, mul_comm, PowerSeries.logDeriv_mul f hf]
-
-/-- If `g(0) = 0`, then `log (exp g) = g`, where `exp g` is `expSubst g`. -/
-lemma logOf_expSubst {g : ℂ_[p]⟦X⟧} (hg_zero : constantCoeff g = 0) :
-    logOf (expSubst g) = g :=
-  PowerSeries.logOf_subst_exp hg_zero
-
-/-- If `f(0) = 1`, then `exp (log f) = f`, where `exp` is `expSubst` and `log f` is `logOf f`. -/
-lemma expSubst_logOf {f : ℂ_[p]⟦X⟧} (hf : constantCoeff f = 1) : expSubst (logOf f) = f :=
-  PowerSeries.subst_exp_logOf hf
 
 section Bounds
 
@@ -367,12 +353,12 @@ lemma mem_of_expSubst_smul_eq {B : Subring ℂ_[p]⟦X⟧} {T : ℂ_[p]⟦X⟧}
     (hH : H ∈ B) (h_exp : expSubst (c • g) = 1 + c • H) : g ∈ B := by
   -- Taking logarithms gives `g = (log (1 + c X) / c)(H)`, an integral series in `H`.
   have hcg : constantCoeff (c • g) = 0 := by simp [hg_zero]
-  have hH_zero : constantCoeff H = 0 := by simpa [h_exp, hc_ne] using constantCoeff_expSubst hcg
+  have hH_zero : constantCoeff H = 0 := by simpa [h_exp, hc_ne] using constantCoeff_subst_exp hcg
   have hs : HasSubst H := .of_constantCoeff_zero' hH_zero
   have h_log : (c⁻¹ • rescale c (log ℂ_[p])).subst H = g :=
     calc _ = c⁻¹ • logOf (1 + c • H) := by
           rw [subst_smul hs, subst_rescale_eq_subst_smul _ hs, logOf_eq, add_sub_cancel_left]
-      _ = g := by rw [← h_exp, logOf_expSubst hcg, inv_smul_smul₀ hc_ne]
+      _ = g := by rw [← h_exp, logOf_subst_exp hcg, inv_smul_smul₀ hc_ne]
   rw [← h_log]
   exact hB.subst_mem (inv_smul_rescale_log_mem hc) hH hH_zero
 
@@ -386,12 +372,12 @@ lemma expSubst_mem_of_pow_mem {B : Subring ℂ_[p]⟦X⟧} {T : ℂ_[p]⟦X⟧}
   obtain ⟨b, hb_mem, hb_one, hb_pow⟩ := exists_pow_eq_one_add_X hm
   have hm_ne : m ≠ 0 := fun h ↦ (Fact.out : p.Prime).ne_one (by simpa [h] using hm)
   set u : ℂ_[p]⟦X⟧ := expSubst g ^ m - 1 with hu
-  have hu_zero : constantCoeff u = 0 := by simp [hu, constantCoeff_expSubst hg_zero]
+  have hu_zero : constantCoeff u = 0 := by simp [hu, constantCoeff_subst_exp hg_zero]
   have hs : HasSubst u := .of_constantCoeff_zero' hu_zero
   have h_root : b.subst u = expSubst g := by
     refine eq_of_pow_eq_pow_of_constantCoeff_eq_one hm_ne
       ((constantCoeff_subst_eq hu_zero).trans hb_one)
-      (constantCoeff_expSubst hg_zero) ?_
+      (constantCoeff_subst_exp hg_zero) ?_
     rw [← subst_pow hs, hb_pow, ← coe_substAlgHom hs, map_add, map_one, substAlgHom_X, hu]
     ring
   rw [← h_root]

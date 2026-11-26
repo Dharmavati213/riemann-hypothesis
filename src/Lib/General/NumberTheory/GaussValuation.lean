@@ -1,6 +1,7 @@
 module
 
 public import Lib.GaloisRep.Main.SelmerModules
+public import Lib.General.NumberTheory.CoefficientRings
 import Lib.General.NumberTheory.PadicLimitsValuation
 import TauCeti.Algebra.Ring.GeomSum
 

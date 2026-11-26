@@ -1,6 +1,7 @@
 module
 
 public import Lib.General.LinearAlgebra.BlockEmbeddings
+public import Lib.General.NumberTheory.CoefficientRings
 public import New.Appendix.DiscreteSeries.SteepParameters
 public import New.UpperBound.Objects.Parameters
 import Lib.Adelic.Unitary.RationalPoints

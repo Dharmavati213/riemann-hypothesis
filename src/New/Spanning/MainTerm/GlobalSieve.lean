@@ -127,8 +127,7 @@ lemma absNorm_denominator_le {y : E} (hy : y ∈ ratIntegralOff T) :
   have h_comap : (denominator y).toAddSubgroup = D.comap f := by
     ext a
     have h_off : algebraMap E (𝔸f E) (algebraMap (𝓞 E) E a * y) ∈ integralOff T := by
-      rw [map_mul]
-      exact mul_mem ((mem_Ô_iff T).1 (h_integral a)).right hy
+      simpa only [map_mul] using mul_mem ((mem_Ô_iff T).1 (h_integral a)).right hy
     rw [Submodule.mem_toAddSubgroup, mem_denominator, ← algebraMap_mem_Ô, mem_Ô_iff T,
       and_iff_left h_off]
     simp [D, f, mul_comm]
@@ -625,7 +624,7 @@ with entries in `A` and a common last entry. Up to the constant `poissonConst i 
 frameScaleSq v i ^ 2`, with `volÔ E` the volume of the integral finite adeles, the frequency `0`
 gives the sum of `J i` over all pairs of heads of length `i`, and the other frequencies give at most
 `ε` times the squared sum of the weights of these heads. -/
-lemma densitySum_succ_le [S.IsAdmissible] (hA : ∀ t ∈ A, (t : E) ∈ ratIntegralOff T)
+lemma densitySum_succ_le (hA : ∀ t ∈ A, (t : E) ∈ ratIntegralOff T)
     (K : S.IsGlobalSieveSystem T n J massBound Λ β) (hβ : S.BoundsDecay T β ε) {i : ℕ}
     (hi : i ≤ n) :
     S.densitySum T A J (i + 1) ≤ S.poissonConst i *
@@ -952,7 +951,7 @@ chosen complex embedding inducing `v`, and let `c j v` be the product of the sca
 entries. There the factor is `max 1 ‖c j v * Φ v δ‖⁻¹ ^ n⁶` if `‖c j v * Φ v δ‖ ≤ b ^ (60 n²)`, and
 `0` otherwise. At `T` the factor is `[O : δ O] ^ (n⁶ / 2)` if `ratToPlaces T δ` lies in `O`, and `0`
 otherwise. Here `O` is the ring of integers of the product of the completions at `T`. -/
-lemma globalWeight_scaledHead [S.IsAdmissible] {A : Finset Eˣ} {i : ℕ} (p : Fin i → A) :
+lemma globalWeight_scaledHead {A : Finset Eˣ} {i : ℕ} (p : Fin i → A) :
     let c (j : Fin i) (v : InfinitePlace E) : ℂ := ∏ a ∈ range (j + 1), S.frameScaleSq v a
     S.globalWeight T i (S.scaledHead T p 1) = ∏ j : Fin i,
       (∏ v : InfinitePlace E,

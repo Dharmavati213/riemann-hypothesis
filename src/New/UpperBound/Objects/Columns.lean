@@ -3,6 +3,7 @@ module
 public import Lib.ClassField.HeckeL.EulerProduct
 public import Lib.GLn.Branching.IntegralMap
 public import Lib.General.LinearAlgebra.BlockEmbeddings
+public import Lib.General.NumberTheory.CoefficientRings
 public import Lib.SiegelWeil.SingularForms.CentreCoefficients
 public import Lib.Weil.DualPair.FiniteAction
 public import New.UpperBound.Objects.LiftChains

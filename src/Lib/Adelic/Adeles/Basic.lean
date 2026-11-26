@@ -319,8 +319,8 @@ lemma exists_v_locMap_eq_pow {u : FinPlace K} {w : FinPlace L} (hw : w.comap f =
   -- suffices to treat elements of `K`, which is dense in its completion.
   refine ⟨w.asIdeal.ramificationIdx (𝓞 K), (w.asIdeal.ramificationIdx_pos (𝓞 K)).ne',
     (denseRange_algebraMap K u).eq fun x : K ↦ ?_⟩
-  rw [locMap_algebraMap, v_algebraMap_eq_valuation, v_algebraMap_eq_valuation]
-  exact (valuation_liesOver L u w x).symm
+  simpa only [locMap_algebraMap, v_algebraMap_eq_valuation] using!
+    (valuation_liesOver L u w x).symm
 
 /-- The map of completions induced by a field homomorphism preserves and reflects integrality. -/
 @[simp] lemma v_locMap_le_one_iff {u : FinPlace K} {w : FinPlace L} (hw : w.comap f = u)

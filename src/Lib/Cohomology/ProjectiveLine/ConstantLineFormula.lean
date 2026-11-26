@@ -1,6 +1,7 @@
 module
 
 public import Lib.Cohomology.ProperBaseChange.Theorem
+public import Lib.General.NumberTheory.CoefficientRings
 import Lib.Cohomology.Etale.DenseSubfunctors
 import Lib.Cohomology.ProjectiveLine.TiltedLineFormula
 import Lib.PadicComparison.Descent.TestCovers

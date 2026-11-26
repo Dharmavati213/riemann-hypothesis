@@ -236,7 +236,7 @@ lemma New.exists_eigencharacter_of_ne_bot {M : Type*} [CommMonoid M] (ρ : M →
     (hS : ∀ m : M, ∀ x ∈ S, ρ m x ∈ S) (hS_ne : S ≠ ⊥) :
     ∃ χ : M →* k, ∃ x ∈ S, x ≠ 0 ∧ ∀ m : M, ρ m x = χ m • x := by
   have comm (m n : M) : ∀ x ∈ S, ρ m (ρ n x) = ρ n (ρ m x) := by
-    simp [← End.mul_apply, ← map_mul, mul_comm]
+    simp [← mul_apply_eq_comp, ← map_mul, mul_comm]
   have : Nontrivial S := Submodule.nontrivial_iff_ne_bot.2 hS_ne
   obtain ⟨χ, -, x, x_mem, x_ne, eigen⟩ := exists_eigenvector_of_commute ρ hS comm bot_ne_top
   -- The eigenvalues are multiplicative, since scalars are determined by their action on `x ≠ 0`.

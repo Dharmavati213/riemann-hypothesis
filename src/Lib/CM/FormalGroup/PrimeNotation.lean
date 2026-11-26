@@ -2,6 +2,7 @@ module
 
 public import Lib.CM.Sigma.Basic
 public import Lib.General.Algebra.AdicCompletion
+public import Lib.General.NumberTheory.CoefficientRings
 import Lib.General.NumberTheory.PadicLimitsValuation
 import Lib.General.NumberTheory.SUnitsAndClassNumber
 

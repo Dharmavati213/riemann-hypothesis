@@ -582,8 +582,8 @@ lemma smul_sub_mem_withOrders (hx : x ∈ L.withOrders i c) (g : k.galMonoid) :
   obtain ⟨h_span, h_letter, h_exp⟩ := mem_withOrders_iff.1 hx
   refine mem_withOrders_iff.2 ⟨sub_mem (galMonoid_smul_mem_kisinLocAinf h_span) h_span,
     sub_mem ((gal_smul_mem_letterPart g).2 h_letter) h_letter, fun a u hu μ hμ ↦ ?_⟩
-  rw [valueAt_smul_sub h_span hμ.1]
-  exact sub_mem (galMonoid_smul_mem_hodgeFil g (h_exp a u hu μ hμ)) (h_exp a u hu μ hμ)
+  have h_mem := h_exp a u hu μ hμ
+  simpa only [valueAt_smul_sub h_span hμ.1] using sub_mem (galMonoid_smul_mem_hodgeFil g h_mem) h_mem
 
 /-! ### Divisibility of `g x - x` by `zTau` -/
 
@@ -1138,8 +1138,7 @@ lemma exists_valueAt_sub_mem_hodgeFil_succ (a : ℕ) (n : ℤ) :
     have h_fix (g : k.galMonoid) :
         g • ∑ l, t l • valueAt a μ x - ∑ l, t l • valueAt a μ x ∈ hodgeFil 1 :=
       smul_sub_mem_hodgeFil_of_valueField g t (valueAt_mem_valueField hμ hx) h_int (ht g)
-    rw [h_value, zero_add]
-    exact exists_const_sub_mem_hodgeFil_of_smul_sub_mem h_fix
+    simpa only [h_value, zero_add] using exists_const_sub_mem_hodgeFil_of_smul_sub_mem h_fix
 
 end New.Lift.KummerChart.JumpLattice
 

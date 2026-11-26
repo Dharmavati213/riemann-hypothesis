@@ -1,10 +1,10 @@
 module
 
 public import Lib.Adelic.Hecke.ClassSums
+public import Lib.General.NumberTheory.CoefficientRings
 public import Lib.PadicHodge.TateSen
 import Lib.ClassField.Places.DecompositionCompletion
 import Lib.General.Measure.HaarModulus
-import Lib.General.NumberTheory.CoefficientRings
 import Lib.PadicHodge.Crystalline.HodgeTateForms
 
 /-!

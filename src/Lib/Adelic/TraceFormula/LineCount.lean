@@ -107,7 +107,7 @@ lemma diag_ne_zero_of_row (hg : ∀ j ≠ i, g i j = 0) : g i i ≠ 0 :=
 
 /-- Replacing the `j`-th column of the identity matrix by `z` gives determinant `z j`. -/
 lemma det_updateCol_one (j : n) (z : n → F) : (updateCol 1 j z).det = z j := by
-  rw [← cramer_apply, cramer_one, Module.End.one_apply]
+  rw [← cramer_apply, cramer_one, one_apply_eq_self]
 
 /-- Replacing the `j`-th row of the identity matrix by `z` gives determinant `z j`. -/
 lemma det_updateRow_one (j : n) (z : n → F) : (updateRow 1 j z).det = z j := by

@@ -1,6 +1,5 @@
 module
 
-public import Lib.Base
 public import Mathlib.Data.Fin.Tuple.Sort
 public import Mathlib.Data.ZMod.Basic
 public import Mathlib.LinearAlgebra.Matrix.Permutation
@@ -193,7 +192,7 @@ lemma exists_det_permStep_eq (v : Fin (m + 1) → Bool) (hP : 1 < P) :
       simp [N, A, B, mul_sub, (zero_lt_one.trans hP).ne', pow_succ, mul_assoc]
   have h_factor : permStep v P σ * G = E * G * N * (1 - B ∘ₗ A) := by
     refine LinearMap.ext fun ν ↦ funext fun ⟨b, j⟩ ↦ ?_
-    simp only [Module.End.mul_apply, permStep_apply, h_E, h_G, h_N]
+    simp only [mul_apply_eq_comp, permStep_apply, h_E, h_G, h_N]
     -- Compare the entries by `partialProd σ j.succ = partialProd σ j.castSucc * σ j`.
     cases j using lastCases <;> simp [← succ_last, partialProd_succ]
   have h_AB : (P ^ (m + 1))⁻¹ • funLeft ℝ ℝ (ofFn σ).prod = A ∘ₗ B :=

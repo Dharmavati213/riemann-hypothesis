@@ -64,8 +64,8 @@ def logDerivMean [NeZero q] (s : ℂ) : ℂ :=
 /-- The remainder `R_q(x) = ∑_{n ≤ x} λ(n) (1/n - 1/x) - log x / φ(q) - c_q`, with
 `λ = lambdaKResidueClass d q` and `c_q = re G_q(1)`, `G_q = logDerivMean d q`; see
 `primeRemainder_eq_sum_posPart`. For odd `d` prime to `q` this is the constant for which
-`R_q(x) → 0` as `x → ∞`, as `tendsto_primeRemainder` in `New.Reduction.Zeros.PrimeNumberTheorem`
-proves. -/
+`R_q(x) → 0` as `x → ∞`, by `eventually_abs_primeRemainder_le` in
+`New.Reduction.Zeros.PrimeNumberTheorem` with `B = 1`. -/
 def primeRemainder [NeZero q] (x : ℝ) : ℝ :=
   lambdaKSum d q 0 x - lambdaKSum d q 1 x - x.log / φ q - re (logDerivMean d q 1)
 

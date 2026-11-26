@@ -345,7 +345,7 @@ lemma frameGram_top_eq_of_mem_besselH {g k : T.G} (hg : g ∈ T.besselH) (hk : k
 `weylElem 𝔰.ϱ r` (written `w_r`), one has `(w_r * (a * s⁻¹)⁻¹)⁻¹ * (s * x) = a * w_r⁻¹ * x` for all
 `a`, `x`. -/
 lemma inv_weylElem_mul_inv_mul {A : Type} {𝔰 : Shape} [SemilocalField A] [StarRing A]
-    {T : 𝔰.Form A} [IsHermitianUnit T.splitGram] {s : T.G} (hs : s ∈ T.floorGroup 𝔰.ϱ) (a x : T.G)
+    {T : 𝔰.Form A} {s : T.G} (hs : s ∈ T.floorGroup 𝔰.ϱ) (a x : T.G)
     (r : ℕ → Aˣ) :
     (weylElem 𝔰.ϱ r * (a * s⁻¹)⁻¹)⁻¹ * (s * x) = a * (weylElem 𝔰.ϱ r)⁻¹ * x :=
   calc (weylElem 𝔰.ϱ r * (a * s⁻¹)⁻¹)⁻¹ * (s * x)

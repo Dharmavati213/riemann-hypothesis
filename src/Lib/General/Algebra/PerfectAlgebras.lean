@@ -2,6 +2,7 @@ module
 
 public import Lib.PadicComparison.Descent.TestCategory
 public import Lib.PadicComparison.Descent.TestCovers
+import TauCeti.RingTheory.Smooth.Lifting
 
 /-!
 # Perfect algebras, étale algebras over perfect rings, and constant Laurent polynomials
@@ -444,41 +445,9 @@ B ≅ D ⊗_C T as D-algebras for some étale C-algebra T. -/
 lemma exists_etale_lift (B : Type*) [CommRing B] [Algebra D B] [h_etale : Etale D B]
     (h_surj : Surjective (algebraMap C D)) :
     ∃ T : CommAlg C, Algebra.Etale C T ∧ Nonempty (D ⊗[C] T ≃ₐ[D] B) := by
-  -- Lift a submersive presentation `P` of `B` of dimension `0` to a presentation `Q` over `C` and
-  -- invert the Jacobian of `Q`; after base change to `D` the Jacobian is already a unit.
-  algebraize [(algebraMap D B).comp (algebraMap C D)]
-  obtain ⟨ι, σ, _, _, P : SubmersivePresentation D B ι σ, h_dim : P.dimension = 0⟩ :=
-    (iff_isStandardSmoothOfRelativeDimension_zero.1 h_etale).1
-  -- The coefficients of the relations of `P` come from `C`, so `P` has a model over `C`.
-  have : P.HasCoeffs C := ⟨fun x _ ↦ h_surj x⟩
-  let Q : PreSubmersivePresentation C (P.ModelOfHasCoeffs C) ι σ := P.1.ofHasCoeffs C
-  let φ : D ⊗[C] P.ModelOfHasCoeffs C ≃ₐ[D] B := P.tensorModelOfHasCoeffsEquiv C
-  -- `φ` sends the Jacobian of `Q` to that of `P`, a unit because `P` is submersive.
-  have h_unit : IsUnit (φ (1 ⊗ₜ Q.jacobian)) := by
-    let := Fintype.ofFinite σ
-    classical
-    -- `φ (1 ⊗ y)` is the value of the polynomial `y` at the generators of `B`.
-    have hφ (y : MvPolynomial ι C) :
-        φ (1 ⊗ₜ[C] algebraMap Q.Ring (P.ModelOfHasCoeffs C) y) = MvPolynomial.aeval P.val y :=
-      (P.tensorModelOfHasCoeffsEquiv_tmul C 1 y).trans (by simp)
-    have h_det : Q.jacobiMatrix.det = P.jacobianOfHasCoeffs C := rfl
-    rw [Q.jacobian_eq_jacobiMatrix_det, hφ, h_det, P.aeval_jacobianOfHasCoeffs C]
-    exact P.jacobian_isUnit
-  refine ⟨.of _ (Localization.Away Q.jacobian), ?_, ⟨?_⟩⟩
-  · -- Adjoining an inverse of the Jacobian adds one generator and one relation.
-    let loc := PreSubmersivePresentation.localizationAway (Localization.Away Q.jacobian) Q.jacobian
-    refine iff_isStandardSmoothOfRelativeDimension_zero.2
-      ⟨_, _, _, inferInstance, ⟨loc.comp Q, ?_⟩, ?_⟩
-    · simp [loc, algebraMap_isUnit, smul_def, -isUnit_map_iff]
-    · grind [Presentation.dimension, Nat.card_sum]
-  · -- Base change commutes with localisation, and localising at a unit changes nothing.
-    have h_unit' : IsUnit ((1 : D) ⊗ₜ[C] Q.jacobian) := .of_map φ _ h_unit
-    let e₁ : D ⊗[C] Localization.Away Q.jacobian ≃ₐ[D]
-        Localization.Away ((1 : D) ⊗ₜ[C] Q.jacobian) :=
-      tensorProductEquivTMulRight C D Q.jacobian (Localization.Away Q.jacobian)
-    let e₂ : Localization.Away ((1 : D) ⊗ₜ[C] Q.jacobian) ≃ₐ[D] D ⊗[C] P.ModelOfHasCoeffs C :=
-      (atUnit _ _ _ h_unit').symm.restrictScalars D
-    exact e₁.trans (e₂.trans φ)
+  obtain ⟨T, _, _, h_etale_T, e⟩ :=
+    Algebra.Etale.exists_tensorProduct_algEquiv_of_surjective C D B h_surj
+  exact ⟨.of _ T, h_etale_T, e⟩
 
 /-- Let `D` be étale over `C` with `p = 0` in `D`, and `f : D → E` a ring map with `C → E` étale.
 If `s` is inverse to `f` up to the `p`-th power on both sides, then `f` is bijective. -/

@@ -330,7 +330,7 @@ the squared local pairing, in terms of the local value of `𝗀`, the radius `ρ
 the dimension of the Bessel system `S.besselSystem v`. Then the integral of `ω` times the cut kernel
 has norm at most `ε` plus the integral of `ω` times the norm of the difference of the full and the
 cut kernel. -/
-theorem enorm_integral_besselKernel_le [HasPrimitiveRoot5040 E] {γ : S.G E} (h_near : S.IsNear γ)
+theorem enorm_integral_besselKernel_le {γ : S.G E} (h_near : S.IsNear γ)
     (h_disc : S.termDisc γ ≠ 0) {ω : (NumberField.InfinitePlace E → 𝔰.G₁) → ℝ≥0∞}
     (ω_meas : Measurable ω) (ω_le : ∀ y : NumberField.InfinitePlace E → 𝔰.G₁, ω y ≤ 1)
     (ω_inv : ∀ t y : NumberField.InfinitePlace E → 𝔰.G₁,
@@ -419,6 +419,7 @@ lemma exists_isNearRepresentative_of_besselKernel_ne_zero [HasPrimitiveRoot5040 
     ⟨h_near.mul_of_mem_besselU0 ha.2 hb_fix, by simp [← out_eq]⟩, ?_⟩
   exact ((DoubleCoset.eq ..).2 ⟨a, ha, u⁻¹ * b, mul_mem (inv_mem hu) hb_unip, by group⟩).symm
 
+omit [S.IsAdmissible] in
 /-- The element `𝗀(γ) = |D_{ϱ+1}|² - N² |D_ϱ|²` (`termDisc γ`), formed from the last two leading
 minors of the matrix of frame products, is an algebraic integer for a rational `γ` in
 `S.termsOver c s c'`. -/

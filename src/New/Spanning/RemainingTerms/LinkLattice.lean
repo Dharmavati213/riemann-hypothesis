@@ -583,7 +583,7 @@ lemma submoduleIndex_inf_of_le (h_le : M ≤ N) : submoduleIndex (N ⊓ K) M = s
 
 /-- If `M ≤ N`, the index in `M` of the elements of `N` that `f` maps into `L` is the index of `L`
 in the image `f M`. -/
-lemma submoduleIndex_inf_comap [HasPrimitiveRoot5040 E] {L : Submodule (Ô E) (l → 𝔸f E)}
+lemma submoduleIndex_inf_comap {L : Submodule (Ô E) (l → 𝔸f E)}
     (f : (n → 𝔸f E) →ₗ[Ô E] l → 𝔸f E) (h_le : M ≤ N) :
     submoduleIndex (N ⊓ L.comap f) M = submoduleIndex L (M.map f) := by
   rw [submoduleIndex_inf_of_le h_le]

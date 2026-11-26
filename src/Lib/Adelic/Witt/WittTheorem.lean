@@ -5,6 +5,7 @@ public import Lib.General.LinearAlgebra.IntegralLattices
 import Lib.Adelic.Adeles.IdeleModulus
 import Lib.GaloisRep.Hilbert90.TameActions
 import Lib.GaloisRep.Hilbert90.UnitaryGroups
+import TauCeti.LinearAlgebra.SesquilinearForm.SignedHermitianSpace.Witt
 
 /-!
 # Witt's theorem over fields and over Ô; quasi-reflections, Eichler maps, frames
@@ -162,20 +163,6 @@ omit [DecidableEq n] in
 lemma HasLeftInv.of_isUnit_gram (h_gram : IsUnit (Xᴴ * J * X)) : HasLeftInv X :=
   ⟨h_gram.unit⁻¹.val * (Xᴴ * J), by rw [Matrix.mul_assoc, h_gram.val_inv_mul]⟩
 
-/-- In a field with an involution that is not the identity, every `c` fixed by the involution is
-the trace `σ + star σ` of a unit `σ`. -/
-lemma exists_units_add_star_eq (hz : ∃ z : R, IsUnit (z - star z)) {c : R} (hc : star c = c) :
-    ∃ σ : Rˣ, (σ : R) + star (σ : R) = c := by
-  -- Take `σ = z (c - star z) / (z - star z)`. Both factors of the numerator are nonzero because
-  -- `z ≠ star z`, while `0` and `c` are fixed by the involution.
-  obtain ⟨z, hz⟩ := hz
-  have h_skew : z - star z ≠ 0 := hz.ne_zero
-  have hz_ne : z ≠ 0 := by grind [star_eq_zero]
-  have hc_ne : c - star z ≠ 0 := by grind [star_star]
-  refine ⟨.mk0 (z * (c - star z) / (z - star z)) (div_ne_zero (mul_ne_zero hz_ne hc_ne) h_skew), ?_⟩
-  have h_trace : z * (c - star z) / (z - star z) + star z * (c - z) / (star z - z) = c := by grind
-  simpa [hc] using h_trace
-
 /-- Let `J` be hermitian and invertible, with form h(u, v) = uᴴ J v. If h(x, x) = h(y, y) and
 h(y, y − x) ≠ 0, then a quasi-reflection along `x − y` sends `x` to `y`. -/
 lemma exists_quasiReflection_mulVec_eq {J : Matrix n n R} (hJ : Jᴴ = J) (hJ' : IsUnit J)
@@ -246,7 +233,9 @@ lemma witt_of_quasiReflection_mem (hz : ∃ z : R, IsUnit (z - star z)) {J : Mat
     by_cases! hb_j : b ⬝ᵥ J *ᵥ g *ᵥ X.col j ≠ 0
     · exact ⟨b, hb_s, by simp [hb], hb_j⟩
     exact ⟨a + b, by grind [add_dotProduct]⟩
-  obtain ⟨σ, hσ⟩ := exists_units_add_star_eq hz (star_dotProduct_mulVec_comm hJ (star u) (star u))
+  obtain ⟨σ, hσ⟩ := TauCeti.exists_units_add_eq (σ := starRingEnd R)
+    (hz.imp fun _ hz h ↦ hz.ne_zero (sub_eq_zero.2 h.symm))
+    (star_dotProduct_mulVec_comm hJ (star u) (star u))
   have hρ (x : n → R) : quasiReflection hJ hJ' (star u) σ hσ *ᵥ x =
       x - ((↑σ⁻¹ : R) * u ⬝ᵥ J *ᵥ x) • star u := by rw [quasiReflection_mulVec, star_star]
   set ρ : U J := quasiReflection hJ hJ' (star u) σ hσ

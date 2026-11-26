@@ -1,6 +1,7 @@
 module
 
 public import Lib.Cohomology.PointClass.NoetherNormalization
+public import Lib.General.NumberTheory.CoefficientRings
 public import Lib.PadicComparison.HodgeTate.GenericFibre
 import Lib.PadicComparison.Descent.TestCovers
 import Lib.PadicComparison.Primitive.PeriodCoefficients

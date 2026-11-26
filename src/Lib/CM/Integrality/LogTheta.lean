@@ -6,7 +6,7 @@ import Lib.CM.Integrality.IsogenyIntegrality
 import Lib.General.Algebra.SeriesBounds
 import Lib.General.NumberTheory.SUnitsAndClassNumber
 import Lib.Shimura.Uniformisation.HolomorphicFamilies
-import TauCeti.RingTheory.PowerSeries.Substitution
+import TauCeti.RingTheory.PowerSeries.Log
 
 /-!
 # The logarithm of the theta function of a CM lattice and the integral group law
@@ -170,7 +170,8 @@ lemma constantCoeff_negLogTheta : constantCoeff C.negLogTheta = 0 := by
   rw [negLogTheta, map_neg, constantCoeff_logOf C.constantCoeff_taylorVia_theta, neg_zero]
 
 lemma taylorVia_theta_eq_expSubst : taylorVia ιₚ C.θ = expSubst (-C.negLogTheta) := by
-  rw [negLogTheta, neg_neg, expSubst_logOf C.constantCoeff_taylorVia_theta]
+  rw [negLogTheta, neg_neg]
+  exact (subst_exp_logOf C.constantCoeff_taylorVia_theta).symm
 
 lemma derivative_taylorVia_theta :
     d⁄dX (taylorVia ιₚ C.θ) = -(taylorVia ιₚ C.θ * d⁄dX C.negLogTheta) := by

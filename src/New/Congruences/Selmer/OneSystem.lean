@@ -1,6 +1,7 @@
 module
 
 public import Lib.General.Algebra.SharpMinors
+public import Lib.General.NumberTheory.CoefficientRings
 public import New.Congruences.Selmer.AuxiliaryPrimes
 import New.Congruences.Selmer.SelmerData
 

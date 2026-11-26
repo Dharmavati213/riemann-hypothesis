@@ -415,7 +415,7 @@ lemma IsRootChoice.index_mul_finMean_eq_classInner [Finite Γ]
     sum_subtype _ mem_filter_univ, ← R.bijective_conjRoot.sum_comp, ← π.ker.index_mul_card,
     ← R.card_preimage_eq, ← Nat.card_eq_of_bijective _ R.bijective_conjRoot]
   have h_index : (π.ker.index : ℂ) ≠ 0 := mod_cast index_ne_zero_of_finite
-  simp [IsRootChoice.conjRoot, h_ker, hh_conj, hg_conj, field, Fintype.sum_prod_type, mul_sum]
+  simp [IsRootChoice.conjRoot, h_ker, hh_conj, hg_conj, field, Fintype.sum_prod_type]
   -- the values at r(γ) are those of f and f'
   grind [DescendsOnCoset]
 

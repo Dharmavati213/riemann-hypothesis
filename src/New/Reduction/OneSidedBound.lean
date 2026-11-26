@@ -1,5 +1,6 @@
 module
 
+public import Lib.General.NumberTheory.CoefficientRings
 public import New.Reduction.Data.AdmissibleData
 public import Statements
 import New.Reduction.Data.Existence

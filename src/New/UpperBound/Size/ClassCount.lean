@@ -1,6 +1,7 @@
 module
 
 public import Lib.Adelic.AutomorphicForms.PAdicGauge
+public import Lib.General.NumberTheory.CoefficientRings
 import Lib.Adelic.Adeles.SemilocalProducts
 import New.Spanning.RemainingTerms.Box
 

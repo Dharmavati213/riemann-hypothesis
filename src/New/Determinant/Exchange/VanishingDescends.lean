@@ -1,5 +1,6 @@
 module
 
+public import Lib.General.NumberTheory.CoefficientRings
 public import Lib.SiegelWeil.Tower.LineGaussSums
 public import Lib.Weil.DualPair.ThetaIntegrals
 import Lib.SiegelWeil.Tower.FunctionalEquation

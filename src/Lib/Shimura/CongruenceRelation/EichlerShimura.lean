@@ -2,6 +2,7 @@ module
 
 public import Lib.Cohomology.Etale.EllAdicCohomology
 public import Lib.General.Geometry.EtaleCharts
+public import Lib.General.NumberTheory.CoefficientRings
 import Lib.Cohomology.Etale.DenseSubfunctors
 import Lib.Cohomology.SmoothBaseChange
 import Lib.General.Geometry.PointsOfProperSchemes

@@ -1,5 +1,6 @@
 module
 
+public import Lib.General.NumberTheory.CoefficientRings
 public import New.Congruences.Selmer.AuxiliaryPrimes
 import Lib.GaloisRep.Hilbert90.UnitaryGroups
 import Lib.General.NumberTheory.GaussValuation

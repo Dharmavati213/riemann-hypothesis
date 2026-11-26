@@ -574,14 +574,14 @@ lemma pairTransposedLift_comp_pairLift_mul (h₁ : IsPairEdge a₁ b₁ e₁ e P
     simpa using (h_tame.apply_det (s := s') (liftMod g)).symm
   have h_first : A.formRep e k⁻¹ lifted = ((a₁ i)⁻¹.val (detFin s' k) : ℂ) •
       pairLift U₁ A (a₁ i) (b₁ i) P₁ (Pi.single x.toCols₁ 1) e₁ e f := by
-    simpa only [map_one, Module.End.one_apply] using (h₁.isArrow i).left.formRep_formLift_of_eq_smul
+    simpa only [map_one, one_apply_eq_self] using (h₁.isArrow i).left.formRep_formLift_of_eq_smul
       (pairWeil_modDatum_single_mul_left U₁ A (a₁ i) (b₁ i) g x.toCols₁ _) f
   have h_second :
       pairTransposedLift U₂ A (a₂ i) (b₂ i) P₂ (Pi.single (g.val * x.toCols₂) 1) e e₂ lifted =
         ((a₂ i)⁻¹.val (detFin s' k) : ℂ) •
           pairTransposedLift U₂ A (a₂ i) (b₂ i) P₂ (Pi.single x.toCols₂ 1) e e₂
             (A.formRep e k⁻¹ lifted) := by
-    simpa only [map_one, Module.End.one_apply] using (h₂.isArrow_swap i).formRep_formLift_of_eq_smul
+    simpa only [map_one, one_apply_eq_self] using (h₂.isArrow_swap i).formRep_formLift_of_eq_smul
       (pairWeil_modDatum_single_mul_left U₂ A (a₂ i) (b₂ i) g x.toCols₂ _) lifted
   rw [h_first, map_smul, smul_smul, ← h_char] at h_second
   -- the column blocks of `g * x` are by definition `g` times those of `x`
@@ -614,13 +614,13 @@ lemma pairLift_comp_pairTransposedLift_mul (h₁ : IsPairEdge b₁' a₁' (star 
     simpa using (h_tame.apply_det (s := s) (liftMod g)).symm
   have h_first : A'.formRep e' k lifted = ((a₁' i)⁻¹.val (detFin s k) : ℂ) •
       pairTransposedLift A' U₁ (b₁' i) (a₁' i) P₁' (Pi.single y.toRows₁ 1) e₁ e' f := by
-    simpa only [map_one, Module.End.one_apply] using (h₁.isArrow_swap i).formRep_formLift_of_eq_smul
+    simpa only [map_one, one_apply_eq_self] using (h₁.isArrow_swap i).formRep_formLift_of_eq_smul
       (pairWeil_modDatum_single_mul_right A' U₁ (b₁' i) (a₁' i) g y.toRows₁ _) f
   have h_second :
       pairLift A' U₂ (b₂' i) (a₂' i) P₂' (Pi.single (y.toRows₂ * g.val) 1) e' e₂ lifted =
         ((a₂' i)⁻¹.val (detFin s k) : ℂ) • pairLift A' U₂ (b₂' i) (a₂' i) P₂'
           (Pi.single y.toRows₂ 1) e' e₂ (A'.formRep e' k lifted) := by
-    simpa only [map_one, Module.End.one_apply] using (h₂.isArrow i).left.formRep_formLift_of_eq_smul
+    simpa only [map_one, one_apply_eq_self] using (h₂.isArrow i).left.formRep_formLift_of_eq_smul
       (pairWeil_modDatum_single_mul_right A' U₂ (b₂' i) (a₂' i) g y.toRows₂ _) lifted
   rw [h_first, map_smul, smul_smul, ← h_char] at h_second
   -- the row blocks of `y * g` are by definition those of `y` times `g`

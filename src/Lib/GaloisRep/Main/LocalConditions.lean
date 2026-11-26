@@ -1,6 +1,7 @@
 module
 
 public import Lib.ClassField.Places.DecompositionCompletion
+public import Lib.General.NumberTheory.CoefficientRings
 public import Lib.PadicHodge.Crystalline.Basic
 import Lib.ClassField.Places.DecompositionCyclotomic
 import Lib.General.LinearAlgebra.MatrixPolynomials

@@ -2,6 +2,7 @@ module
 
 public import Lib.Adelic.Reduction.FiniteVolume
 public import Lib.General.Combinatorics
+public import Lib.General.NumberTheory.CoefficientRings
 public import Lib.Weil.DualPair.MixedModel
 public import Lib.Weil.Unramified.HeckeGL
 import Lib.Adelic.Unitary.RationalPoints

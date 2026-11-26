@@ -1041,8 +1041,7 @@ lemma IsEdgeCondition.exists_finset_smul_top_le_range_sup_span {N k n : ℕ} {W 
     have hc : 2 * c₂ + 1 ≤ c - 1 := by
       have h_two : 2 ≤ N * T.multinomialExponent k := T.two_le_mul_multinomialExponent hk
       grind [congruencePrecision]
-    rw [← T.sqrtPrime_sq, ← pow_mul, ← pow_succ]
-    exact pow_dvd_pow _ hc
+    simpa only [pow_succ, pow_mul, T.sqrtPrime_sq] using pow_dvd_pow T.sqrtPrime hc
   have h_near (i j : V × Exponents N k n) :
       T.sqrtPrime ^ (c - 1) ∣ (pairingMap u b Q' * nearInverse u Av b' R' - (T.p : O) ^ c₂ •
         (1 : Matrix (V × Exponents N k n) (V × Exponents N k n) O)) i j :=
@@ -1112,8 +1111,8 @@ lemma exists_colengthDvd_range_pairingMap_mul_edgeRestriction {N k n : ℕ} {W O
       hQd' : Q' * d' = T.edgeRestriction n r src' g',
       hd' : d'.det ∣ T.sqrtPrime ^ (Fintype.card V * D)⟩ := h_large.exists_basis_det_dvd hp h_dual
   have h_ends : d'ᵀ.det * d.det ∣ (T.p : O) ^ (Fintype.card V * D) := by
-    rw [det_transpose, ← T.sqrtPrime_sq, ← pow_mul, two_mul, pow_add]
-    exact mul_dvd_mul hd' hd
+    simpa only [← pow_add, ← two_mul, pow_mul T.sqrtPrime 2, T.sqrtPrime_sq, det_transpose] using
+      mul_dvd_mul hd' hd
   obtain ⟨s, hs : (#s : ℝ) ≤ θ * (Fintype.card V * Fintype.card (Exponents N k n)), hs_span⟩ :=
     hC.exists_finset_smul_top_le_range_sup_span hp h_large.two_le_rank hb u hR hR'
       (fun ψ hψ ↦ mem_valuedIn.2 (T.apply_mem_allEdgesForms h_origin (hQ.le hψ)))

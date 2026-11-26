@@ -2,6 +2,7 @@ module
 
 public import Lib.Adelic.AutomorphicForms.PAdicGauge
 public import Lib.General.LinearAlgebra.MatrixPolynomials
+public import Lib.General.NumberTheory.CoefficientRings
 public import Lib.Weil.DualPair.HolomorphicData
 public import Lib.Weil.Lift
 import Lib.DiscreteSeries.Holomorphic.MaximalCompactMinors

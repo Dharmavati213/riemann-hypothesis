@@ -1,6 +1,7 @@
 module
 
 public import Lib.General.LinearAlgebra.MatrixPolynomials
+public import Lib.General.NumberTheory.CoefficientRings
 public import Lib.PadicHodge.Crystalline.Basic
 public import Lib.PadicHodge.Kisin.Charts
 import Lib.GaloisRep.Pseudocharacter.SemisimpleRepresentations

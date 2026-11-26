@@ -1,6 +1,7 @@
 module
 
 public import Lib.Cohomology.TorsionTheories
+public import Lib.General.NumberTheory.CoefficientRings
 public import Lib.PadicComparison.Descent.AlmostDescent
 public import Lib.PadicComparison.HodgeTate.GenericFibre
 import Lib.Cohomology.LerayHirsch

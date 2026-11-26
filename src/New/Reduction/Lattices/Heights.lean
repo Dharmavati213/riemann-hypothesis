@@ -1,5 +1,6 @@
 module
 
+public import Lib.General.NumberTheory.CoefficientRings
 public import Lib.General.NumberTheory.ImaginaryQuadraticField
 import Lib.General.Geometry.GaloisCovers
 import Lib.General.NumberTheory.PadicLimitsValuation

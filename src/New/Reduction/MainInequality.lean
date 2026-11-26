@@ -1,5 +1,6 @@
 module
 
+public import Lib.General.NumberTheory.CoefficientRings
 public import New.Reduction.PrimeSums
 import New.Determinant.Twist.LongForms
 import New.Reduction.ShortAndEnough

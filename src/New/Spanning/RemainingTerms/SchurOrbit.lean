@@ -190,7 +190,7 @@ lemma HasCellRank.norm_det_subframeBlock (h_rank : S.HasCellRank j γ) (v : Infi
 
 /-- A matrix product `P * M` with `P` integral has the conjugates of its rows in every `Ô`-module
 that contains the conjugates of the rows of `M`. -/
-lemma col_conjTranspose_mul_mem {m m' n : Type} [Fintype m] [DecidableEq m]
+lemma col_conjTranspose_mul_mem {m m' n : Type} [Fintype m]
     {M : Matrix m n (𝔸f E)} {P : Matrix m' m (𝔸f E)} (hP : IsIntMatrix (Ô E) P)
     {K : Submodule (Ô E) (n → 𝔸f E)} (hM : ∀ r : m, Mᴴ.col r ∈ K) (i : m') :
     (P * M)ᴴ.col i ∈ K := by

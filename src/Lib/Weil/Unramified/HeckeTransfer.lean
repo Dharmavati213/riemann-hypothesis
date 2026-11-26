@@ -3,6 +3,7 @@ module
 public import Lib.ClassField.HeckeL.EulerProduct
 public import Lib.General.Combinatorics
 public import Lib.General.LinearAlgebra.BlockEmbeddings
+public import Lib.General.NumberTheory.CoefficientRings
 public import Lib.Weil.Lift
 import Lib.ClassField.Avatar.HeckeBaseChange
 import Lib.ClassField.HeckeL.ContinuationAtOne

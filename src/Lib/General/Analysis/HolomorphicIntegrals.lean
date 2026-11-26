@@ -7,6 +7,7 @@ import Lib.General.Measure.HaarNormalisation
 import Lib.General.Topology
 import TauCeti.Analysis.Complex.CauchyIntegralPolydisc
 import TauCeti.Analysis.MvPolynomial.Jacobian
+import TauCeti.MeasureTheory.Function.StronglyMeasurable.FiniteDimensional
 import TauCeti.Topology.Instances.Matrix
 
 /-!
@@ -350,21 +351,6 @@ lemma New.norm_sub_le_of_holomorphic_bdd {f : E → F} {c : E} {r B : ℝ}
       ((norm_sub_le_of_le (hf_bound w hw) (hf_bound c hc)).trans_eq (two_mul B).symm)
   simpa [dist_eq_norm] using dist_le_div_mul_dist_of_mapsTo_ball hf_diff h_maps hz
 
-/-- A family `A` of bounded operators on a finite-dimensional space `E` is a.e. strongly measurable
-if `x ↦ A x y` is so for every vector `y`. -/
-lemma New.aestronglyMeasurable_clm_of_apply [FiniteDimensional ℂ E] {A : X → E →L[ℂ] F}
-    (hA : ∀ y : E, AEStronglyMeasurable (fun x : X ↦ A x y) μ) :
-    AEStronglyMeasurable A μ := by
-  -- With a basis `b` of `E`, the operator `A x` is the sum of the rank-one operators
-  -- `y ↦ (i-th coordinate of y) • A x (b i)`.
-  let b : Basis (Fin (finrank ℂ E)) ℂ E := finBasis ℂ E
-  let rankOne (i : Fin (finrank ℂ E)) : F →L[ℂ] E →L[ℂ] F :=
-    ContinuousLinearMap.smulRightL ℂ ℂ ℂ E F (b.coord i).toContinuousLinearMap
-  have h_sum (x : X) : ∑ i, rankOne i (A x (b i)) = A x :=
-    ContinuousLinearMap.coe_injective (b.ext fun i ↦ by simp [rankOne, Finsupp.single_apply])
-  exact (Finset.aestronglyMeasurable_fun_sum _ fun i _ ↦
-    (rankOne i).continuous.comp_aestronglyMeasurable (hA (b i))).congr (.of_forall h_sum)
-
 /-- Holomorphy of a parameter integral, the parameter `w` lying in a finite-dimensional space `E`.
 Let each `f w : X → F` be a.e. strongly measurable for the measure `μ`, and for all `w` near `z`
 and all `x` let `f · x` be complex differentiable at `w` with `‖f w x‖ ≤ g x`, `g` integrable.
@@ -395,7 +381,7 @@ lemma New.eventually_differentiableAt_integral {f : E → X → F} {z : E} {g : 
   have h_hasFDerivAt :
       HasFDerivAt (fun u : E ↦ ∫ x, f u x ∂μ) (∫ x, fderiv ℂ (f · x) w ∂μ) w :=
     (hasFDerivAt_integral_of_dominated_loc_of_lip' (ball_mem_nhds w hr) (fun u _ ↦ hf u) h_int
-      (aestronglyMeasurable_clm_of_apply h_dir) h_lip (by fun_prop) h_deriv).2
+      (TauCeti.aestronglyMeasurable_clm_apply_iff.mpr h_dir) h_lip (by fun_prop) h_deriv).2
   exact h_hasFDerivAt.differentiableAt
 
 /-- A Mellin integral that converges at two points converges between them. Let N > 0 be a

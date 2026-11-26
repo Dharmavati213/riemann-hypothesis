@@ -687,7 +687,7 @@ lemma exists_analyticFamily_positiveBall (e : (D.Index → ℂ) ≃L[ℂ] ℂ ×
               Function.comp_apply, LinearEquiv.refl_symm, comp_id, id_comp, star_def,
               LinearMap.ext_iff, ContinuousLinearMap.coe_coe, IsPeriodMap.complexMul_apply_apply,
               h_smul, ContinuousLinearEquiv.apply_symm_apply, smul_eq_mul, prodMap_apply,
-              LinearMap.smul_apply, Module.End.one_apply, coe_piMap, LinearMap.coe_smul,
+              LinearMap.smul_apply, one_apply_eq_self, coe_piMap, LinearMap.coe_smul,
               Prod.ext_iff, funext_iff, Pi.map_apply, Pi.smul_apply, implies_true, and_self]⟩ }
       analyticAt b hb w := analyticAt_of_eventually_differentiableAt
         (.mono (ball_open.mem_nhds hb) fun b' hb' ↦ (hderiv b' hb').differentiableAt)

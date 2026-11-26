@@ -1,7 +1,7 @@
 module
 
+public import Lib.General.NumberTheory.CoefficientRings
 public import Lib.PadicHodge.Crystalline.Basic
-import Lib.General.NumberTheory.CoefficientRings
 import Lib.PadicHodge.TateSen
 
 /-!

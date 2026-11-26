@@ -203,7 +203,7 @@ lemma New.Rows.sum_mul_le_of_sign_mul_nonpos {n : Type} [Fintype n] {s : n → �
 
 /-- Let `o` put the signs `1` first and let `x` have total `0` and the signs `s`. If
 `τ ∑ |x l| < 1`, then `1 - τ ∑ (x l, o l < a)` is positive for every `a`. -/
-lemma New.Rows.one_sub_mul_sum_filter_pos {n : Type} [Fintype n] [DecidableEq n] {s : n → ℤˣ}
+lemma New.Rows.one_sub_mul_sum_filter_pos {n : Type} [Fintype n] {s : n → ℤˣ}
     {o : n → ℤ} {x : n → ℝ} {τ : ℝ} (ho : IsPosFirstOrder s o)
     (hx : ∀ k : n, 0 ≤ (s k : ℝ) * x k) (sum_x : ∑ k : n, x k = 0)
     (hτ : τ * ∑ k : n, |x k| < 1) (a : ℤ) : 0 < 1 - τ * ∑ l : n with o l < a, x l := by

@@ -104,7 +104,7 @@ lemma IsOpenElement.leadingMinor_ne_zero {c c' : S.Classes} {s : S.ResidueGL}
 
 /-- With `f` the number of infinite places, the factor `(1 + S.b⁻¹ ^ 10) ^ f` of the sieve is at
 most `1 + S.b⁻¹ ^ 9`, because `f ≤ S.b / 1000` by the hypothesis `S.IsAdmissible`. -/
-lemma one_add_inv_pow_ten_pow_le [S.IsAdmissible] :
+lemma one_add_inv_pow_ten_pow_le :
     (1 + S.b⁻¹ ^ 10) ^ Core.numInfPlaces E ≤ 1 + S.b⁻¹ ^ 9 := by
   have hb_one : 1 ≤ S.b := le_trans (by norm_num) S.thousand_le_b
   set u : ℝ := S.b⁻¹ ^ 9 / 1000 with hu_def
@@ -371,7 +371,7 @@ groups and `(S.besselSystem v).Index` indexes a basis of the value space of the 
 product is `S.normalizingConst kPred`, with `kPred = 𝔰.k - 1`, times the square root of (∏ (‖t‖² -
 N²))^(𝔰.k - 1). By the product formula the powers of `p` cancel; the constant collects
 √`openCellConst`, the powers of the squared scales and the numbers of indices. -/
-lemma gramScalar_mul_headDensity [WeilData E]
+lemma gramScalar_mul_headDensity
     [S.IsAdmissible] {T : Finset (FinPlace E)} [T.StarStable] {P : Floors.IntegralPlace (LocProd T)}
     {G : Floors.PlaceData (Fin (𝔰.k - (6 * 𝔰.ϱ + 13))) (S.latticeMiddle (LocProd T))
       (𝔰.ϱ + 1 + 2 * 𝔰.ϱ + 5)} {kPred : ℕ} (hk : 𝔰.k = kPred + 1)
@@ -425,7 +425,7 @@ over `v` of `bandLimit 𝔰.n`, the top one of the forms on pairs of heads that 
 each weighted by the product over `v` of the scalar of `normalizedOrbitalIntegral`, √c_G · (|x_ϱ|² -
 1)^((k - 1)/2) · |I|⁻¹ · ∏_{a<ϱ} |x_a|^(k + 1 + 2(ϱ - a - 1)), where `x = x v p`, `k = 𝔰.k`,
 `c_G = 𝔰.openCellConst` and `I` is the index set of the Bessel system at `v`. -/
-lemma prod_bandLimit_eq_gram [S.IsAdmissible] {T₀ : Finset Eˣ} {σ : S.G E} {t : Eˣ}
+lemma prod_bandLimit_eq_gram {T₀ : Finset Eˣ} {σ : S.G E} {t : Eˣ}
     (hσ : σ ∈ Shape.Form.floorGroup 𝔰.ϱ) (h_tail : S.frameProducts σ 𝔰.top 𝔰.top = t) :
     let x (v : NumberField.InfinitePlace E) (p : Fin 𝔰.ϱ → T₀) (a : ℕ) : ℂˣ :=
       unitOrOne (S.frameScaleSq v a * Φ v (padTuple (fun b : Fin 𝔰.ϱ ↦ (p b).val) t a).val)

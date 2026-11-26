@@ -135,8 +135,6 @@ lemma IsNearPairOverAgreeingBlock.corank_le_and_pairDiscriminant_le {E : Type} [
     (pow_le_pow_iff_right₀ (by linarith : 1 < S.b)).1
       ((le_mul_of_one_le_right (by positivity) h_one_le_d).trans h_pow_mul_disc_le)
   have h_codim : 18 * i ≤ 𝔰.n ^ 3 := Nat.le_of_mul_le_mul_right h_exp NeZero.one_le
-  have h_rank_excess_le : j.val - 𝔰.ϱ ≤ 1 := by lia
-  have h_ϱ_large : 10 ^ 5 ≤ 𝔰.ϱ := S.ten_pow_five_le_varrho
   lia
 
 /-- A near pair (two near representative terms over one block whose `s` agrees) lies in

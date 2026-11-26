@@ -245,7 +245,7 @@ lemma entireTheta_translate_finiteImage (V : Space E n ε)
 omit [Fintype n] [DecidableEq n] in
 lemma realImage_smul_apply (c : E) (p : InfinitePlace E × n) :
     realImage (c • γ) p = Φ p.1 c * realImage γ p := by
-  simp [realImage, realCoord, val_scaleIdele_fst, fieldEq]
+  simp [realImage, realCoord, fieldEq]
 
 omit [Fintype n] [DecidableEq n] in
 lemma finiteImage_smul_apply (c : E) (j : n) :
