@@ -296,13 +296,21 @@ private lemma PadicPlaceEmbedding.inducesPlace_comp (L : PadicPlaceEmbedding E A
     _ = L.e ((decompComap c hφ g).val • c x) := congrArg L.e (hφ g x).symm
     _ = L.toGp (decompComap c hφ g) (L.e (c x)) := (h_e_equivariant _ (c x)).symm
 
+/-- The map `j ∘ decompComap c hφ` of decomposition groups that goes with the embedding `e ∘ c`
+(`L` has embedding `e` and map `j`) is an open embedding. -/
+private lemma PadicPlaceEmbedding.isOpenEmbedding_comp
+    (L : PadicPlaceEmbedding E A ℓ) (hφ : ∀ (g : Gal(Ω/E')) (x : Ω), φ g (c x) = c (g x)) :
+    IsOpenEmbedding (L.toGp.comp (decompComap c hφ)) := by
+  obtain ⟨-, h_open, -⟩ := L.inducesPlace_comp c hφ
+  exact h_open
+
 /-- The local datum at `A.comap c` given by a local datum `L` at `A` (embedding `e`, map `j`) and
 conjugation `φ` by `c`: the embedding `e ∘ c` and the map `j ∘ decompComap c hφ`. -/
 private noncomputable abbrev PadicPlaceEmbedding.comap (L : PadicPlaceEmbedding E A ℓ)
     (hφ : ∀ (g : Gal(Ω/E')) (x : Ω), φ g (c x) = c (g x)) :
     PadicPlaceEmbedding E' (A.comap c.toRingHom) ℓ :=
   { toGp := L.toGp.comp (decompComap c hφ),
-    isOpen_range := ⟨(L.inducesPlace_comp c hφ).2.1.isOpen_range⟩,
+    isOpen_range := ⟨(L.isOpenEmbedding_comp c hφ).isOpen_range⟩,
     e := L.e.comp c,
     inducesPlace := L.inducesPlace_comp c hφ }
 
@@ -311,8 +319,9 @@ that along `L`. -/
 private lemma PadicPlaceEmbedding.map_nearOne_comap (L : PadicPlaceEmbedding E A ℓ)
     (hφ : ∀ (g : Gal(Ω/E')) (x : Ω), φ g (c x) = c (g x)) :
     (nearOne (decompGroup Gal(Ω/E') (A.comap c.toRingHom)) (𝒥 := (L.comap c hφ).toOverGp)).map
-        (decompComap c hφ) = nearOne (decompGroup Gal(Ω/E) A) :=
-  map_nearOne (decompComap c hφ) L.inducesPlace.2.1.injective _
+        (decompComap c hφ) = nearOne (decompGroup Gal(Ω/E) A) := by
+  obtain ⟨-, h_open, -⟩ := L.inducesPlace
+  exact map_nearOne (decompComap c hφ) h_open.injective _
 
 /-- Let `r' g * P = P * r (φ g)` for `g` in `S`. Then multiplication by `P` carries
 `decompRep (r ∘ φ) B` to `decompRep r' B` at the elements of `S` in the decomposition group of
@@ -333,7 +342,7 @@ private lemma PadicPlaceEmbedding.eventually_toLin'_decompRep
       ∀ x : m → PadicAlgCl ℓ,
         P.toLin'.restrictScalars ℤ_[ℓ] (decompRep (r.comp φ) (A.comap c.toRingHom) g x) =
           decompRep r' (A.comap c.toRingHom) g (P.toLin'.restrictScalars ℤ_[ℓ] x) := by
-  rw [nearOne_eq_nhds_one (𝒥 := (L.comap c hφ).toOverGp) (L.inducesPlace_comp c hφ).2.1]
+  rw [nearOne_eq_nhds_one (𝒥 := (L.comap c hφ).toOverGp) (L.isOpenEmbedding_comp c hφ)]
   exact (continuousAt_subtypeVal.eventually_mem hS).mono (toLin'_decompRep_comp_of_mem h_comm)
 
 omit [ThePrime ℓ] in
@@ -355,6 +364,7 @@ lemma isFiniteTypeAt_of_retract (hφ : ∀ (g : Gal(Ω/E')) (x : Ω), φ g (c x)
   · -- Away from `ℓ`: `r (φ g) = P' r'(g) P = 1` for `g` in `S` and in inertia near `1`.
     rw [← map_one φ, ← hφ_open.map_nhds_eq]
     refine (h_inertia_r' (valuation_comap_eq_one c hℓ)).mp (.mono hS fun g hg h_triv hI ↦ ?_)
+    -- `φ g` lies in the inertia group of `A`, so `g` lies in that of `A.comap c`
     have h_r'_one : r' g = 1 := h_triv ⟨(apply_mem_decompGroup_iff c hφ g).mp hI.1, fun x hx ↦
       comap_apply_lt_one_iff.mpr <| by
         simpa [hφ] using hI.2 (c x) (isEquiv_comap.le_one_iff_le_one.mp hx)⟩
