@@ -2,6 +2,8 @@ module
 
 public import Lib.ClassField.GaloisCohomology.KummerCyclicClasses
 public import Lib.ClassField.GaloisCohomology.TateIndexFormula
+import Lib.ClassField.Places.LocalFields
+import Lib.ClassField.Places.ProfiniteGalois
 
 /-!
 # Index of l-th powers in a local field and finiteness of Kummer 1-cocycles

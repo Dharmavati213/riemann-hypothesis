@@ -1,6 +1,8 @@
 module
 
+public import Lib.Adelic.Unitary.Defs
 public import Lib.Adelic.Witt.WittTheorem
+public import Lib.General.LinearAlgebra.IntegralLattices
 
 /-!
 # Components of unitary adelic points at places; sums and moves of hermitian spaces

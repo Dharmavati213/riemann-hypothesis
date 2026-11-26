@@ -2,6 +2,7 @@ module
 
 public import Lib.ClassField.Global.CMSplittingCharacters
 public import Lib.ClassField.HeckeCharacter.AlgebraicValues
+public import Lib.Weil.Construction.FiniteMultiplier
 public import New.Derivatives.Field.PrimeDecomposition
 
 /-!

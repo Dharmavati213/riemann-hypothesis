@@ -1,6 +1,8 @@
 module
 
+public import Lib.Cohomology.Etale.Basic
 public import Lib.Cohomology.Etale.BijectiveComparisons
+public import Lib.General.Algebra.LongExactSequences
 
 /-!
 # Pointwise tensor product of functors, total Ext with Yoneda composition, external products

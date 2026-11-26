@@ -1,7 +1,10 @@
 module
 
+public import Lib.Adelic.QuotientMeasure.Basic
 public import Lib.DiscreteSeries.FlenstedJensen.RightDerivatives
+public import Lib.DiscreteSeries.Haar.TotalMass
 public import Lib.General.LinearAlgebra.MinorProducts
+public import TauCeti.LinearAlgebra.Matrix.Triangular
 
 /-!
 # Maximal compact subgroup, block diagonal matrices and equivariance of minors

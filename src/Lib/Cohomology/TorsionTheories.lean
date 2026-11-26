@@ -1,9 +1,10 @@
 module
 
 public import Lib.Cohomology.Etale.RelativeChains
-public import Lib.Cohomology.LerayHirsch
 public import Lib.General.Algebra.CohomologyBaseChange
-public import Lib.PadicComparison.HodgeTate.ExtCocycles
+import Lib.Cohomology.Etale.DenseSubfunctors
+import Lib.Cohomology.LerayHirsch
+import Lib.PadicComparison.HodgeTate.ExtCocycles
 
 /-!
 # Tensoring degree-two classes; cohomology theories with ℓ-torsion coefficients

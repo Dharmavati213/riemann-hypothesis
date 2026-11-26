@@ -1,7 +1,9 @@
 module
 
 public import Lib.ClassField.Places.DecompositionCyclotomic
+public import Lib.General.NumberTheory.EmbeddingsAndDifferent
 public import Lib.General.NumberTheory.ImaginaryQuadraticField
+import Lib.ClassField.Places.ProfiniteGalois
 import TauCeti.NumberTheory.Cyclotomic.Irreducible
 
 /-!

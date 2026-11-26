@@ -1,6 +1,8 @@
 module
 
-public import New.Derivatives.FormalGroup.ThetaProducts
+public import Lib.CM.FormalGroup.FormalParameter
+import Lib.General.Algebra.SeriesBounds
+import New.Derivatives.FormalGroup.ThetaProducts
 
 /-!
 # Derivatives of integral expansions

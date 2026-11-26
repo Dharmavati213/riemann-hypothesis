@@ -1,7 +1,9 @@
 module
 
 public import Lib.Adelic.Adeles.LocalFactors
+public import Lib.Adelic.Unitary.ComponentsAndBlockSums
 public import Lib.ClassField.Global.AlbertBrauerHasseNoether
+public import Lib.ClassField.Local.ArtinMap
 public import Lib.Cyclotomic.Voronoi
 public import Lib.General.Algebra.FittingIdealsAndLengths
 

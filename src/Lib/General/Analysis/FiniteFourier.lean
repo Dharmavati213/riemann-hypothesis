@@ -1,7 +1,7 @@
 module
 
 public import Lib.Base
-public import TauCeti.Algebra.Group.AddChar.Basic
+import TauCeti.Algebra.Group.AddChar.Basic
 
 /-!
 # Orthogonality, Fourier inversion and matrix Gauss sums over a finite ring

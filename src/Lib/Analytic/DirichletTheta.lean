@@ -1,6 +1,6 @@
 module
 
-public import Lib.Analytic.PolyaVinogradov
+public import Lib.Base
 
 /-!
 # Theta series of Dirichlet characters, Poisson summation, and `L(s, χ)` as a Mellin transform

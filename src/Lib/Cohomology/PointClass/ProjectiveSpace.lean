@@ -1,7 +1,9 @@
 module
 
 public import Lib.Cohomology.PointClass.NoetherNormalization
-public import Lib.PadicComparison.Primitive.PeriodCoefficients
+public import Lib.PadicComparison.HodgeTate.GenericFibre
+import Lib.PadicComparison.Descent.TestCovers
+import Lib.PadicComparison.Primitive.PeriodCoefficients
 
 /-!
 # Projective space as a functor, and injective pull-back along Noether normalisation

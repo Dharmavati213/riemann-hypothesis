@@ -1,5 +1,6 @@
 module
 
+public import Lib.PadicComparison.Descent.TestCategory
 public import Lib.PadicComparison.Descent.TestCovers
 
 /-!

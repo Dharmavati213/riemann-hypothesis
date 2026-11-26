@@ -1,7 +1,7 @@
 module
 
 public import Lib.Base
-public import TauCeti.NumberTheory.Padics.Complex.Basic
+import TauCeti.NumberTheory.Padics.Complex.Basic
 
 /-!
 # Adic completeness: p-adic tools, extension by continuity, topological bases

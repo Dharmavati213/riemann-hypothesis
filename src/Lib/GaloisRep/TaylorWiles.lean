@@ -1,7 +1,10 @@
 module
 
+public import Lib.Adelic.AutomorphicForms.PAdicGauge
 public import Lib.GaloisRep.LocalGlobal.LocalFormTypes
 public import Lib.GaloisRep.Main.AllRanks
+import Lib.GaloisRep.Main.QuadraticStep
+import Lib.PadicComparison.Descent.TestCategory
 
 /-!
 # Auxiliary places, base level, integral Hecke algebra and operators at the auxiliary places

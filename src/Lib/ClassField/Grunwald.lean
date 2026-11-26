@@ -1,11 +1,20 @@
 module
 
+public import Lib.Adelic.Adeles.LocalFactors
+public import Lib.Adelic.Adeles.StrongApproximation
+public import Lib.ClassField.Global.AlbertBrauerHasseNoether
+public import Lib.ClassField.Global.ArtinMap
+public import Lib.ClassField.Global.ArtinReciprocity
 public import Lib.ClassField.Global.CMSplittingCharacters
 public import Lib.ClassField.Global.Chebotarev
 public import Lib.ClassField.Global.ExistenceTheorem
+public import Lib.ClassField.Global.NormTheorems
 public import Lib.GaloisRep.BaseChange.CommutingHeckeFamilies
+public import Lib.GaloisRep.Main.SelmerModules
 public import Lib.General.NumberTheory.CMFields
 public import Lib.General.NumberTheory.FrobeniusOrbits
+public import Lib.General.NumberTheory.SUnitsAndClassNumber
+public import Lib.Weil.Construction.WeilData
 
 /-!
 # Grunwald's theorem in prime degree and CM steps with prescribed local behaviour

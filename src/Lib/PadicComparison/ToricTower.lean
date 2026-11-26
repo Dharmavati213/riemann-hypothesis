@@ -1,6 +1,7 @@
 module
 
 public import Lib.PadicComparison.Descent.AlmostDescent
+import Lib.PadicComparison.Descent.TestCovers
 
 /-!
 # Wang sequence on C × Bℕ, lines, and root systems of units via periodic sequences

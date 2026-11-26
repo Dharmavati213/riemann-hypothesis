@@ -2,6 +2,9 @@ module
 
 public import New.Spanning.Frames.StandardLevel
 public import New.Spanning.MainTerm.GlobalSieve
+import Lib.Adelic.Reduction.DefiniteClassSums
+import Lib.Cohomology.Etale.Basic
+import TauCeti.NumberTheory.NumberField.Countable
 
 /-!
 # The place and level of a set of primes, orbit sums and the set of entries

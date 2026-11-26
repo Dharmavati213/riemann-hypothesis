@@ -1,5 +1,6 @@
 module
 
+public import Lib.ClassField.GaloisCohomology.ContinuousCocycles
 public import Lib.ClassField.Places.ProfiniteGalois
 public import Lib.General.Topology
 

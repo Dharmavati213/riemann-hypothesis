@@ -1,5 +1,8 @@
 module
 
+public import Lib.Adelic.Reduction.DefiniteClassSums
+public import Lib.Cohomology.Etale.Basic
+public import Lib.DiscreteSeries.Holomorphic.MaximalCompactMinors
 public import Lib.Weil.DualPair.WeilAction
 
 /-!

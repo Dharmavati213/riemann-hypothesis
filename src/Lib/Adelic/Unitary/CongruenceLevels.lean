@@ -1,7 +1,9 @@
 module
 
-public import Lib.Adelic.Unitary.ComponentsAndBlockSums
-public import TauCeti.LinearAlgebra.Matrix.GeneralLinearGroup.Lift
+public import Lib.Adelic.Unitary.Defs
+import Lib.Adelic.Unitary.ComponentsAndBlockSums
+import TauCeti.LinearAlgebra.Matrix.GeneralLinearGroup.Lift
+import TauCeti.RingTheory.DedekindDomain.AdicValuation.ResidueField
 
 /-!
 # Principal levels and levels defined by reductions in the finite adelic unitary group

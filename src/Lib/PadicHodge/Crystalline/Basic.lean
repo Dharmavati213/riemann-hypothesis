@@ -1,6 +1,8 @@
 module
 
+public import Lib.ClassField.GaloisCohomology.ContinuousCocycles
 public import Lib.ClassField.Places.DecompositionCompletion
+public import Lib.PadicHodge.PeriodRings.CrystallineRings
 public import Lib.PadicHodge.PeriodRings.DeRhamPeriods
 
 /-!

@@ -2,6 +2,7 @@ module
 
 public import Lib.Adelic.TraceFormula.LevelAlgebra
 public import New.UpperBound.Objects.Rows
+import TauCeti.RepresentationTheory.AsAlgebraHom
 
 /-!
 # Spherical Hecke operators away from the level, and eigensystems

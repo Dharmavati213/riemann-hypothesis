@@ -1,6 +1,9 @@
 module
 
-public import Lib.ClassField.LocalDuality.KummerFiniteness
+public import Lib.ClassField.GaloisCohomology.KummerCyclicClasses
+import Lib.ClassField.LocalDuality.KummerFiniteness
+import Lib.ClassField.Places.LocalFields
+import Lib.ClassField.Places.ProfiniteGalois
 
 /-!
 # The local invariant Br(k) ≅ Q/Z and its behaviour under restriction and maps of local fields

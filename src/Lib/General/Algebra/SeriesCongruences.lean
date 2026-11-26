@@ -1,9 +1,8 @@
 module
 
 public import Lib.General.Algebra.AdicCompletion
-public import TauCeti.RingTheory.MvPowerSeries.Derivative
-public import TauCeti.RingTheory.MvPowerSeries.Dvd
-public import TauCeti.RingTheory.MvPowerSeries.Order
+import TauCeti.RingTheory.MvPowerSeries.Dvd
+import TauCeti.RingTheory.MvPowerSeries.Order
 
 /-!
 # Power series with prime power exponents, congruences and convergent sums

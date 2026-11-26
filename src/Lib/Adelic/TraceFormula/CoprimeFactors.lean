@@ -1,8 +1,10 @@
 module
 
 public import Lib.Adelic.TraceFormula.FibreIntegral
-public import Lib.General.LinearAlgebra.Eigenvalues
-public import TauCeti.LinearAlgebra.Trace.Idempotent
+public import Lib.LocalGL.Iwahori.ParahoricStructure
+import Lib.General.LinearAlgebra.Eigenvalues
+import Lib.General.LinearAlgebra.MatrixPolynomials
+import TauCeti.LinearAlgebra.Trace.Idempotent
 
 /-!
 # Coprime factors

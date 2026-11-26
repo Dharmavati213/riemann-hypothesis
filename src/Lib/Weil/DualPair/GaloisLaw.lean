@@ -1,6 +1,9 @@
 module
 
 public import Lib.Weil.DualPair.FiniteAction
+import Lib.Adelic.Witt.WittTheorem
+import Lib.Cohomology.Etale.Basic
+import Lib.Weil.DualPair.WeilAction
 
 /-!
 # Semilinear maps intertwining the Weil action up to σΔ/Δ

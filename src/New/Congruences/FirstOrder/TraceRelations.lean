@@ -1,7 +1,11 @@
 module
 
+public import Lib.ClassField.GaloisCohomology.TameSelmerCocycles
 public import Lib.Cyclotomic.OddSha
+public import New.Congruences.FirstOrder.EvenClasses
+public import New.Congruences.FirstOrder.FittingBlock
 public import New.Congruences.FirstOrder.TateTwistCocycles
+public import New.Congruences.GaloisRepresentations.AttachedRepresentations
 public import New.Congruences.GaloisRepresentations.RowsAndColumnsFromLabels
 public import New.Congruences.LocalLoss.CrystallineDefect
 public import New.Congruences.LocalLoss.LocalLattices

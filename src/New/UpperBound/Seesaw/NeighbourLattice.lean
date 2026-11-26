@@ -1,5 +1,7 @@
 module
 
+public import New.UpperBound.Objects.LiftLawsModuloN
+public import New.UpperBound.Seesaw.AdmissibleCombinations
 public import New.UpperBound.Seesaw.EdgePairEvaluation
 
 /-!

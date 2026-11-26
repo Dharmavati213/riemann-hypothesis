@@ -2,6 +2,7 @@ module
 
 public import Lib.Cohomology.Etale.DenseSubfunctors
 public import Lib.Cohomology.Hodge.CupProduct
+public import Lib.General.Algebra.LongExactSequences
 
 /-!
 # Relative chains ℤ[V]/ℤ[U]: local isomorphisms, transfer, excision and gluing

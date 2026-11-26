@@ -1,7 +1,13 @@
 module
 
+public import Lib.Cohomology.Etale.DenseSubfunctors
+public import Lib.PadicComparison.Completion
 public import Lib.PadicComparison.Crystalline.DividedPowerEnvelope
+public import Lib.PadicComparison.Descent.TestCovers
 public import Lib.PadicComparison.Primitive.PeriodCoefficients
+public import Lib.PadicComparison.ToricTower
+public import Lib.PadicHodge.PeriodRings.DeRhamPeriods
+public import TauCeti.RingTheory.Perfectoid.Integral.Tilt
 
 /-!
 # Crystalline comparison: bijectivity on étale charts and spanning of period cohomology

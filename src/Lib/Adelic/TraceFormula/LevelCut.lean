@@ -4,6 +4,7 @@ public import Lib.Adelic.TraceFormula.LevelAlgebra
 public import Lib.Adelic.TraceFormula.LineDeterminant
 public import Lib.Adelic.TraceFormula.LineStabiliser
 public import Lib.Adelic.TraceFormula.OffPlace
+import TauCeti.RepresentationTheory.AsAlgebraHom
 
 /-!
 # Passage to the stabiliser of a line at an auxiliary place

@@ -1,7 +1,10 @@
 module
 
 public import Lib.Cohomology.Hodge.Site
-public import Lib.PadicComparison.Descent.AlmostDescent
+import Lib.Cohomology.Etale.DenseSubfunctors
+import Lib.Cohomology.Etale.RelativeChains
+import Lib.PadicComparison.Descent.AlmostDescent
+import Lib.PadicComparison.Descent.TestCovers
 import TauCeti.RingTheory.MvPolynomial.RegularSequence
 
 /-!

@@ -1,9 +1,13 @@
 module
 
+public import Lib.General.Analysis.GaussianIntegral
+public import Lib.General.Analysis.HolomorphicIntegrals
 public import Lib.General.LinearAlgebra.HermitianMatrices
 public import Lib.General.Measure.HaarModulus
 public import Lib.General.Measure.IntegralOperators
+public import Lib.General.Topology
 public import Lib.Weil.Construction.WeilOperators
+public import TauCeti.Topology.Instances.Matrix
 
 /-!
 # The Fock model of the Weil representation of U(ε) at a real place

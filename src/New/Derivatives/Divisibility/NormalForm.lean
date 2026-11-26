@@ -1,9 +1,10 @@
 module
 
-public import TauCeti.RingTheory.MvPowerSeries.Derivative
-public import TauCeti.RingTheory.MvPowerSeries.Dvd
-public import Lib.General.Algebra.SeriesBounds
-public import Lib.General.Algebra.SeriesCongruences
+public import Lib.General.Algebra.IntegralPowerSeries
+import Lib.General.Algebra.SeriesBounds
+import Lib.General.Algebra.SeriesCongruences
+import TauCeti.RingTheory.MvPowerSeries.Derivative
+import TauCeti.RingTheory.MvPowerSeries.Dvd
 
 /-!
 # Couplings and the normal form

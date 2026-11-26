@@ -1,7 +1,10 @@
 module
 
-public import Lib.Adelic.Adeles.IdeleModulus
-public import Lib.GaloisRep.Hilbert90.UnitaryGroups
+public import Lib.Adelic.Unitary.Defs
+public import Lib.General.LinearAlgebra.IntegralLattices
+import Lib.Adelic.Adeles.IdeleModulus
+import Lib.GaloisRep.Hilbert90.TameActions
+import Lib.GaloisRep.Hilbert90.UnitaryGroups
 
 /-!
 # Witt's theorem over fields and over Ô; quasi-reflections, Eichler maps, frames

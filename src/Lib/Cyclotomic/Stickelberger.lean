@@ -1,7 +1,10 @@
 module
 
 public import Lib.GaloisRep.Main.SelmerModules
-public import Lib.General.NumberTheory.FrobeniusOrbits
+import Lib.Adelic.Adeles.LocalFactors
+import Lib.ClassField.Global.AlbertBrauerHasseNoether
+import Lib.General.NumberTheory.FrobeniusOrbits
+import TauCeti.Algebra.Group.AddChar.Basic
 
 /-!
 # A weak form of Stickelberger's theorem for Gauss sums, and a family of Jacobi-type quotients

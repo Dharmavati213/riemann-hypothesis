@@ -1,7 +1,6 @@
 module
 
 public import Lib.Adelic.QuotientMeasure.Basic
-public import TauCeti.MeasureTheory.Integral.Pi
 
 /-!
 # Product measures, layer cake bounds, cocompact subgroups and L² bounds of integral operators

@@ -1,5 +1,6 @@
 module
 
+public import Lib.Base
 public import Mathlib.Data.Finset.Prod
 public import Mathlib.Tactic.Choose
 

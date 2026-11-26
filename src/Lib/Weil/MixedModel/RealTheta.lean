@@ -2,6 +2,8 @@ module
 
 public import Lib.Weil.Construction.ProductsAndTransport
 public import Lib.Weil.MixedModel.IsotropicSplitting
+import Lib.General.Measure.IdempotentKernel
+import Lib.Weil.Construction.VacuumProjections
 
 /-!
 # Real data, the entire theta function, and the real vacuum in the mixed model

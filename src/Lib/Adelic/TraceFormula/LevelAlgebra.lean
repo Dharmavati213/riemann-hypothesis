@@ -1,7 +1,6 @@
 module
 
 public import Lib.Adelic.Hecke.Basic
-public import TauCeti.RepresentationTheory.AsAlgebraHom
 
 /-!
 # The elements of a group algebra that keep a level

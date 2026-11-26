@@ -1,8 +1,12 @@
 module
 
-public import Lib.CM.Integrality.IsogenyIntegrality
-public import Lib.General.Algebra.SeriesBounds
+public import Lib.CM.FormalGroup.IntegralParameter
 public import Lib.General.NumberTheory.PadicLimitsValuation
+import Lib.CM.Integrality.IsogenyIntegrality
+import Lib.General.Algebra.SeriesBounds
+import Lib.General.NumberTheory.SUnitsAndClassNumber
+import Lib.Shimura.Uniformisation.HolomorphicFamilies
+import TauCeti.RingTheory.PowerSeries.Substitution
 
 /-!
 # The logarithm of the theta function of a CM lattice and the integral group law

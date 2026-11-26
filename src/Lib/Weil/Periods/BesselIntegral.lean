@@ -1,7 +1,11 @@
 module
 
-public import Lib.Adelic.QuotientMeasure.UnfoldingInStages
+public import Lib.Adelic.Witt.WittTheorem
 public import Lib.Weil.DualPair.WeilAction
+import Lib.Adelic.QuotientMeasure.UnfoldingInStages
+import Lib.Adelic.Reduction.DefiniteClassSums
+import Lib.Adelic.Unitary.RationalPoints
+import Lib.General.Measure.IntegralOperators
 
 /-!
 # Integrals over the Bessel subgroup and the orbits surviving unipotent twists

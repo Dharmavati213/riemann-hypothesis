@@ -2,7 +2,7 @@ module
 
 public import Lib.Adelic.Hecke.Basic
 public import Lib.General.Groups.BesselGroups
-public import TauCeti.LinearAlgebra.Matrix.Range
+import TauCeti.LinearAlgebra.Matrix.Range
 
 /-!
 # Integral matrices over subrings: Smith normal form, Gelfand's condition and lattices

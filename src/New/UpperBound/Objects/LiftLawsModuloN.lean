@@ -2,6 +2,7 @@ module
 
 public import Lib.ClassField.HeckeCharacter.SplitTameCharacters
 public import Lib.General.LinearAlgebra.TensorChains
+public import TauCeti.LinearAlgebra.Matrix.GeneralLinearGroup.Lift
 
 /-!
 # Direct and mirror data modulo `N`, and the operator `Up`

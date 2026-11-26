@@ -1,5 +1,11 @@
 module
 
+public import Lib.Adelic.Hecke.ClassSums
+public import Lib.ClassField.Places.DecompositionCompletion
+public import Lib.ClassField.Places.LocalFields
+public import Lib.ClassField.Places.TameInertia
+public import Lib.General.NumberTheory.CoefficientRings
+public import Lib.PadicHodge.Crystalline.Basic
 public import Lib.PadicHodge.Crystalline.HodgeTateForms
 public import Lib.PadicHodge.Kisin.Charts
 

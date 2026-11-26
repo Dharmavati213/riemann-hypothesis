@@ -1,5 +1,6 @@
 module
 
+public import New.UpperBound.Seesaw.EdgePairEvaluation
 public import New.UpperBound.Seesaw.NeighbourVacuum
 
 /-!

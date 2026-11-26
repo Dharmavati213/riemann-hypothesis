@@ -1,9 +1,20 @@
 module
 
+public import Lib.Shimura.ComplexTheta.AppellHumbertData
 public import Lib.SiegelWeil.SingularForms.UnimodularCoefficients
 public import Lib.SiegelWeil.Tower.LineTerms
 public import Lib.SiegelWeil.Tower.PrincipalIdeles
 public import Lib.Weil.DualPair.ThetaIntegrals
+import Lib.Adelic.QuotientMeasure.IwasawaUnfolding
+import Lib.Adelic.Reduction.DefiniteClassSums
+import Lib.Adelic.Unitary.RationalPoints
+import Lib.Adelic.Unitary.WeakApproximation
+import Lib.Adelic.Witt.WittTheorem
+import Lib.Cohomology.Etale.Basic
+import Lib.DiscreteSeries.Haar.TotalMass
+import Lib.Weil.DualPair.WeilAction
+import TauCeti.NumberTheory.NumberField.Countable
+import TauCeti.Topology.Instances.Matrix
 
 /-!
 # The constant term of a theta integral, unfolded along isotropic lines

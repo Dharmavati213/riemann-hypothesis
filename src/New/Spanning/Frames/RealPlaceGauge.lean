@@ -1,9 +1,16 @@
 module
 
-public import Lib.Shimura.ComplexTheta.AppellHumbertData
+public import Lib.Adelic.Adeles.AdditiveCharacter
 public import Lib.DiscreteSeries.Bessel.FrameFibre
+public import Lib.DiscreteSeries.Bessel.UnipotentHaarMeasure
+public import Lib.DiscreteSeries.Bruhat.ComplexPlace
 public import Lib.DiscreteSeries.Bruhat.FloorFibre
 public import Lib.DiscreteSeries.Bruhat.SphereFibres
+public import Lib.DiscreteSeries.FlenstedJensen.RightDerivatives
+public import Lib.DiscreteSeries.Haar.GramFibre
+public import Lib.DiscreteSeries.Haar.TotalMass
+public import Lib.General.Analysis.GaussianIntegral
+public import Lib.Shimura.ComplexTheta.AppellHumbertData
 public import New.Spanning.Bessel.Basic
 public import New.Spanning.Frames.Correlations
 

@@ -1,7 +1,10 @@
 module
 
-public import Lib.ClassField.GaloisCohomology.KummerCyclicClasses
+public import Lib.General.Topology
 public import Lib.PadicHodge.Crystalline.Basic
+import Lib.ClassField.GaloisCohomology.KummerCyclicClasses
+import Lib.ClassField.Places.DecompositionCompletion
+import Lib.ClassField.Places.LocalFields
 
 /-!
 # Tame inertia, Frobenius on roots of unity over ℚ_p, the cyclotomic character, Weil pairs

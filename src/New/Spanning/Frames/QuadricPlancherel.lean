@@ -1,6 +1,9 @@
 module
 
-public import New.Spanning.Frames.QuadricVolumes
+public import Lib.DiscreteSeries.Bruhat.FourierKernels
+public import New.Spanning.Frames.Correlations
+import Lib.General.Measure.IntegralOperators
+import New.Spanning.Frames.QuadricVolumes
 
 /-!
 # Plancherel's formula on quadrics

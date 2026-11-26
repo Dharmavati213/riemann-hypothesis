@@ -1,6 +1,7 @@
 module
 
-public import Lib.General.LinearAlgebra.Eigenvalues
+public import Lib.Base
+import Lib.General.LinearAlgebra.Eigenvalues
 
 /-!
 # Amitsur's formula and Ribet's method for matrices over an algebra

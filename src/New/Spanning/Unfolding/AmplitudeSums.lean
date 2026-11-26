@@ -1,7 +1,12 @@
 module
 
-public import New.Spanning.Bessel.Orthonormality
-public import New.Spanning.Unfolding.CutoffIntegral
+public import Lib.DiscreteSeries.Bessel.UnipotentHaarMeasure
+public import New.Spanning.Unfolding.Setup
+import Lib.Cohomology.Etale.Basic
+import New.Spanning.Bessel.Orthonormality
+import New.Spanning.Unfolding.CutoffIntegral
+import New.Spanning.Unfolding.Packing
+import TauCeti.MeasureTheory.Integral.Pi
 
 /-!
 # Sums of amplitudes over blocks

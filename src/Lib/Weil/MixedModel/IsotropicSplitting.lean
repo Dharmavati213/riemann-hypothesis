@@ -1,5 +1,9 @@
 module
 
+public import Lib.Adelic.Adeles.StrongApproximation
+public import Lib.Adelic.Unitary.GramMatrix
+public import Lib.Adelic.Unitary.RationalPoints
+public import Lib.Adelic.Unitary.WeakApproximation
 public import Lib.General.LinearAlgebra.Eigenvalues
 public import Lib.Weil.Construction.AdelicRepresentation
 

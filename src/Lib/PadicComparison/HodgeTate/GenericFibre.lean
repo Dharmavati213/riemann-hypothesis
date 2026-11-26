@@ -1,5 +1,7 @@
 module
 
+public import Lib.Cohomology.Etale.DenseSubfunctors
+public import Lib.General.Algebra.CohomologyBaseChange
 public import Lib.PadicComparison.Completion
 public import Lib.PadicComparison.Descent.TestCovers
 public import Lib.PadicHodge.PeriodRings.CrystallineRings

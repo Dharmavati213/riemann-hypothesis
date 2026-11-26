@@ -1,7 +1,11 @@
 module
 
+public import Lib.Adelic.Hecke.ClassSums
 public import Lib.Adelic.Reduction.DefiniteClassSums
+public import Lib.General.NumberTheory.EmbeddingsAndDifferent
+public import Lib.Shimura.ComplexTheta.AppellHumbertData
 public import New.Spanning.Bessel.Basic
+public import TauCeti.NumberTheory.NumberField.Countable
 
 /-!
 # The data, standing hypotheses and amplitudes of the filling theorem

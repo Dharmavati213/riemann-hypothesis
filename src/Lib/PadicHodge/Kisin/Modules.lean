@@ -3,6 +3,8 @@ module
 public import Lib.ClassField.LocalDuality.CrystallineDuality
 public import Lib.PadicHodge.ArtinSchreierSequence
 public import Lib.PadicHodge.Kisin.KummerChartDeRham
+import Lib.PadicComparison.Descent.TestCategory
+import Lib.PadicHodge.Crystalline.HodgeTateForms
 
 /-!
 # Kisin modules of Kummer charts: lattices with jump sets, letter projectors, invariant forms

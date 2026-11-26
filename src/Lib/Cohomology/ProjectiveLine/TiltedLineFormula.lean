@@ -2,6 +2,8 @@ module
 
 public import Lib.Cohomology.ProjectiveLine.PerfectLine
 public import Lib.Cohomology.ProperBaseChange.Theorem
+public import Lib.PadicComparison.Primitive.PeriodCoefficients
+import Lib.Cohomology.Etale.DenseSubfunctors
 
 /-!
 # Leray–Hirsch bases and the projective line formula for the tilted theory

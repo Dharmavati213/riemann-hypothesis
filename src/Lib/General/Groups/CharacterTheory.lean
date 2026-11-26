@@ -1,8 +1,8 @@
 module
 
 public import Lib.Base
-public import TauCeti.RepresentationTheory.CharacterTable.CentralCharacter
-public import TauCeti.RepresentationTheory.CharacterTable.Completeness
+import TauCeti.RepresentationTheory.CharacterTable.CentralCharacter
+import TauCeti.RepresentationTheory.CharacterTable.Completeness
 import TauCeti.RepresentationTheory.CharacterTable.Values
 
 /-!

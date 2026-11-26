@@ -1,5 +1,6 @@
 module
 
+public import Lib.Base
 public import Mathlib.Data.Fin.Tuple.Sort
 public import Mathlib.Data.ZMod.Basic
 public import Mathlib.LinearAlgebra.Matrix.Permutation
@@ -11,7 +12,7 @@ public import Mathlib.Tactic.Field
 public import Mathlib.Tactic.FunProp
 public import Mathlib.Tactic.Linarith
 public import Mathlib.Tactic.LinearCombination
-public import TauCeti.LinearAlgebra.Determinant.Basic
+import TauCeti.LinearAlgebra.Determinant.Basic
 
 /-!
 # The Pieri cone, the step map and the slab: interlacing and volume of the cone

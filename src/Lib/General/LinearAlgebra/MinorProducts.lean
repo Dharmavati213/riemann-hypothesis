@@ -1,11 +1,12 @@
 module
 
 public import Lib.DiscreteSeries.FlenstedJensen.Defs
-public import Lib.General.Analysis.HolomorphicIntegrals
-public import TauCeti.LinearAlgebra.Matrix.Triangular
+import Lib.General.Analysis.GaussianIntegral
+import Lib.General.Analysis.HolomorphicIntegrals
 import TauCeti.Analysis.ExteriorPower.Plucker
 import TauCeti.Analysis.InnerProductSpace.Gram.Hadamard
 import TauCeti.Analysis.Matrix.GramFactorization
+import TauCeti.LinearAlgebra.Matrix.Triangular
 
 /-!
 # Products of principal minors, Fischer's inequality and the Cauchy–Binet formula

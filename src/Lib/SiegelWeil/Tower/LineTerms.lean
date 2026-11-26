@@ -1,6 +1,7 @@
 module
 
 public import Lib.ClassField.HeckeCharacter.SplitTameCharacters
+public import Lib.Weil.DualPair.WeilAction
 public import Lib.Weil.MixedModel.AdaptedSplitting
 
 /-!

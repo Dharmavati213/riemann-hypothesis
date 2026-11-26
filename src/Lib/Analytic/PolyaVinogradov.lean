@@ -1,7 +1,7 @@
 module
 
-public import Lib.Analytic.ZeroSymmetry
-public import TauCeti.NumberTheory.DirichletCharacter.GaussSum
+public import Lib.Base
+import Lib.Analytic.ZeroSymmetry
 
 /-!
 # Gauss sums of primitive characters and the Pólya–Vinogradov bound

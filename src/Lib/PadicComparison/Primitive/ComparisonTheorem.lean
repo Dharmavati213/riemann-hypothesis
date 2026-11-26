@@ -1,6 +1,10 @@
 module
 
 public import Lib.Cohomology.SmoothBaseChange
+import Lib.Cohomology.Etale.DenseSubfunctors
+import Lib.General.Geometry.PointsOfProperSchemes
+import Lib.General.NumberTheory.CoefficientRings
+import Lib.PadicComparison.Descent.TestCovers
 
 /-!
 # The primitive comparison theorem and finiteness of p-adic cohomology

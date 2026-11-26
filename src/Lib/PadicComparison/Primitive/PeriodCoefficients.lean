@@ -4,6 +4,8 @@ public import Lib.Cohomology.TorsionTheories
 public import Lib.PadicComparison.Descent.AlmostDescent
 public import Lib.PadicComparison.HodgeTate.GenericFibre
 public import Lib.PadicHodge.ArtinSchreierSequence
+import Lib.PadicComparison.Completion
+import Lib.PadicComparison.Descent.TestCovers
 
 /-!
 # Tilts and period coefficients of p-adic tests: products, comparisons, theories

@@ -1,6 +1,7 @@
 module
 
-public import Lib.General.LinearAlgebra.MinorProducts
+public import Lib.Base
+import Lib.General.LinearAlgebra.MinorProducts
 
 /-!
 # Gram determinants
