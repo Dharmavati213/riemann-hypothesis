@@ -725,13 +725,13 @@ def pullbackOver : Over Y ⥤ Over X where
   obj Z := Over.mk (fibreProd.fst s Z.hom)
   map {Z Z'} f :=
     homMk
-      { app B := ↾fun x ↦ ⟨(x.1.1, f.left.app B x.1.2), congr(($f.w) B _) ▸ x.2⟩
+      { app B := ↾fun x ↦ ⟨(x.val.1, f.left.app B x.val.2), congr(($f.w) B _) ▸ x.property⟩
         naturality B B' g := by
           ext x
           apply Subtype.ext
           refine Prod.ext rfl ?_
-          change f.left.app B' (Z.left.map g x.1.2) = Z'.left.map g (f.left.app B x.1.2)
-          exact ConcreteCategory.congr_hom (f.left.naturality g) x.1.2 }
+          change f.left.app B' (Z.left.map g x.val.2) = Z'.left.map g (f.left.app B x.val.2)
+          exact ConcreteCategory.congr_hom (f.left.naturality g) x.val.2 }
 
 instance pullbackOver_isRightAdjoint : (pullbackOver s).IsRightAdjoint where
   exists_leftAdjoint :=

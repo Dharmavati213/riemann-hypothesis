@@ -1,6 +1,7 @@
 module
 
 public import Lib.Base
+import TauCeti.AlgebraicGeometry.Scheme.AffinePoints
 
 /-!
 # Line bundles on schemes via ring-valued points: descent and the Picard group
@@ -287,10 +288,6 @@ lemma hom_ext_of_isOpenCover {V : κ → Y.Opens} (hV : IsOpenCover V) {f g : Y 
   let 𝒰 : Y.OpenCover := (Y.openCoverOfIsOpenCover V hV).affineRefinement.openCover
   exact 𝒰.hom_ext f g fun k ↦ h k.1 _ (𝒰.f k) landsIn_comp_incl
 
-lemma hom_ext_of_points {f g : Y ⟶ X}
-    (h : ∀ (A : CommRingCat) (t : Spec A ⟶ Y), t ≫ f = t ≫ g) : f = g :=
-  hom_ext_of_isOpenCover isOpenCover_top fun _ A t _ ↦ h A t
-
 /-- Two morphisms from `Y` are equal if they agree on every ring-valued point that lands in a
 trivialising open of a line bundle `M` on `Y`. -/
 lemma hom_ext_of_cover (M : LineBundle Y κ) {f g : Y ⟶ X}
@@ -320,7 +317,7 @@ lemma exists_hom_of_cover {V : κ → Y.Opens} (hV : IsOpenCover V)
   have agree {i j : κ} {A B : CommRingCat} {t : Spec A ⟶ Y} {s : Spec B ⟶ Y}
       (hi : LandsIn t (V i)) (hj : LandsIn s (V j)) :
       fst t s ≫ F i A t hi = snd t s ≫ F j B s hj := by
-    refine hom_ext_of_points fun C r ↦ ?_
+    refine Scheme.hom_ext_of_forall_spec fun C r ↦ ?_
     have hj_fst : LandsIn ((r ≫ fst t s) ≫ t) (V j) := by
       simpa [condition] using hj.comp (r ≫ snd t s)
     rw [← assoc, ← assoc, h_hom i j _ hi hj_fst, h_hom j j _ hj (hj.comp _)]

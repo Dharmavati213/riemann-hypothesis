@@ -130,7 +130,7 @@ variable {ρ}
 given), the additive map `f ↦ u ∘ f ∘ φ` from continuous 1-cocycles of `ρ` to those of `ρ'`. -/
 abbrev pairMapZ1 (h : ∀ (g : H) (m : M), u (ρ (φ g) m) = ρ' g (u m) := by bound) :
     Z1 ρ →+ Z1 ρ' where
-  toFun f := ⟨fun g ↦ u (f.1 (φ.1 g)), f.2.imp (by continuity) (by aesop)⟩
+  toFun f := ⟨fun g ↦ u (f.val (φ.toMonoidHom g)), f.property.imp (by continuity) (by aesop)⟩
   map_zero' := by bound
   map_add' := by bound
 

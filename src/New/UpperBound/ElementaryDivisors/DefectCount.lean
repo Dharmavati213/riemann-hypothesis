@@ -93,15 +93,14 @@ lemma index_borel_le [Finite K] :
   -- A unit on the diagonal and `i` free entries left of it, in each row `i`, give
   -- `∏ (q - 1) q ^ i` elements of `B`. Divide `#GL = ∏ q ^ i (q ^ (i + 1) - 1)` by this number.
   set B : Subgroup (GL (Fin k) K) := parabolic (OrderDual.toDual ∘ (Fin.val : Fin k → ℕ))
-  set q : ℝ := (Nat.card K : ℝ)
   let Rows : Type := ∀ i : Fin k, Kˣ × (Set.Iio i → K)
   let low (x : Rows) : Matrix (Fin k) (Fin k) K :=
     of fun i j ↦ if i < j then 0 else if h : j < i then (x i).2 ⟨j, h⟩ else (x i).1
-  have det_low (x : Rows) : (low x).det ≠ 0 := by
-    simp +contextual [low, BlockTriangular, det_of_isLowerTriangular, univ.prod_eq_zero_iff]
-  let f (x : Rows) : B := ⟨.mkOfDetNeZero _ (det_low x), fun _ _ hij ↦ ite_eq_left hij⟩
-  have f_inj : f.Injective := by
-    intro x y hxy
+  let f (x : Rows) : B :=
+    ⟨.mkOfDetNeZero (low x) <| by
+      simp +contextual [low, BlockTriangular, det_of_isLowerTriangular, univ.prod_eq_zero_iff],
+      fun _ _ hij ↦ ite_eq_left hij⟩
+  have f_inj : f.Injective := fun x y hxy ↦ by
     have h_low : low x = low y :=
       congrArg (fun g : B ↦ ((g : GL (Fin k) K) : Matrix (Fin k) (Fin k) K)) hxy
     ext i j
@@ -109,19 +108,12 @@ lemma index_borel_le [Finite K] :
     · simpa [low, Set.mem_Iio.1 j.2, (Set.mem_Iio.1 j.2).not_gt] using congrFun₂ h_low i j
   have h_card : (B.index : ℝ) * Nat.card Rows ≤ Nat.card (GL (Fin k) K) :=
     mod_cast (mul_le_mul_right (card_le_card_of_injective f f_inj) _).trans B.index_mul_card.le
-  have hq : 1 < q := Nat.one_lt_cast.2 Finite.one_lt_card
-  have h_rows : (Nat.card Rows : ℝ) = ∏ i : Fin k, (q - 1) * q ^ i.val := by
-    simp [Rows, q, Nat.card_pi, Nat.card_units]
-  have h_GL : (Nat.card (GL (Fin k) K) : ℝ) = ∏ i : Fin k, q ^ i.val * (q ^ (i.val + 1) - 1) := by
-    simp [q, card_GL_eq_prod, prod_range]
-  have h_pos : 0 < ∏ i : Fin k, (q - 1) * q ^ i.val :=
-    prod_pos fun i _ ↦ mul_pos (sub_pos.2 hq) (pow_pos (one_pos.trans hq) _)
-  refine le_of_mul_le_mul_right ?_ h_pos
-  calc (B.index : ℝ) * ∏ i : Fin k, (q - 1) * q ^ i.val
-      ≤ ∏ i : Fin k, q ^ i.val * (q ^ (i.val + 1) - 1) := by rwa [h_rows, h_GL] at h_card
-    _ = (∏ l : Fin k, (q ^ (l.val + 1) - 1) / (q - 1)) * ∏ i : Fin k, (q - 1) * q ^ i.val := by
-      rw [← prod_mul_distrib]
-      exact prod_congr rfl fun i _ ↦ by field [(sub_pos.2 hq).ne']
+  simp [Rows, Nat.card_pi, Nat.card_units, card_GL_eq_prod, prod_range] at h_card
+  have hq : 1 < (Nat.card K : ℝ) := Nat.one_lt_cast.2 Finite.one_lt_card
+  refine le_of_mul_le_mul_right (h_card.trans_eq ?_)
+    (prod_pos fun i _ ↦ mul_pos (sub_pos.2 hq) (pow_pos (one_pos.trans hq) _))
+  rw [← prod_mul_distrib]
+  exact prod_congr rfl fun i _ ↦ by field [(sub_pos.2 hq).ne']
 
 /-- The defect of a vector `β` indexed by `(b, s) ∈ Fin k × ZMod N`, at the letter `i` along the
 root `(b, b')`, is the linear form with coefficients `T.defectWeight i b b'`, namely

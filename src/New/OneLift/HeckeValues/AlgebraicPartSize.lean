@@ -525,7 +525,7 @@ lemma heightLe_norm_trivialLift_sq {j : ℕ} {p : D.CriticalPair} (hp : p.IsMain
   · -- `integralAlgebraicPart` at the trivial character is integral at every prime
     have h_prod : mult * normSqP = q.integralAlgebraicPart h_flat.2 .one :=
       div_mul_cancel₀ _ (by simp [normSqP])
-    change ‖ι.2 (mult * normSqP)‖ ≤ exp 0
+    change ‖ι.iso (mult * normSqP)‖ ≤ exp 0
     simp [h_prod, norm_integralAlgebraicPart_one_le_one]
 
 end New.Data

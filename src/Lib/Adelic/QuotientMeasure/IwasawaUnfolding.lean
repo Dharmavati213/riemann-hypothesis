@@ -508,7 +508,7 @@ be infinite, for instance if `i` has noncompact kernel). Here `lam`, `ν`, `κ` 
 `N`, `M`, `K`. -/
 lemma New.lintegral_iwasawa [PolishSpace M] [LocallyCompactSpace M]
     (hN : IsClosed (N : Set G)) (hw_pos : ∀ m : M, 0 < w m) (hi : Continuous i)
-    (h_dec : ∀ g : G, ∃ᵉ (n : N) (m : M) (k : K), g = n * i m * k)
+    (h_dec : ∀ g : G, ∃ n : N, ∃ m : M, ∃ k : K, g = n * i m * k)
     (h_conj : ∀ (m : M) (f : G → ℝ≥0∞), Measurable f →
       ∫⁻ n : N, f (i m * n * (i m)⁻¹) ∂lam = ENNReal.ofReal (w m) * ∫⁻ n : N, f n ∂lam)
     [IsMulRightInvariant lam] :
@@ -603,7 +603,7 @@ that for measurable `F`, left invariant under `N` and `Γ` (`FixesLeft`): if
 `Γ.quotMeasure μ`), and its integral is `c` times the integral of `w m * F (i m * k)`. -/
 lemma New.integral_quotMeasure_iwasawa [PolishSpace M] [LocallyCompactSpace M]
     (hN : IsClosed (N : Set G)) (hw : Continuous w) (hw_pos : ∀ m : M, 0 < w m) (hi : Continuous i)
-    (h_dec : ∀ g : G, ∃ᵉ (n : N) (m : M) (k : K), g = n * i m * k)
+    (h_dec : ∀ g : G, ∃ n : N, ∃ m : M, ∃ k : K, g = n * i m * k)
     (h_conj : ∀ (m : M) (f : G → ℝ≥0∞), Measurable f →
       ∫⁻ n : N, f (i m * n * (i m)⁻¹) ∂lam = ENNReal.ofReal (w m) * ∫⁻ n : N, f n ∂lam)
     (h_triv : ∀ a : M, i a ∈ N → a = 1) {D : Type*}

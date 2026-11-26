@@ -694,7 +694,7 @@ private lemma mulMoebius_greenCuspidal_one_mul (d : ℕ) [NeZero d] (η : K → 
       η 1 * Nat.card (End k (Fin d → k))ˣ := by
   have h := mulMoebius_greenCuspidal_lsmul (V := Fin d → k) (powerBasisOne k) η
   simp [minpoly.eq_X_sub_C'] at h
-  simpa [powerBasisOne, Nat.card_fun, ← Nat.card_congr (generalLinearEquiv ..).1] using h
+  simpa [powerBasisOne, Nat.card_fun, ← Nat.card_congr (generalLinearEquiv ..).toEquiv] using h
 
 omit [IsFaithfulMulChar K T] in
 /-- Let `δ` be the indicator function of the identity classes and `q = |k|`. Pairing with

@@ -243,12 +243,12 @@ theorem HCParam.IsKHighest.finite_filtration (hx : l.IsKHighest ρ ν x) [hg : l
       -- `ρ.casimirK ε` is the scalar `l.casimirKValue ν` on `y = ρ.word w x`, and
       -- `⟪y, ρ.casimirK ε y⟫` is the sum of the `‖E b a y‖ ^ 2` over compact pairs, among them the
       -- `‖E a a y‖ ^ 2`. So the weight `μ` of `y` has `|μ|² ≤ l.casimirKValue ν`.
-      have h_diag : ∑ a, (ε a * ε a).1 * ‖ρ.E a a (ρ.word w x)‖ ^ 2 ≤
+      have h_diag : ∑ a, (ε a * ε a).val * ‖ρ.E a a (ρ.word w x)‖ ^ 2 ≤
           (inner ℂ (ρ.word w x) ((l.casimirKValue ν : ℂ) • ρ.word w x)).re := by
         rw [← casimirK_eq_smul_of_mem_filtration y_mem hx.casimirK_eq_smul, hρ.inner_casimir,
           Complex.ofReal_re]
         exact sum_le_sum fun a _ ↦ single_le_sum
-          (f := fun b ↦ (ε a * ε b).1 * ‖ρ.E b a (ρ.word w x)‖ ^ 2) (by simp_all) (by simp)
+          (f := fun b ↦ (ε a * ε b).val * ‖ρ.E b a (ρ.word w x)‖ ^ 2) (by simp_all) (by simp)
       have h_wt : wordWeight ν w ⬝ᵥ wordWeight ν w ≤ l.casimirKValue ν := by
         rify [dotProduct, ← sq]
         simpa [hx.E_self_word_eq_smul, norm_smul, mul_pow, ← sum_mul, ← Complex.ofReal_pow,
@@ -344,7 +344,7 @@ theorem HCParam.IsKHighest.casimirK_bound_of_highest (hx : l.IsKHighest ρ ν x)
   -- vector, and on that vector `h_bound` shows that the eigenvalue is nonnegative.
   have ⟨D, hD_comm, hD_form⟩ := hJ
   let T : End ℂ H := α • D * ρ.casimirK ε - β • D
-  let B : End ℂ U := U.orthogonalProjectionOnto.1 ∘ₗ T.domRestrict U
+  let B : End ℂ U := U.orthogonalProjectionOnto.toLinearMap ∘ₗ T.domRestrict U
   have hB_symm : B.IsSymmetric :=
     fun _ ↦ by simp [B, T, ← inner_conj_symm (D _), ← hD_form, hJ.sum_inner_casimirK hρ]
   suffices h_nonneg : ∀ e : ℝ, HasEigenvalue B e → 0 ≤ e by
@@ -861,7 +861,7 @@ theorem HCParam.IsKHighest.coeffMap_eq_zero [InnerProductSpace ℂ H] {ρ : GlMo
       ∀ s, ∀ v ∈ ρ.filtration ε x s, c (g * expU Y) v = 0 by
     simpa using h_step Y₂ _ (h_step Y₁ 1 h_one) 0 x ρ.self_mem_filtration
   intro Y g hg
-  let growth : ℝ := (card n + 1) ^ 4 * ‖Y.1‖
+  let growth : ℝ := (card n + 1) ^ 4 * ‖Y.val‖
   let decay (t : ℝ) : ℝ := exp (-exp 1 * (growth + 1) * t)
   -- `f_v t = c (g * expU (t • Y)) v` has `f_v 0 = 0` and `f_v' = f_{Y v}`. For every `m` it stays
   -- below this barrier, by downward induction on `s`.
@@ -869,7 +869,7 @@ theorem HCParam.IsKHighest.coeffMap_eq_zero [InnerProductSpace ℂ H] {ρ : GlMo
       ‖c (g * expU (t • Y)) v‖ ≤ exp (m * -decay t) * (exp (R + 1 + s) * (|D| * ‖v‖ + 1)) := by
     induction hk : m - s using Nat.strong_induction_on generalizing s with | _ k ih => ?_
     intro v hv
-    have hYv_le : ‖ρ Y v‖ ≤ (card n + 1) ^ 4 * (R + 1 + s) * ‖Y.1‖ * ‖v‖ :=
+    have hYv_le : ‖ρ Y v‖ ≤ (card n + 1) ^ 4 * (R + 1 + s) * ‖Y.val‖ * ‖v‖ :=
       hx.norm_apply_le_mul_norm h_inv (fun i ↦ toNat_le.1 (hR i)) hv Y
     refine image_norm_le_of_norm_deriv_right_lt_deriv_boundary
       (HasDerivAt.continuousOn fun t _ ↦ h_coef g Y v t)

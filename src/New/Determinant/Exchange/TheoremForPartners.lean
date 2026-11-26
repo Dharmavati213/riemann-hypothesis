@@ -932,8 +932,8 @@ lemma exists_areMatched_modDatum_eq (σ : b ⊕ a ≃ n) {μ : NumberField.Infin
   -- `π` is compatible with the residue maps, so it detects units; it is onto since
   -- `𝔪.reduction` is onto
   have π_res (i : 𝔠.ramifiedPlaces) (u : SemilocalField.O) :
-      modulusResidue 𝔪 (h_ramified.le i.2) (π u) = residueAt i u :=
-    (modulusResidue_reduction 𝔪 (h_ramified.le i.2) (sec u)).trans
+      modulusResidue 𝔪 (h_ramified.le i.property) (π u) = residueAt i u :=
+    (modulusResidue_reduction 𝔪 (h_ramified.le i.property) (sec u)).trans
       (congrArg (IsLocalRing.residue (LocInt i.val)) (Subtype.ext (congrFun (ev_ρ u) i)))
   have π_local : IsLocalHom π := by
     refine ⟨fun u hu ↦ isUnit_iff_residueAt_ne_zero.2 fun i ↦ ?_⟩
@@ -948,7 +948,7 @@ lemma exists_areMatched_modDatum_eq (σ : b ⊕ a ≃ n) {μ : NumberField.Infin
         𝔠.localChar_apply_of_isUnit _ u hu
     _ = ∏ᶠ i : 𝔠.ramifiedPlaces, 𝔠.tamePart i (modulusResidue 𝔪 (h_ramified.le i.2) (π u)) := by
         simp only [π_res, finprod_eq_prod_of_fintype]
-    _ = ∏ᶠ w : 𝔪.places, 𝔠.tamePart w (modulusResidue 𝔪 w.2 (π u)) :=
+    _ = ∏ᶠ w : 𝔪.places, 𝔠.tamePart w (modulusResidue 𝔪 w.property (π u)) :=
         finprod_comp_equiv (f := fun w : 𝔪.places ↦ 𝔠.tamePart w (modulusResidue 𝔪 w.2 (π u)))
           (.subtypeEquivRight (Set.ext_iff.1 h_ramified))
   -- lifting from `𝔪.ResidueRing` to adeles is lifting along `π`, then reading the components

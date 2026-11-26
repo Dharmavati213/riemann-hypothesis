@@ -490,7 +490,7 @@ lemma IsIwahoriEigen.exists_isExponent {B : ρ →ₗ⋆[ℂ] ρ →ₗ[ℂ] ℂ
   -- Evaluation at `y` is a nonzero `ξ`-eigenfunctional on `S`, so `S` contains a `ξ`-eigenform
   -- (`exists_eigenvector_of_functional`).
   obtain ⟨hy₀, hy_fix, hy_eig⟩ := h_eig
-  have hB_pos : ∀ z : ρ, z ≠ 0 → 0 < B z z := hB.1
+  have hB_pos : ∀ z : ρ, z ≠ 0 → 0 < B z z := hB.pos
   let W : Submodule ℂ ρ := levelSpace ρ.ρ proIwahori
   let S : Submodule ℂ (Dual ℂ W) := ((cyclicSpan ρ.ρ x).submoduleOf W).map (B.domRestrict₁₂ W W)
   have h_stable (t : dominantTorus) : ∀ φ ∈ S, (iwahoriHeckeHom ρ t).dualMap φ ∈ S := by

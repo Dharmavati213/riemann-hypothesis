@@ -568,7 +568,7 @@ private lemma exists_isUnit_mul_frobenius_smul_eq [Free ℤ_[p] T] [Module.Finit
       ring
   have h_pow : (1 - α) ^ e = (p : Ainf) • (1 ⊗ₜ b) := by
     simp [α, one_def, hb, ← nsmul_eq_mul, ← tmul_sub, smul_tmul']
-  have complete : IsAdicComplete (span {(p : Ainf)}) (Ainf ⊗[ℤ_[p]] T) := isAdicComplete_of_free _
+  have complete : IsAdicComplete (span {(p : Ainf)}) (Ainf ⊗[ℤ_[p]] T) := .of_finite_projective _ _
   obtain ⟨x, hx⟩ : ∃ x : Ainf ⊗[ℤ_[p]] T, α * φ • x - x = 1 := by
     let f : Ainf ⊗[ℤ_[p]] T →+ Ainf ⊗[ℤ_[p]] T :=
       α • (frobEnd (A := Ainf ⊗[ℤ_[p]] T)).toAddMonoidHom - .id _

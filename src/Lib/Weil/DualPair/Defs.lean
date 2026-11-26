@@ -125,7 +125,7 @@ the Kronecker product `J_T ⊗ (J_S⁻¹)ᵀ`, its point is `x_T ⊗ (x_S⁻¹)�
 def Space.hom : Space E (n' × n) (homSigns s s') where
   J := T.J ⊗ₖ S.J⁻¹ᵀ
   x :=
-    { val := T.x ⊗ₖ S.x⁻¹.1ᵀ
+    { val := T.x ⊗ₖ S.x⁻¹.valᵀ
       inv := ↑T.x⁻¹ ⊗ₖ S.xᵀ
       val_inv := by simp [← mul_kronecker_mul, ← transpose_mul]
       inv_val := by simp [← mul_kronecker_mul, ← transpose_mul] }
@@ -161,7 +161,7 @@ def rankTwist (n : Type*) [Fintype n] : AutChar E := a * upsilonU1 ^ (Fintype.ca
 /-- For characters a, b of [U(1)], the complex character (g, h) ↦ a(det h) b(det g)⁻¹ of
 G(s) × G(s′). -/
 def pairChar : G E s × G E s' →* ℂ :=
-  Circle.coeHom.comp ((b⁻¹.1.toMonoidHom.comp G.det).coprod (a.1.toMonoidHom.comp G.det))
+  Circle.coeHom.comp ((b⁻¹.val.toMonoidHom.comp G.det).coprod (a.val.toMonoidHom.comp G.det))
 
 /-- The representation (g, h) ↦ a(det h) b(det g)⁻¹ ω(x ↦ hxg⁻¹) of the product of the two adelic
 unitary groups on the data space of Hom(S, T). -/
@@ -380,7 +380,7 @@ lemma reduction_congr {x y : Ô E} (hxy : ∀ w : FinPlace E, w ∈ 𝔪.places 
     by_cases hw : w ∈ 𝔪.places <;> simp [hw, hxy, generator_apply_of_notMem]
   rw [← sub_eq_zero, ← map_sub, reduction_eq_zero_iff_generator_inv_mul_mem,
     AddSubgroupClass.coe_sub, h_eq, Units.inv_mul_cancel_left]
-  exact mul_mem (idem_mem_Ô _) (sub_mem x.2 y.2)
+  exact mul_mem (idem_mem_Ô _) (sub_mem x.property y.property)
 
 /-- Setting the components outside the primes dividing `𝔪` to `0` does not change the reduction
 modulo `𝔪`. -/

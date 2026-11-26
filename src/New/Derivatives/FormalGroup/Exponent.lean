@@ -6,6 +6,7 @@ import Lib.General.Algebra.SeriesBounds
 import New.Derivatives.FormalGroup.FrobeniusCongruence
 import TauCeti.NumberTheory.Padics.Complex.Basic
 import TauCeti.RingTheory.PowerSeries.Dvd
+import TauCeti.RingTheory.PowerSeries.Rescale
 
 /-!
 # The exponent on one curve

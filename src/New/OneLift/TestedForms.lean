@@ -344,7 +344,7 @@ polynomial ∑ (−X)^i q^{i(i−1)/2} T_{w,i} in the Hecke operators at w, q th
 for the σ-conjugate pairing `New.LevelPlaces.LevelForm.innerAt` is H_{w̄}(X'), with
 X' = σ⁻¹(conj(σX)). -/
 lemma LevelPlaces.LevelForm.innerAt_heckePolyOnForms {E r n : Type} [Field E] [CMType E]
-    [WeilData E] [Fintype r] [DecidableEq r] [Fintype n] [DecidableEq n] {O : DescentPair E r n}
+    [Fintype r] [DecidableEq r] [Fintype n] [DecidableEq n] {O : DescentPair E r n}
     (σ : ℂ ≃+* ℂ) (φ φ' : O.FormV) {w : FinPlace E} (hw : star w ≠ w)
     (hw_off : w ∉ O.places.conjClosure) (hw_star_off : star w ∉ O.places.conjClosure) (X : ℂ) :
     innerAt σ (O.heckePolyOnForms hw hw_off X φ) φ' =

@@ -87,7 +87,7 @@ instance complexPlace : Place ℂ := by
       ⟨_, by fun_prop, integrable, fun _ ↦ (exp_pos _).le, by norm_num, ?ker⟩)
   case haar =>
     -- `r ↦ r * I` is a bicontinuous additive isomorphism onto the skew elements
-    refine AddEquiv.isAddHaarMeasure_map _ ⟨⟨_, (·.1.im), by
+    refine AddEquiv.isAddHaarMeasure_map _ ⟨⟨_, (·.val.im), by
       norm_num [LeftInverse], by
       simp_all [RightInverse, Complex.ext_iff, self_eq_neg, LeftInverse, skewAdjoint.mem_iff]⟩,
       by norm_num [add_mul]⟩ ?_ ?_
@@ -116,7 +116,7 @@ def complexBasis (𝔰 : Shape) : HyperbolicBasis {i // i ≠ 𝔰.k₀} (𝔰.m
       of fun i ↦
         (fun a ↦
           (1 + I) / 2 *
-            (Pi.single 𝔰.k₀ 1 ⊕ᵥ ![1, -1] a) i) ⊕ᵥ (0 ⊕ᵥ (inclMatrix ℂ (inl ·.1) i ⊕ᵥ 0))
+            (Pi.single 𝔰.k₀ 1 ⊕ᵥ ![1, -1] a) i) ⊕ᵥ (0 ⊕ᵥ (inclMatrix ℂ (inl ·.val) i ⊕ᵥ 0))
     gram_eq := by
       -- entry by entry, the products of the columns are those of a plane and an orthonormal family
       simp [← ext_iff, middleGram, map_ofNat, inclMatrix, Matrix.mul_apply, Pi.single_apply,
@@ -139,10 +139,10 @@ lemma lintegral_eq_polar (k : κ) {g : (κ → ℂ) → ENNReal} (hg : Measurabl
   -- `r = |ω|²`, whose law is given by `measurePreserving_normSq_sphereDensity`.
   have : Nonempty κ := ⟨k⟩
   have rot (h : U 1) : ∫⁻ ω : κ → ℂ, g (h.val.val *ᵥ ω) = ∫⁻ ω : κ → ℂ, g ω :=
-    (complexPlace.measurePreserving_mulVec _ (U.det (by simp) h).2.1).lintegral_comp hg
+    (complexPlace.measurePreserving_mulVec _ (U.det (by simp) h).property.1).lintegral_comp hg
   calc ∫⁻ ω, g ω = ∫⁻ h : U 1, ∫⁻ ω, g (h.val.val *ᵥ ω) := by simp [rot]
-    _ = ∫⁻ ω, ∫⁻ h : U 1, g (h.1.1 *ᵥ ω) := lintegral_lintegral_swap (by fun_prop)
-    _ = ∫⁻ ω : κ → ℂ, ∫⁻ h : U 1, g (h.1.1 *ᵥ √‖star ω ⬝ᵥ ω‖ • Pi.single k 1) := by
+    _ = ∫⁻ ω, ∫⁻ h : U 1, g (h.val.val *ᵥ ω) := lintegral_lintegral_swap (by fun_prop)
+    _ = ∫⁻ ω : κ → ℂ, ∫⁻ h : U 1, g (h.val.val *ᵥ √‖star ω ⬝ᵥ ω‖ • Pi.single k 1) := by
       -- a unitary `u` takes `ω` to the multiple of the basis vector with the same norm
       refine lintegral_congr fun ω ↦ ?_
       obtain ⟨u, hu⟩ := exists_unitary_mulVec_eq ω (v := √‖star ω ⬝ᵥ ω‖ • Pi.single k 1)
@@ -153,7 +153,7 @@ lemma lintegral_eq_polar (k : κ) {g : (κ → ℂ) → ENNReal} (hg : Measurabl
     _ = _ := by
       -- pass from `ω` to `r = |ω|²`
       refine ((measurePreserving_normSq_sphereDensity (κ := κ)).lintegral_comp
-        (f := fun r : ℝ ↦ ∫⁻ h : U 1, g (h.1.1 *ᵥ √r • Pi.single k 1)) (by fun_prop)).trans ?_
+        (f := fun r : ℝ ↦ ∫⁻ h : U 1, g (h.val.val *ᵥ √r • Pi.single k 1)) (by fun_prop)).trans ?_
       exact lintegral_withDensity_eq_lintegral_mul _ (by fun_prop) (by fun_prop)
 
 /-- The boost in the plane of k₀ and z with parameter a, for 1 ≤ |a|. With s = √(|a|² - 1) it acts
@@ -265,11 +265,11 @@ lemma cartan_decomposition {c : ℂ} {σ : (𝔰.middleGram (1 : ℂ)).G} (hσ :
     ∃ k k' : U 1, σ = embedH k * cellChart 𝔰 𝔰.ϱ c * embedH k' := by
   -- The column of `σ` at `z` has `h(·,·) = -1` and entry `-c` at `z`, so its part `v` in `X₀` has
   -- `‖v‖² = ‖c‖² - 1`.
-  let v (i : 𝔰.κ) : ℂ := σ.1.1 (inr (inl (inl i))) 𝔰.z
-  have h_entry : σ.1.1 𝔰.z 𝔰.z = -c := by
+  let v (i : 𝔰.κ) : ℂ := σ.val.val (inr (inl (inl i))) 𝔰.z
+  have h_entry : σ.val.val 𝔰.z 𝔰.z = -c := by
     simp [apply_eq_one_apply_of_mem_floorGroup hσ, ← hZ, middleGram, frameGram, splitGram,
       Matrix.mul_apply]
-  have h_gram : (σ.1.1ᴴ * (𝔰.middleGram (1 : ℂ)).splitGram * σ.1.1) 𝔰.z 𝔰.z =
+  have h_gram : (σ.val.valᴴ * (𝔰.middleGram (1 : ℂ)).splitGram * σ.val.val) 𝔰.z 𝔰.z =
       (𝔰.middleGram (1 : ℂ)).splitGram 𝔰.z 𝔰.z := congr_fun₂ (mem_unitaryGroupOf_iff.1 σ.2) 𝔰.z 𝔰.z
   have h_col : ∑ i : 𝔰.κ, (‖v i‖ : ℂ) ^ 2 = ‖c‖ ^ 2 - 1 := by
     simpa [apply_eq_one_apply_of_mem_floorGroup hσ, h_entry, add_neg_eq_iff_eq_add, middleGram,
@@ -321,7 +321,8 @@ lemma star_dotProduct_hyperboloidPoint {Γ : ℝ} {c : ℂ} (hΓ : 0 ≤ Γ + �
       (𝔰.middleGram (1 : ℂ)).splitGram *ᵥ hyperboloidPoint Γ (c, u) = Γ := by
   -- the column of `u` at `k₀` has norm one
   have h_col : ∑ i, (‖u.val.val i 𝔰.k₀‖ : ℂ) ^ 2 = 1 := by
-    simpa [Matrix.mul_apply, conj_mul'] using congr_fun₂ (mem_unitaryGroupOf_iff.1 u.2) 𝔰.k₀ 𝔰.k₀
+    simpa [Matrix.mul_apply,
+      conj_mul'] using congr_fun₂ (mem_unitaryGroupOf_iff.1 u.property) 𝔰.k₀ 𝔰.k₀
   -- the part in X₀ has squared norm `Γ + ‖c‖²` and the entry at z contributes `-‖c‖²`
   suffices ((√(Γ + ‖c‖ ^ 2) ^ 2 : ℝ) : ℂ) + -(‖c‖ : ℂ) ^ 2 = Γ by
     simpa [apply_ite conj, -map_mul, ← Finset.sum_mul, ← Finset.mul_sum, h_col,

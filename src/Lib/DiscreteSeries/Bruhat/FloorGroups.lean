@@ -854,13 +854,17 @@ lemma mem_besselFixer_of_mem_besselH (hh : h ∈ besselH) : h ∈ besselFixer :=
   rintro i _ ⟨b, rfl⟩
   exact mem_floorGroup.1 hh i _ (floorOf_besselFrame.trans_lt b.is_lt)
 
+private lemma exists_besselFrame_of_floor_and_level {j : 𝔰.BesselIndex}
+    (h_floor : floorOf j < 𝔰.n) (h_level : BesselIndex.level j < 𝔰.n) :
+    ∃ a : Fin (𝔰.ϱ + 1), 𝔰.besselFrame a = j :=
+  ⟨⟨floorOf j, h_floor⟩, (eq_besselFrame_of_floorOf_eq rfl (by grind)).symm⟩
+
 /-- An isometry that fixes every frame vector lies in the Bessel subgroup `S`. -/
 lemma mem_besselS_of_mem_besselFixer (hs : s ∈ besselFixer) : s ∈ besselS := by
   refine mem_partialUnitriangularGroup.2 fun i j _ hj ↦ ?_
   -- The columns on which `S` puts a condition are those of the frame vectors.
-  have h_frame : j = 𝔰.besselFrame ⟨floorOf j, by lia⟩ :=
-    eq_besselFrame_of_floorOf_eq rfl (by grind)
-  exact hs i j ⟨_, h_frame.symm⟩
+  obtain ⟨h_floor, h_level⟩ := hj.resolve_right (lt_irrefl _)
+  exact hs i j (exists_besselFrame_of_floor_and_level h_floor h_level)
 
 /-- An isometry `s` lies in the Bessel subgroup `besselS` if and only if, for every vector `f_a` of
 the frame `(e_0, …, e_{ϱ-1}, z)`, the difference `s f_a - f_a` lies in the span of the earlier frame
@@ -876,13 +880,8 @@ lemma Filling.mem_besselS_iff_frameImage :
       (Or.inl (by simp [floorOf_besselFrame, level_besselFrame, a.isLt]))
   · intro h i j hji hj
     -- the condition on `j` says that it indexes a frame vector
-    obtain ⟨a, rfl⟩ : ∃ a : Fin (𝔰.ϱ + 1), 𝔰.besselFrame a = j := by
-      rcases j with a | (a | ⟨⟩) | a
-      · exact ⟨a.castSucc, by simp⟩
-      · simp [floorOf] at hj
-      · exact ⟨Fin.last 𝔰.ϱ, by simp⟩
-      · simp [BesselIndex.level] at hj
-        lia
+    obtain ⟨h_floor, h_level⟩ := hj.resolve_right (lt_irrefl _)
+    obtain ⟨a, rfl⟩ := exists_besselFrame_of_floor_and_level h_floor h_level
     exact h i a (by rwa [level_besselFrame] at hji)
 
 /-! ### `S` normalises `𝖴` -/

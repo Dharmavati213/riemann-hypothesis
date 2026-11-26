@@ -257,14 +257,6 @@ lemma finrank_residueKer_diagGL (hϖ : v ϖ.val = exp (-1)) (s : Finset n) :
   rw [residueKer, ← card_sub_rank_eq_finrank_ker]
   simp +decide [apply_ite, hϖ, ite_apply, rank_diagonal, ← card_compl]
 
-/-- For a uniformiser ϖ of E_w and a set s of indices, the diagonal matrix with ϖ on s and 1
-elsewhere lies in the double coset `New.basicDoubleCoset` with j = #s, and the kernel of its
-reduction has dimension #s. -/
-lemma diagGL_mem_basicDoubleCoset (hϖ : v ϖ.val = exp (-1)) (s : Finset n) :
-    diagGL (fun i : n ↦ if i ∈ s then ϖ else 1) ∈ basicDoubleCoset n w #s ∧
-      finrank (ResField w) (residueKer (diagGL fun i : n ↦ if i ∈ s then ϖ else 1).val) = #s :=
-  ⟨diagGL_ite_mem_basicDoubleCoset hϖ s, finrank_residueKer_diagGL hϖ s⟩
-
 /-- The set `New.basicDoubleCoset` n w j is stable under multiplication on both sides by elements
 of GL_n(O_w) = `New.localIntGL` n w. -/
 lemma mul_mul_mem_basicDoubleCoset (hg : g ∈ basicDoubleCoset n w j) {k k' : GL n (LocField w)}
@@ -351,9 +343,9 @@ lemma exists_residueKer_eq_and_inv_mul_mem_localIntGL (hg : g ∈ basicDoubleCos
     U.eq_of_le_of_finrank_eq
       (fun x hx ↦ by simpa [← he ⟨x, hx⟩] using (f ⟨x, hx⟩).2)
       (by rw [← h_finrank, (e.ofSubmodule' _).finrank_eq])
-  refine ⟨g * l, by simpa using mul_mul_mem_basicDoubleCoset hg (one_mem _) l.2, ?_, by simp⟩
+  refine ⟨g * l, by simpa using mul_mul_mem_basicDoubleCoset hg (one_mem _) l.property, ?_, by simp⟩
   -- Reduction is multiplicative, so `residueKer (g * l)` is that same preimage.
-  rw [residueKer, Units.val_mul, map_residueOrZero_mul hg.1 l.2.isIntMatrix, mulVecLin_mul,
+  rw [residueKer, Units.val_mul, map_residueOrZero_mul hg.1 l.property.isIntMatrix, mulVecLin_mul,
     h_red, h_comap, LinearMap.ker_comp]
 
 omit [DecidableEq n] in

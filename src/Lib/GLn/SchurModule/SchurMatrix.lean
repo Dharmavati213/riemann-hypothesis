@@ -973,7 +973,7 @@ lemma exists_equiv_schur_one_row_eq_symPowMatrix {a : ℕ} {m σ : Type} [Fintyp
   rw [h_scalar]
   -- By `schur_eq_of_expansion`, the Schur matrix is the matrix that expands the substituted basis.
   apply congrFun₂ (schur_eq_of_expansion fun i ↦ ?_)
-  let f : MvPolynomial σ ℂ := linSubst (c • zᵀ.submatrix q q) (monomial (φ i).1 1)
+  let f : MvPolynomial σ ℂ := linSubst (c • zᵀ.submatrix q q) (monomial (φ i).val 1)
   have h_expand : ∑ β : Monomials σ a, f.coeff β • monomial β 1 = f :=
     sum_monomials_eq_of_isHomogeneous ((φ i).isHomogeneous_linSubst _)
   -- Substitute the first column of variables into this expansion of `f`.

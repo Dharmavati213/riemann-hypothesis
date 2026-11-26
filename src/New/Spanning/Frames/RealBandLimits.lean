@@ -292,7 +292,7 @@ lemma sq_lintegral_enorm_inner_le {A B : 𝔰.G₁ → EuclideanSpace ℂ I} (hA
   have h_inv (u : (𝔰.middleGram (1 : ℂ)).besselU) (y : 𝔰.G₁) :
       ‖B (u • y)‖ₑ ^ 2 = ‖B y‖ₑ ^ 2 := by
     rw [Subgroup.smul_def, smul_eq_mul,
-      hB.enorm_besselS_mul (mem_partialUnitriangularGroup_of_mem_besselU u.2)]
+      hB.enorm_besselS_mul (mem_partialUnitriangularGroup_of_mem_besselU u.property)]
   have h_translate : ∫⁻ y, ‖B (y * x)‖ₑ ^ 2 ∂besselQuotMeasure =
       ∫⁻ y, ‖B y‖ₑ ^ 2 ∂besselQuotMeasure :=
     (identDistrib_orbitMeasure_mul_right (F := fun y ↦ ‖B y‖ₑ ^ 2) x h_inv).lintegral_eq

@@ -436,7 +436,7 @@ lemma RealPlaceSizes.leGramFibre_partialGroupMeasure (hF : RealPlaceSizes 𝔰 �
   -- Choose the vectors of the tuple in turn.
   induction l with
   | zero =>
-    have : IsEmpty {i : 𝔰.BesselIndex // floorOf i < 0} := ⟨fun i ↦ Nat.not_lt_zero _ i.2⟩
+    have : IsEmpty {i : 𝔰.BesselIndex // floorOf i < 0} := ⟨fun i ↦ Nat.not_lt_zero _ i.property⟩
     simpa [descConv, Measure.inv] using leGramFibre_dirac _
   | succ a ih =>
     lift a to Fin 𝔰.ϱ using hl
@@ -457,7 +457,7 @@ lemma RealPlaceSizes.leGramFibre_partialGroupMeasure (hF : RealPlaceSizes 𝔰 �
           (Subtype.val : {i : 𝔰.BesselIndex // floorOf i < a ∨ i = .inl a} → 𝔰.BesselIndex))
         (((2⁻¹ : ℝ≥0∞) ^ (2 * a.val) • (hF.complexData.partialGroupMeasure 0 a).inv) ∗ₘ
           ((2⁻¹ : ℝ≥0∞) • (hF.complexData.floorMeasure a).inv)) :=
-      hF.leGramFibre_mconv_floorMeasure a.castSucc (by simp) (ih a.2.le)
+      hF.leGramFibre_mconv_floorMeasure a.castSucc (by simp) (ih a.isLt.le)
     rw [h_split]
     refine h_frame.insert (j := eStar a) (by simp) h_index ?_ ?_
     · have h_zero : (𝔰.J₁ (eStar a) (eStar a)).re = 0 := by simp
@@ -473,7 +473,7 @@ lemma RealPlaceSizes.inv_groupMeasure_le (hF : RealPlaceSizes 𝔰 ρ s b) :
   -- Add `z` to the hyperbolic pairs. The complement `X₀` of this tuple is definite, and the
   -- measure of floor `ϱ + 1` is the Haar measure of `U(X₀)`.
   have h_disjoint (i : {i : 𝔰.BesselIndex // floorOf i < 𝔰.n}) (j : 𝔰.κ) :
-      i.val ≠ 𝔰.indexX₀ j := fun h ↦ by simpa [h] using i.2
+      i.val ≠ 𝔰.indexX₀ j := fun h ↦ by simpa [h] using i.property
   have h_bij : Function.Bijective (Sum.elim Subtype.val 𝔰.indexX₀ :
       {i : 𝔰.BesselIndex // floorOf i < 𝔰.n} ⊕ 𝔰.κ → 𝔰.BesselIndex) :=
     ⟨Subtype.val_injective.sumElim (fun _ _ h ↦ by simpa using h) h_disjoint,
@@ -553,7 +553,7 @@ lemma RealPlaceSizes.lintegral_quotientMeasureFrom_eq_haarRatio_mul (hF : RealPl
       (hF.haarRatio • volume) := h_mul.comp h_incl
   have h_law : ProbabilityTheory.IdentDistrib f f
       (orbitMeasure 𝔰.besselHaar (hF.haarRatio • volume)) θ :=
-    identDistrib_orbitMeasure_of_unfold (.id _) h_unfold hf measurable_id fun u ↦ h_inv u u.2
+    identDistrib_orbitMeasure_of_unfold (.id _) h_unfold hf measurable_id fun u ↦ h_inv u u.property
   calc ∫⁻ g : 𝔰.G₁, f g ∂θ
       = ∫⁻ g : 𝔰.G₁, f g ∂orbitMeasure 𝔰.besselHaar (hF.haarRatio • volume) :=
         h_law.lintegral_eq.symm
@@ -621,7 +621,7 @@ lemma exists_unitary_mul_submatrix_eq_zero {m ι : Type} [Fintype m] [Fintype ι
   refine ⟨H.eigenvectorUnitary, D, D_card, ?_⟩
   rw [← conjTranspose_mul_self_mul_eq_zero]
   ext a i
-  have h_eig : H.eigenvalues i = 0 := by simpa using hD i.2
+  have h_eig : H.eigenvalues i = 0 := by simpa using hD i.property
   have h_ker : (Cᴴ * C) *ᵥ ⇑(H.eigenvectorBasis i) = 0 := by
     rw [H.mulVec_eigenvectorBasis, h_eig, zero_smul]
   exact congrFun h_ker a
@@ -640,7 +640,7 @@ lemma measurePreserving_normSq_prod_compl {ι : Type} [Fintype ι] [DecidableEq 
         ENNReal.ofReal (sphereDensity (card D) r / 2)).prod volume) := by
   have h_unitary : MeasurePreserving (fun u : ι → ℂ ↦ Q.valᴴ *ᵥ u) volume volume :=
     complexPlace.measurePreserving_mulVec Q.valᴴ (Unitary.star_mul_self_of_mem
-      (det_of_mem_unitary (star Q).2))
+      (det_of_mem_unitary (star Q).property))
   have h_split : MeasurePreserving
       (fun w : ι → ℂ ↦ (fun i : D ↦ w i, fun i : {i : ι // i ∉ D} ↦ w i)) volume volume := by
     have h_pi := volume_preserving_piEquivPiSubtypeProd (fun _ : ι ↦ ℂ) (· ∈ D)
@@ -655,7 +655,7 @@ lemma norm_unitary_conjTranspose_mulVec_le {ι : Type} [Fintype ι] [DecidableEq
   calc ‖(Q.valᴴ *ᵥ u) i‖ ≤ ∑ k : ι, ‖star (Q.val k i) * u k‖ := norm_sum_le _ _
     _ ≤ ∑ _k : ι, 1 * R := by
         gcongr with k
-        grw [norm_mul, norm_star, entry_norm_bound_of_unitary Q.2, hu k]
+        grw [norm_mul, norm_star, entry_norm_bound_of_unitary Q.property, hu k]
     _ = card ι * R := by simp
 
 /-- The integral of `(36 / r) ^ s` over `0 < r ≤ R` against the density
@@ -706,7 +706,7 @@ lemma exists_orthonormal_ker_lintegral_le {𝔰 : Shape} {s : ℕ} {L : ℝ} {m 
     exists_unitary_mul_submatrix_eq_zero C (by lia)
   set O : Matrix ι D ℂ := Q.val.submatrix id (↑)
   have hO : Oᴴ * O = 1 := by
-    have hQ : Q.valᴴ * Q.val = 1 := Unitary.star_mul_self_of_mem Q.2
+    have hQ : Q.valᴴ * Q.val = 1 := Unitary.star_mul_self_of_mem Q.property
     rw [conjTranspose_submatrix, ← submatrix_mul _ _ _ _ _ Function.bijective_id, hQ]
     exact submatrix_one _ Subtype.val_injective
   refine ⟨D, O, hCO, hO, fun j ↦ ?_⟩

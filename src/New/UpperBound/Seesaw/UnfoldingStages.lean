@@ -278,7 +278,7 @@ lemma DoubleLiftData.constTerm_mul_constTerm_eq_inv_mul_zeroTerm (D : DoubleLift
     simp [continuous_pi_iff, φ, Y.formAdjoint_apply Y', -continuous_prodMk, vecToMatrix,
       matrixToVec, mul_assoc]
     exact ⟨by fun_prop, by fun_prop⟩
-  have h_rat : ∀ᵉ (a ∈ ratVectors E (ι' × ι)) (a' ∈ ratVectors E (ι'' × ι')),
+  have h_rat : ∀ a ∈ ratVectors E (ι' × ι), ∀ a' ∈ ratVectors E (ι'' × ι'),
       φ (a, a') ∈ ratVectors E _ := by
     rintro _ ⟨a, rfl⟩ _ ⟨a', rfl⟩
     simp [mem_ratVectors, φ, Y.formAdjoint_apply Y', ← map_mul, ratAdeles, vecToMatrix, matrixToVec]

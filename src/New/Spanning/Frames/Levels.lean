@@ -105,7 +105,7 @@ structure PlaceData extends HyperbolicBasis ι T m where
       (∀ s ∈ besselH, measureH ∗ₘ dirac s = measureH) ∧
       ∀ g : T.G, measureH {h : T.G | ∃ u ∈ besselU, u * (h * g) ∈ boxSet} ≤ 1
   /-- The level is fixed by the involution. -/
-  star_levelUnit : star levelUnit.1 = levelUnit
+  star_levelUnit : star levelUnit.val = levelUnit
   /-- The set of close pairs is open, contains 0 and has compact closure. -/
   isOpen_closePairs_and_zero_mem_and_isCompact_closure :
     IsOpen closePairs ∧ 0 ∈ closePairs ∧ IsCompact (closure closePairs)

@@ -334,7 +334,7 @@ Suppose that the stabilizer in `Γ` of any such vector carries at most a proport
 sum of `β` over `Γ`. Let `l < 𝔰.n`, and let `δ_l` be the leading minor of size `l` of the
 `frameGram` of the component `s 0 w` over the residue field at `w`. Then the `s` in `Γ` with
 `δ_l = 0` carry at most a proportion `3 / b¹⁰`. -/
-lemma sum_leadingMinor_eq_zero_le [S.IsAdmissible] {V : Type*} [NormedAddCommGroup V]
+lemma sum_leadingMinor_eq_zero_le {V : Type*} [NormedAddCommGroup V]
     [InnerProductSpace ℂ V] {β : S.ResidueGL → ℝ} (h_nonneg : ∀ s : S.ResidueGL, 0 ≤ β s)
       {u : S.ResidueGL → V}
     (h_posType : ∀ a b : S.ResidueGL, ⟪u a, u b⟫_ℂ = β (a⁻¹ * b)) {Γ : Subgroup S.ResidueGL}

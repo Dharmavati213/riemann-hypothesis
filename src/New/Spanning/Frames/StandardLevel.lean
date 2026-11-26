@@ -158,9 +158,9 @@ structure IntegralPlace.IsLatticeData : Prop where
   /-- The Gram matrix is hermitian and invertible over `integers`, the basis `F.basisMatrix` is
   integral, and the unit `F.levelUnit` is integral and fixed by the involution. -/
   integral_data :
-      IsUnimodular integers T.splitGram ∧ IsIntMatrix integers F.basisMatrix ∧ F.levelUnit.1 ∈
+      IsUnimodular integers T.splitGram ∧ IsIntMatrix integers F.basisMatrix ∧ F.levelUnit.val ∈
         integers ∧
-        star F.levelUnit.1 = F.levelUnit
+        star F.levelUnit.val = F.levelUnit
   /-- The box `F.boxSet` is the group of integral isometries. Its `F.topFloorMeasure`-measure is at
   least the volume of the units of `integers`, and its `F.measureH`-measure is `1`. The close pairs
   are the pairs of integral vectors congruent modulo `F.levelUnit`. The positions `F.positions` are
@@ -707,8 +707,8 @@ lemma exists_isCommonBound {α : Aˣ} (hα : α.val ∈ integers) {S : Size T}
 /-- The gauge of scale `α` at a large lattice datum, for an integral self-conjugate unit `α` of `A`:
 a number `x` has size `j` if `α ^ j * x` is integral, and the field `loss` is `2 / P.modulus α`. -/
 @[simp]
-def gauge (α : Aˣ := 1) (hα : α.1 ∈ integers := by simp)
-    (sα : star α.1 = α := by simp [*] <;> ring) :
+def gauge (α : Aˣ := 1) (hα : α.val ∈ integers := by simp)
+    (sα : star α.val = α := by simp [*] <;> ring) :
     Gauge F where
   ofSize j := {x : A | α ^ j * x ∈ integers}
   loss := 2 / P.modulus α

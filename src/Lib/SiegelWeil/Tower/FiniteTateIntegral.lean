@@ -237,8 +237,8 @@ lemma integral_finTateIntegrand (ρ : Measure (𝔸f E)ˣ) [IsHaarMeasure ρ] {x
 nonzero weight is not trivial. -/
 lemma continuousOn_L : ContinuousOn (𝔠.character.L 𝔠.ramifiedPlaces) (Ici 1) := by
   have h_hecke : IsHeckeOfType 𝔠.character.baseChange.finPart (2 • μ) := 𝔠.hasWeight.isHeckeOfType
-  exact (h_hecke.exists_hasPrimeDensity (by simp [Finite.star])
-    (h_hecke.ne_one (smul_ne_zero two_ne_zero 𝔠.weight_ne_zero))).1
+  exact h_hecke.continuousOn_eulerProd (by simp [Finite.star])
+    (h_hecke.ne_one (smul_ne_zero two_ne_zero 𝔠.weight_ne_zero))
 
 /-! ### Unfolding over the idele classes -/
 

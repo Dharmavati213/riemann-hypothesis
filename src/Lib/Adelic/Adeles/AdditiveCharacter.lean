@@ -220,7 +220,9 @@ lemma ψf_eq_one_of_mem {x : 𝔸f E} (h : x ∈ Ô E) : ψf E x = 1 := by
 
 instance : SigmaFinite (volume (α := 𝔸f E)) := inferInstance
 
-deriving instance SecondCountableTopology, T2Space for 𝔸f E, 𝔸 E
+deriving instance T2Space for 𝔸f E
+
+deriving instance SecondCountableTopology, T2Space for 𝔸 E
 
 deriving instance PolishSpace, LocallyCompactSpace, BorelSpace, IsTopologicalRing,
   MeasurableSingletonClass for 𝔸 E

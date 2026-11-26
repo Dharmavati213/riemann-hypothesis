@@ -402,7 +402,7 @@ section CommutatorLog
 is of no use). -/
 noncomputable def commutatorLog (m : ℕ) [NeZero m] (γ : Gal(Ω/ℚ)) (y : DiscreteUnits Ω)
     (g : Gal(Ω/ℚ)) : ZMod m :=
-  invFun (rootPowHom Ω m).1 (galUnitsRep γ y - galUnitsRep (g * γ * g⁻¹) y)
+  invFun (rootPowHom Ω m).val (galUnitsRep γ y - galUnitsRep (g * γ * g⁻¹) y)
 
 /-- If the commutator `γ⁻¹ (g γ g⁻¹)` moves `y` by an `m`-th root of unity, then `commutatorLog`
 is the exponent of `γ y / (g γ g⁻¹) y`: `ζ ^ commutatorLog m γ y g = γ y / (g γ g⁻¹) y`. -/

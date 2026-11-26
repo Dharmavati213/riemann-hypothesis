@@ -229,14 +229,14 @@ def kernelForm (g : Gf E Unit) : X.descentPair.FormV :=
   -- The level acts through its character, by the law `DescentPair.omega_blockDatum_eq_smul`; so the
   -- function is smooth.
   have h_level (k : X.descentPair.levelGroup) :
-      rightRegular ℂ (Gf E n) _ k.1 (X.kernelValue 1 X.descentPair.blockDatum g) =
+      rightRegular ℂ (Gf E n) _ k.val (X.kernelValue 1 X.descentPair.blockDatum g) =
         X.descentPair.residueLevelChar.comp (levelOf.reduction ..) k •
           X.kernelValue 1 X.descentPair.blockDatum g := by
     ext h' i
     have h_omega : X.descentPair.pairThetaKernel.ω ((1, 1), 1, k.val) X.descentPair.blockDatum.val =
         X.descentPair.residueLevelChar.comp (levelOf.reduction ..) k •
           X.descentPair.blockDatum.val := by
-      simpa using X.descentPair.omega_blockDatum_eq_smul 1 ⟨k, levelOf_le_stdLevel k.2⟩
+      simpa using X.descentPair.omega_blockDatum_eq_smul 1 ⟨k, levelOf_le_stdLevel k.property⟩
         (levelOf.reduction _ _ k) (by simp [levelOf.reduction]; rfl)
     -- The jets are linear in the datum, and `ω` is multiplicative.
     simpa [kernelValue, rep_apply_apply, smul_mulVec] using

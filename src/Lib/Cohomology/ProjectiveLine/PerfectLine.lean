@@ -19,7 +19,7 @@ two discs are represented in the tilt S^♭ by O^♭[ℚ≥0], and its torus by 
   (a monomorphism). Its cokernel plays the role of the perfect line with the point ∞ killed.
 * `New.Variety.PerfectLine.oneSub_comp_gluing`: the operators 1 − (T^s ↦ χ(s) T^s) commute with the
   gluing map.
-* `New.Variety.PerfectLine.isCohomEquiv_gluing_tilt`,
+* `New.Variety.PerfectLine.isCohomEquiv_tensorCoeff_gluing`,
   `New.Variety.PerfectLine.isCohomEquiv_gluing_generic`: over each test c the gluing map induces
   bijections on cohomology. This holds for coefficients G(S^♭), where G is built from an O^♭-module
   N and is assumed acyclic on perfect rings. It also holds for S[1/p].
@@ -502,17 +502,6 @@ lemma isCohomEquiv_tensorCoeff_gluing (c : PadicTest)
         (fun b ↦ perfectRing_tensorLeft_tilt c (A b) (hA b)) n
     exact ⟨fun x y _ ↦ (h_vanish _ h_perf_discs).elim x y,
       fun y ↦ ⟨0, (h_vanish _ perfectRing_pointOrTorus).elim _ y⟩⟩
-
-/-- Let `G` be the coefficient functor `b ↦ b ⊗ N` on `O^♭`-algebras, acyclic on perfect
-`O^♭`-algebras, and form the gluing map with the algebras `c^♭ ⊗ B`. Its target and its source have
-flat base change, and it induces bijections on cohomology with coefficients in `S ↦ G(S^♭)`. -/
-lemma isCohomEquiv_gluing_tilt (c : PadicTest)
-    (h_acyclic : IsAcyclicOnPerfect (moduleCoeff (tensorCoeff N))) :
-    HasFlatBaseChange (freeAb (twoDiscs (tensorLeft (tilt c)))) ∧
-    HasFlatBaseChange (freeAb (tiltPointsSum pointOrTorus (tensorLeft (tilt c)))) ∧
-    IsCohomEquiv (tilt ⋙ moduleCoeff (tensorCoeff N)) (gluing (tensorLeft (tilt c))) :=
-  ⟨hasFlatBaseChange_freeAb_twoDiscs c, hasFlatBaseChange_freeAb_tiltPointsSum_pointOrTorus c,
-    isCohomEquiv_tensorCoeff_gluing c h_acyclic⟩
 
 /-- For every test `c`, the gluing map formed with the algebras `c^♭ ⊗ B` induces bijections on
 cohomology with coefficients in `genericCoeff`, the coefficients S ↦ S[1/p]. -/

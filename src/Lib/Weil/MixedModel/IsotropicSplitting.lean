@@ -78,7 +78,7 @@ the finite places, with `c` the integral unit `New.Weil.normNegOne` (`c̄ c = �
 noncomputable def hyperbolicSpace : Space E (p ⊕ p) (hyperbolicSigns p) :=
   -- The identities at the finite places use `star c * c = -1` and `ϵ + star ϵ = 1`, for the chosen
   -- integral adeles `c` of norm `-1` and `ϵ` of trace `1`.
-  let c := normNegOne.1.1
+  let c := normNegOne.val.val
   let ϵ : 𝔸f E := stdLattice.traceOneAdele
   { J := fromBlocks 0 1 1 0
     x := mkAdelicGL

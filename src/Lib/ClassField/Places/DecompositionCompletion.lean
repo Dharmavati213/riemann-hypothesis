@@ -218,8 +218,9 @@ lemma exists_inducesPlace [NumberField K] {ι : Ω →+* PadicAlgCl p} {A : Valu
     (h_comap : (intQpBar p).comap ι = A) :
     ∃ j : decompGroup Γ A →* Gp p, GaloisRep.InducesPlace (Γ := Γ) K A ι j := by
   subst h_comap
-  -- Let `U` be the open subgroup of `Gp p` fixing `ℚ_p (ι K)`. Restriction along `ι` is an
-  -- isomorphism `res` from `U` to the decomposition group, and `j` is its inverse.
+  -- The embedding of `Ω` inducing `A` is already given. Identify the decomposition group
+  -- by restriction from the open subgroup `U` of `Gp p` fixing `ℚ_p (ι K)`.
+  -- The desired map `j` is the inverse of this restriction isomorphism.
   let k : K →+* PadicAlgCl p := ι.comp (algebraMap K Ω)
   -- `id` keeps the open subgroup folded, as instance search needs it.
   let U : OpenSubgroup (Gp p) := id ⟨_, (adjoin ℚ_[p] (range k)).fixingSubgroup_isOpen⟩
@@ -352,8 +353,9 @@ valuation below `1` (`A p` is the valuation of `p` at `A`) is the preimage of th
 `ℚ̄_p` under some embedding `Ω → ℚ̄_p`. -/
 lemma exists_comap_intQpBar_eq (h_val_lt_one : A p < 1) :
     ∃ e : Ω →+* PadicAlgCl p, (intQpBar p).comap e = A := by
-  -- `A` and the place induced by any embedding `ι` both lie over the prime of `ℚ` above `p`, so
-  -- they are conjugate under `Gal(Ω/ℚ)`, and a twist of `ι` induces `A`.
+  -- The inequality `A p < 1` fixes the rational prime in advance. Both `A` and the place
+  -- induced by any embedding `ι` lie above that prime. Transitivity on places over it
+  -- lets us precompose `ι` with a Galois automorphism to induce the prescribed `A`.
   obtain ⟨v, -, -, h_over : ∀ B : ClosurePlace, B.valuation p < 1 → IsPlaceOver B v⟩ :=
     exists_rat_place_of_prime (out : p.Prime)
   let ι : Ω →+* PadicAlgCl p := Classical.ofNonempty

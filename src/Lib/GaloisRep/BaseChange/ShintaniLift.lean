@@ -84,18 +84,18 @@ lemma exists_representation_heckeFun_inflateConj (hw : w.IsSplit) {κ : Weight E
     aesop (add simp mem_localCongruence_zero)
   have h_stable (k : intGL n Valued.v.integer) : K ⊓ W.1 ≤ (K ⊓ W.1).comap (π₀ k) :=
     fun v ⟨hv_K, hv_W⟩ ↦ ⟨hK.ge (le_comap_invariants _ _ k (hK.le hv_K)), W.2 _ hv_W⟩
-  let π₁ : intGL n Valued.v.integer →* (↥(K ⊓ W.1) →ₗ[ℂ] ↥(K ⊓ W.1))ˣ :=
+  let π₁ : intGL n Valued.v.integer →* (↥(K ⊓ W.toSubmodule) →ₗ[ℂ] ↥(K ⊓ W.toSubmodule))ˣ :=
     (subrepresentation π₀ _ h_stable).asGroupHom
   -- the kernel of reduction acts trivially on `K`
   have h_ker : reduceGL.ker ≤ π₁.ker := fun k hk ↦ by
     ext v : 3
-    exact hK.le v.2.1 ⟨k, hk⟩
-  let ρ : Representation ℂ (GL n (ResField w)) ↥(K ⊓ W.1) :=
+    exact hK.le v.property.1 ⟨k, hk⟩
+  let ρ : Representation ℂ (GL n (ResField w)) ↥(K ⊓ W.toSubmodule) :=
     (Units.coeHom _).comp (reduceGL.liftOfSurjective reduceGL_surjective ⟨π₁, h_ker⟩)
   let lift : GL n (ResField w) → GL n (LocField w) := Subtype.val ∘ surjInv reduceGL_surjective
   refine ⟨ρ, fun χ v ↦ ?_⟩
   obtain ⟨hv_K, -⟩ := Submodule.mem_inf.mp v.prop
-  have h_sum : (ρ.asAlgebraHom (groupAlgElem fun g ↦ conj (χ g)) v).1 =
+  have h_sum : (ρ.asAlgebraHom (groupAlgElem fun g ↦ conj (χ g)) v).val =
       ∑ x, conj (χ x) • π (lift x) v := by
     simp [asAlgebraHom_eq_sum]
     -- `ρ x v` is `π (lift x) v` by the definition of `ρ`
@@ -219,7 +219,7 @@ private lemma exists_ne_one_and_frobeniusAlgEquivOfAlgebraic_apply_eq
       ∀ x : 𝓞 E', φ (algebraMap (𝓞 E') (ResField u) x) =
         algebraMap (𝓞 E') (ResField u) (σ • x) := by
   obtain rfl : FinPlace.below E u = w := (h_unique u).2 rfl
-  obtain ⟨σ, h_frob⟩ := IsArithFrobAt.exists_of_isInvariant (𝓞 E) Gal(E'/E) u.1
+  obtain ⟨σ, h_frob⟩ := IsArithFrobAt.exists_of_isInvariant (𝓞 E) Gal(E'/E) u.asIdeal
   have hσ (x : 𝓞 E') : φ (algebraMap _ _ x) = algebraMap _ _ (σ • x) := by
     rw [hφ, eq_comm]
     simpa [card_ResField, ← Nat.card_eq_fintype_card, ← algebraMap_ResField_eq_zero,

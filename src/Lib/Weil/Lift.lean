@@ -652,7 +652,7 @@ theorem isHalfEdge_of_oscillatorPair {T : InfinitePlace E → FockDualPair s t �
       polyVector η (monomial (a.curry w) 1)
     have local_bump (a : InfinitePlace E × ι →₀ ℕ) (w : InfinitePlace E) :
         ∃ α : DiscreteSeries.Bumps t,
-        p w (v a w) = integratedRep (π' w) (fun g ↦ α.1.1 g⁻¹) (p w (polyVector η (Φ w))) :=
+        p w (v a w) = integratedRep (π' w) (fun g ↦ α.val.val g⁻¹) (p w (polyVector η (Φ w))) :=
       (hp w).exists_bump_integratedRep_eq (hΦ w) _
     choose α hα using local_bump
     rintro _ ⟨P, rfl⟩

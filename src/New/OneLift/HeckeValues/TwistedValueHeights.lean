@@ -196,7 +196,7 @@ theorem pointForm_mem_integralForms {l : ℕ} [Fact l.Prime] {E r n : Type} [Fie
   change deltaForm stdEmbFin _ O.levelChar (h * k) v ∈ _
   intro g
   refine (weylGauge_deltaForm_le LevelPlaces.isOfFinOrder_level_char).trans ?_
-  rwa [weylGauge_mul_of_mem_integralAbove h (stdLevel_le_localLevel k.2)]
+  rwa [weylGauge_mul_of_mem_integralAbove h (stdLevel_le_localLevel k.property)]
 
 section ClassSum
 
@@ -385,7 +385,7 @@ theorem inner_pointForm_kernelForm (hq : q.HasEmptyRow (Fin (2 * p.z - 20)))
   classical
   intro X u
   have h_not_chosen (i : X.TwistIndex) : ¬D.IsChosen (X.twistPlace i) :=
-    (D.normQ_mem_and_notMem_of_mem_Q ϑ (.inl i.2)).2.1
+    (D.normQ_mem_and_notMem_of_mem_Q ϑ (.inl i.property)).2.1
   have h_no_twist : IsEmpty (D.levelPlaces u).TwistIndex := ⟨nofun⟩
   -- Read the data of the four blocks modulo the same `𝔪`.
   let 𝔪 : Modulus D.E := X.levelModulus 2
@@ -472,7 +472,7 @@ theorem isTestForm_trivialLiftClassSum_pointForm {l : ℕ} [Fact l.Prime]
   let X : LValueData D.E (RankOneIndex p.z) := lValueData hp.hasLiftRank ϑ
   let u : D.TameChar := TameChar.one
   have h_not_chosen (i : X.TwistIndex) : ¬D.IsChosen (X.twistPlace i) :=
-    (D.normQ_mem_and_notMem_of_mem_Q ϑ (.inl i.2)).2.1
+    (D.normQ_mem_and_notMem_of_mem_Q ϑ (.inl i.property)).2.1
   have h_large : 45 < 2 * p.z := by
     have hz_gt : D.m < p.z := hp.z_mem.1
     have hm : 10000 ≤ D.m := D.ten_thousand_le_m
@@ -506,7 +506,7 @@ theorem isTestForm_trivialLiftClassSum_pointForm {l : ℕ} [Fact l.Prime]
         starRingEnd ℂ (gramForm 1 (evalForm x (X₁.kernelForm g))) *
           innerSLFlip ℂ y (F x)) = 0 := by
     refine stdClassSum_period_eq_zero X.fitsParams_descentPair
-      (by simpa [X, tamePart_eq_one, h_not_chosen] using! fun i ↦ ϑ.tamePart_ne_one _ i.2)
+      (by simpa [X, tamePart_eq_one, h_not_chosen] using! fun i ↦ ϑ.tamePart_ne_one _ i.property)
           (fun i v hv ↦ ?_)
         h_theta
       h_hecke (by simpa using by omega) (.refl _) h_inj
@@ -539,7 +539,7 @@ theorem isTestForm_trivialLiftClassSum_pointForm {l : ℕ} [Fact l.Prime]
       ring
     · -- an element of the level fixes the unit column at the chosen places, hence both data
       have h_col (i : X₁.descentPair.ChosenIndex) :
-          (stdLevel.reduceFamily X₁.descentPair.placeAt k (.inl i)).1 * inclMatrix _
+          (stdLevel.reduceFamily X₁.descentPair.placeAt k (.inl i)).val * inclMatrix _
             X₁.descentPair.incl =
             inclMatrix _ X₁.descentPair.incl :=
         mem_stabilizer_col_iff.1 ((mem_levelOf.1 hk).2 (.inl i) ⟨⟩)
@@ -780,7 +780,7 @@ theorem exists_isTestForm_le_norm_inner_trivialLift {j : D.LiftIndex} {p q₂ : 
   obtain ⟨ψ₃, ψ₁, hψ, hL_l⟩ := exists_mul_eq_norm_map_le_norm_map_mul ιₚ hL_pow ψ
   -- The characters of the four blocks multiply to that of the lift data of `p`, as `ψ = ψ₃ ψ₁`.
   obtain ⟨Ξ, h_pair, h_test⟩ := exists_isTestForm_inner_kernelForm_eq (hq₁ ψ₁) hq₂ (hq₃ ψ₃)
-    (χ := χ₀ / ψ.1.1) hp ϑ hl x₀ hα
+    (χ := χ₀ / ψ.val.1) hp ϑ hl x₀ hα
     (by simp [χ₀, DescentPair.charV, ← hψ, hχ₁, hχ₃, toAutChar_one_and_toTwist_one_and_Q_one,
       div_div, mul_assoc])
   refine ⟨Ξ, h_test, ?_⟩
@@ -799,7 +799,7 @@ theorem exists_isTestForm_le_norm_inner_trivialLift {j : D.LiftIndex} {p q₂ : 
     (hq₁ ψ₁).2 .one
   set A : ℂ :=
     stdClassSum (lValueData hp.hasLiftRank ϑ).chosenLevel
-        (fun g ↦ ψ.1.1.1 (detFin 1 (g * z)) * s (g * z)) /
+        (fun g ↦ ψ.val.1.val (detFin 1 (g * z)) * s (g * z)) /
       stdClassSum (lValueData hp.hasLiftRank ϑ).chosenLevel 1
   -- By adjointness the pairing with `trivialLift` is the class sum of the pairings of `h_pair`,
   -- whose kernels are `ψ` times `s`. The factor `t` cancels the `/ t` of `c`, and dividing by
@@ -815,7 +815,7 @@ theorem exists_isTestForm_le_norm_inner_trivialLift {j : D.LiftIndex} {p q₂ : 
     -- Each pairing with the kernel is a constant times `ψ (det g) * s g`; sum over the classes.
     have h_term (g : Gf D.E Unit) :
         inner ℂ Ξ ((lValueData hp.hasLiftRank ϑ).kernelForm g) * (N ^ 3 * V ^ (2 * p.z - 20 + 8)) =
-          T * W * q₂.integralAlgebraicPart hq₂.2 ϑ * (ψ.1.1.1 (detFin 1 g) * s g) := by
+          T * W * q₂.integralAlgebraicPart hq₂.2 ϑ * (ψ.val.1.val (detFin 1 g) * s g) := by
       rw [← hN, h_pair, modKernel_div_apply, mul_assoc (_ / _),
         mul_comm (integralAlgebraicPart (hq₁ ψ₁).2 _)]
       rfl
@@ -895,26 +895,26 @@ theorem heightLe_inv_ratio {θ : PrimePadicIso → D.MFoldTwist} (hθ : D.IsRegu
   let ρ (ι : PrimePadicIso) : ℂ := q₂.ratio ((θ ι).powTwist j)
   -- Multiply the bounds at `ι` and at its conjugate; `ρ` is real.
   have exists_tests (ι : PrimePadicIso) :
-      ∃ Ξ Ξ', (lValueData h_rank ((θ ι).powTwist j)).descentPair.IsTestForm ι.1 Ξ ∧
-        (lValueData h_rank ((θ ι).powTwist j)).descentPair.IsTestForm ι.1 Ξ' ∧
-        ‖ι.2 (c₀ * star c₀ * ρ ι ^ 2)‖ * ((ι.1 : ℝ) ^ (-D.localPrimeSumTotal ι.1)) ^ 2 ≤
-          ‖ι.2 (inner ℂ Ξ (φ ι) * inner ℂ (φ ι) Ξ')‖ := by
-    obtain ⟨Ξ, hΞ, h_le⟩ := @h_test ι.1 _ ⟨complexToCp ι.2⟩ ((θ ι).powTwist j) (hθ.coprime ι)
-    obtain ⟨Ξ', hΞ', h_le'⟩ := @h_test ι.1 _ ⟨(complexToCp ι.2).comp starRingAut.toRingHom⟩
+      ∃ Ξ Ξ', (lValueData h_rank ((θ ι).powTwist j)).descentPair.IsTestForm ι.prime Ξ ∧
+        (lValueData h_rank ((θ ι).powTwist j)).descentPair.IsTestForm ι.prime Ξ' ∧
+        ‖ι.iso (c₀ * star c₀ * ρ ι ^ 2)‖ * ((ι.prime : ℝ) ^ (-D.localPrimeSumTotal ι.prime)) ^ 2 ≤
+          ‖ι.iso (inner ℂ Ξ (φ ι) * inner ℂ (φ ι) Ξ')‖ := by
+    obtain ⟨Ξ, hΞ, h_le⟩ := @h_test ι.prime _ ⟨complexToCp ι.iso⟩ ((θ ι).powTwist j) (hθ.coprime ι)
+    obtain ⟨Ξ', hΞ', h_le'⟩ := @h_test ι.prime _ ⟨(complexToCp ι.iso).comp starRingAut.toRingHom⟩
       ((θ ι).powTwist j) (hθ.coprime ι)
     refine ⟨Ξ, Ξ', hΞ, hΞ', ?_⟩
-    have h_mul : ‖ι.2 (c₀ * ρ ι)‖ * ι.1 ^ (-D.localPrimeSumTotal ι.1) *
-        (‖ι.2 (star c₀ * ρ ι)‖ * ι.1 ^ (-D.localPrimeSumTotal ι.1)) ≤
-        ‖ι.2 (inner ℂ Ξ (φ ι))‖ * ‖ι.2 (inner ℂ (φ ι) Ξ')‖ := by
+    have h_mul : ‖ι.iso (c₀ * ρ ι)‖ * ι.prime ^ (-D.localPrimeSumTotal ι.prime) *
+        (‖ι.iso (star c₀ * ρ ι)‖ * ι.prime ^ (-D.localPrimeSumTotal ι.prime)) ≤
+        ‖ι.iso (inner ℂ Ξ (φ ι))‖ * ‖ι.iso (inner ℂ (φ ι) Ξ')‖ := by
       simpa [φ, ρ, star_ratio] using
         mul_le_mul h_le h_le' (by positivity) (norm_nonneg _)
     simp only [map_mul, map_pow, norm_mul, norm_pow] at h_mul ⊢
     linarith
   choose Ξ Ξ' hΞ hΞ' h_both using exists_tests
   have hρ (ι : PrimePadicIso) : ρ ι ≠ 0 := q₂.ratio_ne_zero ((θ ι).powTwist j) 1
-  have h_pos (ι : PrimePadicIso) : 0 < ‖ι.2 (inner ℂ (Ξ ι) (φ ι) * inner ℂ (φ ι) (Ξ' ι))‖ := by
-    have h_ne : ι.2 (c₀ * star c₀ * ρ ι ^ 2) ≠ 0 := by simp [hc₀_ne, hρ]
-    exact lt_of_lt_of_le (by have := ι.1.2.pos; positivity) (h_both ι)
+  have h_pos (ι : PrimePadicIso) : 0 < ‖ι.iso (inner ℂ (Ξ ι) (φ ι) * inner ℂ (φ ι) (Ξ' ι))‖ := by
+    have h_ne : ι.iso (c₀ * star c₀ * ρ ι ^ 2) ≠ 0 := by simp [hc₀_ne, hρ]
+    exact lt_of_lt_of_le (by have := ι.prime.property.pos; positivity) (h_both ι)
   -- The second factor: few congruences.
   obtain ⟨γ, hγ⟩ := hθ.exists_denominator_bound j
   have h_proj : HeightLe D.denominatorBudget fun ι ↦
@@ -933,10 +933,10 @@ theorem heightLe_inv_ratio {θ : PrimePadicIso → D.MFoldTwist} (hθ : D.IsRegu
       (fun σ ↦ ?_) (fun ι ↦ ?_) fun T hT ↦ ?_
     · rw [exp_add, map_mul]
       exact norm_mul_le_of_le (hc₀_le σ) (hc₀_le (.trans starRingAut σ))
-    · have h_exp : ((ι.1 : ℝ) ^ (-D.localPrimeSumTotal ι.1)) ^ 2 =
-          (exp (2 • (D.localPrimeSumTotal ι.1 * log ι.1)))⁻¹ := by
-        rw [rpow_def_of_pos (mod_cast ι.1.2.pos), Real.exp_nsmul, ← inv_pow, ← Real.exp_neg,
-          mul_neg, mul_comm]
+    · have h_exp : ((ι.prime : ℝ) ^ (-D.localPrimeSumTotal ι.prime)) ^ 2 =
+          (exp (2 • (D.localPrimeSumTotal ι.prime * log ι.prime)))⁻¹ := by
+        rw [rpow_def_of_pos (mod_cast ι.prime.property.pos), Real.exp_nsmul, ← inv_pow,
+          ← Real.exp_neg, mul_neg, mul_comm]
       rw [← mul_div_assoc, map_div₀, norm_div, div_le_iff₀' (h_pos ι), ← div_le_iff₀ (exp_pos _),
         div_eq_mul_inv, ← h_exp]
       exact h_both ι
@@ -970,7 +970,7 @@ theorem heightLe_inv_ratio {θ : PrimePadicIso → D.MFoldTwist} (hθ : D.IsRegu
     generalize inner ℂ (Ξ ι) (φ ι) * inner ℂ (φ ι) (Ξ' ι) = pairings at h_ne
     field_simp
   -- The power of `N(Q)` is an integer, so it has norm at most one.
-  refine (congrArg (‖ι.2 ·‖) h_four).trans_le ?_
+  refine (congrArg (‖ι.iso ·‖) h_four).trans_le ?_
   rw [map_mul, norm_mul, map_natCast]
   exact mul_le_of_le_one_left (norm_nonneg _) (norm_natCast_le_one ..)
 
@@ -991,7 +991,7 @@ lemma isMainPair_lowerPoint_exchangePair_none (j : D.LiftIndex) {z : ℕ}
   exact
     { hasLiftRank := by grind [ten_thousand_le_m]
       z_mem := by rwa [h_point]
-      j_mem := j.2
+      j_mem := j.property
       tamePart_eq := rfl
       negWeight_le v := by grind [ten_thousand_le_m]
       le_negWeight v := by grind [ten_thousand_le_m] }
@@ -1000,7 +1000,7 @@ lemma isMainPair_lowerPoint_exchangePair_none (j : D.LiftIndex) {z : ℕ}
 `exchangePair j i`, is ramified: its tame part is non-trivial exactly at the chosen places. -/
 lemma isRamified_lowerPoint_exchangePair (j : D.LiftIndex) (i : Option ℤˣ) (z : ℕ) :
     ((exchangePair j i).lowerPoint z).IsRamified := by
-  obtain ⟨hj_pos : 1 ≤ j.val, hj_le : j.val ≤ D.m⟩ := j.2
+  obtain ⟨hj_pos : 1 ≤ j.val, hj_le : j.val ≤ D.m⟩ := j.property
   cases i with
   | none => exact chiMLocal_zpow_ne_one_iff_isChosen j (by omega) (by omega)
   | some s =>

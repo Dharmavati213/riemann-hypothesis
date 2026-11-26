@@ -5,7 +5,6 @@ public import New.Appendix.DiscreteSeries.Localization
 import Lib.DiscreteSeries.FlenstedJensen.PsiKTypes
 import Lib.DiscreteSeries.FlenstedJensen.SquareIntegrability
 import Lib.DiscreteSeries.Haar.TotalMass
-import Lib.General.LinearAlgebra.BlockEmbeddings
 import New.Appendix.DiscreteSeries.GaussianShape
 
 /-!

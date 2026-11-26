@@ -264,7 +264,7 @@ noncomputable def quotientPair (n : D.LiftIndex) : D.CriticalPair where
   z_mem := ⟨D.nat_le_of_hasLogBound, le_rfl⟩
   le_negWeight _ := (D.nat_le_of_hasLogBound : D.t ≤ D.gap).trans (Nat.le_mul_of_pos_left _ n.2.1)
   negWeight_le _ := by
-    grw [(Set.mem_Icc.1 n.2).2]
+    grw [(Set.mem_Icc.1 n.property).2]
     exact D.le_of_hasLogBound
 
 lemma quotientPair_character (n : D.LiftIndex) (i : ℕ) :
@@ -332,8 +332,8 @@ lemma isPrimitiveMulChar_of_isTameFor {ϑ : D.TameChar} {ν : AutChar D.E}
       Ideal.Quotient.mk (D.twistModulus ϑ 1).ideal b
   have h_self : modulusResidue (D.twistModulus ϑ 1) hw (1 + c * a) = x := by simp [c, hb, ha']
   have h_other (v : (D.twistModulus ϑ 1).places) (hv : v ≠ ⟨w, hw⟩) :
-      modulusResidue (D.twistModulus ϑ 1) v.2 (1 + c * a) = 1 := by
-    have h_ne : v.1 ≠ w := fun h ↦ hv (Subtype.ext h)
+      modulusResidue (D.twistModulus ϑ 1) v.property (1 + c * a) = 1 := by
+    have h_ne : v.val ≠ w := fun h ↦ hv (Subtype.ext h)
     simp [c, h_ne]
   have h_apply : χ (1 + c * a) = ψ w x := by
     rw [hχ, charOfTamePart_apply, finprod_eq_single _ (Subtype.mk w hw), h_self]

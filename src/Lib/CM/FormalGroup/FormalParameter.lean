@@ -3,6 +3,7 @@ module
 public import Lib.CM.FormalGroup.PrimeNotation
 public import Lib.CM.Integrality.LogTheta
 import Lib.CM.FormalGroup.InseparableDegree
+import TauCeti.RingTheory.PowerSeries.Rescale
 import TauCeti.RingTheory.PowerSeries.Substitution
 
 /-!

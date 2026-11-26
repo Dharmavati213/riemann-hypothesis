@@ -542,7 +542,7 @@ lemma submatrix_inl_ratCoordMatrix_unitary {g : G E ε} (hg : g ∈ Y.besselGrou
       grind -funext [star_zero, sum_eq_zero]
     _ = _ := by
       rw [show (V.ratCoordMatrix g)ᴴ * V.J.map toAdele * V.ratCoordMatrix g = V.J.map toAdele from
-        mem_unitaryGroupOf_iff.1 (V.toRatCoords g).2, Y.submatrix_inl_map_J]
+        mem_unitaryGroupOf_iff.1 (V.toRatCoords g).property, Y.submatrix_inl_map_J]
 
 /-- On `New.Grading.besselGroup`, the X-block of the matrix in rational coordinates is
 multiplicative. -/
@@ -594,7 +594,7 @@ is trivial. -/
 lemma mem_unipotent_iff_besselProj_eq_one (r : Y.besselGroup) :
     (r : G E ε) ∈ Y.unipotent ↔ Y.besselProj r = 1 := by
   -- Off the `X`-block, the conditions for the unipotent and the Bessel group are the same.
-  have hr := Y.mem_besselGroup_iff.1 r.2
+  have hr := Y.mem_besselGroup_iff.1 r.property
   rw [← (stdSpace E X).isEmbedding_ratCoordMatrix.injective.eq_iff]
   simp_all [adeleMatrix_besselProj, ← ext_iff, reindex_equiv Y.indexEquiv, HasDegreeGe,
     Matrix.one_apply,
@@ -680,7 +680,7 @@ lemma ratCoordMatrix_inr (g : Gf E ι) (a b : ι) :
     V.ratCoordMatrix (1, g) a b =
       ((1 : Matrix ι ι (NumberField.InfinitePlace E → ℂ)) a b, V.ratCoordMatrixFin g a b) := by
   -- The finite part is `ratCoordMatrixFin_snd`; the infinite part is that of `V.x * V.x⁻¹ = 1`.
-  have h_inf : ((V.x.1 * V.x⁻¹.1) a b).1 = ((1 : Matrix ι ι (𝔸 E)) a b).1 := by rw [V.x.mul_inv]
+  have h_inf : ((V.x.val * V.x⁻¹.val) a b).1 = ((1 : Matrix ι ι (𝔸 E)) a b).1 := by rw [V.x.mul_inv]
   refine Prod.ext ?_ (by simp [ratCoordMatrixFin_snd (1, g)])
   simpa [ratCoordMatrix_eq, Matrix.mul_apply, Prod.fst_sum, funext_iff, apply_ite,
     Matrix.one_apply] using h_inf
@@ -757,7 +757,7 @@ class DiscreteSeries.SignFrame (J : outParam (Matrix n n ℂ)) (ε : outParam (n
   /-- The invertible matrix p of the frame. -/
   matrix : GL n ℂ
   /-- The matrix p satisfies pᴴJp = diag(ε). -/
-  gram_eq : matrix.1ᴴ * J * matrix.1 = signMatrix ε
+  gram_eq : matrix.valᴴ * J * matrix.val = signMatrix ε
 
 variable {ε : n → ℤˣ} {A : ℕ} {J : Matrix n n ℂ}
   {l : HCParam (n := n) ε} [p : SignFrame J ε] [IsHermitianInvolution J]
@@ -871,7 +871,7 @@ lemma formAdjoint_stringMap :
   -- The entry `(a, b)` is the entry of `T` at the dual indices `s - 2 - b` and `s - 1 - a`, times
   -- an entry of `J⁻¹` and one of `J'`; conjugation fixes `N` and `c`.
   obtain ⟨hN_ne, hN_star⟩ := Y.N_ne_zero_and_star_eq
-  have hc_star : star (Y.genericConst : E) = Y.genericConst := Y.genericConst.2.2
+  have hc_star : star (Y.genericConst : E) = Y.genericConst := Y.genericConst.property.2
   ext i k : 1
   simp only [Y.formAdjoint_apply Y', stringMap, Matrix.map_apply, star_toAdele, ← map_mul]
   -- It remains to compare the rational entries; only those between two string vectors are nonzero.

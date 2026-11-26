@@ -233,7 +233,7 @@ lemma eulerProd_one_eq_zeta_mul {s : ℝ} (hs : 1 < s) :
       ← h_above]
   -- The fibre over `p` is `{w, J}`.
   have h_fibre_prod : HasProd
-      (fun v : {v // below v = ⟨p, hp⟩} ↦ ((1 : ℂ) - v.1.q ^ (-s : ℂ))⁻¹)
+      (fun v : {v // below v = ⟨p, hp⟩} ↦ ((1 : ℂ) - v.val.q ^ (-s : ℂ))⁻¹)
       (∏ v ∈ {w, J}, ((1 : ℂ) - v.q ^ (-s : ℂ))⁻¹) :=
     (Equiv.subtypeEquivRight h_fibre).hasProd_iff.2 (Finset.hasProd {w, J} _)
   simpa [h_char, h_factor] using h_fibre_prod

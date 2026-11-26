@@ -138,7 +138,7 @@ lemma RealPlace.exists_norm_le_of_besselLength_le {T : ℝ} (hT : besselLength y
   -- The infimum gives `s` in `besselS` with `‖s * y‖ + 1 < T + 1`. Write `s⁻¹ = u * embedH w` with
   -- `u` in `besselU`; then `embedH w * s = u⁻¹`, and `embedH w` does not change the norm.
   obtain ⟨s, hs⟩ := exists_lt_of_ciInf_lt (hT.trans_lt (lt_add_one T))
-  obtain ⟨u, hu, w, hs_eq⟩ := exists_besselU_mul_toBesselH s⁻¹.2 isUnit_one
+  obtain ⟨u, hu, w, hs_eq⟩ := exists_besselU_mul_toBesselH s⁻¹.property isUnit_one
   have h_inv : embedH w * s.val = u⁻¹ := by simp_all [inv_eq_iff_eq_inv]
   refine ⟨u⁻¹, inv_mem hu, ?_⟩
   rw [← h_inv, mul_assoc, norm_embedH_mul]
@@ -606,7 +606,7 @@ def latticeMiddleGram : 𝔰.Form R :=
 /-- The matrix whose columns are the orthonormal basis vectors x_i of X₀ in the lattice basis (x_i
 for i ≠ k₀, v, z), where v = x_{k₀}/p̄ + z/(p p̄). -/
 def middleInclusionMatrix : Matrix (𝔰.κ ⊕ Unit) 𝔰.κ R :=
-  fromRows (scaleAt (star p.1) 𝔰.k₀) (of fun () j ↦ if j = 𝔰.k₀ then -p⁻¹ else 0)
+  fromRows (scaleAt (star p.val) 𝔰.k₀) (of fun () j ↦ if j = 𝔰.k₀ then -p⁻¹ else 0)
 
 /-- With the column of z appended, the inclusion matrix `middleInclusionMatrix` from the x_i to the
 lattice basis is block lower triangular: `scaleAt p̄ k₀` (diagonal, p̄ at k₀ and 1 elsewhere), `1`,
@@ -645,7 +645,7 @@ def besselLatticeBasis : GL 𝔰.BesselIndex R where
   val :=
     fromBlocks 1 0 0
       (fromBlocks
-        (fromBlocks (scaleAt (star p⁻¹.1) 𝔰.k₀) 0
+        (fromBlocks (scaleAt (star p⁻¹.val) 𝔰.k₀) 0
           (of fun _ j ↦ if j = 𝔰.k₀ then ↑(p * star p)⁻¹ else 0) 1)
         0 0 1)
   inv := fromBlocks 1 0 0 (fromBlocks (fromCols (middleInclusionMatrix 𝔰 p) (fromRows 0 1)) 0 0 1)
@@ -944,7 +944,7 @@ at p and at q. -/
 def HasLocalBounds (b : ℝ) (W : 𝔰.G₁ → EuclideanSpace ℂ I) (deg : ℝ)
     (J : ℕ → (ℕ → ℂˣ) → (ℕ → ℂˣ) → ℂ) : Prop :=
   -- (a) `J` is a system over `ℂ` with the character `wave` and these bounds
-  SieveSystem unitOrOne (fun z ↦ z⁻¹.1) 𝔰.ϱ J wave ((1 + b⁻¹ ^ 10) / deg)
+  SieveSystem unitOrOne (fun z ↦ z⁻¹.val) 𝔰.ϱ J wave ((1 + b⁻¹ ^ 10) / deg)
     (headWeight (b ^ (60 * 𝔰.n ^ 2)) (𝔰.n ^ 6))
     (fun ξ ↦ 𝔰.scaledVolumeRatio * b ^ (2000 * 𝔰.n ^ 9) * dampedPower (𝔰.k - 𝔰.n ^ 7) ‖ξ‖⁻¹) ∧
   -- (b) its top form is an inner product of values of `normalizedOrbitalIntegral σ`, if both last
@@ -1042,7 +1042,7 @@ structure BesselSystem (b : ℝ) (f : ℕ) where
   isCutPair : IsCutPair b f rep besselFn
   /-- Every matrix that commutes with all rep(h) is scalar. -/
   irreducible (M : Matrix Index Index ℂ) :
-    (∀ h : U (1 : Matrix 𝔰.κ 𝔰.κ ℂ), Commute M (rep h).1) → M ∈ range (scalar Index)
+    (∀ h : U (1 : Matrix 𝔰.κ 𝔰.κ ℂ), Commute M (rep h).val) → M ∈ range (scalar Index)
   /-- For every P ≥ b^5, W satisfies `New.RealPlace.HasSchurBound` with constants P and
   |Index|/deg. -/
   hasSchurBound : ∀ P ≥ b ^ 5, HasSchurBound (besselFn FullOrCut.full) rep P

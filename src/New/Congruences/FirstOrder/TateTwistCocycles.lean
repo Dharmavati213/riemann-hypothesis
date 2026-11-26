@@ -142,7 +142,7 @@ lemma apply_eq_zero_of_mem_obeying_crysRelations {e ν : ℕ}
     · exact ⟨hg.1, by simp [*, tateTwist, cyclotomicInv]⟩
   have h_dec' : s * g * s⁻¹ ∈ decompGroup Gal(Ω/E) (placeOver v) := by
     simpa only [hs] using conj_mem_decompGroup_smul (g := s) h_dec
-  have h_one' : tateTwist ℓ E O e (s * g * s⁻¹) = 1 := (MonoidHom.normal_ker _).1 g h_one s
+  have h_one' : tateTwist ℓ E O e (s * g * s⁻¹) = 1 := (MonoidHom.normal_ker _).conj_mem g h_one s
   have h_ine' (he : e = 0) : s * g * s⁻¹ ∈ inertiaGroup Gal(Ω/E) (placeOver v) := by
     rw [← hs]
     exact IsFrob.conj (h_ine he) s
@@ -266,7 +266,7 @@ lemma hasTriangleCost_tateTwist [Fintype J] [LinearOrder J] {ν : ℕ} {w : J �
     -- when `z + z ∘ conjGal` kills `τ i`, and likewise for `φ i`.
     obtain rfl : (ty j).val = e := (mem_filter.1 hj).2
     have h_even : z + z ∘ conjGal ∈ evenClasses O (Set.range w) ν (ty j).val :=
-      add_conjGal_mem_evenClasses (ty j).2.ne' (hZ_sel hz) hzL
+      add_conjGal_mem_evenClasses (ty j).property.ne' (hZ_sel hz) hzL
     simp only [h_inv hz] at h_prev ⊢
     have h_prev' : ∀ i < j, (z + z ∘ conjGal) (τ i) = 0 ∧
         (ty i = ty j → (z + z ∘ conjGal) (φ i) = 0) := by

@@ -154,25 +154,25 @@ lemma shortExact_boundaryFromCoker :
   refine shortExact_of_app (fun A ↦ ?_) (fun A x ↦ ?_) fun _ ↦ mk_surjective
   · -- Injectivity. Let `c` put a chosen witness (if there is one) in front of the others. It is a
     -- contraction, `c ∂ t + ∂ c t = t`, so `c` induces a left inverse of `boundaryFromCoker`.
-    let prepend (m : ℕ) (t : (witnessed R m).obj A) (h : ∃ l, (t.1.1, l) ∈ R.obj A) :
+    let prepend (m : ℕ) (t : (witnessed R m).obj A) (h : ∃ l, (t.val.1, l) ∈ R.obj A) :
         (witnessed R (m + 1)).obj A :=
-      ⟨(t.1.1, cons h.choose t.1.2), cases h.choose_spec t.2⟩
+      ⟨(t.val.1, cons h.choose t.val.2), cases h.choose_spec t.property⟩
     let c m := lift fun t : (witnessed R m).obj A ↦
-      ∑ᶠ h : ∃ l, (t.1.1, l) ∈ R.obj A, of (prepend m t h)
-    have hc (m : ℕ) (t : (witnessed R m).obj A) (h : ∃ l, (t.1.1, l) ∈ R.obj A) :
+      ∑ᶠ h : ∃ l, (t.val.1, l) ∈ R.obj A, of (prepend m t h)
+    have hc (m : ℕ) (t : (witnessed R m).obj A) (h : ∃ l, (t.val.1, l) ∈ R.obj A) :
         c m (of t) = of (prepend m t h) := by
       simp only [c, FreeAddCommGroup.lift_apply_of]
       exact finsum_eq_single _ h fun g hne ↦ (hne (Subsingleton.elim g h)).elim
     have h_contr (t : (witnessed R (m + 1)).obj A) :
         (boundary R (m + 1)).app A (-c _ (of t)) = c m ((boundary R m).app A (of t)) - of t := by
-      have h_wit : ∃ l, (t.1.1, l) ∈ R.obj A := ⟨_, t.2 0⟩
+      have h_wit : ∃ l, (t.val.1, l) ∈ R.obj A := ⟨_, t.property 0⟩
       have h_zero :
           (reindexWitness R (0 : Fin (m + 2)).succAbove).app A (prepend (m + 1) t h_wit) = t := by
         apply Subtype.ext
         refine Prod.ext rfl ?_
         funext i
-        change cons (α := fun _ ↦ L.obj A) h_wit.choose t.1.2
-          ((0 : Fin (m + 2)).succAbove i) = t.1.2 i
+        change cons (α := fun _ ↦ L.obj A) h_wit.choose t.val.2
+          ((0 : Fin (m + 2)).succAbove i) = t.val.2 i
         simp
       have h_succ (j : Fin (m + 1)) :
           (reindexWitness R j.succ.succAbove).app A (prepend (m + 1) t h_wit) =
@@ -180,8 +180,8 @@ lemma shortExact_boundaryFromCoker :
         apply Subtype.ext
         refine Prod.ext rfl ?_
         funext i
-        change cons (α := fun _ ↦ L.obj A) h_wit.choose t.1.2 (j.succ.succAbove i) =
-          cons (α := fun _ ↦ L.obj A) h_wit.choose (t.1.2 ∘ j.succAbove) i
+        change cons (α := fun _ ↦ L.obj A) h_wit.choose t.val.2 (j.succ.succAbove i) =
+          cons (α := fun _ ↦ L.obj A) h_wit.choose (t.val.2 ∘ j.succAbove) i
         refine Fin.cases ?_ (fun a ↦ ?_) i
         · simp
         · simp
@@ -343,8 +343,8 @@ lemma pull_cocycleClass (c : Comparison F F') (u : V' ⟶ c.functor ⋙ V) (v : 
     {y : abCoker (boundary R n) ⟶ F} {y' : abCoker (boundary R' n) ⟶ F'}
     (hy : ∀ (A : C') (t : (witnessed R' n).obj A),
       c.coeffHom.app A ((π (boundary R n) ≫ y).app (c.functor.obj A)
-          (of ⟨(u.app A t.1.1, fun i : Fin n ↦ v.app A (t.1.1, t.1.2 i)),
-            fun i : Fin n ↦ hR A _ (t.2 i)⟩)) =
+          (of ⟨(u.app A t.val.1, fun i : Fin n ↦ v.app A (t.val.1, t.val.2 i)),
+            fun i : Fin n ↦ hR A _ (t.property i)⟩)) =
         (π (boundary R' n) ≫ y').app A (of t))
     {α : relFreeAb U' ⟶ c.functor ⋙ relFreeAb U}
     (hα : ∀ (A : C') (x : V'.obj A),
@@ -353,7 +353,7 @@ lemma pull_cocycleClass (c : Comparison F F') (u : V' ⟶ c.functor ⋙ V) (v : 
   -- `u` and `v` map a point with witnesses for `R'` to a point with witnesses for `R`.
   let q (m : ℕ) : witnessed R' m ⟶ c.functor ⋙ witnessed R m :=
     { app A := ↾fun t ↦
-        ⟨(u.app A t.1.1, fun i ↦ v.app A (t.1.1, t.1.2 i)), fun i ↦ hR A _ (t.2 i)⟩
+        ⟨(u.app A t.val.1, fun i ↦ v.app A (t.val.1, t.val.2 i)), fun i ↦ hR A _ (t.property i)⟩
       naturality A B f := by
         ext
         congrm ⟨($(u.naturality f) _, fun i ↦ $(v.naturality f) (_, _)), _⟩ }

@@ -3,6 +3,7 @@ module
 public import Lib.CM.FormalGroup.IntegralParameter
 import Lib.General.Algebra.AbsIntegrallyClosed
 import TauCeti.RingTheory.PowerSeries.Log
+import TauCeti.RingTheory.PowerSeries.Rescale
 
 /-!
 # Integrality of exponentials, logarithms and roots of power series

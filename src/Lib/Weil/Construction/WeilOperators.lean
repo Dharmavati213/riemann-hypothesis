@@ -845,7 +845,7 @@ noncomputable def transport (hβ : ∀ x y : W', σ (H.β (φ x) (φ y)) = H'.β
           -- Apply `σ` to the reproducing formula of `v` at `φ x` and substitute `φ`.
           fun x ↦ by
             simpa [σL, map_integral_and_map_vacuum H H' hφ, ← map_sub, hβ] using
-              congrArg σ (v.2.2 (φ x))⟩
+              congrArg σ (v.property.2 (φ x))⟩
       map_add' := by aesop
       map_smul' := by aesop }
     1 fun v ↦ by

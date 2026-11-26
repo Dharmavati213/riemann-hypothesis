@@ -690,7 +690,6 @@ lemma fittingIdeal.exists_addVal_le_relLength [Finite n] (hp : p ≠ 0)
       (∀ ⦃v : n → O⦄, (∀ Ψ : (n → O) →ₗ[O] Unit → QuotSpan p, Ψ ∘ z ∈ V → Ψ v = 0) → Φ v ∈ K) ∧
       -- (c)
       ∀ d ∈ fittingIdeal K, c • d ∈ fittingIdeal N := by
-  have := Fintype.ofFinite n
   -- Noetherian induction on `N`. If `K = N` fails (b), enlarge `N` by one vector `x` with
   -- `ϖ • x ∈ N`, `ϖ` a uniformiser: `ϖ` takes the new Fitting ideal into the old one, and the
   -- length of `formsMod` modulo `V` drops.

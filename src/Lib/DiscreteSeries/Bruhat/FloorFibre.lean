@@ -95,7 +95,7 @@ lemma involutive_oppositeIndex : (oppositeIndex (𝔰 := 𝔰)).Involutive :=
 /-- The image of the indices with property `p` under the involution `oppositeIndex`, which
 exchanges `e_a` with `e*_a`, consists of the indices whose opposite has property `p`. -/
 lemma range_oppositeIndex_val (p : 𝔰.BesselIndex → Prop) :
-    (Set.range fun i : Subtype p ↦ oppositeIndex i.1) =
+    (Set.range fun i : Subtype p ↦ oppositeIndex i.val) =
       {i : 𝔰.BesselIndex | p (oppositeIndex i)} :=
   (Set.range_comp oppositeIndex Subtype.val).trans <| by
     rw [Subtype.range_coe_subtype, involutive_oppositeIndex.image_eq_preimage_symm]
@@ -221,7 +221,7 @@ lemma leFibreMeasure_frameVector (b : Fin 𝔰.n) :
     LeFibreMeasure volume volume
       (fun y : 𝔰.BesselIndex → ℂ ↦
         (fun i : {i : 𝔰.BesselIndex // floorOf i < b} ↦ (𝔰.J₁ *ᵥ y) i, (star y ⬝ᵥ 𝔰.J₁ *ᵥ y).re))
-      (fun i : {i : 𝔰.BesselIndex // floorOf i < b} ↦ 𝔰.J₁ i.1 (𝔰.besselFrame b),
+      (fun i : {i : 𝔰.BesselIndex // floorOf i < b} ↦ 𝔰.J₁ i.val (𝔰.besselFrame b),
         (𝔰.J₁ (𝔰.besselFrame b) (𝔰.besselFrame b)).re)
       ((2 : ENNReal)⁻¹ • (complexBasis 𝔰).floorQuadricMeasure b) := by
   have h_low (i : {i : 𝔰.BesselIndex // floorOf i < b}) : floorOf i.1 < 𝔰.ϱ := i.2.trans_le b.is_le
@@ -243,10 +243,10 @@ lemma leFibreMeasure_frameVector (b : Fin 𝔰.n) :
     exact h_coords.congr
       (.of_forall fun y ↦ funext fun i ↦ (splitGram_mulVec_apply (e := y) _ (h_low i)).symm)
   have h_orth :
-      (fun i : {i : 𝔰.BesselIndex // floorOf i < b} ↦ 𝔰.J₁ i.1 (𝔰.besselFrame b)) = 0 := by
+      (fun i : {i : 𝔰.BesselIndex // floorOf i < b} ↦ 𝔰.J₁ i.val (𝔰.besselFrame b)) = 0 := by
     funext i
-    have h_floor : floorOf (oppositeIndex i.1) < b := by simp [floorOf_oppositeIndex, i.2]
-    have h_ne : oppositeIndex i.1 ≠ 𝔰.besselFrame b := by grind
+    have h_floor : floorOf (oppositeIndex i.val) < b := by simp [floorOf_oppositeIndex, i.property]
+    have h_ne : oppositeIndex i.val ≠ 𝔰.besselFrame b := by grind
     simp [h_low, h_ne]
   have h_level : Place.skewUnitMul (𝔰.J₁ (𝔰.besselFrame b) (𝔰.besselFrame b)) =
       skewOfLevel (𝔰.J₁ (𝔰.besselFrame b) (𝔰.besselFrame b)).re :=
@@ -284,19 +284,19 @@ lemma leFibreMeasure_dualPoint (a : Fin 𝔰.ϱ) :
     LeFibreMeasure volume volume
       (fun (y : 𝔰.BesselIndex → ℂ) (i : {i : 𝔰.BesselIndex // floorOf i < a ∨ i = .inl a}) ↦
         (𝔰.J₁ *ᵥ y) i)
-      (fun i : {i : 𝔰.BesselIndex // floorOf i < a ∨ i = .inl a} ↦ 𝔰.J₁ i.1 (eStar a))
+      (fun i : {i : 𝔰.BesselIndex // floorOf i < a ∨ i = .inl a} ↦ 𝔰.J₁ i.val (eStar a))
       (volume.map (dualPoint a)) := by
   let I : Type := {i : 𝔰.BesselIndex // floorOf i < a ∨ i = .inl a}
   let S : Type := {i : 𝔰.BesselIndex // a + 1 ≤ floorOf i}
-  let f (i : I) : 𝔰.BesselIndex := oppositeIndex i.1
+  let f (i : I) : 𝔰.BesselIndex := oppositeIndex i.val
   let g : Unit ⊕ S → 𝔰.BesselIndex := Sum.elim (fun _ ↦ .inl a) Subtype.val
-  let c (i : I) : ℂ := 𝔰.J₁ i.1 (eStar a)
-  have h_low (i : I) : floorOf i.1 < 𝔰.ϱ := by
-    rcases i.2 with h | h
-    · exact h.trans a.2
+  let c (i : I) : ℂ := 𝔰.J₁ i.val (eStar a)
+  have h_low (i : I) : floorOf i.val < 𝔰.ϱ := by
+    rcases i.property with h | h
+    · exact h.trans a.isLt
     · simp [h, floorOf]
   have hf : f.Injective := involutive_oppositeIndex.injective.comp Subtype.val_injective
-  have h_ne (i : S) : (.inl a : 𝔰.BesselIndex) ≠ i.1 := fun h ↦ by simpa [← h] using i.2
+  have h_ne (i : S) : (.inl a : 𝔰.BesselIndex) ≠ i.val := fun h ↦ by simpa [← h] using i.property
   have hg : g.Injective :=
     (Function.injective_of_subsingleton _).sumElim Subtype.val_injective fun _ ↦ h_ne
   have h_compl : Set.range g = (Set.range f)ᶜ := by
@@ -327,7 +327,7 @@ lemma leFibreMeasure_dualPoint (a : Fin 𝔰.ϱ) :
 
 /-- The real part of a skew element of `ℂ` is zero. -/
 lemma re_skewAdjoint_complex (β : skewAdjoint ℂ) : (β : ℂ).re = 0 := by
-  have h_neg : star (β : ℂ) = -β := skewAdjoint.mem_iff.1 β.2
+  have h_neg : star (β : ℂ) = -β := skewAdjoint.mem_iff.1 β.property
   have h_re_neg : (β : ℂ).re = -(β : ℂ).re := congrArg Complex.re h_neg
   exact self_eq_neg.1 h_re_neg
 
@@ -382,7 +382,7 @@ lemma leFibreMeasure_heisenbergMeasure (a : Fin 𝔰.ϱ) :
       simp [q, re_skewAdjoint_complex, div_eq_inv_mul, -mulVec_mulVec]
     rw [re_form_dualPoint, h_re]
     ring
-  rw [Place.heisenbergMeasure, dite_eq_left a.2, Measure.map_map (by fun_prop) (by fun_prop),
+  rw [Place.heisenbergMeasure, dite_eq_left a.isLt, Measure.map_map (by fun_prop) (by fun_prop),
     ← h_zero]
   simp (disch := fun_prop) only [← Measure.map_smul]
   rw [← withDensity_const]
@@ -412,7 +412,7 @@ lemma leFibreMeasure_dualVector (a : Fin 𝔰.ϱ) :
       (fun y : 𝔰.BesselIndex → ℂ ↦
         (fun i : {i : 𝔰.BesselIndex // floorOf i < a ∨ i = .inl a} ↦ (𝔰.J₁ *ᵥ y) i,
           (star y ⬝ᵥ 𝔰.J₁ *ᵥ y).re))
-      (fun i : {i : 𝔰.BesselIndex // floorOf i < a ∨ i = .inl a} ↦ 𝔰.J₁ i.1 (eStar a), 0)
+      (fun i : {i : 𝔰.BesselIndex // floorOf i < a ∨ i = .inl a} ↦ 𝔰.J₁ i.val (eStar a), 0)
       ((2 : ENNReal)⁻¹ • (complexPlace.heisenbergMeasure a).map
         fun u : 𝔰.G₁ ↦ (u : Matrix 𝔰.BesselIndex 𝔰.BesselIndex ℂ) *ᵥ Pi.single (eStar a) 1) :=
   (leFibreMeasure_dualPoint a).trans (leFibreMeasure_heisenbergMeasure a) (by fun_prop)

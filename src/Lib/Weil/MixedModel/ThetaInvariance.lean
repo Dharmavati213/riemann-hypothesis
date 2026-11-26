@@ -154,7 +154,7 @@ lemma exists_hyperbolic_levi_multiplier_nonneg :
     (hyperbolicSpace E p).toRatCoords.symm
       ⟨blockGL (star a⁻¹, a), by simp [mem_unitaryGroupOf_iff, fromBlocks_conjTranspose,
       fromBlocks_map, star_eq_conjTranspose, fromBlocks_multiply, ← conjTranspose_mul]⟩
-  have h_mat : g₁.adeleMatrix = (hyperbolicSpace E p).x⁻¹.1 * fromBlocks a⁻¹.1ᴴ 0 0 a.1 *
+  have h_mat : g₁.adeleMatrix = (hyperbolicSpace E p).x⁻¹.val * fromBlocks a⁻¹.valᴴ 0 0 a.val *
     (hyperbolicSpace E p).x := rfl
   refine ⟨g₁, ?_, h_mat⟩
   -- Both `weilMultiplier` and `υ` are products of factors at the infinite places and a finite
@@ -166,7 +166,7 @@ lemma exists_hyperbolic_levi_multiplier_nonneg :
     -- `x⁻¹ diag(a⁻¹ᴴ, a) x` is `(a⁻¹ᴴ + a) / 2`. Its adjoint times `a` is `(1 + aᴴ a) / 2`, whose
     -- determinant is nonnegative.
     have hx : (hyperbolicSpace E p).x.1.map (evalInf w) = (√2 : ℂ)⁻¹ • fromBlocks 1 (-1) 1 1 := rfl
-    have hx_inv : (hyperbolicSpace E p).x⁻¹.1.map (evalInf w) = (√2 : ℂ)⁻¹ • fromBlocks 1 1 (-1)
+    have hx_inv : (hyperbolicSpace E p).x⁻¹.val.map (evalInf w) = (√2 : ℂ)⁻¹ • fromBlocks 1 1 (-1)
       1 := rfl
     have h_lower : (g₁.adeleMatrix.map (evalInf w)).toBlocks₂₂ =
         (2 : ℂ)⁻¹ • ((a⁻¹.val.map (evalInf w))ᴴ + a.val.map (evalInf w)) := by

@@ -1,6 +1,7 @@
 module
 
 public import Lib.Shimura.ThetaModuli.PELThetaTori
+import TauCeti.RingTheory.MvPolynomial.Homogeneous
 
 /-!
 # Riemann's theta relation and the reduction of theta functions at a valuation
@@ -554,7 +555,7 @@ private lemma isSmallForm_iff_forall_eval_map_eq_zero [Field k] {φ : v.valuatio
         ∃ i : D.dualTorsion, v (p b i) = 1 := hp b
     refine ⟨s ^ D.paddedNorm ^ j, fun g ↦ ?_, ⟨_, isHomogeneous_X_pow i _⟩, by simp [hi_unit]⟩
     simpa [ev, eval_eq, aeval_def, eval₂_eq, hs_eq, div_eq_inv_mul] using
-      eval₂_mul_of_isHomogeneous g.property (algebraMap ..) s⁻¹ _
+      g.property.eval₂_const_mul (algebraMap ..) _ s⁻¹
   have h_ball : ev.range = (h_good.pow j).normBall (x.thetaCoord c ^ D.paddedNorm ^ j) :=
     x.range_aeval_thetaCoord_eq_normBall h_good c j
   change (D.paddedNorm ^ j • x.automorphyForm).thetaNorm v (ev f) < x.automorphyForm.thetaNorm v
@@ -643,7 +644,7 @@ lemma isCutOutAt_reduction [Field k] {φ : v.valuationSubring →+* k} (hφ : Su
     (D.paddedNorm ^ j)) :
       f.val.map φ ∈ J ↔ x.IsSmallForm c j f := by
     simp +contextual [J, x.isSmallForm_iff_forall_eval_map_eq_zero_of_ne_zero hφ h_good hq_coords,
-      eval₂_mul_of_isHomogeneous f.property, div_eq_inv_mul]
+      f.property.eval₂_const_mul, div_eq_inv_mul]
   have h_lift (d : ℕ) : Surjective fun f : homogeneousSubmodule D.dualTorsion v.valuationSubring d ↦
       (⟨f.val.map φ, f.property.map φ⟩ : homogeneousSubmodule D.dualTorsion k d) :=
     surjective_map_homogeneous hφ d
@@ -700,7 +701,7 @@ lemma isCutOutAt_reduction [Field k] {φ : v.valuationSubring →+* k} (hφ : Su
     -- chart `chart b`.
     have h_unit (b : D.levelTorsion) : φ (p b (chart b)) ≠ 0 :=
       ((hN_coords b (chart b)).left.mp (h_chart b)).ne_zero
-    simp [hN_coords _ _, h_unit, eval₂_mul_of_isHomogeneous f.property, comp_def, mul_comm (φ _)]
+    simp [hN_coords _ _, h_unit, f.property.eval₂_const_mul, comp_def, mul_comm (φ _)]
 
 /-- The family of coefficient pairs in `𝓞 E` consisting of `(1, 0)` twice (on the first copy of
 `Bool`), `(c, 1)` and `(1, −c̄)` (at `true` and `false` of the second copy), and `(a l, 0)` for

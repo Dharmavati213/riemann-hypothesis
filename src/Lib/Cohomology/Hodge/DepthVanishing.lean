@@ -65,8 +65,8 @@ variable {A k ι : Type} [CommRing A] [CommRing k] {c : HodgeTest k} {n d : ℕ}
 /-- For a pair `c = (A, M)` and a family `(f_i)` in `A`, the subfunctor of h_c of the morphisms
 `y : c ⟶ X` whose ring map `A → X.baseAlg` sends some `f_i` to a unit. -/
 def someUnitLocus (f : ι → c.baseAlg) : Subfunctor (reprBy c) where
-  obj _ := {y | ∃ i : ι, IsUnit (y.1.1 (f i))}
-  map a _ := Exists.imp fun _ ↦ IsUnit.map a.1.1
+  obj _ := {y | ∃ i : ι, IsUnit (y.down.1 (f i))}
+  map a _ := Exists.imp fun _ ↦ IsUnit.map a.1.hom'
 
 /-- Depth vanishing. Let `H n` assign to each `A`-module an `A`-module such that every element of
 every `H n M` is killed by a power of each element of `I`, and such that an `M`-regular `r` is
@@ -98,24 +98,24 @@ private abbrev flatAlgebras (R : Type) [CommRing R] : ObjectProperty (CommAlg R)
 /-- For a flat `R`-algebra `B` and `b ∈ B`, the maps from `B` to flat `R`-algebras that send `b`
 to a unit. -/
 private def flatUnitLocus {R : Type} [CommRing R] (B : (flatAlgebras R).FullSubcategory)
-    (b : B.1) : Subfunctor (reprBy B) where
-  obj _ := {x | IsUnit (x.1.1 b)}
-  map a _ := .map a.1.hom
+    (b : B.obj) : Subfunctor (reprBy B) where
+  obj _ := {x | IsUnit (x.down.hom b)}
+  map a _ := .map a.hom.hom
 
 /-- The localization `B[1/b]` of a flat `R`-algebra `B`, again a flat `R`-algebra. -/
-private abbrev flatAway {R : Type} [CommRing R] (B : (flatAlgebras R).FullSubcategory) (b : B.1) :
+private abbrev flatAway {R : Type} [CommRing R] (B : (flatAlgebras R).FullSubcategory) (b : B.obj) :
     (flatAlgebras R).FullSubcategory :=
-  ⟨.of _ (Away b), B.2.trans ..⟩
+  ⟨.of _ (Away b), B.property.trans ..⟩
 
 /-- The localization map `B → B[1/b]`, as a member of `flatUnitLocus B b`. -/
 private abbrev flatToAway {R : Type} [CommRing R] (B : (flatAlgebras R).FullSubcategory) (b : B.1) :
     (flatUnitLocus B b).toFunctor.obj (flatAway B b) :=
-  ⟨⟨⟨B.1.toAway b⟩⟩, algebraMap_isUnit b⟩
+  ⟨⟨⟨B.obj.toAway b⟩⟩, algebraMap_isUnit b⟩
 
 /-- `B[1/b]` represents the maps from a flat `R`-algebra `B` that send `b` to a unit: for every
 flat `D`, composing with `B → B[1/b]` maps `Hom(B[1/b], D)` bijectively onto them. -/
 private lemma bijective_pointMap_flatToAway {R : Type} [CommRing R]
-    (B : (flatAlgebras R).FullSubcategory) (b : B.1) (D : (flatAlgebras R).FullSubcategory) :
+    (B : (flatAlgebras R).FullSubcategory) (b : B.obj) (D : (flatAlgebras R).FullSubcategory) :
     Bijective ((pointMap (flatToAway B b)).app D) := by
   refine pointMap_bijective_of_existsUnique _ _ (fun D' y hy ↦ ?_) D
   -- the lift of `y` to `B[1/b]`, unique by the universal property of the localization
@@ -129,8 +129,8 @@ private lemma bijective_pointMap_flatToAway {R : Type} [CommRing R]
 `t ∈ S` whose ring map `s t` sends `g` to a unit. -/
 private def commaUnitLocus (g : c.baseAlg) :
     Subfunctor (Comma.fst (𝟭 Type) (coyoneda.obj ⟨c⟩) ⋙ uliftFunctor) where
-  obj X := {t | IsUnit ((X.hom t.1).1 g)}
-  map a _ h := congr(IsUnit (($a.w _).1 g)).mpr (h.map a.right.1.1)
+  obj X := {t | IsUnit ((X.hom t.down).1 g)}
+  map a _ h := congr(IsUnit (($a.w _).1 g)).mpr (h.map a.right.1.hom')
 
 /-- Let `Q` be a closed class (it holds for zero functors and has two-out-of-three along short
 exact sequences whose first term lies in `Q`) of functors on the comma category of pairs `(S, s)`,
@@ -180,12 +180,12 @@ lemma DepthVanishing.subsingleton_of_isWeaklyRegular {f : ι → c.baseAlg} (l :
         (piAbFunctor fun _ ↦ moduleCoeff (asModules P.ι ⋙ tensorWith c.baseAlg _)) :=
     ⟨P.ι ⋙ restrictAlg k _ ⋙ HodgeTest.withIndex c.Index,
       fun B ↦ (AddEquiv.ulift.trans
-        ((Pi.basisFun B.1 c.Index).ExteriorAlgebra.equivFun.toAddEquiv.trans
+        ((Pi.basisFun B.obj c.Index).ExteriorAlgebra.equivFun.toAddEquiv.trans
           (.piCongrRight fun _ ↦ (TensorProduct.lid c.baseAlg _).symm.toAddEquiv.trans
             (.symm .ulift)))).toAddCommGrpIso.hom,
       fun B D a ↦ by
         ext
-        congrm (⟨1 ⊗ₜ $(HodgeTest.repr_withIndex_map a.1 _ ·)⟩)⟩
+        congrm (⟨1 ⊗ₜ $(HodgeTest.repr_withIndex_map a.hom _ ·)⟩)⟩
   let ψ' : P.FullSubcategory ⥤ Comma (𝟭 Type) (coyoneda.obj ⟨c⟩) :=
     L γ.functor ⟨.of _ c.baseAlg, .self⟩ ⟨ofHom ⟨.id _, by tauto⟩, .id⟩
   let η : ψ' ⟶ γ.functor ⋙ ψ := .mk fun B ↦ .mk (ψ'.obj B).hom (𝟙 _)
@@ -241,7 +241,7 @@ lemma DepthVanishing.subsingleton_of_isWeaklyRegular {f : ι → c.baseAlg} (l :
       ((γ.isBijective_congr (pointMap_comp _ (whiskerRight η (commaUnitLocus g).toFunctor))
           (.of_bijective
             (pointMap_bijective_of_existsUnique ((commaUnitLocus g).whisker ψ) _
-              (HodgeTest.existsUnique_lift_away _ g isLocalization.1)))
+              (HodgeTest.existsUnique_lift_away _ g isLocalization.toIsLocalizationMap)))
           (.of_bijective (bijective_pointMap_flatToAway ⟨.of .., .self⟩ g))).2
         -- for representable functors only the coefficients at the representing objects count
         (γ.isBijective_of_repr (u := pointMap ⟨𝟙 _⟩) ⟨𝟙 _⟩
@@ -323,7 +323,7 @@ lemma hasZariskiDescent_hodgeCoeff :
   -- preimage of `U`.
   have h_dense : IsCohomDense hodgeCoeff (someUnitLocus fun i : s ↦ X.baseProj i) := by
     refine fun _ g ↦ isCohomEquiv_someUnitLocus_of_span_eq_top ?_
-    rw [← map_top (X.baseProj ≫ g.1.1).1, ← hs_span, Ideal.map_span, Set.image_eq_range]
+    rw [← map_top (X.baseProj ≫ g.down.1).hom', ← hs_span, Ideal.map_span, Set.image_eq_range]
     rfl
   exact (h_dense.mono fun X' g ⟨i, h_unit⟩ ↦
     hs_sub i.prop _ _ (isUnit_iff_isUnit_fst.2 h_unit)).isCohomEquiv

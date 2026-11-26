@@ -362,7 +362,7 @@ lemma finite_Z1 [IsLocalGalois Γ k A] ⦃R : Type⦄ [CommRing R] (M : Discrete
   obtain ⟨⟨U, hU_normal⟩, hU⟩ := exists_openNormalSubgroup_apply_eq M.cartierDual.continuous
   -- On `U` every `f : M →+ DiscreteUnits Ω` is equivariant (`using!`: the action on
   -- `M.cartierDual` in `hU` gives this equation only after unfolding).
-  have h_equiv (f : M →+ DiscreteUnits Ω) (u : U.1) (x : M) :
+  have h_equiv (f : M →+ DiscreteUnits Ω) (u : U.toSubgroup) (x : M) :
       f (M.ρ u x) = unitsRep u.val (f x) := by
     simpa using! congr($(hU _ u.property f) (M.ρ u x)).symm
   -- Over the fixed field of `U` the cocycles killed by `#M` form a finite group.
@@ -372,12 +372,12 @@ lemma finite_Z1 [IsLocalGalois Γ k A] ⦃R : Type⦄ [CommRing R] (M : Discrete
   -- Restrict to `U` and compose with each character of `M`. The resulting cocycles lie in
   -- the finite Kummer kernel, so there is no need to enumerate that kernel.
   let res (z : Z1 M.ρ) (f : M →+ DiscreteUnits Ω) :
-      (Nat.card M : Module.End ℤ (Z1 (unitsModule U.1).ρ)).ker :=
+      (Nat.card M : Module.End ℤ (Z1 (unitsModule U.toSubgroup).ρ)).ker :=
     ⟨⟨fun u ↦ f (z.val u),
       continuous_of_discreteTopology.comp (z.property.left.comp continuous_subtypeVal),
       fun g g' ↦ by simpa [hz_mul z] using! h_equiv f g _⟩,
       by simp [Subtype.ext_iff, funext_iff, ← map_nsmul]⟩
-  refine .of_injective (fun z ↦ (fun q : Γ ⧸ U.1 ↦ z.val q.out, res z)) fun y z hyz ↦ ?_
+  refine .of_injective (fun z ↦ (fun q : Γ ⧸ U.toSubgroup ↦ z.val q.out, res z)) fun y z hyz ↦ ?_
   have h_out_eq : (fun q : Γ ⧸ U.1 ↦ y.val q.out) = fun q ↦ z.val q.out := congrArg Prod.fst hyz
   have h_res_eq : res y = res z := congrArg Prod.snd hyz
   ext g

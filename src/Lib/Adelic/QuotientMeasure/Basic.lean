@@ -701,7 +701,7 @@ the same value as at `x`. -/
 lemma IsContPeriodic.apply_out_mk (h : IsContPeriodic B₀ F) (x : B) :
     F (mk x : B ⧸ B₀).out = F x := by
   obtain ⟨γ, hγ⟩ : ∃ γ : B₀, (mk x : B ⧸ B₀).out = x + γ := mk_out_eq_add B₀ x
-  rw [hγ, add_comm, h.2 γ γ.2 x]
+  rw [hγ, add_comm, h.2 γ γ.property x]
 
 omit [IsTopologicalAddGroup B] [CompactSpace (B ⧸ B₀)] in
 /-- A continuous `B₀`-periodic function, read at coset representatives, is continuous on

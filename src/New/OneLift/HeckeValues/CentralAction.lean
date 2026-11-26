@@ -181,9 +181,9 @@ lemma LValueData.normalizedCentralOp_inv_mem_integralForms {ℓ : ℕ} [Fact ℓ
     -- The entries of `k` and `k⁻¹` are `0` or the entry of `z⁻¹`, resp. `z`.
     simp only [mem_localLevel, mem_intGL, ← map_inv, k] at hz ⊢
     simp_all [scalarFin, U.det, diagonal, apply_ite, Gf.atPlace, -map_inv]
-  have h_norm : ‖ιₚ (Y.descentPair.charV.1 (detFin 1 z⁻¹) : ℂ)‖ = 1 :=
+  have h_norm : ‖ιₚ (Y.descentPair.charV.val (detFin 1 z⁻¹) : ℂ)‖ = 1 :=
     Y.charV_hasWeight.norm_apply_detFin_eq_one (hg := inv_mem hz)
-  have h_value : Y.normalizedCentralOp z⁻¹ Ξ g = (Y.descentPair.charV.1 (detFin 1 z⁻¹) : ℂ) • Ξ
+  have h_value : Y.normalizedCentralOp z⁻¹ Ξ g = (Y.descentPair.charV.val (detFin 1 z⁻¹) : ℂ) • Ξ
     (g * k) := rfl
   calc weylGauge Y.descentPair.columnCount Y.descentPair.detExp g (Y.normalizedCentralOp z⁻¹ Ξ g)
       = weylGauge Y.descentPair.columnCount Y.descentPair.detExp g (Ξ (g * k)) := by

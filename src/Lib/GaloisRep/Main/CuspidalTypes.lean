@@ -418,7 +418,7 @@ lemma New.GaloisRep.jump_eq_zero_of_jump_eq_zero_of_trace_eq_one {ℓ : ℕ} [Th
     have term_eq (i : Fin b) (c : Fin (d i)) (x : Fin (∑ i, d i)) :
         I i c x *ᵥ f' (piMatrixUnit i c) *ᵥ Pi.single x 1 =
           f' (piMatrixUnit i) x x • f (piMatrixUnit i c c) *ᵥ v := by
-      simp [I, -mulVec_single, intertwiner_mul_piMatrixUnit, mul_vecMulVec, vecMulVec_mul,
+      simp [I, -mulVec_single, intertwiner_mul_map_piMatrixUnit, mul_vecMulVec, vecMulVec_mul,
         vecMulVec_mulVec, ← map_mul, ← Pi.single_mul]
     simp [-mulVec_single, term_eq, ← Finset.sum_smul,
       fun i ↦ show ∑ x, f' (piMatrixUnit i) x x = 1 from f'_trace i, ← sum_mulVec, ← map_sum,

@@ -376,7 +376,7 @@ theorem LeGramFibre.insert {p q : ι → Prop} [DecidablePred p] [DecidablePred 
     funext fun i ↦ by simp [E, inclMatrix, mulVec, dotProduct, Matrix.one_apply]
   rw [← h_join]
   refine h_first.append_vector _ ?_ (h_fix.mono fun g hg ↦
-    (mul_inclMatrix g.val.val _).trans (Matrix.ext fun i k ↦ hg i k k.2))
+    (mul_inclMatrix g.val.val _).trans (Matrix.ext fun i k ↦ hg i k k.property))
   -- `mulVec_mulVec` would merge `Eᴴ` and `J` before `h_products` applies.
   simpa [h_products, -mulVec_mulVec] using h_next
 

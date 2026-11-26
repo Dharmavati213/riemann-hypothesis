@@ -154,7 +154,7 @@ structure AnalyticFamily (D : PEL E) where
   /-- The parameter domain, an open subset of ℂⁿ⁻¹. -/
   domain : TopologicalSpace.Opens (BallBase D.Index)
   /-- The domain is non-empty and connected. -/
-  isConnected : IsConnected domain.1
+  isConnected : IsConnected domain.carrier
   /-- The adelic frame g, the same for all members of the family. -/
   frame : GL D.Index (𝔸f E)
   /-- The reflection J_b attached to the parameter b. -/

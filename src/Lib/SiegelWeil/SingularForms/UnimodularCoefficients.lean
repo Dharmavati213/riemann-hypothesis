@@ -243,7 +243,7 @@ lemma snd_invDifferentIdele :
 /-- Siegel's T[γ] = γᴴTγ for a matrix T over E, read in the adeles, and an adelic matrix γ, divided
 by the idele δ = ȷκκ̄ (`New.Exchange.invDifferentIdele`). -/
 def siegelBracket (T : Matrix p p E) (γ : Matrix p p (𝔸 E)) : Matrix p p (𝔸 E) :=
-  (invDifferentIdele E)⁻¹.1 • (γᴴ * T.map toAdele * γ)
+  (invDifferentIdele E)⁻¹.val • (γᴴ * T.map toAdele * γ)
 
 lemma star_invDifferentIdele_inv :
     star (invDifferentIdele E)⁻¹.val = -(invDifferentIdele E)⁻¹.val := by

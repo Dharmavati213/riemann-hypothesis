@@ -171,7 +171,7 @@ def _root_.CategoryTheory.Functor.mulPairing (Φ : C ⥤ AlgCat k) :
     abTensor F F ⟶ F :=
   { app c := AddCommGrpCat.ofHom (LinearMap.mul' ℤ (ULift (Φ c))).toAddMonoidHom
     naturality _ _ f :=
-      addCommGrp_tensor_hom_ext fun _ _ ↦ congrArg ULift.up (map_mul (Φ.map f).1 ..).symm }
+      addCommGrp_tensor_hom_ext fun _ _ ↦ congrArg ULift.up (map_mul (Φ.map f).hom' ..).symm }
 
 /-- For a test (A, A^ι), the basis of the exterior algebra ⋀_A A^ι over A formed by the wedge
 products of standard basis vectors. -/

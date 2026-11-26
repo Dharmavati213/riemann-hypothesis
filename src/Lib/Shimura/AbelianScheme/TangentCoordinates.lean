@@ -138,22 +138,17 @@ variable {S X : Scheme} {A : Over S} {ι O : Type} {B C C' D : CommRingCat} {V :
 
 /-! ### Existence of charts; the signature condition -/
 
-/-- The two conditions of `New.IsSqZeroExt` as one conjunction. -/
-lemma IsSqZeroExt.surjective_and_mul_eq_zero (hψ : IsSqZeroExt ψ) :
-    (⇑ψ).Surjective ∧ ∀ a b : C, ψ a = 0 → ψ b = 0 → a * b = 0 :=
-  ⟨hψ.coe_surjective, fun _ _ ↦ hψ.mul_eq_zero⟩
-
 /-- The kernel of a square-zero extension ψ is a nilpotent ideal: its square is zero. -/
 lemma IsSqZeroExt.isNilpotent_ker (hψ : IsSqZeroExt ψ) : IsNilpotent (RingHom.ker ψ.hom) := by
   refine ⟨2, ?_⟩
-  simp_all [hψ.surjective_and_mul_eq_zero, ← le_bot_iff, Ideal.mul_le, sq]
+  simp_all [hψ.mul_eq_zero, ← le_bot_iff, Ideal.mul_le, sq]
 
 /-- For a square-zero extension ψ : C → C', the map Spec C' → Spec C is surjective. -/
 lemma IsSqZeroExt.surjective_specMap (hψ : IsSqZeroExt ψ) : Surjective (Spec.map ψ) := by
   -- A surjection with nil kernel induces a homeomorphism of spectra.
   have h_pow_mem (x : C') : ∃ n > 0, x ^ n ∈ ψ.hom.range := ⟨1, by simp [hψ.coe_surjective x]⟩
   have h_ker_le (a : C) (ha : a ∈ RingHom.ker ψ.hom) : a ∈ nilradical C :=
-    ⟨2, by simp_all [hψ.surjective_and_mul_eq_zero, sq]⟩
+    ⟨2, by simp_all [hψ.mul_eq_zero, sq]⟩
   have h_homeo : IsHomeomorph (PrimeSpectrum.comap ψ.hom) :=
     PrimeSpectrum.isHomeomorph_comap ψ.hom h_pow_mem h_ker_le
   exact ⟨h_homeo.surjective⟩

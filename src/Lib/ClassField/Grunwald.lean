@@ -698,7 +698,7 @@ lemma New.nonempty_weilData_of_not_dvd_differentIdeal {E L : Type} [Field E] [CM
       multiplicity_differentIdeal_eq_ramificationIdx'_mul_of_not_dvd u (h_unram u hu_fix)
     refine ⟨-(w.asIdeal.ramificationIdx' u.asIdeal * (v (α.val w)).log), ?_⟩
     rw [hs_ord, h_tower, ← w.valuation_liesOver L, log_pow, hj,
-      ← w.1.ramificationIdx'_eq_ramificationIdx u.1 w.ne_bot]
+      ← w.asIdeal.ramificationIdx'_eq_ramificationIdx u.asIdeal w.ne_bot]
     push_cast
     ring
   -- an auxiliary order decides which of `u`, `star u` gets the larger half

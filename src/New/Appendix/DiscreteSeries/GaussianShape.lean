@@ -172,7 +172,7 @@ lemma exists_weightMinors_conj_reducedExp_eq_cexp (hl : Function.Injective l)
         (‖⁅coordProj (t ≤ w ·), Z⁆‖ ^ 2 + ‖⁅coordProj (t ≤ w ·), (k : Matrix n n ℂ)⁆‖ ^ 2) :=
     exists_principalMinor_conj_reducedExp_eq_cexp hl
       (fun i j hi hj ↦ hw i j ((not_le.1 hj).trans_le hi)) hZ hδ
-      hZ_le hk (mem_maxCompactU.1 k.2)
+      hZ_le hk (mem_maxCompactU.1 k.property)
   choose r hr_eq hr_le using h_minor
   let M : ℤ := ∑ j : n, |w j|
   have h_range : ∀ i : n, -M ≤ w i ∧ w i ≤ M := neg_sum_abs_le_and_le_sum_abs w

@@ -115,7 +115,7 @@ lemma span_eq_top_of_le_norm_dual (Λ : Submodule ℤ E) [Module.Finite ℝ E] {
     span ℝ (Λ : Set E) = ⊤ := by
   -- The orthogonal complement lies in the dual, so it is discrete; being connected, it is zero.
   have h_mem (u : (span ℝ (Λ : Set E))ᗮ) : (u : E) ∈ dualSubmodule (innerₗ E) Λ :=
-    fun y hy ↦ by simp [real_inner_comm, u.2 y (subset_span hy)]
+    fun y hy ↦ by simp [real_inner_comm, u.property y (subset_span hy)]
   have : DiscreteTopology (span ℝ (Λ : Set E))ᗮ :=
     .of_forall_le_norm hρ fun u hu ↦ h_dual u (h_mem u) (by simpa using hu)
   exact orthogonal_eq_bot_iff.1 (subsingleton_iff_eq_bot.1 PreconnectedSpace.trivial_of_discrete)
@@ -741,7 +741,7 @@ lemma firstMinimum_le_norm_of_inner_int {d : 𝓞 E} (hd : d ≠ 0)
   -- With `t = (x_V⁻¹)ᴴ (x / star d)` at the infinite places (x_V the point of `V`), pairing with
   -- `x` becomes a dot product with `t`. It will turn out that `t = J a` at the infinite places,
   -- with `d • a` in the lattice and as long as `x`.
-  let t : n → 𝔸 E := V.x⁻¹.1ᴴ *ᵥ fun i : n ↦
+  let t : n → 𝔸 E := V.x⁻¹.valᴴ *ᵥ fun i : n ↦
     (fun w : InfinitePlace E ↦ x ⟨w, i⟩ / star (Φ w d), 0)
   have h_pair (ξ : n → E) :
       ⟪x, V.archCoords ((2 / d.val) • ξ)⟫ =
@@ -763,10 +763,10 @@ lemma firstMinimum_le_norm_of_inner_int {d : 𝓞 E} (hd : d ≠ 0)
   -- signs `s`.
   have h_abs (w : InfinitePlace E) (i : n) :
       ‖x ⟨w, i⟩‖ = ‖Φ w d.val * (V.vecAtPoint a i).1 w‖ := by
-    have h_left : ((V.x.1ᴴ *ᵥ t) i).1 w = x ⟨w, i⟩ / star (Φ w d) := by
+    have h_left : ((V.x.valᴴ *ᵥ t) i).1 w = x ⟨w, i⟩ / star (Φ w d) := by
       simp [t, ← conjTranspose_mul]
-    have h_right : ((V.x.1ᴴ *ᵥ t) i).1 w = (s i : ℤ) * (V.vecAtPoint a i).1 w := by
-      trans ((V.x.1ᴴ *ᵥ V.J.map toAdele *ᵥ toAdele ∘ a) i).1 w
+    have h_right : ((V.x.valᴴ *ᵥ t) i).1 w = (s i : ℤ) * (V.vecAtPoint a i).1 w := by
+      trans ((V.x.valᴴ *ᵥ V.J.map toAdele *ᵥ toAdele ∘ a) i).1 w
       · simp [mulVec, hc, dotProduct, fst_sum]
       · simp [map_J, ← mul_assoc, ← conjTranspose_mul, ← (diagonal _).mulVec_mulVec, vecAtPoint,
           stdForm, mulVec_diagonal]

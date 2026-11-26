@@ -17,6 +17,11 @@ The multiplicities of Hodge–Tate jumps can be read from traces with uniformly 
 which lets jumps pass to `p`-adic limits of representations. These bounded denominators are used to
 prove `New.GaloisRep.local_clauses_of_trace_limit`.
 
+For a matrix relation the trace limit alone is not enough. The candidate matrix lies in the
+span of the image of the representation, and its trace against every group element is zero.
+Non-degeneracy of the trace form on this span then gives the relation itself. Uniform
+convergence permits testing on group-ring elements that vary with the approximation index.
+
 ## Overview of this theory
 
 One period ring `B = New.Period.Bmax` defines crystalline and potentially crystalline
@@ -398,7 +403,8 @@ lemma New.GaloisRep.matrix_eq_zero_of_relation_of_limit {ℓ : ℕ} [ThePrime �
   refine hr_nondeg _ ?_ fun g ↦ ?_
   · simp (maxDischargeDepth := 9) [← hM_eq t₀, lift_apply, Finsupp.sum, sum_mem, smul_of_tower_mem,
       mem_span_of_mem]
-  -- The trace of M r g is a sum of errors that tend to 0.
+  -- Test the relation against each `r g`. Uniform convergence controls the corresponding
+  -- group-ring elements even though they vary with the approximation index.
   let err (θ : I) (l : ℕ) : PadicAlgCl ℓ := b l * (groupRingHom ⟨r⟩ (y θ l * .single g 1)).trace -
     ∑ x, (a * c l) θ x * (groupRingHom (ρ θ x) (y θ l * .single g 1)).trace
   have h_lim : Tendsto (fun θ ↦ ∑ l ∈ S, err θ l) F (nhds (∑ l ∈ S, 0)) :=
@@ -410,6 +416,7 @@ lemma New.GaloisRep.matrix_eq_zero_of_relation_of_limit {ℓ : ℕ} [ThePrime �
         ((∑ l ∈ S, c l θ x • groupRingHom (ρ θ x) (y θ l)) * ((ρ θ x).rep g).val).trace = 0 := by
       simp [hy_rel]
     simpa [err, ← hM_eq θ, sum_mul, mul_sum, mul_assoc, S.sum_comm] using h_rel
+  -- The sum of errors is constant with value `tr (M * r g)` and tends to zero.
   exact (tendsto_const_nhds_iff.mp (h_lim.congr h_const)).trans sum_const_zero
 
 /-- Let the maps `x ↦ u o x *ᵥ v` intertwine a lattice `lat` with potentially crystalline `σ o`,

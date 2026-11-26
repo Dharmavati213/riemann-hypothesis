@@ -519,7 +519,7 @@ conjugate of the determinant of the negative block of `g`, and its cocycle is tr
 def realAction (ε : ι → ℤˣ) :
     (realHeisenberg ε).MultiplierAction (normalizedVolume ι) realVac (USign ε) where
   beta_smul := by simp [↓form_mulVec_mulVec, realHeisenberg]
-  measurePreserving g := ⟨by fun_prop, by simp [map_mulVec_addHaar_eq_smul g.1.det_ne_zero]⟩
+  measurePreserving g := ⟨by fun_prop, by simp [map_mulVec_addHaar_eq_smul g.val.det_ne_zero]⟩
   Δ := realMultiplier
   continuous_delta := by fun_prop [realMultiplier]
   Δ_one := by simp [realMultiplier]
@@ -738,7 +738,7 @@ def polyVector (ε : ι → ℤˣ) : MvPolynomial ι ℂ →ₗ[ℂ] fockSpace �
     fun P ↦ by
       induction P using induction_on with
       | C c =>
-        convert (c • vacVector).2
+        convert (c • vacVector).property
         ext
         simp
       | add => aesop
@@ -843,14 +843,14 @@ def piTensor :
     (MultilinearMap.codRestrict
       (MultilinearMap.pi fun x : T × ι → ℂ ↦
         MultilinearMap.compLinearMap (MultilinearMap.mkPiAlgebra ℂ T ℂ) fun τ ↦
-          (IsVacuum.valueAt (MeasurableEquiv.curry T ι ℂ x τ)).1)
+          (IsVacuum.valueAt (MeasurableEquiv.curry T ι ℂ x τ)).toLinearMap)
       (IsVacuum.modelSubmodule (realHeisenberg fun p ↦ ε p.2)) fun v ↦ by
         -- Integrability and the reproducing identity hold factor by factor, by Fubini.
         refine ⟨(integrable_map_equiv ..).1
-          (pi_normalizedVolume.subst (.fintype_prod fun τ ↦ (v τ).2.1)), ?_⟩
+          (pi_normalizedVolume.subst (.fintype_prod fun τ ↦ (v τ).property.1)), ?_⟩
         simpa [realHeisenberg, signMatrix, dotProduct, mulVec_diagonal, sum_prod_type, realVac,
           ← integral_fintype_prod_eq_prod, prod_mul_distrib, ← exp_sum, ← sum_div,
-          integral_map_equiv] using! fun _ ↦ congr(∏ τ, $((v τ).2.2 _)))
+          integral_map_equiv] using! fun _ ↦ congr(∏ τ, $((v τ).property.2 _)))
     1 fun v ↦ by
       simp [norm_eq_integral_norm, integral_map_equiv, ← integral_fintype_prod_eq_prod, ← norm_prod,
         MeasurableEquiv.curry_apply_eq]

@@ -646,7 +646,7 @@ lemma LineBundle.IsProjEmbedding.compactSpace_complexPoint (hN : N.IsProjEmbeddi
   have hf : Continuous f := by
     refine continuous_iff_continuousAt.mpr fun c ↦ continuousAt_complexPoint_iff.mpr ?_
     have hv_coords (c : K) : (((hyperplaneBundle ι).pull Limits.prod.fst).pull
-        j).IsHomogeneousCoords (f c).left (c.1 : ι → ℂ) := by
+        j).IsHomogeneousCoords (f c).left (c.val : ι → ℂ) := by
       rw [IsHomogeneousCoords.pull_iff, show (f c).left ≫ j = t c from hs c]
       exact ht_lifts c
     exact .of_isHomogeneousCoords hN (continuousAt_pi.mp (by fun_prop)) (.of_forall hv_coords)

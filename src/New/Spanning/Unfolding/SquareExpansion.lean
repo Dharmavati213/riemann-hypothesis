@@ -306,8 +306,8 @@ lemma isStable_compl_besselS :
     S.IsStable ((S.ratMiddle E).besselS : Set (S.G E))ᶜ :=
   fun u hu u' hu' γ ↦ (S.isStable_besselS u hu u' hu' γ).not
 
-/-- Let `E` contain a primitive `5040`-th root of unity and let the filling `S` be admissible
-(`IsAdmissible`). An integral `ζ ∈ E` with `ζ ζ̄ = 1` that is `1` modulo every place of
+/-- Let `E` contain a primitive `5040`-th root of unity. An integral `ζ ∈ E`
+with `ζ ζ̄ = 1` that is `1` modulo every place of
 `chosenPlaces i`, the finite places of norm `p_i = levelPrime i` chosen in `S`, is `1`. -/
 lemma eq_one_of_reduceAt_scalar_eq_one [HasPrimitiveRoot5040 E] {ζ : E}
     (hζ : ζ * star ζ = 1) (h_int : (ζ : 𝔸f E) ∈ Ô E) (i : Fin 2)

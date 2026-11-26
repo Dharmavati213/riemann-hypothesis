@@ -4,6 +4,7 @@ public import Lib.CM.FormalGroup.PrimeNotation
 public import New.Derivatives.FormalGroup.Resolution
 import New.Derivatives.FormalGroup.ThetaProducts
 import New.Derivatives.Sharpness.OneCurve
+import TauCeti.RingTheory.PowerSeries.Rescale
 
 /-!
 # Least valuations of coefficients of theta products

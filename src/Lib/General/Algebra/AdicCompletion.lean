@@ -428,12 +428,6 @@ lemma isHausdorff_of_injective_pi [IsHausdorff I F] {ι : Type*} (f : M →ₗ[S
     rw [← map_of, ← map_of, hxy]
   exact of_inj.mp h_coord
 
-/-- A finite free module over an `I`-adically complete ring is `I`-adically complete. -/
-lemma isAdicComplete_of_free [IsAdicComplete I S] [Free S M] [Module.Finite S M] :
-    IsAdicComplete I M :=
-  have := isHausdorff_of_injective_pi I _ (Free.chooseBasis S M).equivFun.injective
-  {}
-
 /-- Let C be I-adically complete, β: F → M have I-adically dense image, and g: F → C satisfy
 g(f) ∈ I^n C whenever β(f) ∈ I^{2n} M. Then g = G ∘ β for some S-linear G: M → C. -/
 lemma exists_adic_extension (I : Ideal S) [IsAdicComplete I C] (β : F →ₗ[S] M)

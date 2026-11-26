@@ -425,8 +425,8 @@ instance [Algebra V S] : IsScalarTower V S a.obj := .of_compHom ..
 /-- The functor sending a perfect S-algebra D to D ⊗ N ⊗ 𝔪, tensor products over O^♭ with 𝔪 its
 maximal ideal, regarded as an S-module. -/
 def perfectAlmostCoeff : PerfectAlg S ⥤ ModuleCat S where
-  obj D := ModuleCat.of S (D.1 ⊗[OFlat] (N ⊗[OFlat] MaxIdealFlat))
-  map f := ↟(rTensor OFlat (N ⊗[OFlat] MaxIdealFlat) f.1.1.toLinearMap)
+  obj D := ModuleCat.of S (D.obj ⊗[OFlat] (N ⊗[OFlat] MaxIdealFlat))
+  map f := ↟(rTensor OFlat (N ⊗[OFlat] MaxIdealFlat) f.hom.hom'.toLinearMap)
 
 variable {N} {z : H (relFreeAbOfHom φ) (moduleCoeff (perfectAlmostCoeff N ⋙ tensorWith S a.obj)) n}
 

@@ -343,7 +343,7 @@ def pairHomInf :
 @[simps! -isSimp apply_apply]
 def realPairWeil : GInf E s × GInf E s' →* PairFock E s s' →L[ℂ] PairFock E s s' where
   toFun p :=
-    (∏ w : NumberField.InfinitePlace E, (p.2 w).1.1.det ^ γ w * (p.1 w).1.1.det ^ (-γ' w)) •
+    (∏ w : NumberField.InfinitePlace E, (p.2 w).val.val.det ^ γ w * (p.1 w).val.val.det ^ (-γ' w)) •
       realWeil (pairHomInf p)
   map_one' := by simp
   map_mul' p q := by

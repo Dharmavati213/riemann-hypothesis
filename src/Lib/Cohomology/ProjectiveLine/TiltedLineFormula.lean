@@ -1195,7 +1195,7 @@ lemma hasLineFormula_tiltTheory (M : ModuleCat OFlat) [Algebra A ℂ_[ℓ]]
   have h_acyclic (S : AbFunctor PadicTest) [HasFlatValues S] (n : ℕ) :
       Subsingleton (H (abTensor S (cokernel gluing)) Θ.functor n) :=
     subsingleton_H_cokernel_gluing (F := Θ.functor)
-      (fun c ↦ (isCohomEquiv_gluing_tilt c h_acyclic_perfect).right.right) S n
+      (fun c ↦ isCohomEquiv_tensorCoeff_gluing c h_acyclic_perfect) S n
   exact hasLineFormula_of_isTodaCancellation Θ h_toda h_acyclic
 
 end New.Variety

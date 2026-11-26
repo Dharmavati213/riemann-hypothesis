@@ -402,7 +402,7 @@ lemma weylKernel_eq_sum_fillingPoly (y : (Σ τ : Φ, n τ) × ℕ → R) :
     weylKernel n κ y = ∑ T : ColumnFilling n κ, eval y (fillingPoly R T) • fillingPoly R T := by
   -- the Cauchy–Binet formula for one leading minor of `yᵀ x`
   let m (τ : Φ) (h : ℕ) (I : IncreasingMap (rankAt n τ) h) : MatrixPoly (Σ τ : Φ, n τ) R :=
-    minor R (Sigma.mk τ ∘ (rowEquivFin n τ).symm ∘ I.1)
+    minor R (Sigma.mk τ ∘ (rowEquivFin n τ).symm ∘ I.val)
   have hminor (τ : Φ) (h : ℕ) :
       (of fun s t : Fin h ↦ ∑ a : n τ, y (⟨τ, a⟩, s) • X (⟨τ, a⟩, ↑t)).det =
         ∑ I : IncreasingMap (rankAt n τ) h, eval y (m τ h I) • m τ h I := by

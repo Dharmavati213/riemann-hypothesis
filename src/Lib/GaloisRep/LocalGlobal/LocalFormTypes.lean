@@ -265,9 +265,8 @@ private lemma surjective_reindexGL_comp_blockHom_zero {e : ρ ↪ n} {b : n → 
       ((reindexGL ((Equiv.subtypeEquivRight h_block).trans e.toEquivRange.symm)).toMonoidHom.comp
         (blockHom b 0) : parabolic b →* GL ρ (ResField w)) := by
   intro x
-  obtain ⟨h_block0, h_off⟩ := submatrix_extendGL_and_apply_of_notMem_range e x
-  refine ⟨⟨extendGL e x, fun _ ↦ ?_⟩, Units.ext h_block0⟩
-  grind [one_apply_ne]
+  refine ⟨⟨extendGL e x, fun _ ↦ ?_⟩, Units.ext (submatrix_extendGL e x)⟩
+  grind [one_apply_ne, extendGL_apply_of_notMem_range]
 
 /-- Over a perfect field, `a * ∏ l, (X - C (x l))` is separable when `a` is squarefree, the `x l`
 are distinct and none of them is a root of `a`. -/

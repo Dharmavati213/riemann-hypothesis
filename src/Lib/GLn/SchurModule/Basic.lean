@@ -208,7 +208,7 @@ abbrev nablaFamily : Submodule R (MatrixPoly (Sigma n) R) :=
 /-- For a family i of chosen standard fillings, the polynomial that is the product over places τ
 of the minor product of i_τ in the rows of block τ. -/
 def nablaBasis (i : WeylIndexFamily n κ) : MatrixPoly ((τ : Φ) × n τ) R :=
-  ∏ τ : Φ, tableauPoly (m := Σ τ : Φ, n τ) R (Sigma.mk τ) (i τ).1
+  ∏ τ : Φ, tableauPoly (m := Σ τ : Φ, n τ) R (Sigma.mk τ) (i τ).val
 
 /-- The polynomial product over places τ and h<N_τ of the leading principal h×h minor of the
 variables in block τ raised to κ_τ(h). -/
@@ -487,19 +487,19 @@ lemma sum_monomials_eq_of_isHomogeneous (hf : f.IsHomogeneous a) :
 /-- The a-th symmetric power: the homomorphism sending a square matrix A to the matrix, in the
 monomial basis, of `New.linSubst` A on forms of degree a. -/
 def symPowMatrix (a : ℕ) : Matrix σ σ R →* Matrix (Monomials σ a) (Monomials σ a) R where
-  toFun A := of fun β α ↦ (linSubst A (monomial α.1 1)).coeff β.1
+  toFun A := of fun β α ↦ (linSubst A (monomial α.val 1)).coeff β.val
   map_one' := by simp [eq_comm, Matrix.one_apply, ← ext_iff]
   map_mul' A B := by
     ext β α
     -- Expand `linSubst B (monomial α 1)` in the monomials of degree `a`, then apply `linSubst A`.
-    change (linSubst (A * B) (monomial α.1 1)).coeff β.1 = _
+    change (linSubst (A * B) (monomial α.val 1)).coeff β.val = _
     rw [linSubst_mul, ← sum_monomials_eq_of_isHomogeneous (α.isHomogeneous_linSubst B)]
     simp [mul_comm, Matrix.mul_apply]
 
 /-- For a family `β` of degree-`a` exponent vectors indexed by `S`, the single exponent vector on
 the variables `(b, s)` whose value is `β_s(b)`. -/
 def exponentOf : (S → Monomials σ a) ↪ σ × S →₀ ℕ where
-  toFun β := equivFunOnFinite.symm fun x ↦ (β x.2).1 x.1
+  toFun β := equivFunOnFinite.symm fun x ↦ (β x.2).val x.1
   inj' :=
     id fun β β' h ↦ by
       ext s t

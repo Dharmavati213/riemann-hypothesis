@@ -81,7 +81,7 @@ abbrev reductionModule (ha : a ∣ ℓ ^ M) : DiscreteModule O Gal(Ω/E) :=
 /-- The kernel `U` of the action on `T / ℓ ^ M` and on the roots of unity of order `ℓ ^ N`. -/
 def reductionKer (M N : ℕ) : OpenNormalSubgroup Gal(Ω/E) where
   toSubgroup := (reduceModPow ℓ M T.ρ).ker ⊓ (cyclotomicCharMod Ω (ℓ ^ N)).ker
-  isOpen' := .inter (T.isLocallyConstant M {1}) isOpen_ker_cyclotomicCharMod.1
+  isOpen' := .inter (T.isLocallyConstant M {1}) isOpen_ker_cyclotomicCharMod.out
   isNormal' := inferInstanceAs (Subgroup.Normal (_ ⊓ _))
 
 lemma mem_reductionKer {g : Gal(Ω/E)} :
@@ -394,7 +394,7 @@ lemma exists_length_cocycles_le (hp : IsTiedPrimes ℓ S₀ V W N P₀ J x)
           ∏ v ∈ D.localPrimes, Nat.card (D.localCocycles v)⟩ :=
     D.exists_card_cocycles_le hN.ne_bot T.cyclotomicChar_γ h_comm h_fix
       (T.tiedSetting_avoids hp hV hN ha A)
-  have hP₀ : P₀ ∈ placesDividing E P₀.q := P₀.1.absNorm_mem
+  have hP₀ : P₀ ∈ placesDividing E P₀.q := P₀.asIdeal.absNorm_mem
   have hR : R \ {P₀, star P₀} = R := by
     simpa using And.intro (mt (h_avoid _) (not_not.2 hP₀))
       (mt (h_avoid _) (not_not.2 (star_mem_placesDividing.2 hP₀)))
@@ -424,11 +424,11 @@ places above `ℓ`, have total length at most `(#{w ∣ ℓ} + f) len (T / a)`, 
 infinite places. Indeed, the module at `w` has length at most `rk Z_w · len (O / a)` for the module
 `Z_w = T.Z w` of the datum, and the datum has `∑_w rk Z_w ≤ (#{w ∣ ℓ} + f) rk T`. -/
 lemma sum_length_localCocycles_placesDividing_le (a : O) :
-    ∑ w : placesDividing E ℓ, length O (localCocycles T.ρ T.localRelations (placeOver w.1)
+    ∑ w : placesDividing E ℓ, length O (localCocycles T.ρ T.localRelations (placeOver w.val)
       (QuotSpan a)) ≤
       (Fintype.card (placesDividing E ℓ) + Core.numInfPlaces E) • length O (n → QuotSpan a) :=
   calc ∑ w : placesDividing E ℓ, length O
-         (localCocycles T.ρ T.localRelations (placeOver w.1) (QuotSpan a))
+         (localCocycles T.ρ T.localRelations (placeOver w.val) (QuotSpan a))
       ≤ ∑ w : placesDividing E ℓ, finrank O (T.Z w) * length O (QuotSpan a) :=
         sum_le_sum fun w _ ↦ T.length_localCocycles_le_finrank_mul a w
     _ ≤ ((Fintype.card (placesDividing E ℓ) + Core.numInfPlaces E) * Fintype.card n : ℕ) *

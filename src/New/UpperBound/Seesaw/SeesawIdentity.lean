@@ -18,6 +18,12 @@ time. Each outer integral is a real integral times a weighted sum over the class
 remains is the upper chain for the tensor `φ_ξ`, a multiple of which is the glued tensor of a chain
 datum.
 
+The identity has two inputs: equality of the pairings with every form on `Y_m`, and an
+admissible expansion of the resulting tensor into translated vacuum data. The first supplies
+the equality of lifts; the second supplies support and coefficient bounds. The scalar in the
+final identity is a unit independent of the twist and the source form, but the theorem does
+not assert that either lift is nonzero.
+
 Notions from other files:
 * `D.spaceY j`, `D.FormY j`: the space `Y_j` of the lower chain and the forms on its unitary group.
 * `liftY ϑ j`, `lowerChainUpTo ϑ j`: the theta lift from `Y_j` to `Y_(j+1)` with twist `ϑ`,
@@ -209,24 +215,16 @@ lemma integral_mul_liftY (ϑ : D.TameChar) {j : ℕ} (hj : j < D.m) (z : D.ConjF
     ∫ h : New.G D.E (D.signsY (j + 1)), z h * liftY ϑ j f h ∂(D.spaceY (j + 1)).quotMeasure =
       ∫ g : New.G D.E (D.signsY j), transposedLiftY ϑ j z g * f g ∂(D.spaceY j).quotMeasure := by
   obtain ⟨h_up, h_down⟩ := isArrow_datumY ϑ hj
-  calc
-    _ = stdLevelIndex (levelY ϑ j) * ∫ h, z h * formLift (thetaKernelY ϑ j) _ _ (datumY ϑ j) f h
-        ∂(D.spaceY (j + 1)).quotMeasure := by
-      rw [← integral_const_mul]
-      congr with h
-      have h_lift : liftY ϑ j f h = stdLevelIndex (levelY ϑ j) *
-          formLift (thetaKernelY ϑ j) _ _ (datumY ϑ j) f h := rfl
-      rw [h_lift, mul_left_comm]
-    _ = stdLevelIndex (levelY ϑ j) *
-        ∫ g, f g * formLift (thetaKernelY ϑ j).swap _ _ (datumY ϑ j) z g
-          ∂(D.spaceY j).quotMeasure := by
-      rw [h_up.integral_mul_formLift_swap h_down]
-    _ = _ := by
-      rw [← integral_const_mul]
-      congr with g
-      have h_descent : transposedLiftY ϑ j z g = stdLevelIndex (levelY ϑ j) *
-          formLift (thetaKernelY ϑ j).swap _ _ (datumY ϑ j) z g := rfl
-      rw [h_descent, mul_comm (f g), mul_assoc]
+  have h1 : ∀ h, z h * liftY ϑ j f h =
+      stdLevelIndex (levelY ϑ j) *
+        (z h * formLift (thetaKernelY ϑ j) _ _ (datumY ϑ j) f h) :=
+    fun _ => mul_left_comm _ _ _
+  have h2 : ∀ g, transposedLiftY ϑ j z g * f g =
+      stdLevelIndex (levelY ϑ j) *
+        (f g * formLift (thetaKernelY ϑ j).swap _ _ (datumY ϑ j) z g) :=
+    fun _ => (mul_assoc _ _ _).trans (congrArg _ (mul_comm _ _))
+  simp_rw [h1, h2, integral_const_mul]
+  rw [h_up.integral_mul_formLift_swap h_down]
 
 /-- Let `ϑ` be a tame character and `u` an element of its level `levelY ϑ j`: an integral finite
 adelic point of `G_j = U(Y_j)` that reduces to `1` at the chosen places and at the places of the
@@ -571,7 +569,8 @@ lemma exists_lowerChainUpTo_poincareAt_eq (t : (WeylIndex (D.X 0) D.columnCount 
   choose l h_stage using h_top_coeff
   obtain ⟨c₀, h_sum⟩ :=
     exists_integral_mul_lowerChainUpTo_eq_cutSum t g _ le_rfl (D.lastGrading hm) (by omega) (c ∘ l)
-  -- Pair both sides with a form `x` on `Y_m`.
+  -- Pair both sides with an arbitrary form `x` on `Y_m`; equality of these pairings
+  -- suffices for equality of the lifts.
   refine ⟨c₀, fun ϑ φ ↦ ext_inner_left ℂ fun x ↦ ?_⟩
   let L : D.ChainTensor →ₗ[ℂ] ℂ := innerₛₗ ℂ x ∘ₗ restrictToFormY hm ∘ₗ chainOfTensor ϑ φ
   have h_top (ξ : ∀ i, GInf D.E (D.signsY i)) (y : ∀ i, Gf D.E (D.Y i)) (hy : y (2 * D.ϱ + 2) = 1) :
@@ -644,7 +643,8 @@ theorem seesaw_identity {P : Parameters} {D : Data P}
         (2 * D.ϱ + 2))
       ((u : ℂ) • c₀ • seesawDatum ϑ) :=
     (h_admissibleComb ϑ).normUnit_smul c₀ NeZero.out
-  -- Each translation may be replaced by a supported one with the same glued vacuum.
+  -- Replace each translation by a supported representative without changing the glued tensor.
+  -- This gives the support condition separately from the equality of lifts.
   obtain ⟨Ψ, h_adm, h_glued : (u : ℂ) • c₀ • seesawDatum ϑ = gluedTensor Ψ⟩ :=
     h_rescaled.of_eq_isOfFinOrder_smul
       (A' := admissibleTranslations ϑ.normQ ∩ supportedTranslations (D.M * ϑ.normQ))

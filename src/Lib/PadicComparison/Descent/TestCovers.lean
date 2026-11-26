@@ -79,7 +79,7 @@ variable {p : ℕ} [ThePrime p] (c : PadicTest)
 /-- For ring maps y_i from an O_C-algebra B to a non-empty family of cells W_i, this is the p-adic
 test ∏ W_i with structure map O_C → B → ∏ W_i, together with the point (y_i) : B → ∏ W_i. -/
 def cellPoint (B : CommAlg OC) {I : Type} [n : Nonempty I] {W : I → Type} [∀ i, CommRing (W i)]
-    [∀ i, IsCell p (W i)] (y : ∀ i : I, B.1 →+* W i) :
+    [∀ i, IsCell p (W i)] (y : ∀ i : I, B.carrier →+* W i) :
     Sigma (PadicTest.algFunctor ⋙ reprBy B) where
   fst := { Index := I, Cell := W, structureMap := (RingHom.pi y).comp (algebraMap OC B) }
   snd := ⟨ofHom { toRingHom := RingHom.pi y, commutes' := fun _ ↦ rfl }⟩
@@ -110,7 +110,7 @@ def tiltPiEquiv :
       let split : Perfection (∀ i : c.Index, c.Cell i) p ≃ ∀ i : c.Index, Perfection (c.Cell i) p :=
         ((Equiv.piComm fun _ ↦ c.Cell).subtypeEquiv
             (by simp [funext_iff, forall_comm (α := ℕ)])).trans Equiv.subtypePiEquivPi
-      (split.trans (Equiv.piCongrRight fun _ ↦ (quotientMulEquiv ..).1)).bijective
+      (split.trans (Equiv.piCongrRight fun _ ↦ (quotientMulEquiv ..).toEquiv)).bijective
 
 /-- Divisibility in the tilt of a test can be checked after untilting. -/
 lemma dvd_of_untilt_dvd {x y : c.TiltRing} (h : x.untilt ∣ y.untilt) : x ∣ y := by

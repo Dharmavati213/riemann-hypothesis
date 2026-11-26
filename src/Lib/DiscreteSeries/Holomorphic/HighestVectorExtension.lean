@@ -133,7 +133,7 @@ noncomputable def lowerLiePart (c : ℂ) : Matrix n n ℂ →L[ℝ] Matrix n n �
 lemma lowerLiePart_mem_unitaryLie (c : ℂ) (Z : Matrix n n ℂ) :
     lowerLiePart ε ε' o c Z ∈ unitaryLie (signMatrix ε) := by
   let N : Matrix n n ℂ := lowerMask ε' o Z + c • entryMask Eq Z
-  convert (unitaryLie (signMatrix ε)).smul_mem (2 : ℝ) (unitaryLiePart ε N).2 using 1
+  convert (unitaryLie (signMatrix ε)).smul_mem (2 : ℝ) (unitaryLiePart ε N).property using 1
   change N - signMatrix ε * Nᴴ * signMatrix ε =
     (2 : ℝ) • (2⁻¹ : ℝ) • (N - (signMatrix ε)⁻¹ * Nᴴ * signMatrix ε)
   rw [smul_smul, mul_inv_cancel₀ two_ne_zero, one_smul, inv_eq_left_inv (signMatrix_mul_self ε)]

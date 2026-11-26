@@ -141,7 +141,7 @@ def residuePreimage (H : Subgroup (GL n (IsLocalRing.ResidueField 𝒪[F])))
 entry `g i j` lies in the maximal ideal (`v (g i j) < 1`) whenever `b j < b i`. -/
 def blockParahoric {N : ℕ} (b : ℕ → ℕ) : Subgroup (GL (Fin N) F) :=
   (residuePreimage (fun g : GL (Fin N) F ↦ ∀ i j : Fin N, b j < b i → v (g i j) < 1)
-    (parabolic fun i : Fin N ↦ b i.1) (by simp [parabolic, BlockTriangular])).toSubgroup
+    (parabolic fun i : Fin N ↦ b i.val) (by simp [parabolic, BlockTriangular])).toSubgroup
 
 /-- Dominant elements of the diagonal torus: the `t` with `v (t i) ≤ v (t j)` for `i ≤ j`. -/
 def dominantTorus : Submonoid (n → Fˣ) where
@@ -206,7 +206,7 @@ structure IsIwahoriEigen (x : ρ) : Prop where
 /-- The normalised absolute value on F^×, as a character with complex values: x ↦ q^{−ord x}, q
 the order of the residue field. -/
 def normAbsChar : Fˣ →* ℂˣ :=
-  MonoidHom.mk' (fun x ↦ Units.mk0 (Nat.card 𝓀[F] : ℂ) NeZero.out ^ (v x.1).log)
+  MonoidHom.mk' (fun x ↦ Units.mk0 (Nat.card 𝓀[F] : ℂ) NeZero.out ^ (v x.val).log)
     (by simp [_root_.zpow_add])
 
 /-- The bijection from families `(θ i)`, `0 ≤ i < N`, of characters of `Fˣ` to characters of the
@@ -214,7 +214,7 @@ diagonal torus that sends `θ` to `t ↦ ∏ i, θ i (t i) * |t i| ^ (N - 1 - i)
 `|·| = normAbsChar`: multiply `θ i` by `normAbsChar ^ (N - 1 - i)`, then take the product over `i`.
 See `torusChar_mulSingle` for the value on one coordinate. -/
 def torusChar {N : ℕ} : (Fin N → Fˣ →* ℂˣ) ≃ ((Fin N → Fˣ) →* ℂˣ) :=
-  (Equiv.mulRight fun i : Fin N ↦ normAbsChar (F := F) ^ i.rev.1).trans
+  (Equiv.mulRight fun i : Fin N ↦ normAbsChar (F := F) ^ i.rev.val).trans
     (Pi.monoidHomMulEquiv (fun _ ↦ Fˣ) (ℂˣ)).symm.toEquiv
 
 @[simp]

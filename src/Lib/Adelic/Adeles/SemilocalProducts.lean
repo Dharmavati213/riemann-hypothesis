@@ -104,7 +104,7 @@ variable {E : Type} [Field E] [NumberField E] (P : Finset (FinPlace E))
 /-- The ring homomorphism sending a finite adele to its components at the places of the finite
 set `P`. -/
 @[simps!]
-noncomputable def evalPlaces : 𝔸f E →+* LocProd P := RingHom.pi fun w ↦ evalAt w.1
+noncomputable def evalPlaces : 𝔸f E →+* LocProd P := RingHom.pi fun w ↦ evalAt w.val
 
 open scoped Classical in
 /-- Extension by zero: the additive and multiplicative map from the product of the completions

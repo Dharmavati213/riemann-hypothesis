@@ -58,7 +58,7 @@ lemma isTameGeneratorFor_conjGal_inv {E : Type} [Field E]
   obtain ⟨hδ_inertia, ϖ, r, hϖ, hr, hδr⟩ : δ ∈ inertiaGroup Gal(Ω/E) B ∧
       ∃ (ϖ : Eˣ) (r : DiscreteUnits Ω), IsUniformiser B (ϖ : E) ∧
         m • r = DiscreteUnits.ofBase Gal(Ω/E) Ω (Additive.ofMul ϖ) ∧
-        unitsRep δ r - r = (rootPowHom Ω m).1 1 := hδ
+        unitsRep δ r - r = (rootPowHom Ω m).val 1 := hδ
   -- Conjugate the uniformiser `ϖ` and the root `δ r`, which `δ⁻¹` moves back to `r`; conjugation
   -- inverts the root of unity.
   refine ⟨by simpa using hδ_inertia, star ϖ, unitsRep cmConj (unitsRep δ r), ?_, ?_, ?_⟩
@@ -67,7 +67,7 @@ lemma isTameGeneratorFor_conjGal_inv {E : Type} [Field E]
   · have h_back : unitsRep (conjGal δ)⁻¹ (unitsRep cmConj (unitsRep δ r)) = unitsRep cmConj r := by
       rw [← map_inv conjGal]
       simp [DiscreteUnits.ext_iff, conjGal]
-    have h_inv : unitsRep cmConj ((rootPowHom Ω m).1 1) = -(rootPowHom Ω m).1 1 := by
+    have h_inv : unitsRep cmConj ((rootPowHom Ω m).val 1) = -(rootPowHom Ω m).val 1 := by
       simp [← map_cyclotomicCharMod_mul, isComplexConj_cmConj.cyclotomicCharMod_eq_neg_one]
     rw [h_back, ← neg_sub, ← map_sub, hδr, h_inv, neg_neg]
 

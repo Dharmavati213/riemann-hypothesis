@@ -160,7 +160,7 @@ lemma localInner_boxIndicator_mulVec (g : GL n (𝔸f E)) :
   -- Both sides are the volume of the set `A` of integral `x` with `g x` integral on `S`; for the
   -- right side this is `latticeMeasure_inter_eq_glMultiplier`.
   set A : Set (n → 𝔸f E) :=
-    {x | (cutGL (idem_mul_self S) g).1 *ᵥ x ∈ stdLattice E n ∧ x ∈ stdLattice E n} with hA
+    {x | (cutGL (idem_mul_self S) g).val *ᵥ x ∈ stdLattice E n ∧ x ∈ stdLattice E n} with hA
   have hA_open : IsOpen A := (isOpen_stdLattice.preimage (by fun_prop)).inter isOpen_stdLattice
   have h_volume : (((‖glMultiplier (cutGL (idem_mul_self S) g)‖ ^ 2)⁻¹ : ℝ) : ℂ) =
       ∫ x : n → 𝔸f E, ((A.indicator 1 x : ℝ) : ℂ) ∂latticeMeasure E n := by

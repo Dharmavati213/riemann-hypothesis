@@ -25,6 +25,11 @@ orthogonal to the false lifts to an integral form. `O` is a descent pair of herm
 ranks `r < n` (`New.DescentPair`). `Z` is a subspace of its forms spanned by vectors in the ranges
 of the idempotents `New.Selmer.typeProjection O c` of types `c` in lift setting.
 
+The operator bound is not a scalar denominator bound: it controls the determinant by
+bounding the valuations of eigenvalues. The factor `D.chosenGroupOrder` is used to clear
+stabilizer denominators in the pairing with integral forms, after projection integrality
+has been established. Both properties are needed in `DenominatorLe`.
+
 The *chain* at a place of norm `q` is `∏ (X - q ^ i)`, `i < t'`, with `t' = O.rankDiff`.
 
 * `New.Selmer.typeProjection_sub_starProjection_mem_of_isOrthogonalToFalseLifts`: a form orthogonal
@@ -1266,7 +1271,8 @@ theorem exists_operator_det_clearingBound {P : Parameters} {D : Data P} {ℓ : �
   · -- an integer multiple of an integral form is integral
     rw [LinearMap.smul_apply, Submodule.coe_smul, Nat.cast_smul_eq_nsmul ℂ]
     exact nsmul_mem (h_int y' hy' hy'_test) _
-  · -- with the factor `D.chosenGroupOrder` the pairing is integral
+  · -- Projection integrality alone need not give an integral pairing: the class stabilizer
+    -- orders divide `D.chosenGroupOrder`, which clears their denominators.
     have h_pair : ‖(PadicPlace.ofIso ιℓ).ιₚ
         (D.chosenGroupOrder • inner ℂ y (Λ (Z.orthogonalProjectionOnto y') : O.FormV))‖ ≤ 1 :=
       y.norm_nsmul_inner_le_one _ (PadicPlace.ofIso ιℓ)

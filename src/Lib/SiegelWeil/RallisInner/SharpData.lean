@@ -504,7 +504,7 @@ structure SiegelWeil.IsSharpFn (S : Space E n s) (T : Space E m t) (b : AutChar 
   /-- On the support of `Ψ` the matrix `A x` is the reduction of a point of `J`. -/
   exists_mul_eq : ∃ A : Matrix n m 𝔪.ResidueRing,
     ∀ x : Matrix m n 𝔪.ResidueRing,
-      Ψ x ≠ 0 → ∃ k : stdLevel E n, k.1 ∈ J ∧ (𝔪.reductionGL k).1 = A * x
+      Ψ x ≠ 0 → ∃ k : stdLevel E n, k.val ∈ J ∧ (𝔪.reductionGL k).val = A * x
 
 section IsSharpFn
 
@@ -543,8 +543,8 @@ lemma SiegelWeil.IsSharpFn.eq_zero_or_eq_zero (hΨ : IsSharpFn S T b 𝔪 J Ψ) 
 of `x ↦ Ψ (x k̄)`, where `k̄` is `k` modulo `𝔪`. -/
 lemma SiegelWeil.pairWeil_stdLevel_vacuumDatum (S : Space E n s) (T : Space E m t) (b : AutChar E)
     (k : stdLevel E n) (Ψ : Matrix m n 𝔪.ResidueRing → ℂ) :
-    pairWeil S T 1 b ((1, k.val), 1) (vacuumDatum S T 𝔪 Ψ).1 = ((b.val (detFin s k.val))⁻¹ : ℂ) •
-      (vacuumDatum S T 𝔪 fun x : Matrix m n 𝔪.ResidueRing ↦ Ψ (x * (𝔪.reductionGL k).val)).1 := by
+    pairWeil S T 1 b ((1, k.val), 1) (vacuumDatum S T 𝔪 Ψ).val = ((b.val (detFin s k.val))⁻¹ : ℂ) •
+      (vacuumDatum S T 𝔪 fun x : Matrix m n 𝔪.ResidueRing ↦ Ψ (x * (𝔪.reductionGL k).val)).val := by
   simpa [vacuumDatum, Prod.mk_one_one] using pairWeil_modDatum_stdLevel S T 1 b 𝔪 k 1 Ψ
     Fock.vacVector
 
@@ -552,7 +552,7 @@ lemma SiegelWeil.pairWeil_stdLevel_vacuumDatum (S : Space E n s) (T : Space E m 
 coefficient at `g` of the datum `Ψ ⊗ vac` is zero. -/
 lemma SiegelWeil.IsSharpFn.weilMatrixCoeff_eq_zero_of_mem_stdLevel_of_notMem
     (hΨ : IsSharpFn S T b 𝔪 J Ψ) (g : stdLevel E n) (hg : g.val ∉ J) :
-    weilMatrixCoeff b (vacuumDatum S T 𝔪 Ψ).1 (vacuumDatum S T 𝔪 Ψ).1 (1, g.val) = 0 := by
+    weilMatrixCoeff b (vacuumDatum S T 𝔪 Ψ).val (vacuumDatum S T 𝔪 Ψ).val (1, g.val) = 0 := by
   -- The point `g` acts on `Ψ` through its reduction, up to a scalar.
   have h_sum : star (Ψ ∘ vecToMatrix) ⬝ᵥ (fun x ↦ Ψ (x * (𝔪.reductionGL g).val)) ∘ vecToMatrix =
     0 :=
@@ -564,7 +564,7 @@ lemma SiegelWeil.IsSharpFn.weilMatrixCoeff_eq_zero_of_mem_stdLevel_of_notMem
 Then the matrix coefficient at `g` of the datum `Ψ ⊗ vac` is zero. -/
 lemma SiegelWeil.IsSharpFn.weilMatrixCoeff_eq_zero_of_notMem_stdLevel (hΨ : IsSharpFn S T b 𝔪 J Ψ)
     {g : Gf E n} (g_off : g ∈ localLevel n 𝔪.places.conjClosureᶜ) (hg : g ∉ stdLevel E n) :
-    weilMatrixCoeff b (vacuumDatum S T 𝔪 Ψ).1 (vacuumDatum S T 𝔪 Ψ).1 (1, g) = 0 := by
+    weilMatrixCoeff b (vacuumDatum S T 𝔪 Ψ).val (vacuumDatum S T 𝔪 Ψ).val (1, g) = 0 := by
   -- If `x` and `x g` were both primitive at the places of `𝔪`, `g` would be integral there, hence
   -- everywhere.
   have h_supp (x : m × n → 𝔸f E) : 𝔪.liftFn (Ψ ∘ vecToMatrix) x = 0 ∨
@@ -596,7 +596,7 @@ of `J` whenever `Ψ x ≠ 0`. Write `K₀ = stdLevel E n`. Then `Ψ ⊗ vac` (`v
 index `[K₀ : J ∩ K₀]`. -/
 lemma SiegelWeil.IsSharpFn.isSharp (hΨ : IsSharpFn S T b 𝔪 J Ψ)
     (hn : (∀ i j : n, s i = s j) ∨ Nonempty 𝔪.places) :
-    IsSharp b 𝔪.places.conjClosure (vacuumDatum S T 𝔪 Ψ).1 J
+    IsSharp b 𝔪.places.conjClosure (vacuumDatum S T 𝔪 Ψ).val J
       (star Ψ ⬝ᵥ Ψ / card (m × n → 𝔪.ResidueRing) / stdLevelIndex J) := by
   -- On `J` the datum is fixed. If the coefficient at `g` is not zero, some `x` and `x g` lie in the
   -- support of `Ψ`; this makes `g` integral and then puts it in `J` (the two lemmas above). The
@@ -604,11 +604,11 @@ lemma SiegelWeil.IsSharpFn.isSharp (hΨ : IsSharpFn S T b 𝔪 J Ψ)
   -- Sums over matrices are sums over vectors indexed by `m × n`.
   have h_curry : star (Ψ ∘ vecToMatrix) ⬝ᵥ (Ψ ∘ vecToMatrix) = star Ψ ⬝ᵥ Ψ :=
     comp_equiv_dotProduct_comp_equiv (star Ψ) Ψ (Equiv.curry m n 𝔪.ResidueRing)
-  have h_norm : dataInner (S.hom T) (vacuumDatum S T 𝔪 Ψ).1 (vacuumDatum S T 𝔪 Ψ).1 =
+  have h_norm : dataInner (S.hom T) (vacuumDatum S T 𝔪 Ψ).val (vacuumDatum S T 𝔪 Ψ).val =
       star Ψ ⬝ᵥ Ψ / card (m × n → 𝔪.ResidueRing) := by
     simp [vacuumDatum, ← h_curry, ↓ isConjDisjoint_places, ↓ dataInner_schrodingerOp,
       ↓ localInner_liftFn]
-  refine ⟨?_, (vacuumDatum S T 𝔪 Ψ).2, fun B v hB ↦ ?_, fun g g_off ↦ ?_, by rw [h_norm],
+  refine ⟨?_, (vacuumDatum S T 𝔪 Ψ).property, fun B v hB ↦ ?_, fun g g_off ↦ ?_, by rw [h_norm],
     fun v ↦ hn.imp_right fun ⟨w⟩ ↦ ?_⟩
   · open scoped ComplexOrder in simp [h_norm, dotProduct_star_self_eq_zero, hΨ.ne_zero]
   · -- a vacuum off `𝔪 𝔪̄`
@@ -647,7 +647,7 @@ lemma SiegelWeil.isSharpFn_of_mul_eq_one (S : Space E n s) (T : Space E m t) (b 
   rintro _ ⟨k, hk, rfl⟩
   -- An element `k ≡ 1` modulo `𝔪` acts by the scalar `b (det k)⁻¹ = 1`.
   have h_red : 𝔪.reductionGL k = 1 := by simpa using hk
-  change pairWeil S T 1 b ((1, k.val), 1) (vacuumDatum S T 𝔪 F).1 = (vacuumDatum S T 𝔪 F).1
+  change pairWeil S T 1 b ((1, k.val), 1) (vacuumDatum S T 𝔪 F).val = (vacuumDatum S T 𝔪 F).val
   simp [pairWeil_stdLevel_vacuumDatum, h_red, hb.apply_det_eq_charOfTamePart hψ k]
 
 /-- The case of the principal level. Let the signs of `S` agree or `𝔪 ≠ (1)`, let `b` have trivial
@@ -660,7 +660,7 @@ lemma SiegelWeil.isSharp_vacuumDatum_of_mul_eq_one {S : Space E n s} (T : Space 
     {F : Matrix m n 𝔪.ResidueRing → ℂ} (hA : ∀ x : Matrix m n 𝔪.ResidueRing, F x ≠ 0 → A * x = 1)
     {γ : InfinitePlace E → ℤ} {ψ : ∀ w : FinPlace E, MulChar (ResField w) ℂ} [hb : b.HasWeight γ ψ]
     (hψ : ∀ w : FinPlace E, w ∉ 𝔪.places → ψ w = 1) (h_norm : star F ⬝ᵥ F ≠ 0) :
-    IsSharp b 𝔪.places.conjClosure (vacuumDatum S T 𝔪 F).1 (𝔪.levelOfSubgroup ⊥)
+    IsSharp b 𝔪.places.conjClosure (vacuumDatum S T 𝔪 F).val (𝔪.levelOfSubgroup ⊥)
       (star F ⬝ᵥ F / card (m × n → 𝔪.ResidueRing) / card (GL n 𝔪.ResidueRing)) := by
   simpa [stdLevelIndex_levelOfSubgroup] using
     (isSharpFn_of_mul_eq_one S T b hψ (fun h ↦ h_norm (by simp [h])) A hA).isSharp hn
@@ -713,8 +713,8 @@ omit [WeilData E] in
 /-- In rank one a point at `w` lies in the integral level `localIntGL Unit w` exactly when its
 determinant has order zero. -/
 lemma mem_localIntGL_unit_iff (g : GL Unit (LocField w)) :
-    g ∈ localIntGL Unit w ↔ (v g.1.det).log = 0 := by
-  have h_ne : v g.1.det ≠ 0 := by simp [-det_unique, GeneralLinearGroup.det_ne_zero]
+    g ∈ localIntGL Unit w ↔ (v g.val.det).log = 0 := by
+  have h_ne : v g.val.det ≠ 0 := by simp [-det_unique, GeneralLinearGroup.det_ne_zero]
   rw [← WithZero.exp_eq_one, WithZero.exp_log h_ne]
   exact mem_intGL_iff_det.trans (by aesop)
 

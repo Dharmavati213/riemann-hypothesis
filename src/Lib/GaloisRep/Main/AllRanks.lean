@@ -190,9 +190,9 @@ lemma New.GaloisRep.isGoodAt_hasJumpsAt_of_trace_eq_sub {ℓ : ℕ} {E n m T : T
     IsGoodAt r A ∧ HasJumpsAt r A J ∧
     ∀ (s : Gal(Ω/E)) (P : (PadicAlgCl ℓ)[X]), PolyKillsAt ρ A s P →
       (∀ l : T, PolyKillsAt (χ l) A s P) → PolyKillsAt r A s P := by
-  -- `r` is the trace limit (`IsTraceLimit`) of the constant family `σ` of `ρ` and the `χ l`, with
-  -- coefficients `a` equal to `1` and `-1`. The index type is `Option T`, with `none` for `ρ`; the
-  -- filter `pure ()` makes the limits equalities.
+  -- Regard the trace subtraction as a finite linear combination in `IsTraceLimit`.
+  -- The coefficients are `1` for `ρ` and `-1` for the characters. The filter `pure ()`
+  -- makes convergence an equality; the limit representation is already given, not constructed.
   let a : Option T → PadicAlgCl ℓ := Option.elim' 1 (-1)
   let σ : Option T → Period.PadicRep Gal(Ω/E) ℓ := Option.elim' ⟨ρ⟩ fun l ↦ ⟨χ l⟩
   have hσ_jumps : ∀ i : Option T, HasJumpsAt (σ i).rep A (Option.elim' (J + ∑ l : T, j l) j i) :=
@@ -227,7 +227,8 @@ lemma New.GaloisRep.PolyKillsAt.of_mul_of_isCoprime {ℓ : ℕ} {E n : Type} [Th
     (hb : PolyKillsAt r A s (P * b)) (hab : IsCoprime a b) :
     PolyKillsAt r A s P := by
   obtain ⟨u, v, huv⟩ := hab
-  -- A sum of two killing polynomials kills, and so does a multiple of one.
+  -- Bézout cancels the auxiliary factors inside the ideal of annihilating polynomials.
+  -- This argument does not require any of the polynomials to be characteristic.
   have hP_eq : P = P * a * u + P * b * v := by linear_combination -P * huv
   rw [hP_eq]
   exact (ha.of_dvd (dvd_mul_right _ u)).add (hb.of_dvd (dvd_mul_right _ v))

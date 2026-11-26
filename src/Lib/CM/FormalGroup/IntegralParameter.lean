@@ -2,6 +2,7 @@ module
 
 public import Lib.General.Algebra.IntegralPowerSeries
 import Lib.CM.Integrality.TorsionValues
+import TauCeti.RingTheory.PowerSeries.Rescale
 import TauCeti.RingTheory.PowerSeries.Substitution
 
 /-!
@@ -86,15 +87,6 @@ structure IsSeriesGenerator (A : Subring ℂ_[p]⟦X⟧) (T : ℂ_[p]⟦X⟧) : 
   /-- The elements of `A` are the series `g(T)` with `g` integral. -/
   mem_iff (f : ℂ_[p]⟦X⟧) : f ∈ A ↔ ∃ g : (valRingCp p)⟦X⟧, f = subst T (seriesToCp g)
 
-@[simp]
-lemma constantCoeff_rescale {a : ℂ_[p]} {f : ℂ_[p]⟦X⟧} :
-    (rescale a f).constantCoeff = f.constantCoeff := by simp [rescale]
-
-@[simp]
-lemma rescale_smul {a c : ℂ_[p]} {f : ℂ_[p]⟦X⟧} : rescale a (c • f) = c • rescale a f := by
-  ext n
-  simp [mul_left_comm]
-
 /-- The series `f(T)` and `f` have the same constant term, if `T(0) = 0`. -/
 @[simp]
 lemma constantCoeff_subst_eq {T : ℂ_[p]⟦X⟧} (hT₀ : T.constantCoeff = 0) {f : ℂ_[p]⟦X⟧} :
@@ -164,10 +156,6 @@ lemma smul_mem (hB : IsSeriesGenerator B T) {c : ℂ_[p]} {f : ℂ_[p]⟦X⟧} (
   rw [subst_smul (.of_constantCoeff_zero' hZ₀), coeff_smul, norm_smul]
   exact (mul_le_of_le_one_left (norm_nonneg _) hc).trans (hf n)
 
-lemma norm_constantCoeff_le_one (hB : IsSeriesGenerator B T) {f : ℂ_[p]⟦X⟧} (hf : f ∈ B) :
-    ‖f.constantCoeff‖ ≤ 1 := by
-  obtain ⟨g, rfl⟩ := (hB.mem_iff f).1 hf
-  simpa [hB.constantCoeff_eq_zero] using mem_range_seriesToCp.1 ⟨g, rfl⟩ 0
 
 lemma norm_coeff_one_le_one (hB : IsSeriesGenerator B T) {f : ℂ_[p]⟦X⟧} (hf : f ∈ B) :
     ‖f.coeff 1‖ ≤ 1 := by

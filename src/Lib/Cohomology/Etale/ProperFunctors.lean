@@ -552,7 +552,7 @@ lemma IsRelAffine.hasCohomDenseImage_of_lifts {X Y : PointFunctor} {p : X ⟶ Y}
     U.ι (isZeroLocusFamily_zeroPoints (𝟙 (reprBy A.obj))) (fun e he ↦ ?_) fun J hJ h_conn ↦ ?_
   · -- The points that kill `e` or `1 - e` are dense.
     exact .of_preimage_le (hasPartitions_locConstCoeff.isCohomDense_partition _ he)
-      (by exact {app _ := ↾fun x ↦ ⟨⟨x.1⟩⟩}) fun _ _ ↦
+      (by exact {app _ := ↾fun x ↦ ⟨⟨x.down⟩⟩}) fun _ _ ↦
       .imp (span_singleton_le_iff_mem (ker _)).mpr (span_singleton_le_iff_mem (ker _)).mpr
   · -- The local ring of `A` at a maximal ideal `q ⊇ J` is a valuation ring `O`. We show that every
     -- point `f` that kills `J` lies in `U`, so that the inclusion is bijective on points.

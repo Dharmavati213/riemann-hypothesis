@@ -444,7 +444,7 @@ lemma mem_range_secondBlock {g : G E (1 : n → ℤˣ)} :
       cases i <;> simp [h_entry, Matrix.one_apply]
     obtain ⟨a, ha⟩ : ∃ a : U (stdForm E (1 : n₂ → ℤˣ)),
         U.sum stdForm_sum (1, a) = g'.toUnitary :=
-      ((U.exists_sum_eq_iff_toCols_eq stdForm_sum).right (by simp)).mpr h_cols
+      (U.mem_range_sum_right stdForm_sum (by simp)).mpr h_cols
     have ha_mat : g'.adeleMatrix = fromBlocks 1 0 0 (a : Matrix n₂ n₂ (𝔸 E)) :=
       (congrArg (fun k : U (stdForm E _) ↦ k.val.val) ha).symm
     have h_sum : G.sum (1, toUnitary.symm a) = g' := by

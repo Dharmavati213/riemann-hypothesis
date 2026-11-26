@@ -284,7 +284,7 @@ end Space
 that multiplies the coordinates at τ by (2π Im τ(ȷ))^(−1/2), ȷ being the element `j` of the Weil
 data, and puts zero at the finite places. -/
 def realVec : (InfinitePlace E × n → ℂ) →+ n → 𝔸 E :=
-  AddMonoidHom.mk' (fun y i ↦ ((scaleIdele E).1.1 * fun w ↦ y (w, i), 0)) <| by
+  AddMonoidHom.mk' (fun y i ↦ ((scaleIdele E).val.1 * fun w ↦ y (w, i), 0)) <| by
     simp [mul_add, funext_iff]
 
 /-- The archimedean part of an adelic vector y in Fock coordinates: the complex numbers (2π Im

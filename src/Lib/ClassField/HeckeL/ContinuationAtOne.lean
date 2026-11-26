@@ -23,9 +23,10 @@ on `[1, ∞)`. Valuations are multiplicative: `v x ≤ 1` means integral.
   `New.IsHeckeOfType.tate_integral` adds that this volume is nonzero.
 * `New.IsHeckeOfType.exists_analyticAt_one_eulerProd`: for `ψ ≠ 1` the partial `L`-function extends
   analytically to a neighbourhood of `1`.
-* `New.IsHeckeOfType.exists_hasPrimeDensity`: for `ψ ≠ 1` the partial `L`-function is continuous on
-  `[1, ∞)`, and the values of `ψ` have mean `-m` over the primes of degree one, for some natural
-  number `m`.
+* `New.IsHeckeOfType.continuousOn_eulerProd`,
+  `New.IsHeckeOfType.exists_hasPrimeDensity_neg_natCast`: for `ψ ≠ 1` the partial `L`-function is
+  continuous on `[1, ∞)`, and the values of `ψ` have mean `-m` over the primes of degree one, for
+  some natural number `m`.
 * `New.IsHeckeOfType.eulerProd_ne_zero`: for `ψ ^ 2 ≠ 1` the partial `L`-function has no zero on
   `[1, ∞)`.
 
@@ -903,16 +904,6 @@ lemma exists_hasPrimeDensity_neg_natCast (h : IsHeckeOfType ψ n) (hS : S.Finite
     have hs_ne : (s : ℂ) - 1 ≠ 0 := mod_cast sub_ne_zero.mpr (Set.mem_Ioi.mp hs).ne'
     rw [← h_eq hs, h_fac]
     simp [cpow_neg, hs_ne]
-
-/-- Let `ψ ≠ 1` be the finite part of a Hecke character of type `n` (`IsHeckeOfType ψ n`) and `S` a
-finite set of finite places. The partial `L`-function `eulerProd (heckeCoeff ψ S)` is continuous on
-`s ≥ 1`, and for some natural number `m` the values of `ψ` at the primes of degree one outside `S`
-have mean `-m` (`HasPrimeDensity`), with no zero of the `L`-function on `s ≥ 1` if `m = 0`. -/
-lemma exists_hasPrimeDensity (h : IsHeckeOfType ψ n) (hS : S.Finite) (hψ_ne : ψ ≠ 1) :
-    ContinuousOn (eulerProd (heckeCoeff ψ S)) (Set.Ici 1) ∧
-      ∃ m : ℕ, (m = 0 → ∀ s : ℝ, 1 ≤ s → eulerProd (heckeCoeff ψ S) s ≠ 0) ∧
-        HasPrimeDensity (heckeCoeff ψ S) (-m) :=
-  ⟨h.continuousOn_eulerProd hS hψ_ne, h.exists_hasPrimeDensity_neg_natCast hS hψ_ne⟩
 
 /-- Let `ψ` be the finite part of a Hecke character of type `n` (`IsHeckeOfType ψ n`) with
 `ψ ^ 2 ≠ 1`, and let `S` be a finite set of finite places. The partial `L`-function

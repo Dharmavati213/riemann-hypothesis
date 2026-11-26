@@ -155,7 +155,7 @@ def _root_.New.stdLattice (E ι : Type*) [Field E] [NumberField E] :
 
 /-- The character `z ↦ ψf (j α ᾱ z)` of the finite adeles, with complex values. -/
 def selfDualAddChar : AddChar (𝔸f E) ℂ :=
-  coeHom.compAddChar ((ψf E).mulShift (algebraMap E (𝔸f E) j * α.1 * star α.1))
+  coeHom.compAddChar ((ψf E).mulShift (algebraMap E (𝔸f E) j * α.val * star α.val))
 
 variable {E ι}
 
@@ -194,9 +194,9 @@ lemma forall_selfDualAddChar_mul_eq_one_iff (z : 𝔸f E) :
   obtain ⟨-, -, -, t, -, h_val, h_gen⟩ :=
     exists_reduction_and_idele_generator (I := differentIdeal ℤ (𝓞 E)) differentIdeal_ne_bot
   refine (h_gen _).trans ?_
-  set c : 𝔸f E := algebraMap E (𝔸f E) j * α.1 * star α.1
+  set c : 𝔸f E := algebraMap E (𝔸f E) j * α.val * star α.val
   have h_dual (w : FinPlace E) : Valued.v (c w) =
-      WithZero.exp (multiplicity w.1 (differentIdeal ℤ (𝓞 E)) : ℤ) := WeilData.self_dual w
+      WithZero.exp (multiplicity w.asIdeal (differentIdeal ℤ (𝓞 E)) : ℤ) := WeilData.self_dual w
   -- At each place `w` the valuations of `t` and of `c = j α ᾱ` cancel.
   have h_unit (w : FinPlace E) : Valued.v (t.val w) * Valued.v (c w) = 1 := by
     rw [h_val, h_dual, ← WithZero.exp_add, neg_add_cancel, WithZero.exp_zero]
@@ -654,7 +654,7 @@ variable {E ι κ B : Type*} [Ring B] {S : Subring B} [Field E] [CMType E] [Fint
 character and |x| the idele norm. -/
 @[local simp]
 def chiAdelic : (𝔸 E)ˣ →* ℂ where
-  toFun x := υ.1 x * (↑√(ideleAbs x))⁻¹
+  toFun x := υ.val x * (↑√(ideleAbs x))⁻¹
   map_one' := by simp
   map_mul' := by simp [field]
 

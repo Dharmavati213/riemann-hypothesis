@@ -130,11 +130,11 @@ lemma ellVal_add_le_of_addVal_le {O : CoeffRing ℓ} {t' h k nTest nDetect : ℕ
     (hd : addVal O d ≤ lossT + selT + (∑ e : Fin t', (lossχ e + odd e) +
       t' * (tame + 2 * nDetect * addVal O (ℓ ^ (D.halfGap * h))) +
       (k + 1) * addVal O (ℓ ^ (D.halfGap * h)))) :
-    ellVal d.1 + 2 * padicValNat ℓ D.chosenGroupOrder ≤
+    ellVal d.val + 2 * padicValNat ℓ D.chosenGroupOrder ≤
       sel + 2 * t' * ram + loc + denominatorError D ℓ := by
   have h_odd_val (e : Fin t') : O.normLength (odd e) ≤ padicValNat ℓ (oddClassBound D) :=
     (normLength_mono (h_odd e)).trans_eq (by simp [ellVal_natCast (oddClassBound_ne_zero D)])
-  have h_val : ellVal d.1 ≤ sel + loc + (t' * padicValNat ℓ (oddClassBound D) +
+  have h_val : ellVal d.val ≤ sel + loc + (t' * padicValNat ℓ (oddClassBound D) +
       t' * (O.normLength tame + 2 * nDetect * (D.halfGap * h : ℕ)) +
       (k + 1) * (D.halfGap * h : ℕ)) := by
     grw [← normLength_addVal d, hd, ← h_sel, ← h_loc]
@@ -379,7 +379,7 @@ lemma ribet_columns {ν : ℕ} {w : K → FinPlace D.E} {τ φ : K → AbsGal D}
     grw [card_union_le, card_insert_le, card_image_le, card_univ, card_prod, card_bool]
     omega
   -- the characters `χ e`, which `g₀` separates up to `ℓ ^ (halfGap h)`
-  let χ (e : Fin V.rankDiff) : AbsGal D →* O := cyclotomicInv ℓ D.E O ^ e.1
+  let χ (e : Fin V.rankDiff) : AbsGal D →* O := cyclotomicInv ℓ D.E O ^ e.val
   have h_sep (e : Fin V.rankDiff) : ∏ e' ∈ {e}ᶜ, (χ e g₀ - χ e' g₀) ∣ ℓ ^ (D.halfGap * h) := by
     simpa [χ, cyclotomicInv] using map_dvd (algebraMap ℤ_[ℓ] O) (h_tri.prod_dvd e)
   let ϵ' : r ⊕ Fin V.rankDiff ≃ n := (summandCoordIndexEquiv r V.rankDiff).trans ϵ
@@ -413,7 +413,7 @@ lemma ribet_columns {ν : ℕ} {w : K → FinPlace D.E} {τ φ : K → AbsGal D}
   rw [hb₀_eq] at hd_le
   have ht' : V.rankDiff ≤ D.t := (h_summand π).t_le
   refine ⟨d, ?_, ellVal_add_le_of_addVal_le ht' h_le hs_card hs'_card h_loc h_selT
-    (fun e ↦ h_odd e (e.2.trans_le ht') ν) ho hd_le⟩
+    (fun e ↦ h_odd e (e.isLt.trans_le ht') ν) ho hd_le⟩
   -- `det (1 - u x g)` is the determinant of the combination `∑ ω g' (u' x g' - 1)`, where the
   -- coefficient function `ω` is `-1` at `g` and `0` elsewhere
   simp only [(hu' _).det_one_sub]

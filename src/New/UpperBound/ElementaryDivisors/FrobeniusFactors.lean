@@ -582,23 +582,16 @@ let `P = T.P`, `q = P ^ N` and `ρ = rootVector a a' = e_{a'} - e_a`. The weight
 and over the column indices. -/
 lemma weight_entryWeight (i : ZMod N) (ν : ZMod N × Fin k × Fin k →₀ ℕ) :
     weight (T.entryWeight ℓ a a' i) ν = T.copyWeight ℓ a a' i ν := by
-  let row (j : ZMod N) : ℤ := weight (fun v : Fin k × Fin k ↦ rootVector a a' v.1) (ν.curry j)
-  let col (j : ZMod N) : ℤ := weight (fun v : Fin k × Fin k ↦ rootVector a a' v.2) (ν.curry j)
-  let copy (j : ZMod N) : ℝ := weight (fun v ↦ T.entryWeight ℓ a a' i (j, v)) (ν.curry j)
-  have h_self : copy i = row i / T.P ^ ℓ := by
-    simp [copy, row, entryWeight, indexWeight, weight_eq_sum, Finset.sum_div, mul_div_assoc]
-  have h_other (j : ZMod N) (hj : j ∈ Finset.univ.erase i) :
-      copy j = T.P ^ (j - i).val / T.q * (row j - col j) / T.P ^ ℓ := by
-    simp only [copy, row, col, entryWeight, scaledIndexWeight,
-      ite_eq_right (Finset.ne_of_mem_erase hj), indexWeight, weight_eq_sum, Int.cast_sum,
-      ← Finset.sum_sub_distrib, Finset.mul_sum, Finset.sum_div, nsmul_eq_mul, Int.cast_mul,
-        Int.cast_natCast]
+  rw [weight_eq_sum, sum_prod_type (α₁ := ZMod N), ← Finset.add_sum_erase _ _ (Finset.mem_univ i),
+    copyWeight, add_div, Finset.sum_div]
+  congr 1
+  · simp [entryWeight, indexWeight, weight_eq_sum, Finsupp.curry_apply, Finset.sum_div,
+      mul_div_assoc]
+  · refine Finset.sum_congr rfl fun j hj ↦ ?_
+    simp only [entryWeight, scaledIndexWeight, ite_eq_right (Finset.ne_of_mem_erase hj),
+      indexWeight, weight_eq_sum, Finsupp.curry_apply, Int.cast_sum, ← Finset.sum_sub_distrib,
+      Finset.mul_sum, Finset.sum_div, nsmul_eq_mul, Int.cast_mul, Int.cast_natCast]
     exact Finset.sum_congr rfl fun v _ ↦ by ring
-  calc weight (T.entryWeight ℓ a a' i) ν = ∑ j : ZMod N, copy j := by
-        simp only [copy, weight_eq_sum, sum_prod_type (α₁ := ZMod N), Finsupp.curry_apply]
-    _ = T.copyWeight ℓ a a' i ν := by
-        rw [← Finset.add_sum_erase _ _ (Finset.mem_univ i), h_self, Finset.sum_congr rfl h_other,
-          copyWeight, add_div, Finset.sum_div]
 
 /-- The scaled index weight of an index at an exponent `m ≤ N` has size at most `1 / P ^ ℓ`. -/
 lemma abs_scaledIndexWeight_le {m : ℕ} (hm : m ≤ N) (b : Fin k) :

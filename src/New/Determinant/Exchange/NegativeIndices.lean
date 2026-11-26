@@ -441,7 +441,7 @@ lemma New.Exchange.homSlice_pairWeil_stabilizer_mul {r : m → ℤˣ} {s : n →
     (k : stabilizer (G E s) x') (g : G E r) (h : G E s) (f : 𝒮 (X.hom Y)) :
     D.homSlice Y x' (pairWeil X Y δ δ (g, k * h) f) =
       pairWeil Z Y ν δ (1, k) (D.homSlice Y x' (pairWeil X Y δ δ (g, h) f)) := by
-  have hk : k.1⁻¹.adeleMatrix * x' = x' := k⁻¹.2
+  have hk : k.val⁻¹.adeleMatrix * x' = x' := k⁻¹.property
   simpa [← hδ, -coe_units_inv, hk, Prod.mk_one_one, rep_apply_apply] using
     D.homSlice_levi Y ν δ 1 1 k x' (pairWeil X Y δ δ (g, h) f)
 

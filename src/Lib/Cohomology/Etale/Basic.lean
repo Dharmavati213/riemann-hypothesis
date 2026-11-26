@@ -91,11 +91,11 @@ variable {C} {Y E : D ⥤ Type 1} (p : E ⟶ Y) {J : Type 1} (X : J → C ⥤ Ty
 same image in Y(A). -/
 def cech (m : ℕ) : D ⥤ Type 1 where
   obj A := {e : Fin (m + 1) → E A // ∀ i j : Fin (m + 1), p.app A (e i) = p.app A (e j)}
-  map f := ↾fun e ↦ ⟨fun i ↦ E.map f (e.1 i), fun i j ↦ by simp [e.2 i j]⟩
+  map f := ↾fun e ↦ ⟨fun i ↦ E.map f (e.val i), fun i j ↦ by simp [e.property i j]⟩
 
 /-- The projection from the (m+1)-fold fibre power of p: E → Y to E taking the j-th coordinate. -/
 def cech.proj (m : ℕ) (j : Fin (m + 1)) : cech p m ⟶ E where
-  app _ := ↾fun e ↦ e.1 j
+  app _ := ↾fun e ↦ e.val j
 
 /-- For a family X_i of set-valued functors on C, the functor sending A to the disjoint union of
 the X_i(A). -/
@@ -201,15 +201,15 @@ def cechFunctor (m : ℕ) : Arrow (C ⥤ Type 1) ⥤ C ⥤ Type 1 :=
 /-- For u: W → Y and p: E → Y, the fibre product of W and E over Y. -/
 def fibreProd : C ⥤ Type 1 :=
   CategoryTheory.Functor.mk (fun A ↦ {x : W A × E A // u A x.1 = p A x.2}) fun f ↦
-    ↾fun x ↦ ⟨(W.map f x.1.1, E.map f x.1.2), by aesop⟩
+    ↾fun x ↦ ⟨(W.map f x.val.1, E.map f x.val.2), by aesop⟩
 
 /-- The first projection from the fibre product of W and E over Y to W. -/
 def fibreProd.fst : fibreProd u p ⟶ W where
-  app _ := ↾fun x ↦ x.1.1
+  app _ := ↾fun x ↦ x.val.1
 
 /-- The second projection from the fibre product of W and E over Y to E. -/
 def fibreProd.snd : fibreProd u p ⟶ E where
-  app _ := ↾fun x ↦ x.1.2
+  app _ := ↾fun x ↦ x.val.2
 
 /-- The map h_A → Y corresponding to a point y of Y(A) by the Yoneda lemma. -/
 def pointMap {A : C} (y : Y A) : reprBy A ⟶ Y := uliftCoyonedaEquiv.symm y
@@ -425,7 +425,7 @@ point x ∈ X(A) to the ring map R → A whose spectrum is s∘x. -/
 def pointsToBase {X : Scheme} {R : CommRingCat} (s : X ⟶ Spec R) :
     Scheme.Spec.rightOp ⋙ uliftYoneda.obj X ⟶ reprBy R where
   -- a point `x : Spec B ⟶ X` goes to the ring map `R ⟶ B` whose spectrum is `x ≫ s`
-  app B := ↾fun x ↦ ULift.up (Spec.preimage (x.1 ≫ s))
+  app B := ↾fun x ↦ ULift.up (Spec.preimage (x.down ≫ s))
   naturality := by
     -- the goal is the naturality of `Spec.preimage` under precomposition, after unfolding `h_R`
     delta reprBy reprFunctor

@@ -221,9 +221,10 @@ def HasJumps (J : Multiset ℤ) : Prop := ∀ u : ℤ, jump ρ γ u = Multiset.c
 
 /-- A chosen `Bmax`-linear endomorphism of `Bmax ⊗ T` that agrees on `Dpcris ρ` with the map
 `φ ^ m s ⊗ ρ s`, where `φ` is Frobenius, if one exists (`linearFrob_eq_tensorAction_of_exists`);
-otherwise the value is unspecified. If `ρ` is potentially crystalline, there is at most one such map
-(`IsPotentiallyCrystalline.linearFrob_eq`), and there is one when `toGp s` and `m` form a Weil pair
-(`linearFrob_apply`).
+otherwise the value is unspecified. Potential crystallinity makes `Dpcris ρ` span the tensor
+module, so there is at most one such map. Existence for Weil pairs is proved in
+`Lib.PadicHodge.Crystalline.Regularity` (`linearFrob_apply`). Thus in that case the chosen
+operator is determined by its action on the fixed periods.
 
 This operator plays the role of Fontaine's Weil–Deligne representation: it extends the action of a
 Weil pair on `Dpcris ρ` linearly to `Bmax ⊗ T`. -/
@@ -250,7 +251,8 @@ at `linearFrob ρ s m` with the coefficients acting on `T` through `coeffEnd`, i
 `Bmax ⊗ T`.
 
 This is the analogue, tested on `Bmax ⊗ T`, of the vanishing of a polynomial at an element acting on
-Fontaine's Weil–Deligne representation. -/
+Fontaine's Weil–Deligne representation. The Weil-pair condition is not a field of `IsKilledBy`;
+results that identify the chosen operator with the period action require it separately. -/
 def IsKilledBy (s : Γ) (m : ℕ) (P : Polynomial R) : Prop :=
   IsPotentiallyCrystalline ρ ∧ Polynomial.eval₂ (coeffEnd R T) (linearFrob ρ s m) P = 0
 

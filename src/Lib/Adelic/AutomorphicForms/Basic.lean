@@ -185,7 +185,7 @@ lemma IsAutomorphic.eq_zero_of_petersson_self (h : V.IsAutomorphic F)
       (integral_eq_zero_iff_of_nonneg (fun g ↦ sq_nonneg _) hF.norm.integrable_sq).1 h_int
   -- the zero set of `F` is stable under `V.Γ`, hence dense; and `F` is continuous
   have h_dense : Dense {g | F g = 0} :=
-    dense_of_ae_orbitMeasure (fun (γ : V.Γ) g hg ↦ (h.rat_mul γ γ.2 g).trans hg) h_ae
+    dense_of_ae_orbitMeasure (fun (γ : V.Γ) g hg ↦ (h.rat_mul γ γ.property g).trans hg) h_ae
   exact h.continuous.ext_on h_dense continuous_zero fun _ hg ↦ hg
 
 lemma IsForm.isBoundedMeasurable (hF : V.IsForm e F) : IsBoundedMeasurable F :=

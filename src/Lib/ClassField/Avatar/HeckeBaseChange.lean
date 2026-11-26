@@ -261,17 +261,17 @@ embedding `σ` of `E` is that of `ω` at `σ|K₀`. -/
 noncomputable def AlgHeckeChar.baseChange [Algebra K₀ E] (ω : AlgHeckeChar K₀) :
     AlgHeckeChar E where
   val :=
-    (ω.1.1.comp (Units.map (adeleNorm K₀ E)),
-      Multiplicative.ofAdd fun σ ↦ ω.1.2.toAdd (σ.comp (algebraMap K₀ E)))
+    (ω.val.1.comp (Units.map (adeleNorm K₀ E)),
+      Multiplicative.ofAdd fun σ ↦ ω.val.2.toAdd (σ.comp (algebraMap K₀ E)))
   property := by
-    refine ⟨ω.2.1.preimage (by fun_prop), fun x ↦ ?_⟩
+    refine ⟨ω.property.1.preimage (by fun_prop), fun x ↦ ?_⟩
     -- On a principal idele the norm of ideles is the norm of the fields.
     calc
-      (ω.1.1 (map (adeleNorm K₀ E) (principalIdele x)) : ℂ)
-      _ = ω.1.1 (principalIdele (x.map (Algebra.norm K₀))) :=
-        congrArg (fun y ↦ (ω.1.1 y : ℂ)) (map_adeleNorm_principalIdele x)
-      _ = ∏ s : K₀ →+* ℂ, s (Algebra.norm K₀ x.1) ^ (-ω.1.2.toAdd s) := ω.2.2 _
-      _ = _ := prod_norm_zpow x.1 _
+      (ω.val.1 (map (adeleNorm K₀ E) (principalIdele x)) : ℂ)
+      _ = ω.val.1 (principalIdele (x.map (Algebra.norm K₀))) :=
+        congrArg (fun y ↦ (ω.val.1 y : ℂ)) (map_adeleNorm_principalIdele x)
+      _ = ∏ s : K₀ →+* ℂ, s (Algebra.norm K₀ x.val) ^ (-ω.val.2.toAdd s) := ω.property.2 _
+      _ = _ := prod_norm_zpow x.val _
 
 @[fun_prop]
 lemma Selmer.continuous_cyclotomicCharIn :

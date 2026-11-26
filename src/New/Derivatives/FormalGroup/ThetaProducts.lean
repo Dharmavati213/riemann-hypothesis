@@ -5,6 +5,7 @@ public import New.Derivatives.Divisibility.NormalForm
 public import New.Derivatives.FormalGroup.Resolution
 public import New.Derivatives.Vacuum.TightFrames
 import New.Derivatives.FormalGroup.Exponent
+import TauCeti.RingTheory.PowerSeries.Rescale
 
 /-!
 # The normal form of theta products at non-split primes

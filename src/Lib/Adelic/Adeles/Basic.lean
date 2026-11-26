@@ -196,7 +196,7 @@ lemma mem_Ô {x : 𝔸f E} : x ∈ Ô E ↔ ∀ w : HeightOneSpectrum (𝓞 E), 
 field at w. -/
 def reduceAt : Ô E →+* ResField w :=
   (residue (LocInt w)).comp
-    (((evalAt w).domRestrict (Ô E)).codRestrict (LocInt w) fun x ↦ mem_Ô.1 x.2 w)
+    (((evalAt w).domRestrict (Ô E)).codRestrict (LocInt w) fun x ↦ mem_Ô.1 x.property w)
 
 instance : MeasurableSpace (LocField w) := borel _
 
@@ -282,7 +282,7 @@ variable {u : FinPlace K} {w : FinPlace L}
 `f : K → L` to a homomorphism of the completions at u and at w. -/
 def locMap (h : w.comap f = u) : adicCompletion K u →+* adicCompletion L w :=
   let := f.toAlgebra
-  have : w.1.LiesOver u.1 := .mk (congrArg HeightOneSpectrum.asIdeal h).symm
+  have : w.asIdeal.LiesOver u.asIdeal := .mk (congrArg HeightOneSpectrum.asIdeal h).symm
   -- `f` is uniformly continuous for the valuations at `u` and `w`, so it extends to the completions
   (equiv L w).symm.toRingHom.comp
     ((mapRingHom _ (uniformContinuous_algebraMap_liesOver K L u w).continuous).comp
@@ -638,9 +638,9 @@ lemma exists_natCast_smul_mem_of_isCompact {M : Type*} [AddCommMonoid M] [Module
   -- `N • 1` come close to `0` for arbitrarily large `N`.
   have : CompactSpace (Ô E) := isCompact_iff_compactSpace.1 isCompact_Ô
   have h_cont : Continuous fun p : Ô E × M ↦ (p.1 : 𝔸f E) • p.2 := by fun_prop
-  have h_small : ∀ᶠ a : Ô E in nhds 0, ∀ x ∈ K, a.1 • x ∈ U :=
+  have h_small : ∀ᶠ a : Ô E in nhds 0, ∀ x ∈ K, a.val • x ∈ U :=
     hK.eventually_forall_of_forall_eventually fun x _ ↦ h_cont.tendsto' (0, x) 0 (by simp) hU
-  have h_freq : ∃ᶠ N : ℕ in .atTop, ∀ x ∈ K, (N • (1 : Ô E)).1 • x ∈ U :=
+  have h_freq : ∃ᶠ N : ℕ in .atTop, ∀ x ∈ K, (N • (1 : Ô E)).val • x ∈ U :=
     (mapClusterPt_zero_atTop_nsmul _).frequently h_small
   obtain ⟨N, hN, hN_mem⟩ := h_freq.forall_exists_of_atTop 1
   exact ⟨N, one_le_iff_ne_zero.1 hN, fun x hx ↦ by simpa using hN_mem x hx⟩

@@ -147,7 +147,7 @@ structure IsLayering (T : FockDualPair ε ε' ι) (l ν : HCParam ε) (ρ : (t :
   /-- The weight `ν r` is that of the vacuum plus the signs `New.FockDualPair.varSign` at the pairs
   `(r, κ t i)`, over all `(t, i)` with row `ρ t i = r`. -/
   weight_eq (r : R) :
-      ν r = T.vacuumWeight (ε r) + ∑ t : L, ∑ i : I t with ρ t i = r, (T.varSign (r, κ t i)).1
+      ν r = T.vacuumWeight (ε r) + ∑ t : L, ∑ i : I t with ρ t i = r, (T.varSign (r, κ t i)).val
 
 omit [Fintype ι] in
 /-- Let `(ρ, κ)` be layers and let `P` be the product of their minors, with the matrices transposed.
@@ -206,7 +206,7 @@ theorem IsLayering.isKHighest_and_isTermwiseHarmonic (H : IsLayering T l ν ρ �
         ((if ρ t i = a then if T.varSign (a, κ t i) = 1 then 1 else 0 else 0) -
             if ρ t i = a then if T.varSign (a, κ t i) = -1 then 1 else 0 else 0 :
             MvPolynomial ι ℂ) =
-          MvPolynomial.C (if ρ t i = a then ((T.varSign (a, κ t i)).1 : ℂ) else 0) := by
+          MvPolynomial.C (if ρ t i = a then ((T.varSign (a, κ t i)).val : ℂ) else 0) := by
       split_ifs <;> simp_all [Int.units_ne_iff_eq_neg]
     -- so the difference of the two counts is the sum of the signs
     rw [oscRows_E_eq_polarisation_sub rfl, H.polarisation_prod_det hP a a 1 rfl (.inl rfl),
@@ -776,7 +776,7 @@ theorem exists_bump_integratedRep_eq (hp : OscillatorPair T π π') [Nonempty R]
           smear (fun x : USign ε' ↦ π' x (proj Φ)) (hrep.continuous (proj Φ)) β g := by
         simp [← hβ, ← h_smear β, map_integratedRep hrep (integrable_bump_inv_smul ..) (π' g)]
       have h_right : HasDerivAt (fun t : ℝ ↦ π' (expU (t • Z)) (proj y))
-          (smearΦ (bumpDeriv Z.1 β)) 0 := by
+          (smearΦ (bumpDeriv Z.val β)) 0 := by
         simpa [smearΦ, h_orbit] using
           hasDerivAt_smear _ β (hrep.continuous (proj Φ)) (hasDerivAt_expU Z 1 0)
       exact (hp.isDerivedAction_integratedRep hΦ Z y).unique h_right
