@@ -935,7 +935,7 @@ unitary group over `E` of the definite form `stdSpace E n` (identity matrix, sum
 coordinates), embedded in `Gf E n`. A case of Minkowski's lemma on integral matrices of finite
 order. -/
 lemma classAut_eq_bot {E : Type} [Field.{0} E] [CMType E] {w : ι → FinPlace E}
-    [Nontrivial (InfinitePlace E)] (hw : w.Injective)
+    (hw : w.Injective)
     (h_large : (2 * card n) ^ finrank ℚ E < ∏ i : ι, (w i).q)
     {K : Subgroup (Gf E n)} (hK : K ≤ levelOf w ⊥) (g : Gf E n) :
     classAut (stdSpace E n).Γf K g = ⊥ := by

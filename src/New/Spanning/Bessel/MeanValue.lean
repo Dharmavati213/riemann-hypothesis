@@ -6,6 +6,7 @@ import Lib.Adelic.Adeles.AdditiveCharacter
 import Lib.DiscreteSeries.Bessel.UnipotentHaarMeasure
 import Lib.DiscreteSeries.Bruhat.ComplexPlace
 import Lib.DiscreteSeries.Haar.TotalMass
+import TauCeti.Topology.Algebra.Group.Units
 import TauCeti.Topology.Instances.Matrix
 
 /-!

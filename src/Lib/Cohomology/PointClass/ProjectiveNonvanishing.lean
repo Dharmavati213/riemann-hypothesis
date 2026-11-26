@@ -567,6 +567,16 @@ private lemma projSpace.map_unitsExtClass_eq_map_of_comp_eq {B : AbFunctor Padic
       rw [hj']
     _ = _ := H.map_comp ..
 
+private lemma gluing_apply_point (c : PadicTest)
+    (t : (tilt ⋙ reprBy (CommAlgCat.of OFlat OFlat)).obj c) :
+    (gluing.app c).hom (.of (⟨⟨false⟩, t⟩ : (tiltPointsSum pointOrTorus).obj c)) =
+      .of (⟨⟨false⟩, ⟨evalZero _ ≫ t.down⟩⟩ : twoDiscs.obj c) := freeAb.desc_of ..
+
+private lemma gluing_apply_torus (c : PadicTest) (t : (tilt ⋙ reprBy (monoidAlg ℚ)).obj c) :
+    (gluing.app c).hom (.of (⟨⟨true⟩, t⟩ : (tiltPointsSum pointOrTorus).obj c)) =
+      .of (⟨⟨false⟩, ⟨discToTorus (-coeHom) ≫ t.down⟩⟩ : twoDiscs.obj c) -
+        .of (⟨⟨true⟩, ⟨discToTorus coeHom ≫ t.down⟩⟩ : twoDiscs.obj c) := freeAb.desc_of ..
+
 /-- The map `j` of a Toda cancellation lifts through the projective line. Let `A` be a natural map
 from the perfect disc to the affine line over `B` whose values at `u` and `u⁻¹` multiply to `1` on
 the torus (`hA_inv`), and let its image `a` in `R[1/p]` be invariant under the twists of the two
@@ -644,21 +654,11 @@ private lemma projSpace.exists_map_eq_map_of_isTodaCancellation
     · -- The two charts are glued along `u ↦ u⁻¹`.
       rintro c ⟨⟨_ | _⟩, t⟩
       · let u : (tiltPointsSum pointOrTorus).obj c := ⟨⟨false⟩, t⟩
-        let z : twoDiscs.obj c := ⟨⟨false⟩, ⟨evalZero (tilt.obj c)⟩⟩
-        have h_glue : (gluing.app c).hom (.of u) = .of z := by
-          change FreeAddCommGroup.lift _ (.of u) = _
-          erw [FreeAddCommGroup.lift_apply_of]
-          exact congrArg (fun a ↦ FreeAddCommGroup.of (⟨⟨false⟩, ⟨a⟩⟩ : twoDiscs.obj c))
-            (evalZero_comp t.down)
         change (F.app c).hom ((gluing.app c).hom (.of u)) = 0
-        erw [h_glue, hF, sub_self]
+        erw [gluing_apply_point c t, evalZero_comp, hF, sub_self]
       · let u : (tiltPointsSum pointOrTorus).obj c := ⟨⟨true⟩, t⟩
         let u₀ : twoDiscs.obj c := ⟨⟨false⟩, ⟨discToTorus (-coeHom) ≫ t.down⟩⟩
         let u₁ : twoDiscs.obj c := ⟨⟨true⟩, ⟨discToTorus coeHom ≫ t.down⟩⟩
-        have h_glue : (gluing.app c).hom (.of u) = .of u₀ - .of u₁ := by
-          change FreeAddCommGroup.lift _ (.of u) = _
-          erw [FreeAddCommGroup.lift_apply_of]
-          rfl
         have h_eq : φ c u₀ = φ c u₁ := by
           change projSpace.mk _ _ = projSpace.mk _ _
           apply mk_eq_mk_iff_cross_mul.mpr
@@ -679,7 +679,7 @@ private lemma projSpace.exists_map_eq_map_of_isTodaCancellation
           fin_cases i <;> fin_cases j <;>
             simp [hv₀, v₁, Fin.insertNth_zero', aeval_X, mul_comm, h_mul, v₀]
         change (F.app c).hom ((gluing.app c).hom (.of u)) = 0
-        erw [h_glue, _root_.map_sub, hF, hF, h_eq, sub_self]
+        erw [gluing_apply_torus c t, _root_.map_sub, hF, hF, h_eq, sub_self]
     · -- `φ` is invariant under the twist, by `ha_twist`.
       let t' : twoDiscs.obj c := ⟨t.fst, ⟨discTwist epsPow t.fst ≫ t.snd.down⟩⟩
       have h_twist : ((oneSub (discTwist epsPow)).app c).hom (.of t) =
@@ -953,22 +953,12 @@ lemma projSpace.exists_hodgeTateMap_pointClass_line :
         (f.app c).hom ((gluing.app c).hom (.of u))
       erw [NatTrans.app_neg, AddCommGrpCat.hom_neg, AddMonoidHom.neg_apply]
       obtain ⟨⟨_ | _⟩, t⟩ := u
-      · let u : (tiltPointsSum pointOrTorus).obj c := ⟨⟨false⟩, t⟩
-        let z : (tilt ⋙ reprBy (monoidAlg ℚ≥0)).obj c := ⟨evalZero _ ≫ t.down⟩
-        have h_glue : (gluing.app c).hom (.of u) =
-            .of (⟨⟨false⟩, z⟩ : twoDiscs.obj c) := freeAb.desc_of ..
-        erw [h_W_false, h_glue, h_f_false]
-      · let u : (tiltPointsSum pointOrTorus).obj c := ⟨⟨true⟩, t⟩
-        let z₀ : (tilt ⋙ reprBy (monoidAlg ℚ≥0)).obj c := ⟨discToTorus (-coeHom) ≫ t.down⟩
-        let z₁ : (tilt ⋙ reprBy (monoidAlg ℚ≥0)).obj c := ⟨discToTorus coeHom ≫ t.down⟩
-        have h_glue : (gluing.app c).hom (.of u) =
-            .of (⟨⟨false⟩, z₀⟩ : twoDiscs.obj c) -
-              .of (⟨⟨true⟩, z₁⟩ : twoDiscs.obj c) := freeAb.desc_of ..
-        have h_D : D.hom (.of (torusPoint c t)) =
+      · erw [h_W_false, gluing_apply_point c t, h_f_false]
+      · have h_D : D.hom (.of (torusPoint c t)) =
             FreeAddCommGroup.of (((unimodular (d := 1)).toFunctor.map (proj.app c)) (torusPoint c t)) := by
           change FreeAddCommGroup.map _ (.of (torusPoint c t)) = _
           exact FreeAddCommGroup.map_of_apply _
-        erw [h_W_true, h_glue, _root_.map_sub, h_f_false, h_f_true, zero_sub,
+        erw [h_W_true, gluing_apply_torus c t, _root_.map_sub, h_f_false, h_f_true, zero_sub,
           _root_.map_neg, _root_.map_neg, h_D, freeAb.map_of]
         rfl
     · -- `a` is invariant under the twist.
@@ -1002,25 +992,15 @@ lemma projSpace.exists_hodgeTateMap_pointClass_line :
         (oneSubMu.app c).hom ((κ.app c).hom ((gluing.app c).hom (.of u)))
       erw [NatTrans.app_neg, AddCommGrpCat.hom_neg, AddMonoidHom.neg_apply, ht, _root_.map_sub, _root_.map_neg, _root_.map_sub, neg_sub]
       obtain ⟨⟨_ | _⟩, t⟩ := u
-      · let u : (tiltPointsSum pointOrTorus).obj c := ⟨⟨false⟩, t⟩
-        let z : (tilt ⋙ reprBy (monoidAlg ℚ≥0)).obj c := ⟨evalZero _ ≫ t.down⟩
-        have h_glue : (gluing.app c).hom (.of u) =
-            .of (⟨⟨false⟩, z⟩ : twoDiscs.obj c) := freeAb.desc_of ..
-        erw [h_W_false, h_glue, h_κ]
+      · erw [h_W_false, gluing_apply_point c t, h_κ]
         rw [sub_self]
         change 0 = (oneSubMu.app c).hom 0
         exact (map_zero (oneSubMu.app c).hom).symm
-      · let u : (tiltPointsSum pointOrTorus).obj c := ⟨⟨true⟩, t⟩
-        let z₀ : (tilt ⋙ reprBy (monoidAlg ℚ≥0)).obj c := ⟨discToTorus (-coeHom) ≫ t.down⟩
-        let z₁ : (tilt ⋙ reprBy (monoidAlg ℚ≥0)).obj c := ⟨discToTorus coeHom ≫ t.down⟩
-        have h_glue : (gluing.app c).hom (.of u) =
-            .of (⟨⟨false⟩, z₀⟩ : twoDiscs.obj c) -
-              .of (⟨⟨true⟩, z₁⟩ : twoDiscs.obj c) := freeAb.desc_of ..
-        let t' : (tilt ⋙ reprBy (monoidAlg ℚ)).obj c :=
+      · let t' : (tilt ⋙ reprBy (monoidAlg ℚ)).obj c :=
           ⟨charTwist epsPow (AddMonoidHom.id ℚ) ≫ t.down⟩
         have h_W_twist : (W.app c).hom (.of u') = .of (torusPoint c t') :=
           h_W_true c t'
-        erw [h_glue, _root_.map_sub (κ.app c).hom, h_κ c false z₀, h_κ c true z₁,
+        erw [gluing_apply_torus c t, _root_.map_sub (κ.app c).hom, h_κ c false, h_κ c true,
           h_W_true c t, h_W_twist]
         apply neg_injective
         erw [neg_sub]

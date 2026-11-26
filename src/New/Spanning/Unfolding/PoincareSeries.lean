@@ -3,6 +3,8 @@ module
 public import New.Spanning.Bessel.LargeFunction
 public import New.Spanning.Unfolding.Terms
 public import New.UpperBound.Objects.Rows
+public import TauCeti.Topology.Algebra.Group.Units
+public import TauCeti.Topology.Instances.Matrix
 import Lib.DiscreteSeries.FlenstedJensen.PsiKTypes
 import New.Spanning.Unfolding.AmplitudeSums
 import New.Spanning.Unfolding.CutoffIntegral

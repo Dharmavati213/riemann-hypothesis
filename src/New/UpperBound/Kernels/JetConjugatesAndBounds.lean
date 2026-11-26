@@ -560,7 +560,7 @@ lemma integral_exp_neg_inv_mul_normalizedVolume {ι : Type} [Fintype ι] {a : �
 /-- A function on `ι → ℂ` bounded by `C * exp (-|y|² / a)` has integral of norm at most
 `C * a ^ card ι` against `normalizedVolume ι`, for `a > 0`. This measure is Lebesgue measure
 divided by `π ^ card ι`, so that `exp (-|y|²)` has integral `1`. -/
-lemma norm_integral_normalizedVolume_le {ι : Type} [Fintype ι] [DecidableEq ι] {a C : ℝ}
+lemma norm_integral_normalizedVolume_le {ι : Type} [Fintype ι] {a C : ℝ}
     (ha : 0 < a) {f : (ι → ℂ) → ℂ} (hf : ∀ y : ι → ℂ, ‖f y‖ ≤ C * exp (-a⁻¹ * ∑ i : ι, ‖y i‖ ^ 2)) :
     ‖∫ y : ι → ℂ, f y ∂normalizedVolume ι‖ ≤ C * a ^ card ι := by
   rw [← integral_exp_neg_inv_mul_normalizedVolume ha, ← integral_const_mul]

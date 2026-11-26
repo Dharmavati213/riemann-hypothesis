@@ -12,6 +12,7 @@ import Lib.Weil.DualPair.ThetaLiftConvergence
 import New.Determinant.Exchange.ConeImage
 import New.Determinant.Exchange.RealVectors
 import New.Determinant.Exchange.RemovingPlanes
+import TauCeti.Topology.Algebra.Group.Units
 import TauCeti.Topology.Instances.Matrix
 
 /-!

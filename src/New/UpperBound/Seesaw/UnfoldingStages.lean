@@ -16,6 +16,8 @@ import New.UpperBound.Seesaw.Frequency
 import New.UpperBound.Seesaw.GluedLevel
 import New.UpperBound.Seesaw.LevelIdeles
 import New.UpperBound.Seesaw.StandardLines
+import TauCeti.Topology.Algebra.Group.Units
+import TauCeti.Topology.Instances.Matrix
 
 /-!
 # Unfolding the chain of lifts: double lifts and the functions of the unfolding

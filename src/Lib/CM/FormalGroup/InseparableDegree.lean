@@ -255,7 +255,7 @@ lemma exists_rescale_sigma_sq_eq {α : ℂ} (hα : α ∈ quadInt d) (hα₀ : �
         Finset.sum_mul, mul_assoc]
   -- The monomials have integral torsion values, so the largest term has a unit coefficient.
   have hm (i : ℕ) (hi : i ≤ ν) : ‖ιₚ (m i)‖ ≤ 1 := by
-    have h_deg : monomialDeg (2 * ν - 2 * i, i, 0) = 2 * ν := by grind
+    have h_deg : monomialDeg (2 * ν - 2 * i, i, 0) = 2 * ν := by lia
     simpa only [h_deg] using C.hasIntegralValues_monomialSection (2 * ν - 2 * i, i, 0) _
       (C.isTorsion_t_div hα hα₀ hν)
   obtain ⟨i, hi, h_le⟩ : ∃ i ∈ Finset.range (ν + 1),

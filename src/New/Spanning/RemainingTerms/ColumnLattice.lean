@@ -277,6 +277,6 @@ theorem exists_isAddFundamentalDomain_columnLattice {E : Type} [Field E] [CMType
   obtain ⟨n, hn⟩ : ∃ n : ℤ, ∑ v : InfinitePlace E, (Φ v (∑ l : ι, (qᴴ * q') l l)).re = n :=
     exists_int_eq_sum_re h_int
   refine ⟨n, .trans ?_ hn⟩
-  simp [e, Fintype.sum_sigma, Matrix.mul_apply, Finset.sum_add_distrib]
+  simp [e, Fintype.sum_sigma, Matrix.mul_apply]
 
 end New.Filling

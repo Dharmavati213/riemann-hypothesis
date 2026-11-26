@@ -8,6 +8,7 @@ import Lib.General.LinearAlgebra.BlockEmbeddings
 import Lib.General.Measure.IntegralOperators
 import Lib.Weil.DualPair.MixedModel
 import Lib.Weil.MixedModel.ThetaInvariance
+import TauCeti.Topology.Algebra.Group.Units
 import TauCeti.Topology.Instances.Matrix
 
 /-!

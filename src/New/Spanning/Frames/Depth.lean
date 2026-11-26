@@ -4,6 +4,8 @@ public import New.Spanning.Frames.Correlations
 import New.Spanning.Frames.QuadricPlancherel
 import New.Spanning.Frames.QuadricVolumes
 import New.Spanning.Frames.TwoGauges
+import TauCeti.Topology.Algebra.Group.Units
+import TauCeti.Topology.Instances.Matrix
 
 /-!
 # Depth

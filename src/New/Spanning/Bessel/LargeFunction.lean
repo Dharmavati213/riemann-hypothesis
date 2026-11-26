@@ -10,6 +10,8 @@ import Lib.DiscreteSeries.FlenstedJensen.SquareIntegrability
 import Lib.DiscreteSeries.Haar.TotalMass
 import Lib.Shimura.Uniformisation.HolomorphicFamilies
 import New.Appendix.DiscreteSeries.StationaryPosition
+import TauCeti.Topology.Algebra.Group.Units
+import TauCeti.Topology.Instances.Matrix
 
 /-!
 # Bessel systems of discrete series type and a Bessel function large at a point

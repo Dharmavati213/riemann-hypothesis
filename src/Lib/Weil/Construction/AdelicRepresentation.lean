@@ -10,6 +10,8 @@ public import Lib.Weil.Construction.FiniteMultiplier
 public import Lib.Weil.Fock.Basic
 public import TauCeti.Algebra.Group.AddChar.Basic
 public import TauCeti.NumberTheory.NumberField.Countable
+public import TauCeti.Topology.Algebra.Group.Units
+public import TauCeti.Topology.Instances.Matrix
 
 /-!
 # The adelic Weil representation on 𝒮(V) and its theta functional

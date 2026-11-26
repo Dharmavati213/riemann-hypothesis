@@ -5,8 +5,11 @@ import Lib.Adelic.Adeles.AdditiveCharacter
 import Lib.Cohomology.Etale.Basic
 import Lib.DiscreteSeries.Bessel.UnipotentHaarMeasure
 import Lib.DiscreteSeries.Bruhat.ComplexPlace
+import Lib.DiscreteSeries.Haar.TotalMass
 import Lib.Shimura.ComplexTheta.AppellHumbertData
 import New.Spanning.Bessel.OpenCellBound
+import TauCeti.Topology.Algebra.Group.Units
+import TauCeti.Topology.Instances.Matrix
 
 /-!
 # One pairing on the open cell, at all places together

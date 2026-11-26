@@ -8,6 +8,8 @@ import Lib.General.Analysis.MeanValueAndTaylor
 import Lib.General.LinearAlgebra.PolarDecomposition
 import Lib.General.Measure.IdempotentKernel
 import Lib.General.NumberTheory.FrobeniusOrbits
+import TauCeti.Topology.Algebra.Group.Units
+import TauCeti.Topology.Instances.Matrix
 
 /-!
 # First properties of c_λ and its K-types

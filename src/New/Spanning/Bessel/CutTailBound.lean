@@ -4,6 +4,8 @@ public import New.Spanning.Bessel.LargeFunction
 import Lib.DiscreteSeries.Bessel.SchurBound
 import Lib.DiscreteSeries.FlenstedJensen.SquareIntegrability
 import Lib.Shimura.ComplexTheta.AppellHumbertData
+import TauCeti.Topology.Algebra.Group.Units
+import TauCeti.Topology.Instances.Matrix
 
 /-!
 # The Bessel function at a real place: decay and cut

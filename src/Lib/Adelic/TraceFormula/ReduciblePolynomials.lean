@@ -5,6 +5,8 @@ import Lib.Adelic.Adeles.StrongApproximation
 import Lib.Adelic.Reduction.DefiniteClassSums
 import Lib.Adelic.TraceFormula.CoprimeFactors
 import TauCeti.NumberTheory.NumberField.Countable
+import TauCeti.Topology.Algebra.Group.Units
+import TauCeti.Topology.Instances.Matrix
 
 /-!
 # The geometric side, polynomial by polynomial

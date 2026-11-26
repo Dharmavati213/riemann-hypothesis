@@ -347,7 +347,7 @@ lemma exists_iwahoriHeckeHom_injective [CompactSpace 𝒪[F]] (hϖ : v ϖ.val = 
   let φ : Module.End ℂ ρ := compactMean ρ.ρ proIwahori
   let P (σ : Perm (Fin N)) : Prop := φ (ρ (permGL σ⁻¹) y) = 0
   have hx_zero : compactMean ρ.ρ proIwahori (ρ (diagGL (s a)) x) = 0 := congrArg Subtype.val hx
-  have h_start : P (finCycle a)⁻¹ := by simpa [P, φ, y, n] using hx_zero
+  have h_start : P (finCycle a)⁻¹ := by simpa [P, y, n] using hx_zero
   -- The quadratic relation, with `c = 0`, carries `P` across a transposition that removes an
   -- inversion.
   have h_swap (σ : Perm (Fin N)) (i j : Fin N) (hij : i ⋖ j) (hσ : σ j < σ i) (hP : P σ) :

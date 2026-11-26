@@ -540,44 +540,6 @@ lemma mul_log_pow_mul_le (h_large : T.IsLargeDegree k n r θ) :
 
 /-- Let `T` be a Frobenius cycle with `N` letters and the prime power `P = T.P`, and let
 `q = P ^ N`. Let the degree `n` be large: `0 < r ≤ k / 2`, `0 < θ ≤ 1`, `n ^ 4 ≤ q` and
-`(N k log q / θ) ^ 5 P ^ (3 r) ≤ n`. Then `c₀ P ^ (2 r) ≤ n`, where
-`c₀ = T.multinomialExponent k = k ^ 2 log_p q` for the prime `p = T.p` of which `P` is a power. -/
-lemma multinomialExponent_mul_le_degree (h_large : T.IsLargeDegree k n r θ) :
-    (T.multinomialExponent k : ℝ) * T.P ^ (2 * r) ≤ n := by
-  set L : ℝ := Real.log T.q
-  have hL : 27 ≤ L := h_large.twenty_seven_le_log_q
-  have hN : (2 : ℝ) ≤ N := by exact_mod_cast T.two_le_card_letters
-  have hk : (2 : ℝ) ≤ k := by exact_mod_cast h_large.two_le_rank
-  have hP : (1 : ℝ) ≤ T.P := T.one_lt_P.le
-  have hNL : 2 ≤ N * L := by nlinarith
-  have h_one_le : 1 ≤ N * k * L := by nlinarith
-  have h_const : (3 / 2 : ℝ) ≤ N * (N * L) := by nlinarith
-  calc (T.multinomialExponent k : ℝ) * T.P ^ (2 * r)
-      ≤ 3 / 2 * k ^ 2 * L * T.P ^ (2 * r) := by grw [T.multinomialExponent_le_mul_log k]
-    _ ≤ N * (N * L) * k ^ 2 * L * T.P ^ (2 * r) := by gcongr
-    _ = (N * k * L) ^ 2 * T.P ^ (2 * r) := by ring
-    _ ≤ (N * k * L) ^ 5 * T.P ^ (3 * r) := by gcongr <;> norm_num
-    _ ≤ θ * n := h_large.mul_log_pow_mul_le
-    _ ≤ n := mul_le_of_le_one_left n.cast_nonneg h_large.proportion_le_one
-
-/-- Let `T` be a Frobenius cycle with `N` letters and the prime power `P = T.P`, and let
-`q = P ^ N`. Let the degree `n` be large: `0 < r ≤ k / 2`, `0 < θ ≤ 1`, `n ^ 4 ≤ q` and
-`(N k log q / θ) ^ 5 P ^ (3 r) ≤ n`. Then `N c₀ ≤ c_div`, where
-`c₀ = T.multinomialExponent k = k ^ 2 log_p q` with `p = T.p`, and `c_div = T.divisorConstant k n
-r = N n (1 / P ^ (2 r) + r ^ 2 / (k P))`. -/
-lemma mul_multinomialExponent_le_divisorConstant (h_large : T.IsLargeDegree k n r θ) :
-    (N * T.multinomialExponent k : ℝ) ≤ T.divisorConstant k n r := by
-  have hP : (1 : ℝ) ≤ T.P := T.one_lt_P.le
-  have h_div : (T.multinomialExponent k : ℝ) ≤ n / (T.P : ℝ) ^ (2 * r) :=
-    (le_div_iff₀ (by positivity)).2 h_large.multinomialExponent_mul_le_degree
-  calc (N * T.multinomialExponent k : ℝ) ≤ N * (n / (T.P : ℝ) ^ (2 * r)) := by gcongr
-    _ = N * n * (1 / (T.P : ℝ) ^ (2 * r)) := by ring
-    _ ≤ N * n * (1 / (T.P : ℝ) ^ (2 * r) + r ^ 2 / (k * T.P)) :=
-        mul_le_mul_of_nonneg_left (le_add_of_nonneg_right (by positivity)) (by positivity)
-    _ = T.divisorConstant k n r := by rw [divisorConstant]
-
-/-- Let `T` be a Frobenius cycle with `N` letters and the prime power `P = T.P`, and let
-`q = P ^ N`. Let the degree `n` be large: `0 < r ≤ k / 2`, `0 < θ ≤ 1`, `n ^ 4 ≤ q` and
 `(N k log q / θ) ^ 5 P ^ (3 r) ≤ n`. Then `8 N k c* P ^ (2 r) ≤ θ n`, where
 `c* = defectThreshold k c = 3 k c` for the precision
 `c = T.congruencePrecision k = 5 N k ^ 2 log_p q`, `p = T.p`. -/
@@ -610,6 +572,40 @@ lemma mul_defectThreshold_le_mul_degree (h_large : T.IsLargeDegree k n r θ) :
         exacts [T.one_lt_P.le, by norm_num]
     _ = u ^ 5 * T.P ^ (3 * r) := by ring
     _ ≤ θ * n := h_large.mul_log_pow_mul_le
+
+/-- Let `T` be a Frobenius cycle with `N` letters and the prime power `P = T.P`, and let
+`q = P ^ N`. Let the degree `n` be large: `0 < r ≤ k / 2`, `0 < θ ≤ 1`, `n ^ 4 ≤ q` and
+`(N k log q / θ) ^ 5 P ^ (3 r) ≤ n`. Then `c₀ P ^ (2 r) ≤ n`, where
+`c₀ = T.multinomialExponent k = k ^ 2 log_p q` for the prime `p = T.p` of which `P` is a power. -/
+lemma multinomialExponent_mul_le_degree (h_large : T.IsLargeDegree k n r θ) :
+    (T.multinomialExponent k : ℝ) * T.P ^ (2 * r) ≤ n := by
+  have hN : 0 < N := NeZero.pos N
+  have hk : 0 < k := lt_of_lt_of_le (by decide : 0 < 2) h_large.two_le_rank
+  have h_coeff : T.multinomialExponent k ≤ 8 * N * k * defectThreshold k (T.congruencePrecision k) := by
+    simp only [defectThreshold, congruencePrecision, ← Nat.mul_assoc]
+    exact Nat.le_mul_of_pos_left _ (by positivity)
+  calc (T.multinomialExponent k : ℝ) * T.P ^ (2 * r)
+      ≤ 8 * N * k * defectThreshold k (T.congruencePrecision k) * T.P ^ (2 * r) := by
+          gcongr
+          exact_mod_cast h_coeff
+    _ ≤ θ * n := h_large.mul_defectThreshold_le_mul_degree
+    _ ≤ n := mul_le_of_le_one_left n.cast_nonneg h_large.proportion_le_one
+
+/-- Let `T` be a Frobenius cycle with `N` letters and the prime power `P = T.P`, and let
+`q = P ^ N`. Let the degree `n` be large: `0 < r ≤ k / 2`, `0 < θ ≤ 1`, `n ^ 4 ≤ q` and
+`(N k log q / θ) ^ 5 P ^ (3 r) ≤ n`. Then `N c₀ ≤ c_div`, where
+`c₀ = T.multinomialExponent k = k ^ 2 log_p q` with `p = T.p`, and `c_div = T.divisorConstant k n
+r = N n (1 / P ^ (2 r) + r ^ 2 / (k P))`. -/
+lemma mul_multinomialExponent_le_divisorConstant (h_large : T.IsLargeDegree k n r θ) :
+    (N * T.multinomialExponent k : ℝ) ≤ T.divisorConstant k n r := by
+  have hP : (1 : ℝ) ≤ T.P := T.one_lt_P.le
+  have h_div : (T.multinomialExponent k : ℝ) ≤ n / (T.P : ℝ) ^ (2 * r) :=
+    (le_div_iff₀ (by positivity)).2 h_large.multinomialExponent_mul_le_degree
+  calc (N * T.multinomialExponent k : ℝ) ≤ N * (n / (T.P : ℝ) ^ (2 * r)) := by gcongr
+    _ = N * n * (1 / (T.P : ℝ) ^ (2 * r)) := by ring
+    _ ≤ N * n * (1 / (T.P : ℝ) ^ (2 * r) + r ^ 2 / (k * T.P)) :=
+        mul_le_mul_of_nonneg_left (le_add_of_nonneg_right (by positivity)) (by positivity)
+    _ = T.divisorConstant k n r := by rw [divisorConstant]
 
 end IsLargeDegree
 

@@ -7,6 +7,8 @@ import Lib.Adelic.Reduction.DefiniteClassSums
 import Lib.DiscreteSeries.FlenstedJensen.PsiKTypes
 import Lib.DiscreteSeries.Rigidity.KernelFixes
 import Lib.GLn.SchurModule.SchurNorm
+import TauCeti.Topology.Algebra.Group.Units
+import TauCeti.Topology.Instances.Matrix
 
 /-!
 # Automorphic forms on standard definite spaces as algebraic forms

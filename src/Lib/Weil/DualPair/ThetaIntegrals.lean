@@ -8,6 +8,8 @@ import Lib.Weil.DualPair.FiniteAction
 import Lib.Weil.DualPair.KernelDecay
 import Lib.Weil.DualPair.ThetaLiftConvergence
 import Lib.Weil.DualPair.WeilAction
+import TauCeti.Topology.Algebra.Group.Units
+import TauCeti.Topology.Instances.Matrix
 
 /-!
 # Terms of theta kernels at rational matrices and basic laws of theta integrals

@@ -4,6 +4,8 @@ public import Lib.DiscreteSeries.Rigidity.RepresentationsAndCasimirs
 import Lib.Adelic.Adeles.AdditiveCharacter
 import Lib.DiscreteSeries.Haar.TotalMass
 import Lib.General.Analysis.HolomorphicIntegrals
+import TauCeti.Topology.Algebra.Group.Units
+import TauCeti.Topology.Instances.Matrix
 
 /-!
 # Right derivatives and bump convolution for smooth functions on U(p,q)

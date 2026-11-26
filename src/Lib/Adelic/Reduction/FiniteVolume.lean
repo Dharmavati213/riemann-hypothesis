@@ -7,6 +7,8 @@ import Lib.Adelic.Adeles.StrongApproximation
 import Lib.Adelic.Unitary.WeakApproximation
 import Lib.General.NumberTheory.SUnitsAndClassNumber
 import TauCeti.NumberTheory.NumberField.Countable
+import TauCeti.Topology.Algebra.Group.Units
+import TauCeti.Topology.Instances.Matrix
 
 /-!
 # Adelic reduction theory, Mahler's criterion and finite volume of the arithmetic quotient

@@ -391,13 +391,6 @@ lemma basicCosetRep_mem_basicDoubleCoset :
 lemma residueKer_basicCosetRep : residueKer (basicCosetRep U).val = U :=
   (exists_mem_basicDoubleCoset_residueKer_eq U).choose_spec.right
 
-/-- The representative `New.basicCosetRep` U lies in `basicDoubleCoset` d with d = dim U, that is,
-in GL_n(O_w) diag(ϖ 1_d, 1) GL_n(O_w). The kernel of its reduction modulo w is U. -/
-lemma basicCosetRep_mem_and_residueKer_eq :
-    basicCosetRep U ∈ basicDoubleCoset n w (finrank (ResField w) U) ∧
-    residueKer (basicCosetRep U).val = U :=
-  ⟨basicCosetRep_mem_basicDoubleCoset U, residueKer_basicCosetRep U⟩
-
 /-- For g in `New.basicDoubleCoset` n w j, the kernel of the reduction of g modulo w has
 dimension j. -/
 lemma finrank_residueKer (hg : g ∈ basicDoubleCoset n w j) :

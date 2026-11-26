@@ -8,6 +8,8 @@ import Lib.DiscreteSeries.Haar.TotalMass
 import Lib.General.Analysis.GaussianIntegral
 import Lib.Shimura.ComplexTheta.AppellHumbertData
 import New.Spanning.Frames.Gains
+import TauCeti.Topology.Algebra.Group.Units
+import TauCeti.Topology.Instances.Matrix
 
 /-!
 # The normalized cell integral Ξ and the local bounds at ℂ for cut Bessel functions

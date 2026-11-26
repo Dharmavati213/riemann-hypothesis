@@ -13,6 +13,8 @@ import New.Spanning.Bessel.CutTailBound
 import New.Spanning.Bessel.SchurBound
 import New.Spanning.Frames.RealBandLimits
 import New.Spanning.Unfolding.Climbing
+import TauCeti.Topology.Algebra.Group.Units
+import TauCeti.Topology.Instances.Matrix
 
 /-!
 # Filling data from admissible data, with Bessel systems at the real places

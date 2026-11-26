@@ -8,6 +8,8 @@ import Lib.Adelic.Witt.WittTheorem
 import Lib.Shimura.Uniformisation.HolomorphicFamilies
 import Lib.Weil.Construction.CanonicalTheta
 import Lib.Weil.DualPair.ThetaLiftConvergence
+import TauCeti.Topology.Algebra.Group.Units
+import TauCeti.Topology.Instances.Matrix
 
 /-!
 # Change of point and sign, and descent of the exchange identity by removing hyperbolic planes

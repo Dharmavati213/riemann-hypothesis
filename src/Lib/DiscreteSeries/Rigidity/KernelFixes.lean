@@ -7,6 +7,8 @@ import Lib.DiscreteSeries.Holomorphic.HighestVectorExtension
 import Lib.DiscreteSeries.Holomorphic.MaximalCompactMinors
 import Lib.DiscreteSeries.Rigidity.HighestVectorsAndFiltration
 import Lib.General.LinearAlgebra.PolarDecomposition
+import TauCeti.Topology.Algebra.Group.Units
+import TauCeti.Topology.Instances.Matrix
 
 /-!
 # The idempotent e_λ, the operator π(e_λ), and rigidity of highest vectors of type Λ

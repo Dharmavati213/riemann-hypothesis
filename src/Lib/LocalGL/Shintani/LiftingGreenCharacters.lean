@@ -447,11 +447,9 @@ private lemma lift_brauerLift_pow_of_forall_eq_one [Algebra k' k']
     (η : K → ℂ) : Lift ℂ (brauerLift k' fun y : K ↦ η (y ^ a)) (brauerLift k' η) := by
   intro m
   have h_span : (brauerLift k' η).evalGL ∈ virtualChars ℂ (GL (Fin m) k') := by
-    -- part (b) of `isIrreducibleChar_and_mem_virtualChars_and_exists_mul`: every inner product with
-    -- a character is a complex number
-    obtain ⟨-, h_crit, -⟩ := isIrreducibleChar_and_mem_virtualChars_and_exists_mul ℂ
-      (isClassFunction_evalGL (F := brauerLift k' η) (n := Fin m))
-    exact h_crit fun χ _ ↦ ⟨_, rfl⟩
+    -- `IsClassFunction.mem_virtualChars`: every inner product with a character is a complex number
+    exact (isClassFunction_evalGL (F := brauerLift k' η) (n := Fin m)).mem_virtualChars
+      fun χ _ ↦ ⟨_, rfl⟩
   refine hasCommonLift_of_gal_trivial h_gal h_span fun g ↦ ?_
   simp [Hall.evalGL, charpoly_map, h_roots]
 

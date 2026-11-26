@@ -656,7 +656,7 @@ lemma New.integral_quotMeasure_iwasawa [PolishSpace M] [LocallyCompactSpace M]
       (by fun_prop) fun γ x ↦ hFΓ γ γ.property x).trans ⟨by fun_prop, by fun_prop, ?_⟩
     simp (disch := fun_prop) only [hFτ, ← map_fst_prod, map_map, comp_def]
   have h_int : Integrable (fun p : M × K ↦ F (σ p)) ρ := by
-    simpa [ρ, σ, integrable_withDensity_iff_integrable_smul' hw_meas, hw_pos, le_of_lt]
+    simpa [ρ, integrable_withDensity_iff_integrable_smul' hw_meas, hw_pos, le_of_lt]
       using h_weighted
   refine h_div F _ hF (h_law.integrable_iff.2 (h_int.smul_measure (measure_ne_top lam' .univ))) ?_
   rw [h_law.integral_eq, integral_smul_measure,

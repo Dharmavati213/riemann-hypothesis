@@ -883,7 +883,7 @@ lemma rankInner_mul_eq_sum_skew :
       (projectionOnto_surjective hZ.symm) (by simp [pairs, ↓Equiv.coe_fn_mk])
   have h_whole (a : (End k U)ˣ) (b : (End k Z)ˣ) (x : Z →ₗ[k] U) :
       simClassOf (pairs ⟨U, blocks (a, b, x)⟩).1.1 = simClassOf (blockTriangularEnd a.1 b.1 x) :=
-    simClassOf_eq_of_equiv e.symm (by simp [pairs, blocks, ↓Equiv.coe_fn_mk, e, add_comm])
+    simClassOf_eq_of_equiv e.symm (by simp [pairs, blocks, ↓Equiv.coe_fn_mk, add_comm])
   -- Both sides become means over `a`, `b`, `x`: `dim Z = n - dim U`, and `blockAverage_simClassOf`
   -- computes the block average on the representatives `a`, `b`.
   have dim_eq : n = finrank k Z + finrank k U := by simpa using e.finrank_eq.symm

@@ -6,6 +6,8 @@ public import Lib.General.NumberTheory.EmbeddingsAndDifferent
 public import Lib.Shimura.ComplexTheta.AppellHumbertData
 public import New.Spanning.Bessel.Basic
 public import TauCeti.NumberTheory.NumberField.Countable
+public import TauCeti.Topology.Algebra.Group.Units
+public import TauCeti.Topology.Instances.Matrix
 
 /-!
 # The data, standing hypotheses and amplitudes of the filling theorem

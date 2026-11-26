@@ -5,6 +5,7 @@ public import Lib.LocalGL.Iwahori.ParahoricStructure
 import Lib.General.LinearAlgebra.Eigenvalues
 import Lib.General.LinearAlgebra.MatrixPolynomials
 import TauCeti.LinearAlgebra.Trace.Idempotent
+import TauCeti.Topology.Algebra.Group.Units
 import TauCeti.Topology.Instances.Matrix
 
 /-!

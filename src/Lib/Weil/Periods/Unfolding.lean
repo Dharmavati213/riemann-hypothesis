@@ -5,6 +5,8 @@ import Lib.Adelic.QuotientMeasure.IwasawaUnfolding
 import Lib.Adelic.QuotientMeasure.UnfoldingInStages
 import Lib.Cohomology.Etale.Basic
 import Lib.Weil.DualPair.ThetaLiftConvergence
+import TauCeti.Topology.Algebra.Group.Units
+import TauCeti.Topology.Instances.Matrix
 
 /-!
 # One step of the seesaw unfolding of the theta integral over the Bessel group

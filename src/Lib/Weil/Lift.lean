@@ -9,6 +9,8 @@ import Lib.Adelic.AutomorphicForms.Cuspidality
 import Lib.DiscreteSeries.FlenstedJensen.PsiKTypes
 import Lib.DiscreteSeries.Theta.FockJointHarmonics
 import Lib.DiscreteSeries.Theta.LocalCorrespondence
+import TauCeti.Topology.Algebra.Group.Units
+import TauCeti.Topology.Instances.Matrix
 
 /-!
 # Theta lifts of forms: products of minors, edges, arrows between spaces of forms

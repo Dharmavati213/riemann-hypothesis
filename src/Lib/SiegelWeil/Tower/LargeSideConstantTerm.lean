@@ -6,6 +6,8 @@ public import Lib.SiegelWeil.Tower.LineGaussSums
 import Lib.ClassField.HeckeCharacter.TameModulus
 import Lib.DiscreteSeries.Haar.TotalMass
 import Lib.Shimura.Uniformisation.HolomorphicFamilies
+import TauCeti.Topology.Algebra.Group.Units
+import TauCeti.Topology.Instances.Matrix
 
 /-!
 # Removing a plane: the constant term on the side of the large space
@@ -610,7 +612,7 @@ theorem integral_zetaIntegrand_of_one_lt
 character `𝔠 : SplitTameChar E μ` in terms of the cone kernel holds for all `x ≥ 1`, under the same
 hypotheses, if Tate's integral is continuous in its exponent: both sides are then continuous up to
 `1`. -/
-theorem integral_zetaIntegrand_of_one_le [Fintype b] [DecidableEq b]
+theorem integral_zetaIntegrand_of_one_le [Fintype b]
     (h_factor : LineValueFactors 𝔠 A X σ v y g f κ)
     (hc : ∀ a : 𝔸f E, lineFinFactor 𝔠 ϖ.val a = lineFinFactor 𝔠 1 (a * c))
     (hn : 2 ∣ card n) (hv : IsSchwartzVector v) (u : (𝔸 E)ˣ)

@@ -7,6 +7,8 @@ import New.Spanning.RemainingTerms.BorderedDeterminant
 import New.Spanning.Unfolding.AmplitudeSums
 import New.Spanning.Unfolding.CutoffIntegral
 import New.Spanning.Unfolding.Packing
+import TauCeti.Topology.Algebra.Group.Units
+import TauCeti.Topology.Instances.Matrix
 
 /-!
 # Residue lifts, lattice charts and common flag vectors: which filling terms contribute

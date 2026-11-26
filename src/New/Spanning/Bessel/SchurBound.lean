@@ -7,6 +7,8 @@ import Lib.DiscreteSeries.Bessel.UnipotentHaarMeasure
 import Lib.DiscreteSeries.FlenstedJensen.PsiKTypes
 import Lib.DiscreteSeries.Rigidity.HighestVectorsAndFiltration
 import Lib.Shimura.ComplexTheta.AppellHumbertData
+import TauCeti.Topology.Algebra.Group.Units
+import TauCeti.Topology.Instances.Matrix
 
 /-!
 # Schur's bound for a Bessel function and its derivatives

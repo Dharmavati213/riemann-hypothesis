@@ -3,6 +3,8 @@ module
 public import New.Spanning.Bessel.Basic
 import Lib.DiscreteSeries.Bessel.SchurBound
 import Lib.DiscreteSeries.Bessel.UnipotentHaarMeasure
+import TauCeti.Topology.Algebra.Group.Units
+import TauCeti.Topology.Instances.Matrix
 
 /-!
 # Normalisation of a Bessel function and of its cut

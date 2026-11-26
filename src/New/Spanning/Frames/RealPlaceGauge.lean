@@ -13,6 +13,8 @@ public import Lib.General.Analysis.GaussianIntegral
 public import Lib.Shimura.ComplexTheta.AppellHumbertData
 public import New.Spanning.Bessel.Basic
 public import New.Spanning.Frames.Correlations
+public import TauCeti.Topology.Algebra.Group.Units
+public import TauCeti.Topology.Instances.Matrix
 
 /-!
 # Floor measures at the complex place: Haar measure, place datum and gauge

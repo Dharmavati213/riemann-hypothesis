@@ -6,6 +6,7 @@ public import Lib.SiegelWeil.Mass
 import Lib.General.LinearAlgebra.HermiteForm
 import Lib.General.Measure.HaarNormalisation
 import TauCeti.Analysis.Matrix.IndefiniteUnitaryGroup
+import TauCeti.Topology.Algebra.Group.Units
 
 /-!
 # Local measure bounds and local densities at a finite place

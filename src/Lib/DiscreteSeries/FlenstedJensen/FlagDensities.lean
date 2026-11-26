@@ -6,6 +6,8 @@ import Lib.DiscreteSeries.FlenstedJensen.RightDerivatives
 import Lib.DiscreteSeries.Haar.TotalMass
 import Lib.General.LinearAlgebra.PolarDecomposition
 import Lib.General.Measure.IdempotentKernel
+import TauCeti.Topology.Algebra.Group.Units
+import TauCeti.Topology.Instances.Matrix
 
 /-!
 # Integrals of densities over unitary groups and over the flag variety of `K_ℂ`

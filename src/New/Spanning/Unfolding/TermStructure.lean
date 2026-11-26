@@ -588,7 +588,7 @@ theorem CharsAgree.disjoint_flagSpan_coe_commonIsotropic {j : Fin (𝔰.ϱ + 2)}
 Let `S.termDisc γ = |δ_{ϱ+1}|² - N² |δ_ϱ|²` vanish. Let `γ` have the cell rank `j`:
 `NormOnePairOccursFrom j γ` holds, `δ_j ≠ 0`, and `j = ϱ + 1` exactly when `S.termDisc γ ≠ 0`. Then
 `j + finrank E (commonIsotropic γ) = ϱ`. -/
-theorem CharsAgree.add_finrank_commonIsotropic_eq {j : Fin (𝔰.ϱ + 2)} [HasPrimitiveRoot5040 E]
+theorem CharsAgree.add_finrank_commonIsotropic_eq {j : Fin (𝔰.ϱ + 2)}
     (h_agree : S.CharsAgree γ) (h_disc : S.termDisc γ = 0) (h_rank : S.HasCellRank j γ) :
     j.val + finrank E (commonIsotropic γ) = 𝔰.ϱ := by
   have h_sup : flagSpan γ j ⊔ commonIsotropic γ = isotropicSpan γ :=

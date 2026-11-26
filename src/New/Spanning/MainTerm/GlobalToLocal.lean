@@ -8,6 +8,9 @@ import Lib.Shimura.ComplexTheta.AppellHumbertData
 import New.Spanning.Unfolding.AmplitudeSums
 import New.Spanning.Unfolding.Link
 import New.Spanning.Unfolding.Packing
+import TauCeti.NumberTheory.NumberField.Countable
+import TauCeti.Topology.Algebra.Group.Units
+import TauCeti.Topology.Instances.Matrix
 
 /-!
 # Class sums as orbit sums, and unfolding at a set of primes
@@ -747,7 +750,7 @@ the group of block upper unitriangular isometries, and put `K(M) = F.congruenceS
 `T` with the cosets of `𝖴 ∩ K(M)` in 𝖴 at `T`. This is stated by a list `r` of rational
 representatives, one for each coset at `T`. -/
 lemma IsFillingData.exists_injective_mem_besselU_and_isIntegralOff [hF : S.IsFillingData T F]
-    [hM_inv : Fact (S.ideleM⁻¹.val ∈ integralOff T)] [S.IsAdmissible] (c : S.Classes) :
+    [hM_inv : Fact (S.ideleM⁻¹.val ∈ integralOff T)] (c : S.Classes) :
     ∃ r : F.UnipotentCosets → S.G E,
       Injective r ∧
       (∀ w : F.UnipotentCosets, r w ∈ besselU) ∧

@@ -478,7 +478,7 @@ lemma powerDegree_add_partnerDegree_le_of_isNearPair (D : Data P) {p : ℕ} [hp 
 lemma partner_bijective (D : Data P) (p e : ℕ) : Function.Bijective (P.partner D.towerExp p e) :=
   Group.mulLeft_bijective (P.placeOfInt D.towerExp (-p ^ e))
 
-/-- Let `p` be a prime greater than `k = D.k`, and `l` a degree between the weights
+/-- Let `p` be a natural number greater than `k = D.k`, and `l` a degree between the weights
 `κ(τ) = D.weight τ` and `κ(τ) + x ^ 42`, `x = D.x`. The couplings `z_τ ^ p * z_(-p τ)` at all places
 `τ` are used `j τ = min ⌊(l_τ - n♯)₊ / p⌋ l_(-p τ)` times each. Together they have total degree at
 most `l`. -/

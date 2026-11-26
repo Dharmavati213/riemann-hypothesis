@@ -141,7 +141,7 @@ lemma norm_coeff_expSubst_smul_le_one {τ : Type} {a : ℂ_[p]} {π : valRingCp 
   refine norm_coeff_expSubst_le_one (by simp [hG]) (fun d hd ↦ ?_) hm
   calc ‖coeff d (a • seriesToCp G)‖ = ‖a * (coeff d G : valRingCp p)‖ := rfl
     _ ≤ p ^ (-(1 / (p - 1)) : ℝ) := by
-      grw [← hπ, norm_mul, norm_mul, dvd_iff_norm_le.1 (h_dvd d hd)]
+      grw [← hπ, norm_mul, norm_mul, valRingCp.dvd_iff_norm_le.1 (h_dvd d hd)]
 
 /-- To prove that `F` has the normal form `F(ϖ z) = W exp (c_ϖ Ξ₀)`, where `W` is integral,
 `c_ϖ = ϖ ^ (p + 1) / p` and `Ξ₀ = couplingSum S pr l`, it is enough to know the exponent modulo a

@@ -302,8 +302,7 @@ lemma IsLabel.isIrreducibleChar_labelChar (hc : IsLabel (Fintype.card n) c) :
   have h_degree : 0 ≤ ((labelChar T c).evalGL (n := n) 1).re := (labelChar_degree_bounds K hc).1
   -- With the function itself as test function: norm `1`, a value at `1` with nonnegative real part
   -- and integer inner products with all characters make it irreducible.
-  exact (isIrreducibleChar_and_mem_virtualChars_and_exists_mul ℤ isClassFunction_evalGL).left
-    (labelChar T c).evalGL
+  exact isClassFunction_evalGL.isIrreducibleChar_of_classInner_eq_intCast
     isClassFunction_evalGL (h_norm.trans_ne one_ne_zero) h_norm h_degree
     fun χ hχ _ _ ↦ hχ.exists_classInner_eq h_virtual
 

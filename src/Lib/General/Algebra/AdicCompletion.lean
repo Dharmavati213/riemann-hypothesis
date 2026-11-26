@@ -105,7 +105,7 @@ lemma mem_valRingCp {x : ℂ_[p]} : x ∈ valRingCp p ↔ ‖x‖ ≤ 1 := Iff.r
 @[simp]
 lemma valRingCp.algebraMap_apply (x : valRingCp p) : algebraMap (valRingCp p) ℂ_[p] x = x := rfl
 
-lemma valRingCp.dvd_iff_norm_le (x y : valRingCp p) : x ∣ y ↔ ‖(y : ℂ_[p])‖ ≤ ‖(x : ℂ_[p])‖ :=
+lemma valRingCp.dvd_iff_norm_le {x y : valRingCp p} : x ∣ y ↔ ‖(y : ℂ_[p])‖ ≤ ‖(x : ℂ_[p])‖ :=
   (Valuation.integer.integers (NormedField.valuation (K := ℂ_[p]))).dvd_iff_le
 
 instance : ValuationRing (valRingCp p) :=

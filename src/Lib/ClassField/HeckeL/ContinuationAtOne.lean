@@ -4,6 +4,7 @@ public import Lib.ClassField.HeckeL.EulerProduct
 public import Lib.ClassField.HeckeL.IdelicThetaSum
 import Lib.Adelic.Adeles.StrongApproximation
 import Lib.General.Analysis.HolomorphicIntegrals
+import TauCeti.Topology.Algebra.Group.Units
 
 /-!
 # Analyticity at 1 of L-functions of nontrivial Hecke characters

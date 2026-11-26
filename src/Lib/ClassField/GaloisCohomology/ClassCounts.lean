@@ -290,9 +290,6 @@ theorem ker_classMap : A.classMap.ker = (B1 A.ρ).toAddSubgroup := by
 def quotB1EquivH1 : (Z1 A.ρ ⧸ B1 A.ρ) ≃+ continuousCohomology 1 A.toTopRep :=
   QuotientAddGroup.liftEquiv (B1 A.ρ).toAddSubgroup A.classMap_surjective A.ker_classMap.symm
 
-@[simp]
-theorem quotB1EquivH1_mk (z : Z1 A.ρ) : A.quotB1EquivH1 (Submodule.Quotient.mk z) = A.classMap z :=
-  rfl
 
 end DiscreteModule
 

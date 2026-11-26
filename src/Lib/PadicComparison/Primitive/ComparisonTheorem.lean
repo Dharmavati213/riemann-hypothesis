@@ -195,7 +195,7 @@ omit [ThePrime p] [Algebra Ω ℂ_[p]] in
 from all test rings to tests over `Ω` is bijective on cohomology (`isBijective_algToBaseChange`)
 and commutes with base change (`baseChangeMap_pull`), and on tests over `Ω` flat base change holds
 by `hasFlatBaseChange_algPointsOf`. -/
-lemma hasFlatBaseChange_geomPoints [InvertsPrime Ω p] (Y : Over (Spec R)) [IsProper Y.hom] :
+lemma hasFlatBaseChange_geomPoints (Y : Over (Spec R)) [IsProper Y.hom] :
     HasFlatBaseChange (freeAb (testIncl ⋙ geomPoints R Ω Y)) := by
   -- the eight instance arguments of `HasFlatBaseChange` stay anonymous
   intro S T L _ _ _ _ _ _ _ _ Φ n

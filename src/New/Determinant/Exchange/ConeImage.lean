@@ -5,7 +5,10 @@ public import Lib.SiegelWeil.Tower.LineGaussSums
 public import Lib.Weil.DualPair.ThetaIntegrals
 public import Lib.Weil.MixedModel.TargetZeroTerm
 import Lib.Adelic.Witt.SmoothWitt
+import Lib.DiscreteSeries.Haar.TotalMass
 import Lib.SiegelWeil.Tower.LargeSideConstantTerm
+import TauCeti.Topology.Algebra.Group.Units
+import TauCeti.Topology.Instances.Matrix
 
 /-!
 # The image of the cone integral

@@ -4,6 +4,7 @@ public import Lib.DiscreteSeries.Haar.GramPolar
 public import Lib.General.Measure.FibreMeasure
 import Lib.Adelic.Adeles.AdditiveCharacter
 import Lib.DiscreteSeries.Haar.TotalMass
+import TauCeti.Topology.Algebra.Group.Units
 import TauCeti.Topology.Instances.Matrix
 
 /-!

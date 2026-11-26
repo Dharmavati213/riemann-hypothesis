@@ -1,6 +1,7 @@
 module
 
 public import Lib.DiscreteSeries.Bessel.Basic
+import TauCeti.Topology.Algebra.Group.Units
 
 /-!
 # Traces and L² bounds for Bessel functions

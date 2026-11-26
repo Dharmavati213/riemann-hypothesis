@@ -8,6 +8,8 @@ import Lib.DiscreteSeries.Haar.TotalMass
 import Lib.Weil.DualPair.ThetaIntegrals
 import Lib.Weil.DualPair.ThetaLiftConvergence
 import Lib.Weil.DualPair.WeilAction
+import TauCeti.Topology.Algebra.Group.Units
+import TauCeti.Topology.Instances.Matrix
 
 /-!
 # Siegel sets and the Siegel–Weil formula in Weil's range

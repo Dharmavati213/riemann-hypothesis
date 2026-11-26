@@ -7,6 +7,8 @@ import Lib.DiscreteSeries.FlenstedJensen.PsiKTypes
 import Lib.DiscreteSeries.Haar.TotalMass
 import Lib.GLn.SchurModule.WeylKernel
 import Lib.Shimura.ComplexTheta.AppellHumbertData
+import TauCeti.Topology.Algebra.Group.Units
+import TauCeti.Topology.Instances.Matrix
 
 /-!
 # Irreducibility under U(n)^Φ, polarisation and averaging of determinant polynomials

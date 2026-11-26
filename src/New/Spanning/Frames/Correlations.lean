@@ -1,6 +1,8 @@
 module
 
 public import New.Spanning.Frames.Levels
+import TauCeti.Topology.Algebra.Group.Units
+import TauCeti.Topology.Instances.Matrix
 
 /-!
 # The scale, near points and partial correlations

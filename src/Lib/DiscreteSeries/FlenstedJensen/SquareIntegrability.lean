@@ -10,6 +10,8 @@ import Lib.DiscreteSeries.Rigidity.HighestVectorsAndFiltration
 import Lib.General.LinearAlgebra.PolarDecomposition
 import Lib.General.Measure.IdempotentKernel
 import Lib.General.Measure.IntegralOperators
+import TauCeti.Topology.Algebra.Group.Units
+import TauCeti.Topology.Instances.Matrix
 
 /-!
 # Decay, tail bounds and the L² model of the discrete series coefficient c_λ

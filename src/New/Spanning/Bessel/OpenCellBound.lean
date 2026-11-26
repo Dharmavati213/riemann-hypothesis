@@ -8,6 +8,8 @@ import Lib.DiscreteSeries.Haar.TotalMass
 import Lib.General.Analysis.GaussianIntegral
 import Lib.Shimura.ComplexTheta.AppellHumbertData
 import New.Spanning.Unfolding.Link
+import TauCeti.Topology.Algebra.Group.Units
+import TauCeti.Topology.Instances.Matrix
 
 /-!
 # Bounds near a point of Ω and the open cell bound for a Bessel system

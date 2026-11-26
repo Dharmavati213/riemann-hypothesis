@@ -110,7 +110,7 @@ with `ω(z i, z (i + 1)) = 1` for every lift, let `t` be any tensor of the data 
 lifts, and let `j < m`. If `ω(1, z (j + 1))`, acting alone on the factor of the lift from stage
 `j` to stage `j + 1`, fixes `t`, then the chain with data `t` has the same value at `φ` and at
 the right translate of `φ` by `z 0`. -/
-theorem TensorChain.lift_algFormRep_of_map_eq [WeilData E] {z : ∀ i : ℕ, Gf E (n i)}
+theorem TensorChain.lift_algFormRep_of_map_eq {z : ∀ i : ℕ, Gf E (n i)}
     (hz : ∀ i : ℕ, (k i).ω (z i, z (i + 1)) = 1) {m j : ℕ} (hj : j < m) {t : TensorChain S m}
     (h_fix : map (fun i : ℕ ↦ if i = j then (k i).ω (1, z (i + 1)) else 1) m t = t)
     (φ : AlgForm (n 0) κ (e 0)) :

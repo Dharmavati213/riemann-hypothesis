@@ -328,7 +328,7 @@ lemma IsEigenQuotient.exists_sum_baseChange_eq_zero_of_jump_eq_zero [Fintype ι]
       let := γ.toModule
       have h_eig (i : ι) (s : σ) (x : V i) : (f i).val (T i s x) = γ (θ s) * (f i).val x := by
         have h_f_apply : ((Φ u [s] f) i).val x = (((a ∘ θ) s • f) i).val x := by rw [hf s]
-        simpa [Φ, hodgeTateMaps.pull, ha, Algebra.smul_def] using! h_f_apply
+        simpa [hodgeTateMaps.pull, ha, Algebra.smul_def] using! h_f_apply
       -- the instances are passed by hand, since `ℂ_ℓ` carries another action of `ℚ̄_ℓ`
       obtain ⟨φ, hφ⟩ := @h_univ ℂ_[ℓ] _ _ _ (.of_algHom (γ.extendScalarsOfIsLocalization _ _⁰))
         (fun i ↦ ⟨(f i).val.toAddHom, by simp [Algebra.smul_def]⟩) h_eig

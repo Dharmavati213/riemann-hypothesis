@@ -12,6 +12,8 @@ import Lib.DiscreteSeries.FlenstedJensen.PsiKTypes
 import Lib.General.Analysis.GaussianIntegral
 import Lib.General.Analysis.MeanValueAndTaylor
 import Lib.Weil.Unramified.HeckeGL
+import TauCeti.Topology.Algebra.Group.Units
+import TauCeti.Topology.Instances.Matrix
 
 /-!
 # Cuspidality bounds, unipotent reduction, rapid decay and finite dimension of forms

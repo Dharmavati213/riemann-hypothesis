@@ -8,6 +8,8 @@ import Lib.DiscreteSeries.Holomorphic.MaximalCompactMinors
 import Lib.General.Analysis.MeanValueAndTaylor
 import Lib.General.LinearAlgebra.PolarDecomposition
 import TauCeti.LinearAlgebra.Matrix.Triangular
+import TauCeti.Topology.Algebra.Group.Units
+import TauCeti.Topology.Instances.Matrix
 
 /-!
 # The holomorphic model function and discrete series coefficients in the holomorphic chamber

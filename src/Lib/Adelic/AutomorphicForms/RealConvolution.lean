@@ -7,6 +7,8 @@ import Lib.Adelic.QuotientMeasure.IwasawaUnfolding
 import Lib.Adelic.Reduction.DefiniteClassSums
 import Lib.DiscreteSeries.FlenstedJensen.PsiKTypes
 import Lib.DiscreteSeries.Rigidity.KernelFixes
+import TauCeti.Topology.Algebra.Group.Units
+import TauCeti.Topology.Instances.Matrix
 
 /-!
 # Convolution over real points, cusp kernels, the Petersson product and Poincaré series

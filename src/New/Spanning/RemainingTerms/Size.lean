@@ -10,6 +10,8 @@ import New.Spanning.RemainingTerms.SchurOrbit
 import New.Spanning.Unfolding.Climbing
 import New.Spanning.Unfolding.CutoffIntegral
 import New.Spanning.Unfolding.Packing
+import TauCeti.Topology.Algebra.Group.Units
+import TauCeti.Topology.Instances.Matrix
 
 /-!
 # The orbit bound: a bound for a block of amplitudes; the second moment of a set of terms

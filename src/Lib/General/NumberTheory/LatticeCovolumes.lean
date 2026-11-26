@@ -155,7 +155,7 @@ omit [IsTopologicalRing A] [LocallyCompactSpace A] in
 /-- A left invertible matrix whose columns fall into two blocks becomes primitive after
 multiplication by a block upper triangular matrix with invertible diagonal blocks. -/
 lemma exists_isPrimitiveMatrix_mul_fromBlocks (m : Matrix π (σ ⊕ τ) A) (hm : HasLeftInv m) :
-    ∃ᵉ (a : GL σ A) (e : GL τ A) (z : Matrix σ τ A),
+    ∃ a : GL σ A, ∃ e : GL τ A, ∃ z : Matrix σ τ A,
       IsPrimitiveMatrix R (m * fromBlocks a.val z 0 e.val) := by
   -- Some `b`, block triangular for the weight 0 on `σ` and 1 on `τ`, makes `m * b` primitive.
   obtain ⟨b, hb_tri, hb_prim⟩ := ad.isValuationPair.exists_isPrimitiveMatrix_mul hm (0 ⊕ᵥ 1)

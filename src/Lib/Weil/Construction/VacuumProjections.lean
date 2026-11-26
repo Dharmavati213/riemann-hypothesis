@@ -196,19 +196,14 @@ lemma _root_.New.mulVec_finVec {n₁ : Type*} [Fintype n₁] (m : Matrix n n₁ 
     m *ᵥ finVec y = finVec ((m.map fun a : 𝔸 E ↦ a.snd) *ᵥ y) := by
   ext i <;> simp [mulVec_eq_sum, Finset.mul_sum, mul_assoc, finVec, fst_sum, snd_sum]
 
-omit [WeilData E] in
-/-- The finite components of the matrix of `g : G E s` form the matrix of its finite part. -/
-private lemma adeleMatrix_map_snd (g : G E s) :
-    (g.adeleMatrix.map fun a : 𝔸 E ↦ a.snd) = (g.snd : Matrix n n (𝔸f E)) :=
-  rfl
-
 /-- The Weil representation intertwines the finite Heisenberg operators:
 `ω g ∘ finHeisenbergOp x = finHeisenbergOp (g_f x) ∘ ω g`, where `g_f = g.snd` is the finite
 component. -/
 @[simp]
 lemma omega_finHeisenbergOp (g : G E s) (x : n → 𝔸f E) (f : 𝒮 V) :
     V.ω g (V.finHeisenbergOp x f) = V.finHeisenbergOp (g.snd *ᵥ x) (V.ω g f) := by
-  simp [semichar, mulVec_finVec, finHeisenbergOp, omega_rho, adeleMatrix_map_snd]
+  simp [semichar, mulVec_finVec, finHeisenbergOp, omega_rho]
+  rfl
 
 omit [WeilData E] in
 @[simp]

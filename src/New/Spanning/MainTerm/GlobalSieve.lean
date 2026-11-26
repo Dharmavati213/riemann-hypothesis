@@ -393,7 +393,7 @@ lemma integral_stdAddChar_mul_extendToAdeles (hr : ∀ v : InfinitePlace E, 0 < 
     have h_arg (v : InfinitePlace E) :
         (ξ * m z).1 v = 2 * π * .I / Φ v S.deltaE * Φ v y * z.1 v := by
       have h_ne : (r v : ℂ) ≠ 0 := ofReal_ne_zero.2 (hr v).ne'
-      simp [hξ, m, ratPoint, field]
+      simp [hξ, ratPoint, field]
     have h_snd : (ξ * m z).2 = ratToPlaces T y * evalPlaces T z.2 := by simp [hξ, m, ratPoint]
     simp only [ψ, globalChar, h_arg, h_snd, S.stdAddChar_div_deltaE T hy hz]
   calc

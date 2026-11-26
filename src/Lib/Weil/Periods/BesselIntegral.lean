@@ -6,6 +6,8 @@ import Lib.Adelic.QuotientMeasure.UnfoldingInStages
 import Lib.Adelic.Reduction.DefiniteClassSums
 import Lib.Adelic.Unitary.RationalPoints
 import Lib.General.Measure.IntegralOperators
+import TauCeti.Topology.Algebra.Group.Units
+import TauCeti.Topology.Instances.Matrix
 
 /-!
 # Integrals over the Bessel subgroup and the orbits surviving unipotent twists
@@ -129,7 +131,7 @@ private lemma exists_unitriangular_mul_map_mem_matrix (w : ι → ℤ) {A : Set 
       rw [Matrix.mul_apply]
       refine Finset.sum_eq_zero fun l _ ↦ ?_
       by_cases hl : w i < w l
-      · have hlk : l ≠ k := by grind
+      · have hlk : l ≠ k := by lia
         rw [Matrix.map_apply, Z_tri l k (h.trans hl.le), one_apply_ne hlk, map_zero, mul_zero]
       · rw [hn i l hl, zero_mul]
     simp [h_sub_one_mul_eq_zero, apply_ite, Matrix.one_apply]
@@ -192,7 +194,7 @@ lemma isCocompact_ratBessel : (Y.ratBessel.subgroupOf Y.besselGroup).IsCocompact
     have β_ik : ((β : GL ι E) : Matrix ι ι E) i k = (1 : Matrix ι ι E) i k :=
       mem_agreeWithOneOn.mp β_uni i k (neg_le_neg h_grade_le)
     rw [h_matrix, Matrix.map_apply, β_ik]
-    simp [Matrix.one_apply, apply_ite]
+    simp [Matrix.one_apply]
   have β_rat : V.ratEmbed β ∈ Y.ratBessel := Subgroup.mem_inf.mpr ⟨⟨β, rfl⟩, β_bessel⟩
   let βB : Y.besselGroup := ⟨V.ratEmbed β, β_bessel⟩
   have βγ_rat : βB * γ ∈ Y.ratBessel.subgroupOf Y.besselGroup :=

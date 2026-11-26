@@ -3,7 +3,6 @@ module
 public import New.Spanning.MainTerm.SiegelTopBound
 public import New.Spanning.RemainingTerms.Size
 public import New.Spanning.Unfolding.Climbing
-import New.Reduction.Data.AdmissibleData
 import New.Spanning.MainTerm.FiniteSieveSystem
 import New.Spanning.MainTerm.GlobalToLocal
 

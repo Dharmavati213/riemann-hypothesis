@@ -362,7 +362,7 @@ the rows and by the Laplacians of the columns. Fix a row `a` and a sign `s`. The
 `T.relWeight l a` relative to the vacuum has sign `s` or is zero, then `P` is homogeneous of degree
 `s * T.relWeight l a` in the variables of sign `s` of row `a` and free of those of sign `-s`. -/
 theorem DiscreteSeries.polarisation_eq_of_isCompactPrimitive [DecidableEq R] [DecidableEq C]
-    [Fintype ι] {P : MvPolynomial ι ℂ}
+    {P : MvPolynomial ι ℂ}
     (hl : l.Injective) (h_prim : T.oscRows.IsCompactPrimitive l P)
     (h_harm : T.swap.IsLaplaceHarmonic P) (a : R) (s : ℤˣ) :
     (∀ b : R, ε a = ε b → s * l b < s * l a → T.polarisation P a b s = 0) ∧

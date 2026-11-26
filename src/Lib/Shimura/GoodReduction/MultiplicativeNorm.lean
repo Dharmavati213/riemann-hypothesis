@@ -175,7 +175,7 @@ private lemma averagedPullback_mem_thetaSpace (hd : star c = d) {t : V → ℂ}
     rw [h.normShift_comp_inverse_eq hd l t, t_fixed _ (h.map_mem c l hl)]
   rw [mem_thetaSpace_iff_normalizedShift]
   constructor
-  · simp [averagedPullback, normalizedShift, canonicalMultiplier, funLeft]
+  · simp [averagedPullback, normalizedShift, funLeft]
     fun_prop
   · refine (action_isInvertible (F := F) d).surjective.forall.mpr fun x hx ↦ ?_
     simpa [averagedPullback, funLeft] using
@@ -481,7 +481,7 @@ lemma mul_normShift_eq_mul_normShift_sub_sum (hd : star c = d) {μ : ℂ}
           h.normShift (F c q) (h.normShift (F c z.out) f) 0 := by
   have plain : ∑ z : h.MulKernel d, h.normShift (F c q) (h.normShift (F c z.out) f) 0 =
       μ * h.normShift (F d q) f 0 := by
-    simpa [h.normShift_comp_inverse_eq hd, mem_thetaSpace_iff_normalizedShift.mp hf]
+    simpa [h.normShift_comp_inverse_eq hd]
       using congrArg (fun s : V → ℂ ↦ h.normShift (F d q) s 0) (identity f hf)
   have moved : ∑ z : h.MulKernel d, B.riemannPhase (F c g) (F c z.out) *
       h.normShift (F c q) (h.normShift (F c z.out) f) 0 =

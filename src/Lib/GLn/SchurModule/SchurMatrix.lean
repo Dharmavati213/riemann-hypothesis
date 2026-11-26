@@ -127,7 +127,7 @@ lemma exists_isTableauBasis {ι : Type} [Fintype ι] {M : ℕ} {k : ℕ → ℕ}
     rw [h_tableau]
     simpa [← Set.range_comp, h_prod] using
       hI.nabla_le_span R (minorProduct_mem_nabla cols_T)
-  · simpa [fill, J, Fintype.prod_sigma, ← diagramWeight_eq_columnWeight, diagramWeight_apply] using
+  · simpa [J, Fintype.prod_sigma, ← diagramWeight_eq_columnWeight, diagramWeight_apply] using
       hI.character ()
 
 /-- Over a finite alphabet `ι`, consider the set of fillings chosen by `Classical.epsilon` (heights
@@ -596,13 +596,6 @@ lemma schur_mul_right (h_fits : FitsRanks n n' κ) (z : ∀ τ : Φ, Matrix (n' 
         simp only [← sum_schur_smul_nablaBasis h_fits z i, map_sum, map_smul]
     _ = rowSubst (fun τ : Φ ↦ z τ * g τ) (nablaBasis R n' κ i) := rowSubst_rowSubst ..
 
-omit [Fintype Φ] [DecidableEq Φ] [∀ τ : Φ, DecidableEq (n τ)] [∀ τ : Φ, DecidableEq (n' τ)] in
-/-- The determinant exponent of the one-place families with the data at τ is that at τ. -/
-private lemma schurDetExp_unit_eq (τ : Φ) :
-    schurDetExp (fun _ : Unit ↦ n τ) (fun _ : Unit ↦ n' τ) (fun _ : Unit ↦ κ τ) () =
-      schurDetExp n n' κ τ :=
-  rfl
-
 /-- Assume `FitsRanks n n' κ`: at every place τ, |n_τ| ≤ |n'_τ| and κ_τ(h) = 0 for
 |n_τ| < h < |n'_τ|. For matrices z_τ of size n'_τ × n_τ, row i of the Schur matrix `schur κ z` holds
 the coordinates of b'_i(z y) in the family b_j(y)·∏_τ det(y_τ)^{d_τ}, where b and b' are
@@ -639,7 +632,7 @@ lemma schur_apply_eq_prod (h_fits : FitsRanks n n' κ) (z : ∀ τ : Φ, Matrix 
           (rowSubst (fun _ : Unit ↦ z τ) (nablaBasis R (fun _ ↦ n' τ) (fun _ ↦ κ τ) fun _ ↦ i τ)) :=
     prod_congr rfl fun τ _ ↦ by rw [one_place τ]
   simpa [nablaBasis, rowSubst, prod_mul_distrib, tableauPoly, minor, detPow, ← C_mul',
-    AlgHom.map_det, Matrix.map, prod_univ_sum, schurDetExp_unit_eq] using h_prod
+    AlgHom.map_det, Matrix.map, prod_univ_sum] using! h_prod
 
 /-- If the sizes fit κ, scaling z_τ by t_τ scales S_κ(z) by the product of the t_τ^{|κ_τ|}, where
 |κ_τ| = Σ_{h < |n'_τ|} h κ_τ(h) is the number of boxes at τ. -/

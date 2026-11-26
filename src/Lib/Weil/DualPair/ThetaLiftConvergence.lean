@@ -9,6 +9,8 @@ import Lib.DiscreteSeries.CuspKernel
 import Lib.DiscreteSeries.Haar.TotalMass
 import Lib.Weil.DualPair.WeilAction
 import TauCeti.RepresentationTheory.Continuous.StronglyContinuous
+import TauCeti.Topology.Algebra.Group.Units
+import TauCeti.Topology.Instances.Matrix
 
 /-!
 # Growth of theta kernels and convergence of theta lifts

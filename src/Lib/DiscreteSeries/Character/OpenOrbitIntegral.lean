@@ -11,6 +11,8 @@ import Lib.General.LinearAlgebra.PolarDecomposition
 import Lib.General.Measure.IdempotentKernel
 import Lib.General.NumberTheory.FrobeniusOrbits
 import Lib.Shimura.ComplexTheta.AppellHumbertData
+import TauCeti.Topology.Algebra.Group.Units
+import TauCeti.Topology.Instances.Matrix
 
 /-!
 # Orbital integrals of discrete series coefficients and Weyl characters of U(n)

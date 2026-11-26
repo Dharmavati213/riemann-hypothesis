@@ -75,8 +75,9 @@ lemma New.exists_ringEquiv_extend {L : Type} {K : Type*} [Field L] [IsAlgClosed 
     [Countable K] (h_mk : #ℂ = #L) (f : K →+* ℂ) (g : K →+* L)
     (hf : Function.Injective f) (hg : Function.Injective g) :
     ∃ σ : ℂ ≃+* L, ∀ a : K, σ (f a) = g a := by
-  -- Both fields are algebraic closures of `K` adjoined a transcendence basis, and, `K` being
-  -- countable, the two bases have the cardinality of the uncountable fields.
+  -- Use the two embeddings to regard the ambient fields as faithful `K`-algebras.
+  -- Countability of `K` and uncountability of the fields ensure that the transcendence
+  -- bases have the cardinalities of their respective ambient fields.
   algebraize [f, g]
   have : FaithfulSMul K ℂ := (faithfulSMul_iff_algebraMap_injective K ℂ).2 hf
   have : FaithfulSMul K L := (faithfulSMul_iff_algebraMap_injective K L).2 hg
@@ -91,8 +92,9 @@ lemma New.exists_ringEquiv_extend {L : Type} {K : Type*} [Field L] [IsAlgClosed 
     simpa using cardinal_eq_cardinal_transcendence_basis_of_aleph0_lt _ ht mk_le_aleph0
       (h_uncountable.trans_eq h_mk)
   obtain ⟨e⟩ : Nonempty (s ≃ t) := Cardinal.eq.1 (by rw [← hs_card, ← ht_card, h_mk])
-  -- The bijection of the bases gives a `K`-algebra isomorphism `K[s] ≃ K[t]`, which extends to
-  -- the algebraic closures.
+  -- Algebraic independence identifies the two generated subalgebras with polynomial rings.
+  -- Renaming variables along the bijection gives the isomorphism over `K` that extends to
+  -- the algebraic closures. Compatibility with the embeddings follows from `K`-linearity.
   let Ks : Subalgebra K ℂ := Algebra.adjoin K (Set.range (Subtype.val : s → ℂ))
   let Kt : Subalgebra K L := Algebra.adjoin K (Set.range (Subtype.val : t → L))
   let φ : Ks ≃ₐ[K] Kt :=

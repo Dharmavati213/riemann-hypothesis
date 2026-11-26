@@ -4,8 +4,11 @@ public import Lib.SiegelWeil.Tower.FiniteTateIntegral
 public import Lib.SiegelWeil.Tower.LineGaussSums
 public import Lib.SiegelWeil.Tower.TestVector
 public import Lib.Weil.DualPair.ThetaIntegrals
+import Lib.DiscreteSeries.Haar.TotalMass
 import Lib.SiegelWeil.Tower.LargeSideConstantTerm
 import Lib.Weil.Construction.CanonicalTheta
+import TauCeti.Topology.Algebra.Group.Units
+import TauCeti.Topology.Instances.Matrix
 
 /-!
 # The functional equation of the `L`-function of a tamely ramified character

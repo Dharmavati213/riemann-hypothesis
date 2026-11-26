@@ -8,6 +8,8 @@ import Lib.Adelic.AutomorphicForms.Cuspidality
 import Lib.Adelic.Unitary.RationalPoints
 import Lib.General.Algebra.MultivariatePolynomials
 import New.Determinant.Exchange.TheoremForPartners
+import TauCeti.Topology.Algebra.Group.Units
+import TauCeti.Topology.Instances.Matrix
 
 /-!
 # One square: up then down against down then up

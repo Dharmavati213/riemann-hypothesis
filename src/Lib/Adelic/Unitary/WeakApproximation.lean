@@ -406,7 +406,7 @@ lemma weak_approximation {S : Set (FinPlace E)} (hS : S.Finite) :
   refine mem_closure_of_tendsto (h_tendsto.mul_const _) (.of_forall fun p ↦ ?_)
   set x : G E s := V.cayleyMap c p.1
   let h : Gf E n := (x⁻¹ * (π x * ((π g)⁻¹ * g))).2
-  have h_triv : h ∈ trivialOn n S := by simp +contextual [h, π, atPlace_componentOn, trivialOn]
+  have h_triv : h ∈ trivialOn n S := by simp +contextual [h, π, atPlace_componentOn]
   have h_eq : x * (1, h) = π x * ((π g)⁻¹ * g) := Prod.ext (by simp [π]) (by simp [h])
   -- `cayleyMap` is by definition in the range `V.Γ` of `V.ratEmbed`.
   exact ⟨(⟨x, _, rfl⟩, ⟨h, h_triv⟩), h_eq⟩

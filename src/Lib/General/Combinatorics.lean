@@ -317,7 +317,7 @@ lemma map_prod_rootCoeffEval_eq_zero [Fintype ι] {A : Type*} {q : S → MvPolyn
   -- Vieta's formula at `X = 1` for the multiset `b • x j σ`.
   have vieta (j : J) (σ : S) (b : K) :
       ((x j σ).map fun t ↦ 1 - b • t).prod = ∑ k : Fin a.succ, b ^ k.1 • e σ k j := by
-    simpa [e, eval_multiset_prod, sum_range, eval_finsetSum, hx, ← pow_smul_esymm] using
+    simpa [eval_multiset_prod, sum_range, eval_finsetSum, hx, ← pow_smul_esymm] using
       congrArg (Polynomial.eval 1) ((x j σ).map fun t ↦ b • t).prod_X_sub_X_eq_sum_esymm
   -- Expand the product in `hL`.
   have expand (α : A) :

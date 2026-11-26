@@ -5,6 +5,8 @@ import Lib.Adelic.Witt.WittTheorem
 import Lib.Cohomology.Etale.Basic
 import Lib.DiscreteSeries.Holomorphic.MaximalCompactMinors
 import Lib.General.Analysis.MeanValueAndTaylor
+import TauCeti.Topology.Algebra.Group.Units
+import TauCeti.Topology.Instances.Matrix
 
 /-!
 # Theta coefficients vanish off negative forms

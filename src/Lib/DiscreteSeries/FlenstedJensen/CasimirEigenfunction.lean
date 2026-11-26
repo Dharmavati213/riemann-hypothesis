@@ -7,6 +7,7 @@ import Lib.DiscreteSeries.FlenstedJensen.FlagDensities
 import Lib.DiscreteSeries.Haar.TotalMass
 import Lib.General.Analysis.MeanValueAndTaylor
 import Lib.General.LinearAlgebra.PolarDecomposition
+import TauCeti.Topology.Algebra.Group.Units
 import TauCeti.Topology.Instances.Matrix
 
 /-!

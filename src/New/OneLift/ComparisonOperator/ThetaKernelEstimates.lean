@@ -9,6 +9,8 @@ import Lib.DiscreteSeries.Holomorphic.MaximalCompactMinors
 import Lib.DiscreteSeries.Holomorphic.ModelFunction
 import Lib.General.Analysis.PackingAndSobolev
 import Lib.PadicComparison.Descent.TestCategory
+import TauCeti.Topology.Algebra.Group.Units
+import TauCeti.Topology.Instances.Matrix
 
 /-!
 # Decay of Fock matrix coefficients, sparse theta sums and the isolation estimate

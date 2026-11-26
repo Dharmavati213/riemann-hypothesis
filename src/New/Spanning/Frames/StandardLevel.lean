@@ -9,6 +9,8 @@ import Lib.SiegelWeil.OneVector.StandardQuadrics
 import New.Spanning.Frames.QuadricPlancherel
 import New.Spanning.Frames.QuadricVolumes
 import New.Spanning.Unfolding.BesselLevelStructure
+import TauCeti.Topology.Algebra.Group.Units
+import TauCeti.Topology.Instances.Matrix
 
 /-!
 # Place data and gauges at a finite place from the lattice of integral vectors

@@ -1,6 +1,8 @@
 module
 
 public import New.Spanning.Frames.BesselVector
+import TauCeti.Topology.Algebra.Group.Units
+import TauCeti.Topology.Instances.Matrix
 
 /-!
 # The orbital integral at the finite places is a Kloosterman sum

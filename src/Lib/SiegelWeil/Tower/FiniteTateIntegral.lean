@@ -6,6 +6,7 @@ public import Lib.SiegelWeil.Tower.RealConeIntegral
 import Lib.ClassField.HeckeCharacter.TameModulus
 import Lib.ClassField.HeckeL.ContinuationAtOne
 import Lib.Weil.DualPair.ThetaIntegrals
+import TauCeti.Topology.Algebra.Group.Units
 
 /-!
 # Products of `L`-values and Tate's integral at the finite places

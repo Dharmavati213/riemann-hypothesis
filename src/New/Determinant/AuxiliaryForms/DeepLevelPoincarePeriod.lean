@@ -9,6 +9,8 @@ import Lib.DiscreteSeries.FlenstedJensen.PsiKTypes
 import Lib.DiscreteSeries.Haar.TotalMass
 import Lib.General.Analysis.PackingAndSobolev
 import New.UpperBound.Objects.Columns
+import TauCeti.Topology.Algebra.Group.Units
+import TauCeti.Topology.Instances.Matrix
 
 /-!
 # Steep parameters of Y₀ and Ỹ^0_0; periods of Poincaré series of deep level

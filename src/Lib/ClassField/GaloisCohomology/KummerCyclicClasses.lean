@@ -598,7 +598,7 @@ lemma QZChar.exists_eq_cyclicClass_of_resH2_eq_zero (χ : ↥(QZChar Γ)) (x : (
   -- Sum `hε l` against `c g`; summing by parts on the left, only `q = g⁻¹` and `q = 1` survive.
   have h_parts : ∑ q, c g q • D (a l) q = a l (g⁻¹ • γ) - a l γ := by
     linear_combination (norm :=
-      simp [U, D, smul_eq, carry_cocycle, carry_max, smul_sub, mul_eq_one_iff_inv_eq, sub_smul])
+      simp [D, smul_eq, carry_cocycle, carry_max, smul_sub, mul_eq_one_iff_inv_eq, sub_smul])
       sum_shift (c g • a l)
   -- On the right, translate by `q ↦ l * q`.
   have h_translate : ∑ q, c g q • N.ρ l ε q = M.ρ l (c g l • M.sum U ε - s l + s (g * l)) := by
@@ -611,7 +611,7 @@ lemma QZChar.exists_eq_cyclicClass_of_resH2_eq_zero (χ : ↥(QZChar Γ)) (x : (
   -- Evaluate `ha g l` at `γ` and replace `a l (g⁻¹ • γ)` by `h_diff_eq`.
   have ha_γ : z.val (g, l) = N.ρ g (a l) γ - a (g * l) γ + a g γ := congrFun (ha g l) γ
   linear_combination (norm :=
-    (simp [N, c, χ_eq, sum, Finset.smul_sum, sub_eq_zero]
+    (simp [N, c, χ_eq, Finset.smul_sum, sub_eq_zero]
      abel)) ha_γ + c g l • sum_invariant (g * l) + congrArg (M.ρ g) h_diff_eq
 
 include K in

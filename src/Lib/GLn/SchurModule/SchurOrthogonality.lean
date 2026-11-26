@@ -10,6 +10,8 @@ import Lib.GLn.SchurModule.GramMatrix
 import Lib.GLn.SchurModule.WeylKernel
 import Lib.General.LinearAlgebra.MinorProducts
 import Lib.Shimura.ComplexTheta.AppellHumbertData
+import TauCeti.Topology.Algebra.Group.Units
+import TauCeti.Topology.Instances.Matrix
 
 /-!
 # Algebraic representations of GL(n) on unitary groups: Schur orthogonality

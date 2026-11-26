@@ -11,8 +11,8 @@ import Lib.ClassField.LocalDuality.KummerFiniteness
 import Lib.ClassField.Places.LocalFields
 import Lib.ClassField.Places.TameInertia
 import Lib.General.NumberTheory.SUnitsAndClassNumber
-import TauCeti.NumberTheory.NumberField.Countable
 import TauCeti.RingTheory.DedekindDomain.AdicValuation.ResidueField
+import TauCeti.Topology.Algebra.Group.Units
 
 /-!
 # Kummer characters, power indices and the existence theorem for totally complex fields

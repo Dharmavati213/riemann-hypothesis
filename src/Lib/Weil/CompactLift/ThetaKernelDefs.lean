@@ -305,7 +305,7 @@ lemma realPairWeil_schurCoeffPoly (hκ : IsLiftWeight n n' κ eb e) {ea : Infini
     ← h_schur_mul, prod_mul_distrib, principalMinor_of_forall,
     DiscreteSeries.principalMinor_of_forall_not]
   -- Both sides are now the same multiple of `Aᵀ S_κ(yᵀ w xᵀ) ξ`.
-  simp [h_entry, vecMul_smul, field, ← schur_mul_left h_fits, mul_right_comm]
+  simp [h_entry, vecMul_smul, field, ← schur_mul_left h_fits]
 
 variable [WeilData E]
 

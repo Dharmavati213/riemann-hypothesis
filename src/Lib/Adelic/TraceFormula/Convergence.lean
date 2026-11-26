@@ -5,6 +5,8 @@ public import Lib.Adelic.TraceFormula.IsotropicStabiliser
 public import Lib.Adelic.TraceFormula.KernelBound
 import Lib.Adelic.QuotientMeasure.IwasawaUnfolding
 import Lib.Adelic.TraceFormula.Stretch
+import TauCeti.Topology.Algebra.Group.Units
+import TauCeti.Topology.Instances.Matrix
 
 /-!
 # Convergence of the geometric side

@@ -730,7 +730,7 @@ private lemma exists_twistedConj_mem_conjProIwahori (ht : StrictMono fun i : Fin
       cases j with
       | zero =>
         -- for the index `-1`, membership is conjugation by `diag(t)⁻¹`, which is `hu_conj`
-        simpa [_root_.zpow_neg_one, mul_assoc] using hu_conj
+        simpa [_root_.zpow_neg_one] using hu_conj
       | succ j =>
         -- `σ(z) = u⁻¹ * twistedConj t g σ k` and both factors lie in `diag(t)⁻ʲ I₁ diag(t)ʲ`
         rw [Nat.cast_succ, add_neg_cancel_right]
@@ -799,7 +799,7 @@ lemma exists_inv_mul_mul_map_eq_diagGL_mul [CompactSpace 𝒪[F]]
     have h_cont :
         Continuous fun k : proIwahori ↦ (MulAut.conj (diagGL t) ^ j) (twistedConj t g σ k) := by
       -- `simp` writes the conjugation by `diagGL t ^ j` as a product, which `fun_prop` handles
-      simp [← map_zpow, mul_assoc]
+      simp [← map_zpow]
       fun_prop
     have h_closed : IsClosed (twistedConj t g σ ⁻¹' conjProIwahori t j) :=
       (proIwahori.isClosed_of_isOpen isOpen_proIwahori).preimage h_cont

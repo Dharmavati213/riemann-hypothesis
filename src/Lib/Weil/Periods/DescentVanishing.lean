@@ -15,6 +15,7 @@ import Lib.DiscreteSeries.Haar.TotalMass
 import Lib.Weil.Construction.CanonicalTheta
 import Lib.Weil.DualPair.FiniteAction
 import TauCeti.NumberTheory.NumberField.Countable
+import TauCeti.Topology.Algebra.Group.Units
 import TauCeti.Topology.Instances.Matrix
 
 /-!

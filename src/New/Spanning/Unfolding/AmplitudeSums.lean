@@ -7,6 +7,8 @@ import New.Spanning.Bessel.Orthonormality
 import New.Spanning.Unfolding.CutoffIntegral
 import New.Spanning.Unfolding.Packing
 import TauCeti.MeasureTheory.Integral.Pi
+import TauCeti.Topology.Algebra.Group.Units
+import TauCeti.Topology.Instances.Matrix
 
 /-!
 # Sums of amplitudes over blocks

@@ -391,16 +391,6 @@ lemma isScalarFrame_centralScalar (x : (𝔸f (QuadField d₀))ˣ) {c : ℚ}
     IsScalarFrame (centralScalar x : GL n (𝔸f E)) c :=
   isScalarFrame_of_gram_eq _ (conjTranspose_centralScalar_mul_centralScalar x) hc
 
-/-- For a finite idele x of K₀, both `mem_GU_centralScalar` and `isScalarFrame_centralScalar`:
-`centralScalar x` is a unitary similitude, and a frame for c·1 whenever the rational c is the
-idelic absolute value of the norm of x to ℚ. -/
-lemma centralScalar_mem_GU (x : (𝔸f (QuadField d₀))ˣ) :
-    centralScalar x ∈ GU E n ∧
-    ∀ c : ℚ,
-      c = finIdeleAbs (x.map (adeleNorm ℚ (QuadField d₀))) →
-      IsScalarFrame (centralScalar x : GL n (𝔸f E)) c :=
-  ⟨mem_GU_centralScalar x, fun _ hc ↦ isScalarFrame_centralScalar x hc⟩
-
 /-- The Hecke element `τ_{w,j} = heckeSum n k w j` is a combination of the elements
 `invHeckeIsogeny w U`. -/
 lemma heckeSum_mem_spanOn {j : ℕ} : heckeSum n k w j ∈ spanOn k (range (invHeckeIsogeny w)) :=
@@ -445,7 +435,7 @@ lemma invHeckeIsogeny_mem_GUPlus (w : SplitFinPlace E)
   -- Put `D = (basicCosetRep U)ᵀ` and `q = uniformizerNorm w`. The inverse of `invHeckeIsogeny w U`
   -- is the transpose of the product of `singleGL w D` and the conjugate transpose of
   -- `q ^ dim U • singleGL w D⁻¹`; both are integral.
-  obtain ⟨h_int, -, h_det⟩ := (basicCosetRep_mem_and_residueKer_eq U).left
+  obtain ⟨h_int, -, h_det⟩ := basicCosetRep_mem_basicDoubleCoset U
   have h_mul_locGL_mem (g : GL n (LocField w.1)) (a : 𝔸f E) (ha : a ∈ Ô E)
       (hg : ∀ i j : n, v (a w * g i j) ≤ 1) (i j : n) :
       a * singleGL _ g i j ∈ Ô E := by

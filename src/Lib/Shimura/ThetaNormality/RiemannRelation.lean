@@ -212,7 +212,7 @@ lemma thetaShift_periodPoint_thetaProduct {y : D.Index → E}
       (((p k).1 • ⟨frameTorsionClass g y, hy⟩ : D.dualTorsion) : AdelicTorsion E D.Index) :=
         map_smul ..
   rw [h_act]
-  simpa [intAction, smul_comm (cmEmbedding (p k).1.val), add_comm, periodPoint, bicharacter] using
+  simpa [intAction, smul_comm (cmEmbedding (p k).1.val), add_comm, bicharacter] using
     x.thetaShift_thetaCoord h_class (μ k)
 
 /-- Riemann's theta relation in one variable. Here x is a theta torus on V for the PEL datum `D`.

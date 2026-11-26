@@ -8,6 +8,8 @@ import Lib.Adelic.Reduction.DefiniteClassSums
 import Lib.DiscreteSeries.FlenstedJensen.PsiKTypes
 import Lib.DiscreteSeries.Haar.GramPolar
 import Lib.Weil.Periods.Grading
+import TauCeti.Topology.Algebra.Group.Units
+import TauCeti.Topology.Instances.Matrix
 
 /-!
 # Kernels of levels as forms, and unfolding of orbital integrals
@@ -87,7 +89,7 @@ theorem New.Space.exists_kernel_form {E n : Type} [Field E] [CMType E] [Fintype 
   refine ⟨k, fun g ↦ ?_⟩
   -- Conjugate term by term and replace `γ` by `γ⁻¹`, using `e y⁻¹ = conj (e y)`.
   have hφ_inv (y : Gf E n) : starRingEnd ℂ (φ.1 y⁻¹) = Set.indicator K 1 y := by
-    simp [φ, TestFunction.indicator, Set.indicator, apply_ite (starRingEnd ℂ)]
+    simp [φ, TestFunction.indicator, Set.indicator]
   have h_term (γ : U V.J) :
       starRingEnd ℂ (V.kernelTerm e φ (Set.univ.indicator 1) g γ⁻¹ x⁻¹) =
         e (x * V.ratEmbed γ * g).1 * Set.indicator K 1 (x * V.ratEmbed γ * g).2 := by

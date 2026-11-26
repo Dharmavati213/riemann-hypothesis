@@ -11,6 +11,8 @@ import Lib.PadicComparison.Descent.TestCategory
 import Lib.Shimura.Uniformisation.HolomorphicFamilies
 import Lib.SiegelWeil.Formula.LagrangianZeroTerms
 import Lib.Weil.DualPair.FiniteAction
+import TauCeti.Topology.Algebra.Group.Units
+import TauCeti.Topology.Instances.Matrix
 
 /-!
 # Vanishing of theta descents from W to W plus hyperbolic planes

@@ -393,7 +393,7 @@ lemma exists_tightFrame : ∃ η : ColumnFilling n κ → WeylIndexFamily n κ �
       rw [← fillingMatrix_transpose_mul_self, ← mulVec_mulVec, dotProduct_mulVec, vecMul_transpose]
     have h_single : w T * w T ≤ w ⬝ᵥ w :=
       Finset.single_le_sum (fun S _ ↦ mul_self_nonneg (w S)) (Finset.mem_univ T)
-    have h_le : η T ⬝ᵥ weylGram n κ *ᵥ η T ≤ hk ^ 2 := by nlinarith [sq_nonneg (hk - w T)]
+    have h_le : η T ⬝ᵥ weylGram n κ *ᵥ η T ≤ hk ^ 2 := by linarith [sq_nonneg (hk - w T)]
     simpa [weylNormSq, dotProduct, mulVec] using (Int.cast_le (R := ℝ)).2 h_le
 
 omit [DecidableEq Φ] [∀ τ : Φ, DecidableEq (n τ)] in

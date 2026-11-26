@@ -133,7 +133,7 @@ lemma gram_linkMatrix_mul {S : Filling E 𝔰} {γ γ' : S.G E} {t : Matrix 𝔰
     a * star x ᵥ* S.ratGram ⬝ᵥ y - b * star x ᵥ* S.ratGram ⬝ᵥ (γ * γ'⁻¹).val.val *ᵥ y
   -- in the last term apply the isometry `γ⁻¹` to both vectors first
   have h_move : γ⁻¹.val.val *ᵥ ((γ * γ'⁻¹).val.val *ᵥ y) = γ'⁻¹.val.val *ᵥ y := by
-    simp [mulVec_mulVec, ← Matrix.mul_assoc]
+    simp [mulVec_mulVec]
   rw [← dotProduct_mulVec, ← dotProduct_mulVec, ← dotProduct_mulVec,
     ← U.form_mulVec_mulVec γ⁻¹ x ((γ * γ'⁻¹).val.val *ᵥ y), h_move,
     ratGram_form_of_eStar_eq_zero hx hy, ratGram_form_of_eStar_eq_zero hγx hγy]

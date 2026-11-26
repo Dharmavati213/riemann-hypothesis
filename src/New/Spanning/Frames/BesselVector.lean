@@ -3,6 +3,8 @@ module
 public import New.Spanning.Frames.Densities
 public import New.Spanning.Frames.StandardLevel
 import Lib.General.LinearAlgebra.HermiteForm
+import TauCeti.Topology.Algebra.Group.Units
+import TauCeti.Topology.Instances.Matrix
 
 /-!
 # The Bessel vector at the finite places

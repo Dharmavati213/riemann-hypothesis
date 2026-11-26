@@ -6,6 +6,7 @@ public import Lib.General.Measure.QuadricDisintegration
 import Lib.General.Measure.IntegralOperators
 import TauCeti.Analysis.Matrix.IndefiniteUnitaryGroup
 import TauCeti.MeasureTheory.Integral.Pi
+import TauCeti.Topology.Algebra.Group.Units
 
 /-!
 # Heisenberg elements, measures of the floors, hyperbolic bases and Plancherel at a place

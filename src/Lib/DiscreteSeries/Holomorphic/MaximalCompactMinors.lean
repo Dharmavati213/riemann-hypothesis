@@ -5,6 +5,8 @@ public import Lib.DiscreteSeries.FlenstedJensen.RightDerivatives
 public import Lib.DiscreteSeries.Haar.TotalMass
 public import Lib.General.LinearAlgebra.MinorProducts
 public import TauCeti.LinearAlgebra.Matrix.Triangular
+public import TauCeti.Topology.Algebra.Group.Units
+public import TauCeti.Topology.Instances.Matrix
 
 /-!
 # Maximal compact subgroup, block diagonal matrices and equivariance of minors

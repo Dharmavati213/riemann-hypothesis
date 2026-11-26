@@ -10,6 +10,8 @@ import New.Spanning.Frames.FiniteShells
 import TauCeti.Algebra.Group.AddChar.Basic
 import TauCeti.MeasureTheory.Integral.Pi
 import TauCeti.NumberTheory.NumberField.Countable
+import TauCeti.Topology.Algebra.Group.Units
+import TauCeti.Topology.Instances.Matrix
 
 /-!
 # Groups that fix given vectors at chosen places have a small mass integral
@@ -261,7 +263,7 @@ theorem IsFillingData.reduction_eq_one {T : Finset (FinPlace E)} [fT : T.StarSta
   have hy : y = x.map (evalPlaces T) := rfl
   have h_map : F.levelUnit⁻¹ • (y - 1) = (S.ideleM⁻¹ • (x - 1)).map (evalPlaces T) := by
     ext1 a b
-    simp [h.levelUnit_eq, hy, Units.smul_def, Matrix.one_apply, apply_ite (evalPlaces T)]
+    simp [h.levelUnit_eq, hy, Units.smul_def, Matrix.one_apply]
   have h_cong : IsIntMatrix integers (F.levelUnit⁻¹ • (y - 1)) := (mem_unitaryLevel_def.1 hk).right
   rw [h_map] at h_cong
   refine intGL.map_eq_one.2 fun a b ↦ reduceAt_eq_zero_of_inv_ideleM_smul w ?_
@@ -614,7 +616,7 @@ lemma mem_besselU_iff_toFibers {x : U (S.latticeMiddle (LocProd T)).splitGram} :
         ∀ i : ι, (S.toFibers T blk x i).val a b =
           (1 : Matrix 𝔰.BesselIndex 𝔰.BesselIndex (LocProd (placeFiber T blk i))) a b := by
     rw [eq_iff_evalFiber_eq blk]
-    simp [toFibers_apply, Matrix.one_apply, apply_ite (evalFiber T blk _)]
+    simp [toFibers_apply, Matrix.one_apply]
   simp only [mem_besselU, h_entry]
   exact ⟨fun hx i a b hab ↦ hx a b hab i, fun hx a b hab i ↦ hx i a b hab⟩
 

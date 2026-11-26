@@ -5,6 +5,8 @@ public import Lib.Weil.Lift
 import Lib.Adelic.AutomorphicForms.Cuspidality
 import Lib.DiscreteSeries.FlenstedJensen.PsiKTypes
 import Lib.DiscreteSeries.Theta.FockJointHarmonics
+import TauCeti.Topology.Algebra.Group.Units
+import TauCeti.Topology.Instances.Matrix
 
 /-!
 # Theta lifts for families of characters over a real edge and the seesaw of periods

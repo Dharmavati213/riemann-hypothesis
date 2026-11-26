@@ -278,12 +278,6 @@ namespace New
 
 open Real Module
 
-/-- The root discriminant of a number field is at least `1`. -/
-lemma one_le_rootDiscr (K : Type*) [Field K] [NumberField K] : 1 ≤ rootDiscr K := by
-  have h_one : (1 : ℝ) ≤ |(discr K : ℝ)| := mod_cast Int.one_le_abs (discr_ne_zero K)
-  rw [rootDiscr_def, Int.cast_abs]
-  exact one_le_rpow h_one (by positivity)
-
 /-- If a positive integer `c` lies in the different of the number field `K`, then the root
 discriminant of `K` lies between `1` and `c`. -/
 lemma rootDiscr_mem_Icc {K : Type*} [Field K] [NumberField K] {c : ℕ} (hc : c ≠ 0)

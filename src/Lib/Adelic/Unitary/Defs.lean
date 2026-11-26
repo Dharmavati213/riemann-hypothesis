@@ -7,6 +7,7 @@ public import Lib.General.Topology
 public import TauCeti.RingTheory.DedekindDomain.FiniteAdeleRing.BorelSpace
 import Lib.Adelic.Adeles.AdditiveCharacter
 import TauCeti.Analysis.Matrix.IndefiniteUnitaryGroup
+import TauCeti.Topology.Algebra.Group.Units
 
 /-!
 # Adelic unitary groups over a CM field: levels, hermitian spaces, lattices and mass

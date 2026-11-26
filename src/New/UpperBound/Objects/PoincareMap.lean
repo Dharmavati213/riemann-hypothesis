@@ -4,6 +4,8 @@ public import Lib.Weil.Periods.BesselIntegral
 public import Lib.Weil.Periods.Equivariant
 public import New.UpperBound.Seesaw.EdgePairEvaluation
 import Lib.General.Measure.IntegralOperators
+import TauCeti.Topology.Algebra.Group.Units
+import TauCeti.Topology.Instances.Matrix
 
 /-!
 # The Poincaré map

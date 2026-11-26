@@ -7,6 +7,8 @@ public import Lib.General.Measure.IdempotentKernel
 public import Lib.Shimura.ComplexTheta.AppellHumbertData
 import Lib.Adelic.Adeles.StrongApproximation
 import Lib.Adelic.Reduction.DefiniteClassSums
+import TauCeti.Topology.Algebra.Group.Units
+import TauCeti.Topology.Instances.Matrix
 
 /-!
 # Automorphic forms on adelic unitary groups, the Petersson product and rapid decay

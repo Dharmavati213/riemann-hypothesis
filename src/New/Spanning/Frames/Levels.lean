@@ -2,6 +2,8 @@ module
 
 public import Lib.DiscreteSeries.Bruhat.FloorMeasures
 public import New.Spanning.Frames.Lengths
+import TauCeti.Topology.Algebra.Group.Units
+import TauCeti.Topology.Instances.Matrix
 
 /-!
 # Place data, floor measures and depth

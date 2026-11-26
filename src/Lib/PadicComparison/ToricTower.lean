@@ -489,7 +489,7 @@ lemma periodicSeq.koszulExact_shift :
   have h_exact : (S.map G).ShortExact := (split.map G).shortExact
   -- the maps of the mapped complex become those of the statement (`simp` splits the image of
   -- `shift - 1`)
-  simp [S, G, ShortComplex.map] at h_exact
+  simp [S, ShortComplex.map] at h_exact
   exact ⟨h_exact.ab_injective_f,
     fun x hx ↦ (ab_exact_iff _).mp h_exact.exact x (sub_eq_zero.mpr hx),
     h_exact.ab_surjective_g⟩

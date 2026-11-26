@@ -3,6 +3,7 @@ module
 public import Lib.DiscreteSeries.Bessel.Basic
 public import Lib.DiscreteSeries.Haar.GramFibre
 import Lib.DiscreteSeries.Bessel.UnipotentHaarMeasure
+import TauCeti.Topology.Algebra.Group.Units
 import TauCeti.Topology.Instances.Matrix
 
 /-!

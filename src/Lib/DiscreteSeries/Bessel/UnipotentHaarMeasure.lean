@@ -7,6 +7,7 @@ import Lib.DiscreteSeries.FlenstedJensen.RightDerivatives
 import Lib.DiscreteSeries.Haar.TotalMass
 import Lib.General.Analysis.GaussianIntegral
 import Lib.General.Measure.HaarModulus
+import TauCeti.Topology.Algebra.Group.Units
 import TauCeti.Topology.Instances.Matrix
 
 /-!

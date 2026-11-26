@@ -100,7 +100,7 @@ namespace New
 exactly when its norm is at most that of `π_p`. -/
 lemma piPrimeInt_dvd_iff {d p : ℕ} [PrimeSevenModEight d] [Fact p.Prime] [PadicPlace p]
     {x : valRingCp p} : piPrimeInt d ∣ x ↔ ‖(x : ℂ_[p])‖ ≤ ‖ιₚ (piPrime d p)‖ :=
-  dvd_iff_norm_le
+  valRingCp.dvd_iff_norm_le
 
 namespace Parameters
 

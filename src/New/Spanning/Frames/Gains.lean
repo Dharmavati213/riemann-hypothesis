@@ -5,6 +5,8 @@ public import New.Spanning.Frames.QuadricVolumes
 import New.Spanning.Frames.OneFrame
 import New.Spanning.Frames.QuadricPlancherel
 import New.Spanning.Frames.TwoGauges
+import TauCeti.Topology.Algebra.Group.Units
+import TauCeti.Topology.Instances.Matrix
 
 /-!
 # Two frames: separation and the gains at one position

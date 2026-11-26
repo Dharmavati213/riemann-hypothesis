@@ -8,6 +8,8 @@ import Lib.ClassField.HeckeCharacter.TameModulus
 import Lib.Cohomology.Etale.Basic
 import Lib.Weil.DualPair.ThetaIntegrals
 import New.Determinant.Exchange.MatchingPartners
+import TauCeti.Topology.Algebra.Group.Units
+import TauCeti.Topology.Instances.Matrix
 
 /-!
 # Criteria for a function with a matched function to lie in a stable space; vanishing of lifts

@@ -9,6 +9,8 @@ import Lib.DiscreteSeries.Haar.TotalMass
 import Lib.DiscreteSeries.Holomorphic.HighestVectorExtension
 import Lib.DiscreteSeries.Rigidity.HighestVectorsAndFiltration
 import Lib.DiscreteSeries.Rigidity.KernelFixes
+import TauCeti.Topology.Algebra.Group.Units
+import TauCeti.Topology.Instances.Matrix
 
 /-!
 # K-type multiplicities of the discrete series and orbital integrals as Laurent polynomials

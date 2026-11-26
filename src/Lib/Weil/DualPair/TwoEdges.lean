@@ -283,7 +283,7 @@ lemma arrowTensor_map_liftWeilFin (p : Gf E ι) (q : Gf E ι') (r : Gf E ι'') :
       tripleWeil a b ((1, p), (1, q), 1, r) (arrowTensor t) := by
   -- Both sides are linear in `t`; on pure tensors this is `arrowProduct_twistedPairWeil`.
   induction t with
-  | tmul u u' => simp [arrowProduct_twistedPairWeil, arrowTensor, tripleWeil]
+  | tmul u u' => simp [arrowProduct_twistedPairWeil, arrowTensor]
   | add u u' hu hu' => simp_all [arrowTensor]
 
 /-- The theta functional of `tripleWeil a b (g, g', k) f` is unchanged when `g` is multiplied on the

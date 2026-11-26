@@ -7,6 +7,8 @@ import Lib.General.Analysis.HolomorphicIntegrals
 import Lib.General.Analysis.MeanValueAndTaylor
 import Lib.General.LinearAlgebra.PolarDecomposition
 import TauCeti.LinearAlgebra.Matrix.Triangular
+import TauCeti.Topology.Algebra.Group.Units
+import TauCeti.Topology.Instances.Matrix
 
 /-!
 # Exponentials in U(diag ε) and holomorphic extension of coefficients of highest vectors

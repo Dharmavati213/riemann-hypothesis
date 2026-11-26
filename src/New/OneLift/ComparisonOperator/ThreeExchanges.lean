@@ -737,8 +737,8 @@ lemma isTameFor_twistedChiMPow_mul_carrierChar :
   have h_weight : (fun τ : InfinitePlace D.E ↦ (card (Fin D.m) : ℤ) - card (DetIndex j τ)) =
       0 + fun τ : InfinitePlace D.E ↦ ↑(D.m + firstFactorCharExp j) - (D.liftWeight j τ : ℤ) := by
     simp [← card_detIndex_add_firstFactorCharExp j]
-  rw [h_weight]
-  exact (isTameFor_twistedChiMPow (c := 2) j ϑ).mul (carrierChar_hasWeight j)
+  simpa only [h_weight] using
+    (isTameFor_twistedChiMPow (c := 2) j ϑ).mul (carrierChar_hasWeight j)
 
 /-- Let `D` be admissible data, `j` a lift index (`1 ≤ j ≤ m`) and `W = E^{3m} ⊕ W'`, where
 `W' = W_j ⊕ (E^j)⁻ ⊕ E^{3m-j} ⊕ W♭`: the space `W_j = D.spaceW j`, its padding, and the definite

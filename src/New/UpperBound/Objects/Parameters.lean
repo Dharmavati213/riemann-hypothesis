@@ -555,12 +555,9 @@ private lemma isSeparated_gridCentres_on {P : Parameters} (D : Data P) (τ : D.�
       have h_centre : D.gap ≤ D.liftWeight (l + 1) τ := D.gap_le_liftWeight_succ τ l
       simp only [gridCentres, Sum.elim_inl, le_abs]
       omega
-    · have h_far : D.halfGap ≤ D.targetParameter τ n + D.liftWeight (l + 1) τ ∨
-          D.targetParameter τ n + D.liftWeight (l + 1) τ ≤ -D.halfGap :=
-        (lt_or_ge n (D.posRank (l + 1))).imp (D.halfGap_le_targetParameter_add_liftWeight τ)
-          (D.targetParameter_add_liftWeight_le_neg_halfGap τ)
+    · have h_far := D.targetParameter_add_liftWeight_gap (l + 1) τ n
       simp only [gridCentres, Sum.elim_inr, le_abs]
-      omega
+      split_ifs at h_far <;> omega
   case block_far =>
     -- in all four cases the two centres are at least `D.gap` apart
     rintro (l | l) - (l' | l') - hne y hy
@@ -773,14 +770,9 @@ lemma gridSigns_eq_mul_sign (hj : o + j ≤ D.m) (h_zero : o = 0 ∨ i = 0) (x :
     · have h_stem : 2 * D.targetParameter τ n ≤ D.k := D.two_mul_targetParameter_le τ n
       have h_centre : D.gap ≤ D.liftWeight (l' + 1) τ := D.gap_le_liftWeight_succ τ l'
       omega
-    · have h_above : n < D.k + (l' + 1) - 1 → D.halfGap ≤ D.targetParameter τ n + D.liftWeight
-        (l' + 1)
-        τ :=
-        D.halfGap_le_targetParameter_add_liftWeight τ
-      have h_below : D.k + (l' + 1) - 1 ≤ n → D.targetParameter τ n + D.liftWeight (l' + 1) τ ≤
-        -D.halfGap :=
-        D.targetParameter_add_liftWeight_le_neg_halfGap τ
-      omega
+    · have h_far := D.targetParameter_add_liftWeight_gap (l' + 1) τ n
+      simp only [posRank] at h_far
+      split_ifs at h_far <;> omega
   · -- An up block lies above all down centres, and it occurs only for `o = 0`.
     obtain rfl : o = 0 := by omega
     have h_sign : entrySign 0 j 0 = 1 := by simp [entrySign_eq_neg_one_pow]

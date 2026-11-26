@@ -237,7 +237,7 @@ lemma exists_conjugate_section (ha₁ : C'.a₁ = σ C.a₁) (z : ℂ) :
     refine ⟨C.differentiable_monomialSection j, C'.monomialSection j, C'.monomialSection_mem j,
       taylorAtZero_monomialSection σ ha₁ j, ?_⟩
     simp [monomialSection, hθ, hσ, hG, pow_add, mul_pow, pow_mul', field]
-  | zero => exact ⟨by fun_prop, 0, by simp, by simp [Pi.zero_def, taylorVia]⟩
+  | zero => exact ⟨by fun_prop, 0, by simp, by simp [Pi.zero_def]⟩
   | add f₁ f₂ _ _ ih₁ ih₂ =>
     obtain ⟨hf₁_diff, g₁, hg₁, hg₁_ser, hg₁_val⟩ := ih₁
     obtain ⟨hf₂_diff, g₂, hg₂, hg₂_ser, hg₂_val⟩ := ih₂

@@ -909,7 +909,7 @@ lemma New.weyl_dimension_formula {n : Type} [Fintype n] [DecidableEq n] {l : HCP
         (nhdsWithin 0 {0}ᶜ) (nhds (Complex.I * (a i - a j))) := by
       simpa [exp_intCast_mul, mul_comm _ Complex.I, ← mul_sub, x] using
         ((h_exp (a i)).sub (h_exp (a j))).tendsto_slope_zero
-    simpa [Δ, prod_mul_distrib] using
+    simpa [prod_mul_distrib] using
       tendsto_finsetProd univ fun i _ ↦ tendsto_finsetProd {j | l j < l i} fun j _ ↦ h_slope i j
   -- The limits of the two sides of `h_swap` agree, and at the identity `χ Λ 1 = Λ.kTypeNormSq⁻¹`.
   have h_cont : Continuous fun t ↦ χ Λ (x δ t) := by fun_prop

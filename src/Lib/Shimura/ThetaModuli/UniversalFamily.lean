@@ -75,7 +75,7 @@ lemma isUnit_star_sub_and_card_of_isGoodOver {E : Type} [Field E] [CMBase E] {D 
   -- As `#T ∉ w`, the factor `β̄ - β` is in `m`; adding `β - b` puts `β̄ - b` in `w`, against
   -- coprimality.
   have h_diff : algebraMap (𝓞 E) R (star D.β - D.β) ∈ m :=
-    (hm.isPrime.mem_or_mem h_mem).resolve_right (by simpa using hT)
+    (hm.isPrime.mem_or_mem h_mem).resolve_right (hT)
   have h_conj : star D.β - b ∈ m.comap (algebraMap (𝓞 E) R) := by
     simpa using add_mem h_diff hβ
   exact notMem_of_isCoprime_of_mem h_coprime hβ h_conj

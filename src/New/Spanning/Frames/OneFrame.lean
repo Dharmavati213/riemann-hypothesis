@@ -2,6 +2,8 @@ module
 
 public import New.Spanning.Frames.Densities
 import New.Spanning.Frames.QuadricPlancherel
+import TauCeti.Topology.Algebra.Group.Units
+import TauCeti.Topology.Instances.Matrix
 
 /-!
 # One frame

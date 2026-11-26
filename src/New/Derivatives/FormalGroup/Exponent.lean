@@ -101,7 +101,7 @@ lemma exists_seriesToCp_eq_and_C_dvd_sub {p : ℕ} [Fact p.Prime] {π : valRingC
     mem_range_seriesToCp.2 fun n ↦ (h n).trans π.property
   refine ⟨D + G, by rw [map_add, hD, sub_add_cancel], ?_⟩
   rw [add_sub_cancel_right]
-  refine (C_dvd_iff_dvd_coeff _ _).2 fun n ↦ dvd_iff_norm_le.2 ?_
+  refine (C_dvd_iff_dvd_coeff _ _).2 fun n ↦ valRingCp.dvd_iff_norm_le.2 ?_
   rw [← coeff_seriesToCp, hD]
   exact h n
 
@@ -483,7 +483,8 @@ lemma exists_seriesToCp_eq_exponentSeries_of_ramified {ϖ : ℂ_[p]} {Y : (valRi
         one_add_one_eq_two]
     have h_double : ‖2 * x - (l * c).val‖ ≤ ‖ιₚ (piPrime d p)‖ := by
       simpa only [h_factor] using hl 2
-    have h_one : ‖(l * (1 - c)).val‖ ≤ ‖ιₚ (piPrime d p)‖ := dvd_iff_norm_le.1 (hY_two.mul_left l)
+    have h_one : ‖(l * (1 - c)).val‖ ≤ ‖ιₚ (piPrime d p)‖ :=
+      valRingCp.dvd_iff_norm_le.1 (hY_two.mul_left l)
     have h_eq : x - (l * (c - half)).val =
         half.val * ((2 * x - (l * c).val) + (l * (1 - c)).val) := by
       have h_coe : 2 * half.val = 1 := congrArg Subtype.val h_half

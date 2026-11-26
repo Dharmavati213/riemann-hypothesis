@@ -1,6 +1,8 @@
 module
 
 public import Lib.Weil.Periods.Equivariant
+public import TauCeti.Topology.Algebra.Group.Units
+public import TauCeti.Topology.Instances.Matrix
 import Lib.Weil.Periods.BesselIntegral
 
 /-!

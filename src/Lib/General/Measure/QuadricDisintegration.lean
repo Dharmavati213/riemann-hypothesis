@@ -5,6 +5,7 @@ import Lib.Adelic.QuotientMeasure.Basic
 import Lib.Adelic.Witt.WittTheorem
 import Lib.General.Measure.HaarModulus
 import TauCeti.MeasureTheory.Measure.Disintegration.Continuous
+import TauCeti.Topology.Algebra.Group.Units
 
 /-!
 # Measures on hermitian quadrics: existence and uniqueness of disintegrations

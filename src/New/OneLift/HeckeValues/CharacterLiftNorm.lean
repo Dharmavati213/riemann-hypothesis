@@ -5,6 +5,8 @@ public import New.OneLift.HeckeValues.CharacterLift
 import Lib.DiscreteSeries.Haar.TotalMass
 import Lib.General.Algebra.IntegralPowerSeries
 import Lib.General.Groups.IndexOfProduct
+import TauCeti.Topology.Algebra.Group.Units
+import TauCeti.Topology.Instances.Matrix
 
 /-!
 # The lift of a character and its squared norm as a Hecke L-value

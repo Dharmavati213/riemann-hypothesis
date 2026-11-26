@@ -144,7 +144,7 @@ lemma New.monomial_mul_bind₁_mem_of_weight_le {K ι : Type} [Field K] [Fintype
     monomial α 1 * aeval (R := K) (fun u : ι ↦ X u ^ κ u - g u) (monomial γ 1) ∈ N := by
   set cost : (ι →₀ ℕ) →+ ℝ := weight (fun u : ι ↦ (κ u : ℝ))⁻¹ with h_cost
   have h_mono : Monotone cost := fun α β h_exp ↦ by
-    simp only [h_cost, weight_eq_sum, nsmul_eq_mul, Pi.inv_apply]
+    simp only [h_cost, weight_eq_sum, Pi.inv_apply]
     gcongr with u
     exact h_exp u
   let b (α γ : ι →₀ ℕ) : MvPolynomial ι K :=

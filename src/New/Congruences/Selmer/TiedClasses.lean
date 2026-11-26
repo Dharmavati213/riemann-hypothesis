@@ -1,6 +1,6 @@
 module
 
-public import Lib.ClassField.GaloisCohomology.ClassCounts
+public import Lib.ClassField.GaloisCohomology.Cohomology
 public import New.Congruences.Selmer.Count
 
 /-!
@@ -21,7 +21,7 @@ contains `B¹` when the ties are stable under coboundaries. So the count
   the group of classes of `T.tiedCocycles` in Mathlib's `continuousCohomology 1`.
 * `New.Selmer.SelmerDatum.length_tiedSelmer_eq_length_classes`,
   `New.Selmer.SelmerDatum.exists_length_tiedClasses_le`: the same for lengths, with the classes
-  in the explicit `H¹ = Z¹ / B¹`, and the count `exists_length_tiedSelmer_le` restated for them.
+  as an `O`-module, and the count `exists_length_tiedSelmer_le` restated for them.
 
 Notions from other files:
 * `New.Selmer.SelmerDatum.reductionModule`: the discrete Galois module `T / a`, for `a ∣ ℓ ^ M`.
@@ -133,30 +133,27 @@ variable {x : FinPlace E → AuxPrimeData E (ℓ ^ N) × (ι → O)}
 include hp hV
 
 /-- The tied Selmer group has the length of the module of classes of `T.tiedCocycles` in the
-explicit `H¹ = Z¹ / B¹` of `T / a`, which is `continuousCohomology 1` by
-`New.DiscreteModule.quotB1EquivH1`. -/
+cohomology `H¹(Gal(Ω/E), T / a)`. -/
 theorem length_tiedSelmer_eq_length_classes :
     length O (T.tiedSelmer R J x i a) =
-      length O ((T.tiedCocyclesZ1 ha R J x i).map (B1 (T.reductionModule ha).ρ).mkQ) := by
+      length O ((T.tiedCocyclesZ1 ha R J x i).map (T.reductionModule ha).π₁) := by
   rw [← (Submodule.comapSubtypeEquivOfLe (T.tiedSelmer_le_Z1 ha)).length_eq,
     T.comap_tiedSelmer_eq ha]
   exact length_inf_vanishingAt_eq_length_map (T.reductionModule_ρ_γ ha) T.isUnit_ζ_sub_one
-    (T.reductionModule ha).continuous_orbit _ (Submodule.ker_mkQ _)
+    (T.reductionModule ha).continuous_orbit _ (T.reductionModule ha).ker_π₁
     (T.B1_le_tiedCocyclesZ1 ha hp hV)
 
 /-- `New.Selmer.SelmerDatum.exists_length_tiedSelmer_le` for classes. Let `J` be a set of tied
 primes, where `V i g` says that `g` acts trivially on `T / ℓ ^ M`, and let `M < N` and
-`a ∣ ℓ ^ M`. The module of classes in `H¹ = Z¹ / B¹` of `T / a` of the cocycles unramified outside
+`a ∣ ℓ ^ M`. The module of classes in `H¹(Gal(Ω/E), T / a)` of the cocycles unramified outside
 `T.places ∪ J ∪ J̄` that obey the local conditions and the ties on `J` is no longer than the dual
 `T.dualSelmer`, up to the local terms `T.placesTerm`. -/
 theorem exists_length_tiedClasses_le (hN : M < N) :
     ∃ (A : ∀ v : FinPlace E, {A : ClosurePlace // IsPlaceOver A v}) (R : Finset (FinPlace E)),
-      length O ((T.tiedCocyclesZ1 ha J J x i).map (B1 (T.reductionModule ha).ρ).mkQ) ≤
+      length O ((T.tiedCocyclesZ1 ha J J x i).map (T.reductionModule ha).π₁) ≤
         length O (T.dualSelmer hp hV hN ha A R) + T.placesTerm := by
   rw [← T.length_tiedSelmer_eq_length_classes ha hp hV]
   exact T.exists_length_tiedSelmer_le hp hV hN ha
-
-variable [IsTopologicalGroup Gal(Ω/E)]
 
 /-- The tied Selmer group is isomorphic to the group of classes, in Mathlib's
 `continuousCohomology 1` of `T / a`, of the module `T.tiedCocycles` without the normalisation at

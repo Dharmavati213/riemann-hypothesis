@@ -5,6 +5,8 @@ public import New.Spanning.MainTerm.GlobalSieve
 import Lib.Adelic.Reduction.DefiniteClassSums
 import Lib.Cohomology.Etale.Basic
 import TauCeti.NumberTheory.NumberField.Countable
+import TauCeti.Topology.Algebra.Group.Units
+import TauCeti.Topology.Instances.Matrix
 
 /-!
 # The place and level of a set of primes, orbit sums and the set of entries

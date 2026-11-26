@@ -6,10 +6,11 @@ public import Lib.Weil.DualPair.FiniteAction
 public import Lib.Weil.DualPair.ShortIsotropicVectors
 public import Lib.Weil.DualPair.ThetaLiftConvergence
 public import Lib.Weil.DualPair.WeilAction
-import Lib.DiscreteSeries.FlenstedJensen.PsiKTypes
 import Lib.DiscreteSeries.Haar.TotalMass
 import Lib.SiegelWeil.Formula.WeilRange
 import TauCeti.LinearAlgebra.Matrix.Range
+import TauCeti.Topology.Algebra.Group.Units
+import TauCeti.Topology.Instances.Matrix
 
 /-!
 # Doubling: clean data, the doubling identity and the inner product formula

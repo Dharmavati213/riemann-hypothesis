@@ -10,6 +10,7 @@ import Lib.ClassField.HeckeCharacter.TameModulus
 import Lib.SiegelWeil.Formula.StrongApproximation
 import Lib.SiegelWeil.Tower.LargeSideConstantTerm
 import New.Determinant.Exchange.NegativeIndices
+import TauCeti.Topology.Algebra.Group.Units
 import TauCeti.Topology.Instances.Matrix
 
 /-!

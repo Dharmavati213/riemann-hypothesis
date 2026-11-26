@@ -166,7 +166,7 @@ lemma IsValuationPair.hermite (hR : IsValuationPair R) (ι : k ↪ n) (y : Matri
     fun i j hij ↦ hzero j (mem_univ j) (ι i) (by simpa), ?_, rfl⟩
   -- only the rows at `ι` of `U * y` contribute to the product `y = U⁻¹ * (U * y)`
   have hrows (i : n) (hi : i ∉ Set.range ι) (j : k) : (U.1 * y) i j = 0 :=
-    hzero j (mem_univ j) i (by grind)
+    hzero j (mem_univ j) i (by tauto)
   calc y = U⁻¹.1 * (U.1 * y) := by simp [← Matrix.mul_assoc]
     _ = U⁻¹.1.submatrix id ι * (U.1 * y).submatrix ι id := ext fun i j ↦
       (Fintype.sum_of_injective ι ι.injective _ _ (by simp +contextual [hrows]) fun _ ↦ rfl).symm

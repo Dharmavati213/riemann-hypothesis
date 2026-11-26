@@ -6,6 +6,7 @@ import Lib.Adelic.Unitary.WeakApproximation
 import Lib.DiscreteSeries.Haar.TotalMass
 import Lib.Shimura.ComplexTheta.AppellHumbertData
 import Lib.Weil.MixedModel.ZeroTerm
+import TauCeti.Topology.Algebra.Group.Units
 import TauCeti.Topology.Instances.Matrix
 
 /-!

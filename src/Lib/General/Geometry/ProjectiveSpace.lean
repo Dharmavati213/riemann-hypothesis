@@ -405,7 +405,7 @@ lemma _root_.New.ProjSpace.surjective_eval₂Hom_coordFraction (i : ι) :
     exact eval₂Hom_X f φ a
   refine ⟨a, val_injective _ ?_⟩
   rw [← HomogeneousLocalization.algebraMap_apply, map_eval₂Hom]
-  simpa [φ, mk_eq_mk', eq_mk'_iff_mul_eq, mul_comm] using h_clear _
+  simpa [mk_eq_mk', eq_mk'_iff_mul_eq, mul_comm] using h_clear _
 
 /-- Two ring maps from the sections over the chart D₊(X_i) that agree on all X_j/X_i are equal. -/
 lemma _root_.New.ProjSpace.hom_ext_of_coordSection_eq

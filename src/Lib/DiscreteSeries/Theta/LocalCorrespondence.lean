@@ -652,7 +652,7 @@ theorem map_integratedRep_dsKernel (hp : OscillatorPair T π π') [Nonempty R]
 
 /-- Along the map `P ↦ π(e_λ) P` from polynomials to Fock space, the representation `π'` of the
 second group has the column action `T.swap.oscRows` as its derived action. -/
-theorem isDerivedAction_integratedRep (hp : OscillatorPair T π π') [Nonempty R] [Nonempty C]
+theorem isDerivedAction_integratedRep (hp : OscillatorPair T π π') [Nonempty R]
     (hΦ : IsJointHarmonic T l l' Φ) :
     IsDerivedAction π' ((integratedRep π l.dsKernel).toLinearMap ∘ₗ polyVector η)
       T.swap.oscRows := by

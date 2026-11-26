@@ -113,7 +113,7 @@ lemma fockPairing_tableauPoly_le {n : Φ → Type} (T : ∀ τ : Φ, Tableau (n 
   have h_card : Fintype.card S ≤ d ! := by
     -- the product over all columns of (height)! is at most the factorial of the sum of the heights
     let height : (Σ (τ : Φ) (h : Fin (N τ)), Fin (κ τ h)) → ℕ := fun ⟨_, h, _⟩ ↦ h
-    simpa [S, d, height, Fintype.card_perm, Fintype.prod_sigma, Fintype.sum_sigma] using
+    simpa [S, height, Fintype.card_perm, Fintype.prod_sigma, Fintype.sum_sigma] using
       prod_factorial_le_factorial_sum univ height
   have h_d_le : d ≤ L := by simpa only [d, sum_range, mul_comm] using h_degree
   rw [h_expand]

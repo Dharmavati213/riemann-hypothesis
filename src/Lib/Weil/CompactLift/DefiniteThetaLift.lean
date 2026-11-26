@@ -9,6 +9,8 @@ import Lib.DiscreteSeries.Holomorphic.MaximalCompactMinors
 import Lib.DiscreteSeries.Theta.FockJointHarmonics
 import Lib.GLn.SchurModule.WeylKernel
 import Lib.Shimura.Uniformisation.HolomorphicFamilies
+import TauCeti.Topology.Algebra.Group.Units
+import TauCeti.Topology.Instances.Matrix
 
 /-!
 # Theta lifts between definite unitary groups and algebraic lifts by jets

@@ -10,6 +10,8 @@ import New.Spanning.Unfolding.AmplitudeSums
 import New.Spanning.Unfolding.Packing
 import New.Spanning.Unfolding.ReducedPoints
 import TauCeti.MeasureTheory.Integral.Pi
+import TauCeti.Topology.Algebra.Group.Units
+import TauCeti.Topology.Instances.Matrix
 
 /-!
 # Schur's test for one orbit
@@ -568,7 +570,7 @@ lemma HasCellRank.exists_majorant_lintegral_le_kernelBound (h_rank : S.HasCellRa
     fun_prop
   · -- The change of variables brings in the Jacobian that `kernelBound` carries.
     have h_det : (S.shiftScaling j v)ᴴ.det ≠ 0 := by
-      simp [shiftScaling, basisScale, prod_eq_zero_iff, Nat.Prime.ne_zero]
+      simp [shiftScaling, prod_eq_zero_iff, Nat.Prime.ne_zero]
     have h_card : card 𝔰.κ = 𝔰.k := by simp
     refine (lintegral_comp_mul_add h_det 0 h_meas).trans_le ?_
     grw [h_int, det_conjTranspose, norm_star, h_card, kernelBound, ofReal_mul (by positivity)]

@@ -8,6 +8,8 @@ import Lib.DiscreteSeries.Haar.TotalMass
 import Lib.General.Analysis.GaussianIntegral
 import Lib.General.Analysis.PackingAndSobolev
 import New.Spanning.Bessel.MeanValue
+import TauCeti.Topology.Algebra.Group.Units
+import TauCeti.Topology.Instances.Matrix
 
 /-!
 # Unfolding bounds over G₁ and the L² bound at the section γ_Z via Sobolev

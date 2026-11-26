@@ -165,13 +165,13 @@ theorem L_inv (hS : ∀ v : FinPlace E, v ∉ S → ψ v = 1) : ν⁻¹.L S = ν
   let c : FinPlace E → ℂ := heckeCoeff ν.baseChange.finPart S.conjClosure
   have h_coeff (v : FinPlace E) :
       heckeCoeff ν⁻¹.baseChange.finPart S.conjClosure v = c (star v) := by
-    have hv_star : star v ∈ S.conjClosure ↔ v ∈ S.conjClosure := by simp [Set.conjClosure, or_comm]
+    have hv_star : star v ∈ S.conjClosure ↔ v ∈ S.conjClosure := by simp [or_comm]
     unfold c heckeCoeff
     by_cases hv : v ∈ S.conjClosure
     · rw [Set.indicator_of_notMem (not_not.mpr hv),
         Set.indicator_of_notMem (not_not.mpr (hv_star.mpr hv))]
     · obtain ⟨hv_out, hv_star_out⟩ : v ∉ S ∧ star v ∉ S := by
-        simpa [Set.conjClosure, not_or] using hv
+        simpa [not_or] using hv
       rw [Set.indicator_of_mem hv, Set.indicator_of_mem (mt hv_star.mp hv)]
       simpa [HeckeChar.atUniformizer] using
         (h.atUniformizer_star (hS v hv_out) (hS (star v) hv_star_out)).symm
@@ -435,7 +435,7 @@ lemma Variety.exists_twist_algHeckeChar [PadicIso ℓ] [CMType E] (ω : AlgHecke
   obtain ⟨ρ_unr, ρ_jump, ρ_frob⟩ := hρ_sph hA
   refine ⟨ρ_unr.twist h_twist (isGoodAt_scalarRep_cyclotomicCharIn_pow_mul μ A d μ_unr),
     ρ_jump.twist h_twist (hasJumpsAt_scalarRep_cyclotomicCharIn_pow_mul μ A d _ ?_), fun s hs ↦ ?_⟩
-  · simpa [μ, θ, IsHeckeOfType.toAlgebraic, neg_add_eq_sub] using μ_jump
+  · simpa [θ, IsHeckeOfType.toAlgebraic, neg_add_eq_sub] using μ_jump
   refine .twist (c := ιℓ c) ((ρ_frob s hs).of_dvd ⟨C (ιℓ c ^ a), ?_⟩) h_twist
     (polyKillsAt_scalarRep_cyclotomicCharIn_pow_mul μ A d s w.q _ w.one_lt_q.ne_zero hs ?_)
   · -- Substituting `ιℓ c * X` multiplies the term of `t j` by `ιℓ c ^ a / ιℓ c ^ j`.

@@ -186,7 +186,7 @@ lemma exists_smooth_exponent_coherent {A : EuclideanSpace ℂ p → (ι → ℂ)
     fun_prop
   · intro r hr t x
     have hr_ne : (r : ℂ) ≠ 0 := mod_cast hr.ne'
-    simp [e, mulVec_smul, star_trivial, field]
+    simp [mulVec_smul, star_trivial, field]
 
 omit [DecidableEq ι] [DecidableEq p] in
 /-- For `d` smooth of compact support and `A x` a smooth family of real-linear maps, the Fourier

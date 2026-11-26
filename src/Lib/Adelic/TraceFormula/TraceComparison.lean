@@ -10,6 +10,8 @@ import Lib.DiscreteSeries.FlenstedJensen.PsiKTypes
 import Lib.General.LinearAlgebra.Eigenvalues
 import Lib.General.LinearAlgebra.MatrixPolynomials
 import Lib.Weil.Periods.Grading
+import TauCeti.Topology.Algebra.Group.Units
+import TauCeti.Topology.Instances.Matrix
 
 /-!
 # Comparison of traces of operators on forms for different spaces and signs

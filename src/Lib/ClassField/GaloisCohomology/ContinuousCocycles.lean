@@ -111,7 +111,12 @@ def B2 : Submodule R (G × G → M) :=
       module⟩
 
 /-- Continuous cohomology `H²(G, M)`: the continuous 2-cocycles of `ρ` modulo the coboundaries of
-continuous 1-cochains `G → M`. -/
+continuous 1-cochains `G → M`.
+
+For a discrete module `A`, this explicit quotient is identified with the cohomology `A.H 2`,
+Mathlib's `continuousCohomology 2`, by `New.DiscreteModule.H2EquivH`. It stays a separate definition
+until the class field theory built on it (`cyclicClass`, `IsLocalArtin`, `localArtin`) moves onto Tau
+Ceti's, which waits on Tau Ceti. -/
 @[instance_reducible]
 def H2 : Type _ := Z2 ρ ⧸ (B2 ρ).comap (Z2 ρ).subtype
   deriving AddCommGroup, Module R

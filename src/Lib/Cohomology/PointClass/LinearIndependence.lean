@@ -195,21 +195,22 @@ lemma New.Variety.exists_fibre_mem_of_isOpenSubfunctor {k : Type} [Field k] [Cha
   obtain ⟨P, hP₀, hP⟩ := h_root (aeval w b) hbw
   obtain ⟨q, hq⟩ : ∃ q : Fin n → k, MvPolynomial.eval q (P.coeff 0) ≠ 0 := by
     contrapose! hP₀
-    exact MvPolynomial.funext (by simpa using hP₀)
+    exact MvPolynomial.funext (hP₀)
   refine ⟨q, fun K hK x v hv hΛv hx ↦ ?_⟩
   let h_field : Field K := hK.toField
   -- Homogenised by `Λ 0`, the relation `P(b)` gives a form `G` with its value wherever `Λ 0` is `1`
   -- (`h_eval`); `G` vanishes at `w`, hence at `v`. If `b` vanished at `v`, so would the constant
   -- term of `P` at `q`.
   obtain ⟨G, hG, h_eval⟩ :=
-    exists_homogenization (Λ 0).prop (P.eval₂ (bind₁ (Λ ·.succ)).toRingHom b) le_rfl
+    exists_homogenization (Λ 0).prop
+      (P.eval₂ (aeval (fun i : Fin n ↦ (Λ i.succ).val)).toRingHom b) le_rfl
   have hGw : aeval w G = 0 := by
-    simpa [h_eval, hw₁, P.eval₂_eq_sum_range, aeval_bind₁ w, comp_def, evalForms] using hP
+    simpa [h_eval, hw₁, P.eval₂_eq_sum_range, comp_aeval_apply, comp_def, evalForms] using hP
   have hGκw : aeval (κ ∘ w) G = 0 := (IsHomogeneousSolution.refl.map κ.hom') hG hGw
   have hbv : aeval v b ≠ 0 := by
     intro hbv
     have hGv : aeval v G = algebraMap k K (MvPolynomial.eval q (P.coeff 0)) := by
-      simp [aeval_bind₁ v, h_eval, hbv, congrFun hΛv, ← comp_def, aeval_algebraMap_apply,
+      simp [comp_aeval_apply, h_eval, hbv, congrFun hΛv, ← comp_def, aeval_algebraMap_apply,
         P.eval₂_eq_sum_range, sum_range_succ']
     exact hq ((map_eq_zero _).mp (hGv.symm.trans (hv hG hGκw)))
   obtain ⟨x', hx'V, hx'⟩ : ∃ z ∈ V.obj K, IsCoordsWithUnit L z v := h_unit hv (.mk0 _ hbv)

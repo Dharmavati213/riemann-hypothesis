@@ -204,7 +204,7 @@ of the line in `GL_n(𝔽_w)`, `w = Q.place j`, with first entry and determinant
 weight `κ`, then the pro-unipotent Iwahori subgroup `proIwahori` of `GL_n(E_w)` fixes it: `y` lies
 in the space `levelSpace` of its fixed vectors for the action `localFormRep` of `GL_n(E_w)` on
 forms. -/
-lemma mem_levelSpace_proIwahori (hQ : ∀ j : J, D.IsOffLevel ![] (Q.place j)) [V.IsStd] [WeilData E]
+lemma mem_levelSpace_proIwahori (hQ : ∀ j : J, D.IsOffLevel ![] (Q.place j)) [V.IsStd]
     {j : J} {y : D.formsOfLevel Q.place}
     (hy : ∀ k : residueLineStabilizer (ResField (Q.place j)) (card n),
       firstEntry k = 1 → Matrix.GeneralLinearGroup.det k.1 = 1 →

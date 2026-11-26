@@ -1,6 +1,5 @@
 module
 
-public import Lib.Shimura.ComplexTheta.AppellHumbertData
 public import Lib.SiegelWeil.SingularForms.UnimodularCoefficients
 public import Lib.SiegelWeil.Tower.LineTerms
 public import Lib.SiegelWeil.Tower.PrincipalIdeles
@@ -14,6 +13,7 @@ import Lib.Cohomology.Etale.Basic
 import Lib.DiscreteSeries.Haar.TotalMass
 import Lib.Weil.DualPair.WeilAction
 import TauCeti.NumberTheory.NumberField.Countable
+import TauCeti.Topology.Algebra.Group.Units
 import TauCeti.Topology.Instances.Matrix
 
 /-!

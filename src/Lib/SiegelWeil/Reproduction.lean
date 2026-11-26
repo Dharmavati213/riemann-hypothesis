@@ -13,6 +13,8 @@ import Lib.General.LinearAlgebra.BlockEmbeddings
 import Lib.PadicComparison.Descent.TestCategory
 import Lib.Shimura.Uniformisation.HolomorphicFamilies
 import Lib.SiegelWeil.RallisInner.SharpData
+import TauCeti.Topology.Algebra.Group.Units
+import TauCeti.Topology.Instances.Matrix
 
 /-!
 # Holomorphic Fock vectors and a reproducing formula by theta lifts

@@ -983,11 +983,9 @@ lemma Ainf.shiftDiff_surjective (h : ¬IsUnit a) : Surjective (shiftDiff Ainf a)
 
 /-- `ξ` is a prime element of `A_inf`: it generates the kernel of `θ`, whose target `O_C` is a
 domain. -/
-lemma Ainf.prime_xi : Prime xi := by
-  refine ⟨fun h_zero ↦ not_p_dvd_xi (by simp [h_zero]),
-    fun h_unit ↦ (h_unit.map theta).ne_zero theta_xi, fun x y h_dvd ↦ ?_⟩
-  · rw [← theta_eq_zero_iff_xi_dvd, map_mul, mul_eq_zero] at h_dvd
-    rwa [← theta_eq_zero_iff_xi_dvd, ← theta_eq_zero_iff_xi_dvd]
+lemma Ainf.prime_xi : Prime xi :=
+  (span_singleton_prime (show xi ≠ 0 from fun h ↦ not_p_dvd_xi (by simp [h]))).mp
+    (ker_theta_eq_span_xi ▸ ker_isPrime theta)
 
 /-- Each `g ∈ G_p` commutes with `φ` and `θ`, so `τ` divides every conjugate `g' • τ` by
 `tau_dvd_of_theta_frobEnd`; hence `g • τ` is associated to `τ`. -/
