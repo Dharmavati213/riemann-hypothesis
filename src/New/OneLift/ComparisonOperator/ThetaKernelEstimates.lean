@@ -121,7 +121,7 @@ theorem New.Fock.norm_fockInner_realHeisenbergOp_le {ι : Type} [Fintype ι] [De
   have G_int : Integrable G (normalizedVolume ι) :=
     (integrable_norm_sq v_scaled).comp_smul (by positivity)
   have preserving : MeasurePreserving (σ • · + y) (normalizedVolume ι) (normalizedVolume ι) :=
-    ((realAction ε).2 σ).add_right _ y
+    ((realAction ε).measurePreserving σ).add_right _ y
   -- Undoing the dilation gives `c^(2d)` from `v_scaled` and the Jacobian `c^(2|ι|)`.
   have G_le : ∫ x, G x ∂normalizedVolume ι ≤ exp n * ∫ x, ‖v x‖ ^ 2 ∂normalizedVolume ι := by
     have exponent_le : ((card ι + d : ℕ) : ℝ) * (n / A) ≤ n := by
@@ -232,13 +232,13 @@ theorem firstMinimum_mul_le_hom [Nonempty n] [Nonempty n']
     l2_opNorm_le_of_apply fun i j ↦ ((S.hom T).archCoords z).norm_apply_le (w, i, j)
   have k_int (i : n') (j : n) : (k i j).2 ∈ Ô E := hz (i, j)
   -- As `Y` is invertible and `z ≠ 0`, some basis vector has a nonzero image.
-  obtain ⟨j, hj⟩ : ∃ j : n, vecToMatrix z *ᵥ Y.1.col j ≠ 0 := by
+  obtain ⟨j, hj⟩ : ∃ j : n, vecToMatrix z *ᵥ Y.val.col j ≠ 0 := by
     by_contra! h_all
-    have hzY : vecToMatrix z * Y.1 = 0 := Matrix.ext fun i j ↦ congrFun (h_all j) i
+    have hzY : vecToMatrix z * Y.val = 0 := Matrix.ext fun i j ↦ congrFun (h_all j) i
     exact z_ne (by simpa [Matrix.mul_assoc] using congrArg (fun M ↦ matrixToVec (M * Y⁻¹.1)) hzY :)
   -- That image lies in the lattice of `T`, and its length is bounded by means of `norm_k`.
   obtain ⟨image_mem, norm_image⟩ :=
-    T.mem_and_norm_le_of_vecAtPoint _ S (Y.1.col j) k 1 norm_k (by rw [one_smul, vec_eq])
+    T.mem_and_norm_le_of_vecAtPoint _ S (Y.val.col j) k 1 norm_k (by rw [one_smul, vec_eq])
   grw [firstMinimum_le (image_mem (by simpa using k_int) (Y_mem j)) hj, norm_image, Y_short]
   · have h_pos : 0 < S.firstMinimum := S.firstMinimum_pos
     simp [field]
@@ -277,7 +277,7 @@ lemma dataInner_traceChar {𝔪 : Modulus E} (t : Matrix n n' 𝔪.ResidueRing)
       traceChar t ∘ vecToMatrix = fun x ↦ 𝔪.primAddChar (x ⬝ᵥ 𝔪.reduction ∘ tLift) := by
     simp [funext_iff, tLift, hlift, trace, Matrix.mul_apply, dotProduct, sum_prod_type, traceChar,
       vecToMatrix]
-  let y : n' × n → 𝔸 E := finVec (star (idem 𝔪.places • 𝔪.generator⁻¹.1 • Subtype.val ∘ tLift))
+  let y : n' × n → 𝔸 E := finVec (star (idem 𝔪.places • 𝔪.generator⁻¹.val • Subtype.val ∘ tLift))
   let zf : n' × n → 𝔸 E := fun i ↦ (0, (z i).2)
   have h_zf : finVec (finCoord z) = zf := funext fun i ↦ by simp [finVec, finCoord, zf]
   rw [h_zf]
@@ -292,14 +292,14 @@ lemma dataInner_traceChar {𝔪 : Modulus E} (t : Matrix n n' 𝔪.ResidueRing)
   · -- The phase of `ϱ zf` past `ϱ y` is the lift of `traceChar t` at `α⁻¹ z_f`.
     have h_beta : ((adelicHeisenberg E (homSigns s s')).β zf y : ℂ) ^ 2 =
       (ψf E (algebraMap E (𝔸f E) j * ∑ x, star α.val *
-        (idem 𝔪.places * (𝔪.generator⁻¹.1 * (tLift x).1)) * (z x).2) : Circle) := by
+        (idem 𝔪.places * (𝔪.generator⁻¹.val * (tLift x).val)) * (z x).2) : Circle) := by
       simp [y, zf, finVec, adelicHeisenberg, stdForm, stdAddChar, dotProduct, fst_sum, snd_sum,
         mulVec_diagonal, ← Circle.coe_pow, ← map_nsmul_eq_pow, two_mul, ← map_add, ← add_mul]
     rw [h_char, 𝔪.liftFn_apply, dite_eq_left fun i ↦ mul_mem (idem_mem_Ô _) (hz i), h_beta,
       mul_left_comm]
     simp [zf, finCoord, stdLattice.selfDualAddChar_apply, dotProduct, ← map_mul, ← map_sum, mul_sum,
       mul_assoc,
-      mul_left_comm, mul_comm (tLift _).1]
+      mul_left_comm, mul_comm (tLift _).val]
   · -- Otherwise `z_f` lies outside the support of the vacuum.
     have h_vac : vacuumFn zf = 0 := by simpa [zf, vacuumFn, finCoord] using hz
     simp [h_vac]
@@ -569,14 +569,14 @@ theorem exists_norm_modKernel_sub_fockInner_le [Nonempty n] [Nonempty n']
     obtain ⟨⟨hz, hz_zero⟩, -⟩ := ite_ne_right_iff.1 ((term_eq y).symm.trans_ne term_ne.symm)
     exact ⟨fun i ↦ by simpa [x, finCoord] using hc _ (hz_zero i), y_ne⟩
   -- Removing the term `y = 0` leaves the difference to be bounded, as a sum over `L`.
-  have h_rest : HasSum (fun y : L ↦ if y.1 = 0 then 0 else term y) (mean - term 0) :=
+  have h_rest : HasSum (fun y : L ↦ if y.val = 0 then 0 else term y) (mean - term 0) :=
     (hasSum_subtype_iff_of_support_subset h_supp).2 (hasSum_ite_sub_hasSum h_sum 0)
   -- Each term decays like a Heisenberg matrix coefficient of the Fock vector `v`.
   set dim : ℕ := card (InfinitePlace E × n' × n)
   let σ : USign (realSigns E (homSigns s s')) := pairHomInf (u, u')
   let normσ : ℝ := ‖(σ : Matrix (InfinitePlace E × n' × n) (InfinitePlace E × n' × n) ℂ)‖
   have term_le (y : L) :
-      ‖if y.1 = 0 then 0 else term y‖ ≤
+      ‖if y.val = 0 then 0 else term y‖ ≤
         normσ ^ (dim + 2 * q) * (fockInner v v).re * (4 * ((d + dim : ℕ) + q)) ^ q *
           (len y)⁻¹ ^ (2 * q) := by
     calc _ ≤ ‖fockInner v (realHeisenbergOp (realCoord (x y)) (realWeil σ v))‖ := by

@@ -3,6 +3,8 @@ module
 public import New.Determinant.Exchange.LargeTriple
 import Lib.Adelic.Unitary.RationalPoints
 import Lib.General.Analysis.MeanValueAndTaylor
+import Lib.PadicComparison.Descent.TestCategory
+import Lib.Shimura.Uniformisation.HolomorphicFamilies
 import Lib.Weil.MixedModel.ThetaInvariance
 
 /-!
@@ -284,21 +286,15 @@ lemma exists_contDiff_witt_and_bump {ι : Type*} [Fintype ι] {J : Matrix m m �
       IsWittBump J x₀ γ k σ := by
   obtain ⟨γ, γ_smooth, γ_inv⟩ := exists_contDiff_eventuallyEq_inv hdet
   obtain ⟨k, k_smooth, span_near⟩ := exists_contDiff_witt hJ hdet
-  have gram_near : ∀ᶠ y : Matrix m b ℂ in nhds x₀,
-      γ (yᴴ * J * y) = (yᴴ * J * y)⁻¹ ∧ (yᴴ * J * y).det ≠ 0 :=
-    Continuous.tendsto (f := fun y : Matrix m b ℂ ↦ yᴴ * J * y) (by fun_prop) x₀
-      (γ_inv.and (ContinuousAt.eventually_ne (by fun_prop) hdet))
-  obtain ⟨σ, σ_supp, σ_cpt, σ_smooth, σ_range, σ_one⟩ :=
-    exists_contDiff_tsupport_subset
-      (nhds_pi.le (eventually_pi fun _ : ι ↦ span_near.and gram_near))
-  have near (x : ι → Matrix m b ℂ) (hx : σ x ≠ 0) (i : ι) :
-      (∃ c : Matrix b b ℂ, (k (x i) : Matrix m m ℂ) * x₀ * c = x i) ∧
-        γ ((x i)ᴴ * J * x i) = ((x i)ᴴ * J * x i)⁻¹ ∧ ((x i)ᴴ * J * x i).det ≠ 0 :=
-    σ_supp (subset_closure hx) i
-  simp only [forall_and] at near
-  obtain ⟨span_supp, inv_supp, det_supp⟩ := near
+  obtain ⟨σ, σ_supp, σ_cpt, σ_smooth, σ_range, σ_one⟩ := exists_contDiff_tsupport_subset <|
+    nhds_pi.le <| eventually_pi fun _ : ι ↦ span_near.and <|
+      (by fun_prop : Continuous fun y : Matrix m b ℂ ↦ yᴴ * J * y).tendsto x₀ <|
+        γ_inv.and (ContinuousAt.eventually_ne (by fun_prop) hdet)
   exact ⟨γ, k, σ, γ_smooth, γ_inv.eq_of_nhds, k_smooth, σ_smooth, σ_cpt,
-    fun x ↦ (σ_range ⟨x, rfl⟩).1, σ_one, span_supp, inv_supp, det_supp⟩
+    fun x ↦ (σ_range ⟨x, rfl⟩).1, σ_one,
+    fun x hx i ↦ (σ_supp (subset_closure hx) i).1,
+    fun x hx i ↦ (σ_supp (subset_closure hx) i).2.1,
+    fun x hx i ↦ (σ_supp (subset_closure hx) i).2.2⟩
 
 omit [DecidableEq m] in
 /-- The `J`-orthogonal projection `x * (xᴴ * J * x)⁻¹ * xᴴ * J * x₀` of `x₀` to the span of a frame

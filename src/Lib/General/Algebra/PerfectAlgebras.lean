@@ -2,6 +2,7 @@ module
 
 public import Lib.PadicComparison.Descent.TestCategory
 public import Lib.PadicComparison.Descent.TestCovers
+import TauCeti.AlgebraicGeometry.Frobenius.Perfect
 import TauCeti.RingTheory.Smooth.Lifting
 
 /-!
@@ -449,48 +450,17 @@ lemma exists_etale_lift (B : Type*) [CommRing B] [Algebra D B] [h_etale : Etale 
     Algebra.Etale.exists_tensorProduct_algEquiv_of_surjective C D B h_surj
   exact ⟨.of _ T, h_etale_T, e⟩
 
-/-- Let `D` be étale over `C` with `p = 0` in `D`, and `f : D → E` a ring map with `C → E` étale.
-If `s` is inverse to `f` up to the `p`-th power on both sides, then `f` is bijective. -/
-lemma bijective_of_etale_of_inverse_up_to_pow [Etale C D] {E : Type} [CommRing E] (f : D →+* E)
-    (hf : (f.comp (algebraMap C D)).Etale) (hp : (p : D) = 0) (s : E →+* D)
-    (hsf : ∀ x : D, s (f x) = x ^ p) (hfs : ∀ x : E, f (s x) = x ^ p) : Bijective f := by
-  -- `E` is étale and faithfully flat over `D`, so by descent it is enough to show
-  -- `y ⊗ 1 = 1 ⊗ y` in `E ⊗[D] E` for every `y`.
-  algebraize [f, f.comp (algebraMap C D)]
-  have : Algebra.Etale D E := .of_restrictScalars C D E
-  -- A prime `P` of `D` is the image of `P.comap s`, as `s (f x) = x ^ p`.
-  have : Module.FaithfullyFlat D E := .of_comap_surjective fun P ↦ ⟨P.comap s, by
-    ext
-    simp [algebraMap_toAlgebra, hsf, P.isPrime.pow_mem_iff_mem, pos]⟩
-  -- Frobenius of `E ⊗[D] E` factors through the multiplication map to `E` and `s`.
-  have h_frob : frobPow (natCast_eq_zero_of_algebra hp (E ⊗[D] E)) 1 =
-      (algebraMap D (E ⊗[D] E)).comp (s.comp (lmul' D).toRingHom) := by
-    ext y <;> simp [← hfs, ← algebraMap_toAlgebra f, tmul_one_eq_one_tmul]
-  -- The separability element `elem D E` multiplies to `1`, so its `p`-th power is `1`.
-  have h_pow : elem D E ^ p = 1 := by
-    calc elem D E ^ p = frobPow (natCast_eq_zero_of_algebra hp (E ⊗[D] E)) 1 (elem D E) := by simp
-      _ = algebraMap D (E ⊗[D] E) (s (lmul' D (elem D E))) := RingHom.congr_fun h_frob _
-      _ = 1 := by simp [lmul_elem, Algebra.TensorProduct.one_def]
-  have h_unit : IsUnit (elem D E) := .of_pow_eq_one h_pow out
-  refine ⟨FaithfulSMul.algebraMap_injective D E, fun y ↦ ?_⟩
-  -- `elem D E` equalises `y ⊗ 1` and `1 ⊗ y`, and it is a unit.
-  have h_eq : (y ⊗ₜ 1 : E ⊗[D] E) = 1 ⊗ₜ y := h_unit.mul_right_cancel (one_tmul_mul_elem y).symm
-  exact (IsEffective.of_faithfullyFlat D E y).mp (sub_eq_zero.mpr h_eq :)
-
+open AlgebraicGeometry in
 /-- An étale algebra over a perfect ring in which p = 0 is perfect. -/
 lemma perfectRing_of_etale [Etale C D] [k : PerfectRing C p] (hp : (p : C) = 0) :
     PerfectRing D p := by
-  have hD : (p : D) = 0 := natCast_eq_zero_of_algebra hp D
-  -- `C → D → D` (Frobenius last) is also Frobenius of `C`, a bijection, followed by `C → D`.
-  have h_comm : (frobPow hD 1).comp (algebraMap C D) = (algebraMap C D).comp (frobPow hp 1) :=
-    RingHom.ext fun _ ↦ by simp
-  have h_etale : ((frobPow hD 1).comp (algebraMap C D)).Etale := by
-    rw [h_comm]
-    exact RingHom.Etale.stableUnderComposition _ _ (.of_bijective (bijective_frobPow_one hp))
-      (etale_algebraMap.2 inferInstance)
-  -- The identity is inverse to Frobenius of `D` up to the `p`-th power.
-  exact perfectRing_of_bijective_frobPow hD
-    (bijective_of_etale_of_inverse_up_to_pow C D _ h_etale hD (.id D) (by simp) (by simp))
+  -- Perfect schemes are stable under étale morphisms; apply this to `Spec D → Spec C`.
+  have : Scheme.IsPerfect (Spec (.of C)) p := (Scheme.isPerfect_Spec_iff C).2 ⟨hp, k⟩
+  let f := Spec.map (CommRingCat.ofHom (algebraMap C D))
+  have : AlgebraicGeometry.Etale f :=
+    (HasRingHomProperty.Spec_iff (P := @AlgebraicGeometry.Etale)).2
+      (RingHom.etale_algebraMap.2 inferInstance)
+  exact ((Scheme.isPerfect_Spec_iff D).1 (Scheme.IsPerfect.of_etale f)).2
 
 end EtalePerfect
 

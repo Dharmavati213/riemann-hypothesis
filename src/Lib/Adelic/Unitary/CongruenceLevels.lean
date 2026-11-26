@@ -1,6 +1,7 @@
 module
 
 public import Lib.Adelic.Unitary.Defs
+public import Lib.General.LinearAlgebra.IntegralLattices
 import Lib.Adelic.Unitary.ComponentsAndBlockSums
 import TauCeti.LinearAlgebra.Matrix.GeneralLinearGroup.Lift
 import TauCeti.RingTheory.DedekindDomain.AdicValuation.ResidueField
@@ -83,6 +84,53 @@ namespace New
 `star w` is the complex conjugate place; `New.ofSplitPlace` puts a matrix of GL_n(E_w) into G_f at a
 place w ≠ `star w`, with component 1 away from w and `star w`.
 -/
+
+
+namespace Filling
+
+open Matrix Valued
+
+/-- The matrix `l` with row `o` multiplied by `a` is integral iff that row times `a` and the other
+rows of `l` are integral. -/
+lemma isIntMatrix_scaleAt_mul_iff {κ m R : Type*} [Fintype κ] [DecidableEq κ] [CommRing R]
+    {O : Subring R} {a : R} {o : κ} {l : Matrix κ m R} :
+    IsIntMatrix O (scaleAt a o * l) ↔ (∀ j : m, a * l o j ∈ O) ∧ ∀ i ≠ o, ∀ j : m, l i j ∈ O := by
+  simp only [IsIntMatrix, diagonal_mul]
+  grind
+
+variable {E : Type} [Field E] [CMType E]
+
+/-- Let the idele `p` be a unit at `w` or at the conjugate of `w`, for each place `w` (`v` is the
+valuation). If the finite adelic unitary matrix `k` is integral with row `o` congruent to that of
+`1` modulo `p`, then `k - 1` stays integral after dividing row `o` by `p` and column `o` by
+`p̄`. -/
+lemma isIntMatrix_scaleAt_mul_sub_one_mul_scaleAt {κ : Type*} [Fintype κ] [DecidableEq κ]
+    (p : (𝔸f E)ˣ) (o : κ)
+    (hp : ∀ w : FinPlace E, v (p.val w) = 1 ∨ v (p.val (star w)) = 1) {k : Gf E κ}
+    (hk : k.val ∈ congruenceGL (Ô E ∙ p.val) fun () ↦ o) :
+    IsIntMatrix (Ô E) (scaleAt p⁻¹.val o * ((k.val.val - 1) * scaleAt (star p⁻¹.val) o)) := by
+  -- Row `o` of `M = k - 1` is divisible by `p`. The same holds for `k⁻¹ = kᴴ`, so column `o` of
+  -- `M` is divisible by `star p`. All entries of `M` are integral.
+  set M : Matrix κ κ (𝔸f E) := k.val.val - 1 with hM
+  obtain ⟨-, hk_inv_row⟩ := inv_mem hk
+  obtain ⟨hk_int, hk_row⟩ := hk
+  have h_int : IsIntMatrix (Ô E) M := hk_int.isIntMatrix.sub .one
+  have h_row (j : κ) : p⁻¹.val * M o j ∈ Ô E := mem_span_unit_iff.1 (hk_row () j)
+  have h_col (i : κ) : M i o * star p⁻¹.val ∈ Ô E := by
+    have h_inv : p⁻¹.val * Mᴴ o i ∈ Ô E := by
+      rw [hM, conjTranspose_sub, conjTranspose_one, ← U.inv_val_eq_conjTranspose]
+      exact mem_span_unit_iff.1 (hk_inv_row () i)
+    simpa [star_mul] using star_mem_Ô h_inv
+  -- The entry `(o, o)` is divided twice, but at each place one of the two divisors is a unit.
+  have h_corner : p⁻¹.val * (M o o * star p⁻¹.val) ∈ Ô E := mem_Ô.2 fun w ↦ by
+    obtain h_unit | h_unit := hp w
+    · simpa [idele_inv_apply_and_ne_zero, h_unit] using mem_Ô.1 (h_col o) w
+    · simpa [idele_inv_apply_and_ne_zero, h_unit] using mem_Ô.1 (h_row o) w
+  refine isIntMatrix_scaleAt_mul_iff.2 ⟨fun j ↦ ?_, fun i _ j ↦ ?_⟩
+  · by_cases hj : j = o <;> simp [hj, h_corner, h_row]
+  · by_cases hj : j = o <;> simp [hj, h_col, h_int i j]
+
+end Filling
 
 section Levels
 

@@ -256,6 +256,14 @@ variable {E n n' ι : Type} [Field E] [CMType E] [WeilData E]
   (Ω : GInf E s × GInf E t → fockSpace (realSigns E η) →L[ℂ] fockSpace (realSigns E η))
   (e : GInf E s → ℂ) (e' : GInf E t → ℂ) (Φ : fockSpace (realSigns E η))
 
+omit [WeilData E] in
+private lemma star_typeKernel_of_hasGap {a : Type} [Fintype a] [DecidableEq a]
+    {σ : a → ℤˣ} {μ : InfinitePlace E → HCParam σ} {h : InfinitePlace E → ℕ}
+    (hg : ∀ w, (μ w).HasGap (h w)) :
+    star (typeKernel μ σ) = typeKernel (-μ) σ := by
+  funext x
+  simp [typeKernel, ← conj_dsKernel_neg (hg _)]
+
 /-! ### Corresponding parameters and the chosen joint harmonic -/
 
 /-- `-l` if `d` is true and `l` otherwise: the parameter of the forms of type `l`, or, if `d` is
@@ -598,7 +606,8 @@ theorem integral_fockInner_mul_typeKernel_ne_zero {T : InfinitePlace E → FockD
   let pΦ (w : InfinitePlace E) : fockSpace η :=
     integratedRep (π w) (dsKernel (l w)) (polyVector η (Φ w))
   have h_conj (x : GInf E s) : conj (typeKernel (-l) s x) = typeKernel l s x := by
-    simp [typeKernel, conj_dsKernel_neg (hΦ _).hasGap_row]
+    simpa only [Pi.star_apply, starRingEnd_apply, neg_neg] using
+      congrFun (star_typeKernel_of_hasGap (μ := -l) (fun w ↦ (hΦ w).hasGap_row.neg)) x
   have h_pairing : ∫ x : GInf E s, fockInner Φ₀ (Ω (x, 1) Φ₀) * typeKernel l s x =
       ∏ w, fockInner (polyVector η (Φ w)) (pΦ w) := by
     simpa only [smul_eq_mul, mul_comm, Φ₀, fockInner_piTensor] using
@@ -712,11 +721,8 @@ theorem isEdge_of_isJointHarmonic {Φ : InfinitePlace E → MvPolynomial (n' × 
     rw [← neg_neg l]
     exact isHalfEdge_of_oscillatorPair (fun w ↦ (h_pair w).swap) (fun w ↦ (hΦ w).swap) hπ hπ'
   · -- for the reverse one, conjugation changes the sign of the parameters
-    have h_conj : Star.star (typeKernel l s) = typeKernel (-l) s :=
-      funext fun x ↦ by simp [typeKernel, ← conj_dsKernel_neg (hΦ _).hasGap_column]
-    have h_conj' : Star.star (typeKernel l' t) = typeKernel (-l') t :=
-      funext fun y ↦ by simp [typeKernel, ← conj_dsKernel_neg (hΦ _).hasGap_row]
-    rw [h_conj, h_conj']
+    rw [star_typeKernel_of_hasGap (μ := l) (fun w ↦ by simpa using (hΦ w).hasGap_column.neg),
+      star_typeKernel_of_hasGap (μ := l') (fun w ↦ (hΦ w).hasGap_row)]
     exact isHalfEdge_of_oscillatorPair h_pair hΦ hπ' hπ
 
 /-- If `l`, `l'` correspond (the block rule holds at every infinite place), the Fock vector

@@ -435,36 +435,32 @@ lemma quotMeasure_bot : Subgroup.quotMeasure ⊥ μ = μ := by
     (identDistrib_orbitMeasure h_cut measurable_id (by simp)).map_eq
   simpa using h_map
 
-/-- For a discrete subgroup `Γ` of `G`, a left Haar measure `μ` and an integrable `f`, the sum
-`g ↦ ∑' γ, f (γ * g)` is integrable for the quotient measure on `Γ \ G`. -/
-lemma integrable_quotMeasure_tsum {f : G → ℂ} (hf : Integrable f μ) :
-    Integrable (fun g : G ↦ ∑' γ : Γ, f (γ * g)) (Γ.quotMeasure μ) := by
-  -- The map `(g, γ) ↦ γ * g` carries the product of the quotient measure with the counting
-  -- measure to `μ`; integrals against the counting measure are sums.
-  obtain ⟨h_prod, -⟩ :
-      Integrable (fun p : G × Γ ↦ f (p.2 * p.1)) ((Γ.quotMeasure μ).prod count) ∧
-      ∫ g : G, ∫ γ : Γ, f (γ * g) ∂count ∂Γ.quotMeasure μ = ∫ g : G, f g ∂μ :=
-    (measurePreserving_orbitMeasure (ν := (count : Measure Γ))).fubini hf
-  simpa only [integral_count_eq_tsum] using h_prod.integral_prod_left
-
-/-- For a discrete subgroup `Γ` of `G`, a left Haar measure `μ` and an integrable `f`, the
-integral of `g ↦ ∑' γ, f (γ * g)` over `Γ \ G` is `∫ f dμ`. -/
-lemma integral_quotMeasure_tsum_eq {f : G → ℂ} (hf : Integrable f μ) :
-    ∫ g : G, ∑' γ : Γ, f (γ * g) ∂Γ.quotMeasure μ = ∫ g : G, f g ∂μ := by
-  -- Fubini along `(g, γ) ↦ γ * g`.
-  obtain ⟨-, h_fubini⟩ :
-      Integrable (fun p : G × Γ ↦ f (p.2 * p.1)) ((Γ.quotMeasure μ).prod count) ∧
-      ∫ g : G, ∫ γ : Γ, f (γ * g) ∂count ∂Γ.quotMeasure μ = ∫ g : G, f g ∂μ :=
-    (measurePreserving_orbitMeasure (ν := (count : Measure Γ))).fubini hf
-  simpa only [integral_count_eq_tsum] using h_fubini
-
 /-- Unfolding of a sum over a discrete subgroup `Γ` of `G`, for a left Haar measure `μ` and an
 integrable `f`: `g ↦ ∑' γ, f (γ * g)` is integrable for the quotient measure on `Γ \ G`, and its
 integral is `∫ f dμ`. This is Weil's integration formula for a discrete subgroup. -/
 lemma integral_quotMeasure_tsum {f : G → ℂ} (hf : Integrable f μ) :
     Integrable (fun g : G ↦ ∑' γ : Γ, f (γ * g)) (Γ.quotMeasure μ) ∧
-      ∫ g : G, ∑' γ : Γ, f (γ * g) ∂Γ.quotMeasure μ = ∫ g : G, f g ∂μ :=
-  ⟨integrable_quotMeasure_tsum Γ hf, integral_quotMeasure_tsum_eq Γ hf⟩
+      ∫ g : G, ∑' γ : Γ, f (γ * g) ∂Γ.quotMeasure μ = ∫ g : G, f g ∂μ := by
+  -- Transport the product of the quotient and counting measures along `(g, γ) ↦ γ * g`.
+  -- Then integrals against the counting measure are sums.
+  obtain ⟨h_prod, h_integral⟩ :
+      Integrable (fun p : G × Γ ↦ f (p.2 * p.1)) ((Γ.quotMeasure μ).prod count) ∧
+      ∫ g : G, ∫ γ : Γ, f (γ * g) ∂count ∂Γ.quotMeasure μ = ∫ g : G, f g ∂μ :=
+    (measurePreserving_orbitMeasure (ν := (count : Measure Γ))).fubini hf
+  exact ⟨by simpa only [integral_count_eq_tsum] using h_prod.integral_prod_left,
+    by simpa only [integral_count_eq_tsum] using h_integral⟩
+
+/-- For a discrete subgroup `Γ` of `G`, a left Haar measure `μ` and an integrable `f`, the sum
+`g ↦ ∑' γ, f (γ * g)` is integrable for the quotient measure on `Γ \ G`. -/
+lemma integrable_quotMeasure_tsum {f : G → ℂ} (hf : Integrable f μ) :
+    Integrable (fun g : G ↦ ∑' γ : Γ, f (γ * g)) (Γ.quotMeasure μ) :=
+  (integral_quotMeasure_tsum Γ hf).1
+
+/-- For a discrete subgroup `Γ` of `G`, a left Haar measure `μ` and an integrable `f`, the
+integral of `g ↦ ∑' γ, f (γ * g)` over `Γ \ G` is `∫ f dμ`. -/
+lemma integral_quotMeasure_tsum_eq {f : G → ℂ} (hf : Integrable f μ) :
+    ∫ g : G, ∑' γ : Γ, f (γ * g) ∂Γ.quotMeasure μ = ∫ g : G, f g ∂μ :=
+  (integral_quotMeasure_tsum Γ hf).2
 
 end New
 
@@ -663,7 +659,7 @@ variable {B A : Type*} [AddCommGroup B] [TopologicalSpace B] [IsTopologicalAddGr
 
 /-- The property that a function F on a topological abelian group B is continuous and satisfies
 F(γ+x)=F(x) for all γ in the subgroup B₀ and all x. -/
-def IsContPeriodic : Prop := Continuous F ∧ ∀ᵉ (γ ∈ B₀) (x : B), F (γ + x) = F x
+def IsContPeriodic : Prop := Continuous F ∧ ∀ γ ∈ B₀, ∀ x : B, F (γ + x) = F x
 
 /-- The Borel σ-algebra on the quotient B/B₀ of a topological abelian group B by a subgroup B₀. -/
 scoped instance IsDualFamily.quotMeasurableSpace : MeasurableSpace (B ⧸ B₀) := borel _

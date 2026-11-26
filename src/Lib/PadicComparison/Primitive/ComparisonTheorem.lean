@@ -191,7 +191,7 @@ covered by affine pieces (`isAffinelyCovered_algPointsOf`). -/
 lemma hasFlatBaseChange_algPointsOf (Y : Over (Spec R)) [IsProper Y.hom] :
     HasFlatBaseChange
       (freeAb (ObjectProperty.ι _ ⋙ algPointsOf Ω R Y) : AbFunctor (TestOver Ω)) :=
-  (isAffinelyCovered_algPointsOf (·.2.2) Y).hasFlatBaseChange
+  (isAffinelyCovered_algPointsOf (·.property.isComparableRing) Y).hasFlatBaseChange
 
 omit [ThePrime p] [Algebra Ω ℂ_[p]] in
 /-- Flat base change for the points of `Y_Ω` on test rings, for `Y` proper over `R`. Restriction
@@ -446,7 +446,7 @@ lemma ellAdicCohom.continuous_galoisAction (n : ℕ) (K : Type*) [Field K] [Alge
     let g_hom' := (Under.map (𝟙 R)).map g_hom
     have h_fix : ι_s ≫ g_hom' = ι_s := by
       ext b
-      exact (g.toAlgHom.restrictScalars R).adjoin_le_equalizer 1 hg b.2
+      exact (g.toAlgHom.restrictScalars R).adjoin_le_equalizer 1 hg b.property
     dsimp only [Functor.mapCocone_ι_app] at hz
     have h1 : H.push _ q n gt = F.map g_hom' (F.map ι_s z) :=
       (H.map_push _ q t).symm.trans (congrArg (F.map g_hom') hz.symm)

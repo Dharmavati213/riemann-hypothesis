@@ -508,6 +508,7 @@ lemma innerAt_groupAlgAction {e₀ : MonoidAlgebra ℂ (O.ChosenGL r)} (he : IsC
   have : Fintype (O.ChosenGL r) := Fintype.ofFinite _
   exact he.self_adjoint O.formAction σ (innerAt σ) (O.innerAt_formAction σ) x y
 
+omit [WeilData E] in
 /-- The Hecke polynomial operator H_w(X) at a split place w off the level is normal for the pairing
 `innerAt σ`: it has an adjoint `A'` with which it commutes. -/
 lemma exists_adjoint_heckePolyOnForms_comm {w : FinPlace E} (hw : star w ≠ w)
@@ -522,6 +523,7 @@ lemma exists_adjoint_heckePolyOnForms_comm {w : FinPlace E} (hw : star w ≠ w)
     fun x y ↦ innerAt_heckePolyOnForms σ x y hw hw_off hw_star_off X,
     O.heckePolyOnForms_comm hw hw_off (star_injective.ne hw) hw_star_off X _⟩
 
+omit [WeilData E] in
 /-- The image of the Hecke polynomial operator H_w(X) is orthogonal to its kernel for the pairing
 `innerAt σ`. -/
 lemma innerAt_heckePolyOnForms_eq_zero {w : FinPlace E} (hw : star w ≠ w)
@@ -533,6 +535,7 @@ lemma innerAt_heckePolyOnForms_eq_zero {w : FinPlace E} (hw : star w ≠ w)
     simp [← h_adj, h_comm, hz]
   rw [h_adj, eq_zero_of_innerAt_self σ (A' z) h_self, map_zero]
 
+omit [WeilData E] in
 /-- A form orthogonal to the image of the Hecke polynomial operator H_w(X) lies in its kernel. -/
 lemma orthogonal_range_heckePolyOnForms_le_ker {w : FinPlace E} (hw : star w ≠ w)
     (hw_off : w ∉ O.places.conjClosure) (X : ℂ) :

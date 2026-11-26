@@ -221,7 +221,7 @@ lemma sum_sum_dotProduct_eq_one_eq_smul {W : Type} [AddCommGroup W] [Module ℂ 
   let L : Finset (n → F) := {z : n → F | ∀ j ≠ i, z j = 0}
   let N (z : n → F) : ℕ := #{ξ : n → F | ξ i = 1 ∧ ξ ⬝ᵥ z = 1}
   have h_on : ∑ z ∈ L, N z • f z = (d * q) • y := by
-    rw [sum_eq_single_of_mem (Pi.single i 1) (by simp [L, Pi.single_eq_of_ne]) fun z hz hne ↦ by
+    rw [sum_eq_single_of_mem (Pi.single i 1) (by simp [L]) fun z hz hne ↦ by
         simp [N, card_forms_eq_zero_of_ne_single (by simpa [L] using hz) hne],
       hf _ (Pi.single_ne_zero_iff.2 one_ne_zero) (fun j hj ↦ Pi.single_eq_of_ne hj 1),
       ← Nat.cast_smul_eq_nsmul ℂ]
@@ -275,7 +275,7 @@ lemma KeepsLine.mul (hM : KeepsLine i M) (hN : KeepsLine i N) : KeepsLine i (M *
     have h_block : (M * N).toSquareBlockProp (· ≠ i) =
         M.toSquareBlockProp (· ≠ i) * N.toSquareBlockProp (· ≠ i) := by
       ext a b
-      have h_corner : M a i * N i b = 0 := mul_eq_zero_of_left (hM.col_eq_zero a a.2) _
+      have h_corner : M a i * N i b = 0 := mul_eq_zero_of_left (hM.col_eq_zero a a.property) _
       simp only [toSquareBlockProp_def, Matrix.mul_apply, of_apply]
       rw [← sum_subtype (univ.erase i) (by simp) fun l : n ↦ M a l * N l b,
         sum_erase univ (f := fun l : n ↦ M a l * N l b) h_corner]

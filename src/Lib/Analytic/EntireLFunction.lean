@@ -1,7 +1,7 @@
 module
 
 public import Lib.General.NumberTheory.ImaginaryQuadraticField
-import TauCeti.Analysis.Contour.Argument.Principle
+import TauCeti.Analysis.Contour.Residue.LogDeriv
 import TauCeti.Analysis.LaplaceTransform.Elementary
 
 /-!
@@ -181,20 +181,14 @@ principal `χ`, has at most a simple pole at `s`. Its residue is the order of va
 lemma tendsto_sub_mul_logDeriv_entireL_analyticOrderNatAt (s : ℂ) :
     Tendsto (fun z : ℂ ↦ (z - s) * logDeriv (entireL χ) z) (𝓝[≠] s)
       (𝓝 (analyticOrderNatAt (entireL χ) s : ℂ)) := by
-  -- Near `s`, `logDeriv (entireL χ)` is `n / (z - s) + g' / g` with `g` analytic and `g s ≠ 0`.
-  set n : ℕ := analyticOrderNatAt (entireL χ) s
+  let n := analyticOrderNatAt (entireL χ) s
   have h_ord : meromorphicOrderAt (entireL χ) s = ((n : ℤ) : WithTop ℤ) := by
     rw [(analyticAt_entireL χ s).meromorphicOrderAt_eq,
       ← Nat.cast_analyticOrderNatAt (analyticOrderAt_entireL_ne_top χ s)]
     rfl
-  obtain ⟨g, hg, hg_ne, h_eq⟩ := TauCeti.Contour.logDeriv_eventuallyEq_principalPart
-    (analyticAt_entireL χ s).meromorphicAt h_ord
-  have h_cont : ContinuousAt (logDeriv g) s := (hg.deriv.div hg hg_ne).continuousAt
-  have h_lim : Tendsto (fun z : ℂ ↦ n + (z - s) * logDeriv g z) (𝓝[≠] s) (𝓝 (n : ℂ)) := by
-    simpa using (tendsto_sub_mul_of_continuousAt h_cont).const_add (n : ℂ)
-  refine h_lim.congr' ?_
-  filter_upwards [h_eq, self_mem_nhdsWithin] with z hz (hzs : z ≠ s)
-  rw [hz, mul_add, mul_left_comm, mul_inv_cancel₀ (sub_ne_zero.2 hzs)]
-  simp
+  have h_meromorphic := (analyticAt_entireL χ s).meromorphicAt
+  rw [← Int.cast_natCast, ← TauCeti.Contour.residue_logDeriv_eq_meromorphicOrderAt h_meromorphic h_ord]
+  exact TauCeti.Contour.tendsto_sub_mul_nhds_residue h_meromorphic.logDeriv
+    (TauCeti.Contour.neg_one_le_meromorphicOrderAt_logDeriv h_meromorphic)
 
 end New

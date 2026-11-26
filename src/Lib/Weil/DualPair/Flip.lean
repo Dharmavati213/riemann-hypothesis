@@ -97,7 +97,7 @@ def flipCoords : CoordChange E (.id ℂ) (homSigns t s) (homSigns s t') where
   finEquiv := starCoordEquiv (.prodComm ..) fun _ ↦ c.map (Ô E).subtype
   apply_adelicSum := by
     -- In the finite part the factors `star α` and `star α⁻¹` cancel.
-    simp [adelicSum, val_scaleIdele_fst, val_scaleIdele_snd, ← mul_assoc, mul_comm,
+    simp [adelicSum, val_scaleIdele_fst, val_scaleIdele_snd, ← mul_assoc,
       starCoordEquiv, val_flipIdele, _root_.funext_iff, Prod.ext_iff]
     grind [star_mul', star_one, α.mul_inv]
   beta_realEquiv := by

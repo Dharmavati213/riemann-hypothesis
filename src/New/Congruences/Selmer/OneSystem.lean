@@ -16,8 +16,6 @@ other conditions are linear equations over `O[X]` for their values.
 * `New.Selmer.universalChar`, `New.Selmer.IsTiedPrimes.universalChar_frob`,
   `New.Selmer.IsTiedPrimes.universalChar_tame_gen`: the polynomial `ψ_X` and its values at the
   auxiliary primes.
-* `New.Selmer.finite_selmerModule`: for finite `S` and `ρ` locally constant modulo `ℓ ^ M`, the
-  Selmer module with coefficients in a finite `O / a`, `a ∣ ℓ ^ M`, is finite.
 * `New.Selmer.exists_matrix_selmerAtPoint_equiv`: there is one matrix `A` over `O[X]` such that each
   `Sel(x)` is isomorphic to the kernel of `A(x)` on a power of `O' / ℓ ^ M`.
 * `New.Selmer.exists_isLeast_length_selmerAtPoint`, `New.Selmer.exists_sharp_polynomial`: the
@@ -139,36 +137,6 @@ lemma IsTiedPrimes.universalChar_tame_gen (hJ : IsTiedPrimes ℓ S₀ V W N P₀
   hJ.universalChar_eq_one_add_X hN v (hJ.character_tameGenerator_eq_ite v.property) b
 
 end UniversalTwist
-
-section Finite
-
-variable {E n O : Type} [Field E] [EmbeddedNumberField E] [Fintype n] [DecidableEq n] [CommRing O]
-  {ℓ M : ℕ} {ρ : Gal(Ω/E) →* Matrix n n O} {S : Set (FinPlace E)}
-
-/-- Let `E` be a number field embedded in the algebraic closure `Ω` of `ℚ`, let `ρ` be a
-representation of `Gal(Ω/E)` by matrices over `O` that is locally constant modulo `ℓ ^ M`, and let
-`S` be a finite set of primes of `E`. Let `a ∣ ℓ ^ M` with `QuotSpan a = O / a` finite, and let `L`
-be a set of relations `∑ γ, f γ • c γ = 0` on functions `c`. Then the Selmer module of `ρ` with
-coefficients in `O / a` is finite. -/
-theorem finite_selmerModule {a : O} [Finite (QuotSpan a)] (ha : a ∣ ℓ ^ M)
-    (hρ : IsLocallyConstant (reduceModPow ℓ M ρ)) (hS : S.Finite)
-    (L : Set (Gal(Ω/E) →₀ Matrix n n O)) : Finite (selmerModule ρ S L (QuotSpan a)) := by
-  let : TopologicalSpace (QuotSpan a) := ⊥
-  have : DiscreteTopology (QuotSpan a) := ⟨rfl⟩
-  -- The ring `O / ℓ ^ M` acts on `O / a`, so `ρ` acts through its reduction, hence continuously.
-  let : Module (QuotSpan (ℓ ^ M : O)) (QuotSpan a) :=
-    Module.IsTorsionBy.module (smul_quot_eq_zero_of_dvd ha)
-  have h_cont (b : n → QuotSpan a) : IsLocallyConstant fun g : Gal(Ω/E) ↦ ρ g • b :=
-    hρ.comp fun m : Matrix n n (QuotSpan (ℓ ^ M : O)) ↦ m • b
-  let V : DiscreteModule O Gal(Ω/E) := .of (actionRep O (n → QuotSpan a) ρ)
-    (continuous_prod_of_discrete_right.2 fun b ↦ (h_cont b).continuous)
-  -- The Selmer module lies in the finite set of cocycles in `V` unramified outside `S`.
-  change (selmerModule ρ S L (QuotSpan a) : Set (Gal(Ω/E) → n → QuotSpan a)).Finite
-  refine (finite_cocycles_unramified_outside V hS).subset fun z hz ↦ ?_
-  obtain ⟨h_cocycle, h_unr, -, h_const⟩ := mem_selmerModule_iff.1 hz
-  exact ⟨⟨h_const.continuous, h_cocycle⟩, fun v hv A hA g hg ↦ h_unr g ⟨v, hv, A, hA, hg⟩⟩
-
-end Finite
 
 section Relations
 

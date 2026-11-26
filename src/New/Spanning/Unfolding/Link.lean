@@ -312,7 +312,7 @@ lemma Filling.mem_link_weylElem_mul_iff {A : Type} [Field A] [StarRing A] {T : �
 the hyperbolic planes, and let `w_p = weylElem 𝔰.ϱ p` send `e_a` to `p a • e*_a`. Then `w_p σ` and
 `w_q τ` have the same link exactly when `σ = τ`. -/
 theorem Filling.link_weylElem_mul_eq_iff {A : Type} [Field A] [StarRing A] {T : 𝔰.Form A}
-    [IsHermitianUnit T.splitGram] {σ τ : T.G} {p q : ℕ → Aˣ} (hσ : σ ∈ floorGroup 𝔰.ϱ)
+    {σ τ : T.G} {p q : ℕ → Aˣ} (hσ : σ ∈ floorGroup 𝔰.ϱ)
     (hτ : τ ∈ floorGroup 𝔰.ϱ) :
     link (weylElem 𝔰.ϱ p * σ) = link (weylElem 𝔰.ϱ q * τ) ↔ σ = τ := by
   -- The link of `w_p σ` is the graph of the middle block of `σ`, and this block determines `σ`.

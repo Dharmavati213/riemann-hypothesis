@@ -289,10 +289,18 @@ lemma IsLine.of_acyclic {Y : TimesBNat C ⥤ Type 1} {ψ : C ⥤ C'} {A : C} {E 
           rw [r_app, h_square, map_sub, F'.map_comp_apply]
   have hq (y : (ψ ⋙ F').obj A) : S.g ≫ homOfValue (.restrict _ (ψ ⋙ F')) q y = r (F'.map i y) := by
     refine hom_ext fun D ⟨x, k⟩ ↦ (homOfValue_app (c := .restrict ..) q y D _).trans ?_
-    -- Move `γ^k` across `q` (naturality; `ℕ` acts trivially on `reprBy A`), then use `hq_eq_comp`
-    -- at `e⁻¹ x`. `erw`: `Hom.hom` and `ConcreteCategory.hom` agree only up to instances.
-    erw [q.naturality_apply, r_app, ← F'.map_comp_apply, ← hq_eq_comp]
-    simp
+    let shift : (incl C).obj D.1 ⟶ D := (𝟙 D.1, k.down)
+    have h_shift : q.app D ((shiftEnd Y k.down).asHom.app D.1 x) =
+        q.app ((incl C).obj D.1) x := by
+      change q.app D (Y.map shift x) = q.app ((incl C).obj D.1) x
+      simp [shift]
+    have h_comp : ψ.map (q.app ((incl C).obj D.1) x).down =
+        i ≫ (e.inv.app D.1 x).down := by
+      simpa using hq_eq_comp D.1 (e.inv.app D.1 x)
+    change F'.map (ψ.map (q.app D ((shiftEnd Y k.down).asHom.app D.1 x)).down) y = _
+    calc
+      _ = F'.map (i ≫ (e.inv.app D.1 x).down) y := by rw [h_shift, h_comp]
+      _ = _ := (F'.map_comp_apply _ _ _).trans (r_app D x k (F'.map i y)).symm
   obtain ⟨h_inj, h_ker, h_surj⟩ : Injective (F'.map i) ∧
       fixedPoints (F'.map g) ⊆ Set.range (F'.map i) ∧
       Surjective fun z : F'.obj E ↦ F'.map g z - z := h_koszul

@@ -623,14 +623,9 @@ lemma schur_apply_eq_prod (h_fits : FitsRanks n n' κ) (z : ∀ τ : Φ, Matrix 
     ((piUnique _).symm.sum_comp _).trans (sum_schur_smul_nablaBasis (fun _ : Unit ↦ h_fits τ)
       (fun _ : Unit ↦ z τ) fun _ : Unit ↦ i τ)
   -- Move each expansion into the variables of colour `τ`, multiply, and expand the product of sums.
-  have h_prod :
-      ∏ τ : Φ, rename (Prod.map (fun p : (Σ _ : Unit, n τ) ↦ (⟨τ, p.snd⟩ : Σ σ : Φ, n σ)) id)
-          (∑ a : BasisTableau (n τ) (rankAt n τ) (κ τ), S τ (fun _ ↦ i τ) (fun _ ↦ a) •
-            (nablaBasis R (fun _ : Unit ↦ n τ) (fun _ ↦ κ τ) (fun _ ↦ a) *
-              detPow R _ (schurDetExp (fun _ ↦ n τ) (fun _ ↦ n' τ) fun _ ↦ κ τ))) =
-        ∏ τ : Φ, rename (Prod.map (fun p : (Σ _ : Unit, n τ) ↦ (⟨τ, p.snd⟩ : Σ σ : Φ, n σ)) id)
-          (rowSubst (fun _ : Unit ↦ z τ) (nablaBasis R (fun _ ↦ n' τ) (fun _ ↦ κ τ) fun _ ↦ i τ)) :=
-    prod_congr rfl fun τ _ ↦ by rw [one_place τ]
+  have h_prod := prod_congr rfl fun (τ : Φ) (_ : τ ∈ univ) ↦
+    congrArg (rename (Prod.map (fun p : (Σ _ : Unit, n τ) ↦ (⟨τ, p.snd⟩ : Σ σ : Φ, n σ)) id))
+      (one_place τ)
   simpa [nablaBasis, rowSubst, prod_mul_distrib, tableauPoly, minor, detPow, ← C_mul',
     AlgHom.map_det, Matrix.map, prod_univ_sum] using! h_prod
 

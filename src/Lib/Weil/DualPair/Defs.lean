@@ -509,35 +509,25 @@ lemma localInner_liftFn (Ψ' : (n → 𝔪.ResidueRing) → ℂ) :
     localInner 𝔪.places (𝔪.liftFn Ψ) (𝔪.liftFn Ψ') =
       star Ψ ⬝ᵥ Ψ' / Fintype.card (n → 𝔪.ResidueRing) := by
   classical
-  -- With `F = star Ψ * Ψ'` the left side is the integral of the lift of `F`. Average this integral
-  -- over the translates of `F`, whose sum is the constant `∑ y, F y`.
+  -- Average `F = star Ψ * Ψ'` over translates; the sum is constant and each translate has the same
+  -- integral by translation invariance of the Haar measure on `Ô^n`.
   let F : (n → 𝔪.ResidueRing) → ℂ := star Ψ * Ψ'
   let μ : Measure (n → 𝔸f E) := (latticeMeasure E n).restrict (integralBox n 𝔪.placesᶜ)
-  have h_inner : localInner 𝔪.places (𝔪.liftFn Ψ) (𝔪.liftFn Ψ') = ∫ x, 𝔪.liftFn F x ∂μ := by
-    simp +contextual [localInner, F, μ, liftFn_apply]
-  -- every `y` comes from an integral vector, and the integral is invariant under those
-  have h_transl (y : n → 𝔪.ResidueRing) :
-      ∫ x, 𝔪.liftFn (fun z ↦ F (y + z)) x ∂μ = ∫ x, 𝔪.liftFn F x ∂μ := by
-    obtain ⟨z, rfl⟩ := 𝔪.reduction_surjective.comp_left y
-    have h_mem : (fun i : n ↦ (z i : 𝔸f E)) ∈ integralBox n 𝔪.placesᶜ := by
-      simp [mem_integralBox, mul_mem]
-    simp only [𝔪.liftFn_reduction_add F z]
-    exact setIntegral_add_left_eq_self_of_mem (𝔪.liftFn F) h_mem
-  have h_integrable (y : n → 𝔪.ResidueRing) : Integrable (𝔪.liftFn fun z ↦ F (y + z)) μ := by
-    simpa [IntegrableOn, μ] using
-      (isSchwartzBruhat_liftFn 𝔪 _).integrableOn_mul (continuous_const (y := 1))
   have h_avg : boxIndicator n 𝔪.places.conjClosure 0 * ∑ y : n → 𝔪.ResidueRing, F y =
       Fintype.card (n → 𝔪.ResidueRing) • ∫ x, 𝔪.liftFn F x ∂μ :=
     calc _
-      -- Fourier transform at `0`: the integrand is `∑ y, F y` times the indicator of the box
       _ = ∫ x, ∑ y, 𝔪.liftFn (fun z ↦ F (y + z)) x ∂μ := by
         refine (fourier_boxIndicator 0 0 _ fun x ↦ ?_).symm
         simp [(AddGroup.addRight_bijective _).sum_comp, mem_integralBox, liftFn_apply]
-      _ = ∑ y, ∫ x, 𝔪.liftFn (fun z ↦ F (y + z)) x ∂μ :=
-        integral_finsetSum _ fun y _ ↦ h_integrable y
-      _ = _ := sum_eq_card_nsmul fun y _ ↦ h_transl y
-  rw [h_inner, eq_div_iff (by simp), mul_comm, ← nsmul_eq_mul, ← h_avg]
-  simp [F, dotProduct, boxIndicator]
+      _ = ∑ y, ∫ x, 𝔪.liftFn (fun z ↦ F (y + z)) x ∂μ := integral_finsetSum _ fun y _ ↦ by
+        simpa [IntegrableOn, μ] using
+          (isSchwartzBruhat_liftFn 𝔪 _).integrableOn_mul (continuous_const (y := 1))
+      _ = _ := sum_eq_card_nsmul fun y _ ↦ by
+        obtain ⟨z, rfl⟩ := 𝔪.reduction_surjective.comp_left y
+        simpa [𝔪.liftFn_reduction_add F z] using setIntegral_add_left_eq_self_of_mem (𝔪.liftFn F)
+          (by simp [mem_integralBox, mul_mem] : (fun i : n ↦ (z i : 𝔸f E)) ∈ _)
+  rw [eq_div_iff (by simp), mul_comm, ← nsmul_eq_mul]
+  simpa +contextual [localInner, F, μ, liftFn_apply, dotProduct, boxIndicator] using h_avg.symm
 
 /-! ### The primitive character modulo `𝔪` -/
 

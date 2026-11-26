@@ -103,7 +103,7 @@ lemma mu_sq_dvd_smul_mu_sub (g : Gp p) : mu ^ 2 ∣ g • mu - (cyclotomicGp g :
     rw [cyclotomicGp,
       cyclotomicChar_eq_of_equivariant p (j := algebraMap _ ℂ_[p])
         fun x ↦ (UniformSpace.Completion.algEquiv_smul_coe g x).symm]
-    exact (pow_dvd_cyclotomicChar_sub_iff m).mpr zmod_eq_natCast_val
+    exact (pow_dvd_cyclotomicChar_sub_iff m).mpr (ZMod.natCast_zmod_val _).symm
   have h_lin : (p : Ainf) ^ m ∣ (cyclotomicGp g : ℤ_[p]) • mu - a * mu := by
     simpa [sub_mul, Algebra.smul_def] using (map_dvd (algebraMap _ Ainf) h_chi).mul_right mu
   -- Binomial expansion: `(1 + μ) ^ a = 1 + a μ + μ² x`.
@@ -144,12 +144,6 @@ lemma Amax.exists_sub_mul_frobEnd_eq {u : Amax} (hp_dvd : (p : Amax) ∣ u) (w :
     exact ⟨v, y, by simp [f, ← hy]⟩
   simpa [f] using mem_range_of_approx f (map_zsmul f p) id h_step w
 
-/-- The Frobenius `frobEnd` of `Amax` is the action of the Frobenius element `(ofAdd 1, 1)` of
-`FrobGal`. -/
-private lemma frobEnd_eq_smul (x : Amax (p := p)) :
-    frobEnd x = ((Multiplicative.ofAdd 1, 1) : FrobGal) • x :=
-  rfl
-
 /-- There is an element `t` of Colmez's period ring `Amax` (the p-adic completion of
 `A_inf[X]/(pX − ξ)`) that is a unit multiple of `μ p`, where `μ = [ε] − 1` is the element `mu` of
 `A_inf`. It satisfies `φ t = p t` and `g t = χ(g) t` for all `g` in `G_p = Gal(Q̄_p/Q_p)`, where `χ`
@@ -189,7 +183,9 @@ lemma exists_tPeriod : ∃ t : Amax,
   set χ : ℤ_[p] := ↑(cyclotomicGp g)
   set δ : Amax := g • t - χ • t with hδ
   have phi_δ : frobEnd δ = p * δ := by
-    have phi_smul : frobEnd (χ • t) = χ • frobEnd t := by simp only [frobEnd_eq_smul, smul_comm]
+    have phi_smul : frobEnd (χ • t) = χ • frobEnd t := by
+      let φ : FrobGal := (Multiplicative.ofAdd 1, 1)
+      exact smul_comm φ χ t
     simp [hδ, ← smul_frobEnd, phi_smul, phi_t, mul_sub]
   have h_dvd (n : ℕ) : p ^ n * μ ^ 2 ∣ δ := by
     induction n with

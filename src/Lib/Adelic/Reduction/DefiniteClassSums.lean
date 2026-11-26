@@ -8,7 +8,6 @@ import Lib.Adelic.Unitary.WeakApproximation
 import Lib.DiscreteSeries.Haar.GramPolar
 import Lib.DiscreteSeries.Haar.TotalMass
 import Lib.General.Measure.IdempotentKernel
-import Lib.Shimura.ComplexTheta.AppellHumbertData
 import TauCeti.Topology.Algebra.Group.Units
 import TauCeti.Topology.Instances.Matrix
 

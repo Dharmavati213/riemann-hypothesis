@@ -736,15 +736,17 @@ def Theory.locallyConstant : Theory (𝟭 (TestOver A)) where
       apply hasPartitions_locConstCoeff.bijective_prod⟩ (𝟙 _) (by simp) fun B ↦ B.2.isComparableRing
     -- The cut along `e` is the quotient by the ideal `(e)`, which is radical.
     obtain ⟨D, π, h_ker, h_surj, h_univ, h_kill⟩ := B.exists_quotient (span {e})
-    refine ⟨D, π, ?_, ?_, h_surj, h_ker.le.trans (B.property.isRadical_span_idempotent he)⟩
-    · change π.hom.hom' e = 0
-      erw [Ideal.map_span, Set.image_singleton, Ideal.span_singleton_eq_bot] at h_kill
-      exact h_kill
-    · intro E f h
-      apply h_univ E f
-      change (span {e}).map f.hom.hom' = ⊥
-      erw [Ideal.map_span, Set.image_singleton, Ideal.span_singleton_eq_bot]
-      exact h
+    have h_map_iff {E : TestOver A} (f : B ⟶ E) :
+        (span {e}).map f.hom.hom'.toRingHom = ⊥ ↔ f.hom.hom' e = 0 := by
+      let ρ := ((ringOf (𝟭 (TestOver A))).map f).hom
+      change (span {e}).map ρ = ⊥ ↔ ρ e = 0
+      calc
+        _ ↔ span (ρ '' {e}) = ⊥ := (congrArg (· = ⊥) (Ideal.map_span ρ {e})).to_iff
+        _ ↔ _ := by rw [Set.image_singleton, Ideal.span_singleton_eq_bot]
+    refine ⟨D, π, (h_map_iff π).mp h_kill, ?_, h_surj,
+      h_ker.le.trans (B.property.isRadical_span_idempotent he)⟩
+    intro E f h
+    exact h_univ E f ((h_map_iff f).mpr h)
   restrict_surjective B I := by
     -- The maps that kill `I` are those through the quotient `π` by the radical of `I`, and locally
     -- constant functions lift along `π`.

@@ -1069,6 +1069,24 @@ theorem singleLift_principalRep (ϑ : D.TameChar) {j : D.LiftIndex} (s : D.chose
     (D.descentPair ϑ j).thetaLift_formRep (D.fitsParams_descentPair ϑ j) _
     (reduceFamily_liftResidue (w := D.chosenPlace) s) y.val
 
+/-- The theta lift `D.singleLift ϑ j`, for a tame character `ϑ` and `1 ≤ j ≤ m`, commutes with the
+group algebra of `D.chosenGL`, the product of the groups `GL_r` over the residue fields of the
+chosen places. An element `x` acts through `principalRep` on `principalForms`, the forms on the
+hermitian space `W_j = D.spaceW j` fixed by the principal level at the chosen places. It acts by
+the group algebra action of `formAction` on the forms on the larger space of `D.descentPair ϑ j`, the datum of the lift. -/
+lemma singleLift_asAlgebraHom {ϑ : D.TameChar} {j : D.LiftIndex} {x : MonoidAlgebra ℂ D.chosenGL}
+    (y : D.principalForms (D.spaceW j)) :
+    D.singleLift ϑ j ((D.principalRep (D.spaceW j)).asAlgebraHom x y) =
+      (D.descentPair ϑ j).formAction.asAlgebraHom x (D.singleLift ϑ j y) := by
+  -- Both sides are sums over the group, and `singleLift` commutes with each group element.
+  have h_sum : (D.descentPair ϑ j).formAction.asAlgebraHom x (D.singleLift ϑ j y) =
+      ∑ g : D.chosenGL, x.coeff g • (D.descentPair ϑ j).formAction g (D.singleLift ϑ j y) :=
+    -- A term, as `rw` does not see that `D.chosenGL` is the group acting on the forms.
+    (LinearMap.congr_fun (asAlgebraHom_eq_sum (D.descentPair ϑ j).formAction) _).trans
+      (LinearMap.sum_apply ..)
+  rw [h_sum, asAlgebraHom_eq_sum]
+  simp [singleLift_principalRep]
+
 end Data
 
 end AdjointLift

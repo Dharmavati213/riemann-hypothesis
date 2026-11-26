@@ -198,13 +198,12 @@ lemma localFormRep_apply_eq_lineRep (hQ : ∀ j : J, D.IsOffLevel ![] (Q.place j
       (D.lineRep Q j ⟨reduceGL ⟨k, hk.1⟩, reduceGL_mem_residueLineStabilizer_iff.2 hk⟩).val y :=
   (residueRep_mulSingle hQ ⟨k, hk.1⟩ y).symm
 
-/-- Let `V` be the standard hermitian space (`IsStd`), let `E` carry Weil representation data
-(`WeilData`), and let the auxiliary places be off the base level. If the elements of the stabiliser
+/-- Let the auxiliary places be off the base level. If the elements of the stabiliser
 of the line in `GL_n(𝔽_w)`, `w = Q.place j`, with first entry and determinant `1` fix a form `y` of
 weight `κ`, then the pro-unipotent Iwahori subgroup `proIwahori` of `GL_n(E_w)` fixes it: `y` lies
 in the space `levelSpace` of its fixed vectors for the action `localFormRep` of `GL_n(E_w)` on
 forms. -/
-lemma mem_levelSpace_proIwahori (hQ : ∀ j : J, D.IsOffLevel ![] (Q.place j)) [V.IsStd]
+lemma mem_levelSpace_proIwahori (hQ : ∀ j : J, D.IsOffLevel ![] (Q.place j))
     {j : J} {y : D.formsOfLevel Q.place}
     (hy : ∀ k : residueLineStabilizer (ResField (Q.place j)) (card n),
       firstEntry k = 1 → Matrix.GeneralLinearGroup.det k.val = 1 →
@@ -640,6 +639,7 @@ lemma norm_mul_traceElement_tameGenerator_eq_zero (hQ : ∀ j : J, D.IsOffLevel 
   have dict := weightedSum_indDet_mul_tameTrace hQ hN ha P 1 g 1
   rwa [weightedSum_one, sub_one_mul, mul_sum_monoidHom, sub_self, zero_mul, tameTrace_one] at dict
 
+omit [V.IsStd] [WeilData E] in
 /-- Let the auxiliary places be off the base level and `w = Q.place j`. The norm over the stabiliser
 of a line in `GL_n(𝔽_w)` (acting by `lineRep`) with weight `f ∘ P.indLine` has values fixed by the
 pro-unipotent Iwahori subgroup of `GL_n(E_w)`. -/
@@ -652,6 +652,7 @@ lemma weightedSum_indLine_mem_levelSpace (hQ : ∀ j : J, D.IsOffLevel ![] (Q.pl
     rw [mul_weightedSum]
     simp [hk]
 
+omit [V.IsStd] [WeilData E] in
 /-- Let the auxiliary places be off the base level and let `P` be a local choice at
 `w = Q.place j`, with uniformiser `P.ϖ` and a logarithm modulo `ℓ ^ ν` on `𝔽_wˣ`, read on the first
 entry as `P.indLine`. Let `L f` be the norm over the stabiliser of a line in `GL_n(𝔽_w)` with weight
@@ -725,6 +726,7 @@ lemma map_aevalHecke_valMinAbs_mul_tameTrace (hQ : ∀ j : J, D.IsOffLevel ![] (
   exact weightedSum_mul_heckeAction_eq_of_eigen Q (shift := ((card n)! : ZMod (ℓ ^ ν))) (root := 1)
     (B := U) lineRep_mem (hB _) (f := fun s ↦ (f s : ℂ)) dict (by simp)
 
+omit [V.IsStd] [WeilData E] in
 /-- Let the auxiliary places be off the base level (`hQ`), let `P` be a local choice at
 `w = Q.place j` for an index `j`, `p` a polynomial and `a` a character. Let `B f` be
 `p(Ũ) = aevalHecke V κ P a p` after the norm over the stabiliser of the line in `GL_n(𝔽_w)` with
@@ -753,6 +755,7 @@ lemma lineRep_mul_eq_self (hQ : ∀ j : J, D.IsOffLevel ![] (Q.place j))
   -- On forms, an element of the stabiliser acts through any of its lifts to the parahoric subgroup.
   simpa [← localFormRep_apply_eq_lineRep hQ hg₀] using B_fixed g₀ hg₀
 
+omit [V.IsStd] [WeilData E] in
 /-- Let the auxiliary places `w i = Q.place i` be off the base level (`hQ`), and let `P` be a local
 choice at `w j` for an index `j`, with uniformiser `ϖ` and Frobenius element `φ`, and let `q` be the
 order of the residue field at `w j`. Let `U' = B 1` be `p(Ũ)` after the norm over the stabiliser of

@@ -317,21 +317,14 @@ lemma ReadsAt.psi_apply (h : ReadsAt S π) (z : 𝔸f E) : h.ψ (π z) = selfDua
 of integers `O`: it is continuous, and `h.ψ (t * ·)` is trivial on `O` exactly for `t ∈ O`. -/
 lemma ReadsAt.hasIntegralConductor_psi (h : ReadsAt S π) : HasIntegralConductor h.ψ := by
   refine ⟨continuous_selfDualAddChar.comp h.continuous_lift, fun t ↦ ?_⟩
-  -- Write `t = π x`; the claim becomes the self-duality of `Ô E` for `idem S * x`.
-  have π_surj : Function.Surjective π := fun y ↦ ⟨h.lift y, h.apply_lift y⟩
-  obtain ⟨x, rfl⟩ := π_surj t
-  rw [h.mem_iff, ← forall_selfDualAddChar_mul_eq_one_iff]
-  constructor
-  · intro h_triv u hu
-    have hu_mem : π u ∈ O := (h.mem_iff u).2 (mul_mem (idem_mem_Ô S) hu)
-    calc selfDualAddChar E (idem S * x * u) = h.ψ (π x * π u) := by
-          rw [← map_mul, h.psi_apply, mul_assoc]
-      _ = 1 := h_triv (π u) hu_mem
-  · intro h_triv s hs
-    obtain ⟨u, rfl⟩ := π_surj s
-    calc h.ψ (π x * π u) = selfDualAddChar E (idem S * x * (idem S * u)) := by
-          rw [← map_mul, h.psi_apply, mul_mul_mul_comm, idem_mul_self]
-      _ = 1 := h_triv (idem S * u) ((h.mem_iff u).1 hs)
+  -- Write `t = π (h.lift t)`; this becomes self-duality of `Ô E` for `idem S * h.lift t`.
+  rw [← h.apply_lift t, h.mem_iff, ← forall_selfDualAddChar_mul_eq_one_iff]
+  refine ⟨fun h_triv u hu ↦ ?_, fun h_triv s hs ↦ ?_⟩
+  · rw [mul_assoc, ← h.psi_apply, map_mul]
+    exact h_triv (π u) ((h.mem_iff u).2 (mul_mem (idem_mem_Ô S) hu))
+  · rw [← h.apply_lift s] at hs ⊢
+    rw [← map_mul, h.psi_apply, ← idem_mul_self S, mul_mul_mul_comm]
+    exact h_triv (idem S * h.lift s) ((h.mem_iff _).1 hs)
 
 omit [WeilData E] [DecidableEq p] in
 /-- If `π : 𝔸f E →+* F` reads the components at `S`, then applying it coordinatewise carries the

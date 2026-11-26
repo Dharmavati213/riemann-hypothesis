@@ -376,7 +376,7 @@ abbrev isotropicRows : Matrix (Fin 𝔰.ϱ) (Fin (𝔰.ϱ + 1)) R := Z.submatrix
 
 /-- The first `j` rows of `Z`, completed by rows of the identity matrix. -/
 def paddedLeading [CommRing R] : Matrix (Fin (𝔰.ϱ + 1)) (Fin (𝔰.ϱ + 1)) R :=
-  of fun a b ↦ if a.1 < ↑j then Z a b else if a = b then 1 else 0
+  of fun a b ↦ if a.val < ↑j then Z a b else if a = b then 1 else 0
 
 /-- The matrix `paddedLeading j Z` keeps the first `j` rows of `Z` and completes them by the
 remaining rows of the identity matrix. Its determinant is the leading minor `D_j` of `Z`. -/
@@ -749,15 +749,15 @@ lemma HasCellRank.abs_norm_subframeMinor {S : Filling E 𝔰} {j : Fin (𝔰.ϱ 
   rw [subframeMinor, ← det_piecewise_one_eq_submatrix_det, h_rows,
     hγ.abs_norm_det_updateRow_paddedLeading]
 
-/-- Let the CM field `E` have `r` infinite places and contain a primitive `5040`-th root of unity,
-let `N = S.N` be the prime of the data `S`, and let `γ` have the cell rank `j`. Put
+/-- Let the CM field `E` have `r` infinite places. Let
+`N = S.N` be the prime of the data `S`, and let `γ` have the cell rank `j`. Put
 `k = S.translateByClassReps c c' γ = h_c⁻¹ γ h_c'`. Take the rows `a = 1, …, ϱ` of the matrix of
 products of the frame `f = (e₁, …, e_ϱ, z)` with `k f`; `S.isotropicRowsIndex j k` is the index, in
 the lattice that they span, of the lattice spanned by the first `j` of them. Then the gauge
 `𝗀♯ = S.minorGauge j c c' γ` is `N ^ r * S.minorNorm j γ` divided by the product of these indices at
 `k` and at `k⁻¹`. -/
 lemma HasCellRank.minorGauge_eq {S : Filling E 𝔰} {j : Fin (𝔰.ϱ + 2)} {γ : S.G E}
-    [HasPrimitiveRoot5040 E] (hγ : S.HasCellRank j γ) (c c' : S.Classes) :
+    (hγ : S.HasCellRank j γ) (c c' : S.Classes) :
     S.minorGauge j c c' γ = S.N ^ numInfPlaces E * S.minorNorm j γ /
       (S.isotropicRowsIndex j (S.translateByClassReps c c' γ) *
         S.isotropicRowsIndex j (S.translateByClassReps c c' γ)⁻¹) := by
@@ -778,7 +778,7 @@ products of the frame `f = (e₁, …, e_ϱ, z)` with `k f`; `S.isotropicRowsInd
 the lattice that they span, of the lattice spanned by the first `j` of them. Then
 `S.maxGauge j c c' γ` is `m` divided by the product of these indices at `k` and at `k⁻¹`. -/
 lemma HasCellRank.maxGauge_eq {S : Filling E 𝔰} {j : Fin (𝔰.ϱ + 2)} {γ : S.G E}
-    [HasPrimitiveRoot5040 E] (hγ : S.HasCellRank j γ) (c c' : S.Classes) :
+    (hγ : S.HasCellRank j γ) (c c' : S.Classes) :
     S.maxGauge j c c' γ = (S.termDiscNorm γ ⊔ S.N ^ numInfPlaces E * S.minorNorm j γ) /
       (S.isotropicRowsIndex j (S.translateByClassReps c c' γ) *
         S.isotropicRowsIndex j (S.translateByClassReps c c' γ)⁻¹) := by

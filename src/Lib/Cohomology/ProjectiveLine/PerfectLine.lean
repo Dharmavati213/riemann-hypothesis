@@ -116,10 +116,10 @@ abbrev gluing : freeAb (tiltPointsSum pointOrTorus ψ) ⟶ freeAb (twoDiscs ψ) 
   freeAb.desc
     (fun
       | _, ⟨⟨true⟩, t⟩ =>
-        .of ⟨⟨false⟩, ⟨ψ.map (discToTorus (-coeHom)) ≫ t.1⟩⟩ -
-          .of ⟨⟨true⟩, ⟨ψ.map (discToTorus coeHom) ≫ t.1⟩⟩
+        .of ⟨⟨false⟩, ⟨ψ.map (discToTorus (-coeHom)) ≫ t.down⟩⟩ -
+          .of ⟨⟨true⟩, ⟨ψ.map (discToTorus coeHom) ≫ t.down⟩⟩
       | _, ⟨⟨false⟩, t⟩ =>
-        FreeAddCommGroup.of ⟨⟨false⟩, ⟨ψ.map (evalZero (pointOrTorus { down := false })) ≫ t.1⟩⟩)
+        FreeAddCommGroup.of ⟨⟨false⟩, ⟨ψ.map (evalZero (pointOrTorus { down := false })) ≫ t.down⟩⟩)
     (by bound)
 
 private def ofTorus {ψ : CommAlg OFlat ⥤ CommAlg OFlat} {A : PadicTest}
@@ -167,6 +167,18 @@ abbrev origin : freeAb X ⟶ freeAb twoDiscs :=
 of the first part and sends those of the second to 0. -/
 abbrev projFirst : freeAb (tiltPointsSum B) ⟶ freeAb (tilt ⋙ reprBy (B ⟨true⟩)) :=
   freeAb.desc (fun | _, ⟨⟨true⟩, t⟩ => FreeAddCommGroup.of t | _, ⟨⟨false⟩, _⟩ => 0) (by bound)
+
+/-- The projection kills a generator of the false summand. -/
+lemma projFirst_false (c : PadicTest)
+    (t : (tilt ⋙ reprBy (B ⟨false⟩)).obj c) :
+    ((projFirst (B := B)).app c).hom (.of (⟨⟨false⟩, t⟩ : (tiltPointsSum B).obj c)) = 0 :=
+  freeAb.desc_of ..
+
+/-- The projection preserves a generator of the true summand. -/
+lemma projFirst_true (c : PadicTest)
+    (t : (tilt ⋙ reprBy (B ⟨true⟩)).obj c) :
+    ((projFirst (B := B)).app c).hom (.of (⟨⟨true⟩, t⟩ : (tiltPointsSum B).obj c)) = .of t :=
+  freeAb.desc_of ..
 
 /-- For endomorphisms Δ_b of the O^♭-algebras B_b, the endomorphism 1 − Δ of the functor S ↦
 ℤ[⊔_b Hom(B_b, S^♭)], sending [x] to [x] − [x∘Δ_b]. -/
@@ -236,7 +248,8 @@ lemma oneSub_comp_gluing :
     change gluing.app A ((oneSub (pointOrTorusTwist χ)).app A (ofTorus (ψ := 𝟭 _) t')) =
       (oneSub (discTwist χ)).app A (gluing.app A (ofTorus (ψ := 𝟭 _) t'))
     simp [gluing_ofTorus, oneSub_ofTorus, oneSub_ofDisc, discTwist,
-      charTwist_comp_discToTorus_assoc, sub_sub_sub_comm]
+      charTwist_comp_discToTorus_assoc]
+    exact sub_sub_sub_comm ..
 
 /-- In `O^♭[ℚ]`, the monomial of the absolute value `mabs s` is `T^t` for the rational
 `t = s.nnabs`. -/
@@ -319,7 +332,7 @@ lemma hasFlatBaseChange_freeAb_tiltPointsSum (B : ULift.{1} Bool → CommAlg OFl
     (.piMap fun _ ↦ hasFlatBaseChange_of_iso_reprBy homTiltIso.symm ..)
   induction x with
   | tmul m y => simp [e, mapₗ, map_push, funext_iff]
-  | add x y hx hy => simp_all [mapₗ, funext_iff]
+  | add x y hx hy => simp_all [funext_iff]
 
 /-- The projection of a pair `(y₀, y₁)` of elements of `O^♭[ℚ≥0]` to `y₀` (for `false`) or to
 `y₁` (for `true`). -/

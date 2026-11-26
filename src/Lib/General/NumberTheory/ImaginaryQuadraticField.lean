@@ -267,6 +267,13 @@ lemma different_eq_span_and_adjoin_betaK [PrimeSevenModEight d] :
 
 end QuadField
 
+/-- The complex number ω = (1 + i√d)/2. -/
+def quadGen (d : ℕ) : ℂ := (1 + I * √d) / 2
+
+/-- The image in ℂ of the ring of integers of K = ℚ(i√d), as a subring of ℂ. -/
+def quadInt (d : ℕ) : Subring ℂ :=
+  ((algebraMap (QuadField d) ℂ).comp (algebraMap (𝓞 (QuadField d)) (QuadField d))).range
+
 end New
 
 end QuadField

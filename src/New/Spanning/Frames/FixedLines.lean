@@ -718,7 +718,6 @@ lemma IsFillingData.exists_massIntegral_pi_eq (h : S.IsFillingData T F)
     (h' i).isHaarMeasure_groupMeasure.sigmaFinite
   have _ : LocallyCompactSpace (∀ i : ι, (S.latticeMiddle (LocProd (placeFiber T blk i))).G) :=
     Pi.locallyCompactSpace_of_finite
-  have _ (i : ι) : Nonempty (S.latticeMiddle (LocProd (placeFiber T blk i))).G := ⟨1⟩
   have h_inv : (F.groupMeasure.map (S.toFibers T blk)).IsMulRightInvariant := by
     refine ⟨(toFibers_surjective blk).forall.2 fun x ↦ ?_⟩
     have h_right : MeasurePreserving (· * x) F.groupMeasure F.groupMeasure :=
@@ -774,13 +773,7 @@ lemma IsFillingData.massIntegral_pi_mul_le (h : S.IsFillingData T F)
       F.massIntegral ((Subgroup.pi .univ W).comap (S.toFibers T blk)) *
         F.groupMeasure ((Subgroup.pi .univ Y).comap (S.toFibers T blk)) := by
   -- Mass integral and volume of a product are products, up to constants that agree on both sides.
-  obtain ⟨t, h_prod⟩ : ∃ t : ℝ≥0∞,
-      ∀ Z : ∀ i : ι, Subgroup (S.latticeMiddle (LocProd (placeFiber T blk i))).G,
-        F.massIntegral ((Subgroup.pi .univ Z).comap (S.toFibers T blk)) =
-          ‖t.toReal‖ₑ ^ 2 * t * ∏ i : ι, (F' i).massIntegral (Z i) ∧
-        F.groupMeasure ((Subgroup.pi .univ Z).comap (S.toFibers T blk)) =
-          t * ∏ i : ι, (F' i).groupMeasure (Z i) :=
-    h.exists_massIntegral_pi_eq blk h'
+  obtain ⟨t, h_prod⟩ := h.exists_massIntegral_pi_eq blk h'
   calc F.massIntegral ((Subgroup.pi .univ Y).comap (S.toFibers T blk)) *
         F.groupMeasure ((Subgroup.pi .univ W).comap (S.toFibers T blk)) * ∏ i : ι, c i
     _ = ‖t.toReal‖ₑ ^ 2 * t * t * ∏ i : ι,

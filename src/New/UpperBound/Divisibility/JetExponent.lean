@@ -158,7 +158,7 @@ lemma collisionSum_le {S : Finset D.Φ} {o : ℕ}
       calc ‖t (o + e)‖ ≤ (D.a / p ^ o / p ^ e : ℝ) := by
             unfold t
             split <;> simp [pow_add, ← div_div]; positivity
-        _ ≤ D.a / p ^ o / 2 ^ e := by gcongr; exact mod_cast q.1.two_le
+        _ ≤ D.a / p ^ o / 2 ^ e := by gcongr; exact mod_cast q.out.two_le
         _ = _ := by ring
     grw [← (add_right_injective o).tsum_eq h_support, le_norm_self (tsum _)]
     exact tsum_of_norm_bounded (hasSum_geometric_two' _) h_bound
@@ -183,8 +183,8 @@ lemma mul_collisionSum_le_loss (hp : D.IsSmallNonsplit p)
     have h_far {τ : D.Φ} {e : ℕ} (hc : D.IsCollision p ∅ τ e) : D.ceilLogLifts p + 1 ≤ e := by
       obtain ⟨h_ne, h_odd, h_dvd⟩ := hc.ne_and_odd_and_dvd
       grind [IsExceptional, chiK_cases, Odd.of_dvd_nat, Nat.le_of_dvd h_odd.pos h_dvd]
-    grw [collisionSum_le h_far, le_pow_clog q.1.one_lt D.m, ← ceilLogLifts]
-    have hp_ne : p ≠ 0 := q.1.ne_zero
+    grw [collisionSum_le h_far, le_pow_clog q.out.one_lt D.m, ← ceilLogLifts]
+    have hp_ne : p ≠ 0 := q.out.ne_zero
     simp [pow_succ, field]
 
 /-- The least height `k` of a low column is below `n_{j+1}`. -/

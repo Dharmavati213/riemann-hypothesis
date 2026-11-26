@@ -200,6 +200,7 @@ lemma isIntegral_sharedVectors {γ : S.G E} {s : S.ResidueGL} {c' : S.Classes}
   · exact algebraMap_mem_Ô.1 (h_frame.mul hY.adjugate a k)
   · exact isIntegral_zero
 
+omit [HasPrimitiveRoot5040 E] in
 /-- Let `B` be a frame set whose terms all have cell rank `j`: from the index `j` on, the flags of
 the standard frame `f` and of the frame `γ f` share vectors, and the leading minor of order `j` of
 their matrix of products is nonzero. Then there are at most `b ^ (366 n⁴ f')` matrices
@@ -228,6 +229,7 @@ lemma IsFrameSet.encard_range_sharedVectors_le (hB : S.IsFrameSet c B)
   grw [h_packing, h_radius, ← pow_mul]
   exact ofReal_le_ofReal (pow_le_pow_right₀ (by linarith) h_exponent)
 
+omit [S.IsAdmissible] in
 /-- Let `γ` and `γ'` have the same integral matrix of products `Z` with nonzero leading minor of
 order `j`, the same shared vectors and the same part in the anisotropic space `X₀`. Let `c`, `c'`,
 `c''` be any three classes, with representatives `h_c`, `h_c'`, `h_c''`. If the first `ϱ` rows of
@@ -269,6 +271,7 @@ private lemma exists_frameImage_mul_eq_of_sub_mem {γ γ' : S.G E} {c' c'' : S.C
   exact exists_mem_classUnipotent₀_frameImage_mul_eq c hγ' hZ_int h_minor h_shared
     (apply_inr_besselFrame_eq hγ' h_part) hξ (smul_inv_smul₀ hd_ne ξ).symm
 
+omit [S.IsAdmissible] in
 /-- Let `E` be a CM field with a primitive 5040-th root of unity and `S` admissible filling data
 over `E`. Take near terms of cell rank `j` (from the index `j` on, the flags of the standard frame
 and of the frame of the term share vectors, and the leading minor of order `j` of their matrix of

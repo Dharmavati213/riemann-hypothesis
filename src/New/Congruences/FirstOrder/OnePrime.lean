@@ -344,9 +344,8 @@ lemma exists_map_pow_mul_family_eq_mul_norm {ρ : (∀ j : J, Γ j) →* R} {N :
           N (S.erase j) = N' * ∑ k : Γ j, ρ (Pi.mulSingle j k) ∧ N S = N' * der j := by
         simpa only [insert_erase hj] using h_factor j (S.erase j) (notMem_erase j S)
       obtain ⟨Z, hZ, hZ_zero⟩ := h_der j g
-      obtain ⟨Y, hY⟩ : ∃ Y : R, σ (δ ^ e * N (S.erase j)) = σ (Y * ∑ g, ρ g) :=
-        (ih (S.erase j) (erase_ssubset hj) (i := e) (by grind [card_erase_of_mem])).imp
-          fun Y ↦ And.left
+      obtain ⟨Y, hY, -⟩ := ih (S.erase j) (erase_ssubset hj) (i := e)
+        (by grind [card_erase_of_mem])
       -- `δ'` moves to the right of `N (S.erase j)` first: `Y` need not commute with it.
       have h_move : δ' * δ ^ e * N (S.erase j) = δ ^ e * N (S.erase j) * δ' := by
         rw [mul_assoc, ((hδ'δ.pow_right e).mul_right (hδ'N _)).eq]
@@ -360,8 +359,7 @@ lemma exists_map_pow_mul_family_eq_mul_norm {ρ : (∀ j : J, Γ j) →* R} {N :
             simp only [mul_assoc]
         _ = 0 := by rw [hZ_zero, mul_zero, map_zero]
     · -- The norm at `j` is a factor of `N S`.
-      obtain ⟨N', h_S⟩ : ∃ N' : R, N S = N' * ∑ k : Γ j, ρ (Pi.mulSingle j k) :=
-        (h_factor j S hj).imp fun N' ↦ And.left
+      obtain ⟨N', h_S, -⟩ := h_factor j S hj
       have norm_inv : (∑ k : Γ j, ρ (Pi.mulSingle j k)) * ρ (Pi.mulSingle j g) =
           ∑ k : Γ j, ρ (Pi.mulSingle j k) :=
         sum_monoidHom_mul (ρ.comp (MonoidHom.mulSingle Γ j)) g
@@ -512,23 +510,17 @@ transfer to `GL_N(F)` is the determinant. -/
 lemma transfer_firstEntry (g : GL (Fin N) F) :
     (firstEntry (F := F) (N := N)).transfer g = GeneralLinearGroup.det g := by
   -- Both sides are characters of `GL_N(F)`, and they agree on diagonal matrices and transvections.
-  set τ : GL (Fin N) F →* Fˣ := (firstEntry (F := F) (N := N)).transfer
-  have det_single (i : Fin N) (x : Fˣ) :
-      GeneralLinearGroup.det (diagGL (Pi.mulSingle i x) : GL (Fin N) F) = x :=
-    Units.ext (by simp [← Units.coe_prod])
-  have τ_diag : τ.comp diagGL = GeneralLinearGroup.det.comp diagGL :=
-    MonoidHom.pi_ext fun i x ↦
-      (transfer_firstEntry_diagGL_mulSingle i x).trans (det_single i x).symm
-  let P (M : Matrix (Fin N) (Fin N) F) : Prop :=
-    ∃ g' : GL (Fin N) F, (g' : Matrix (Fin N) (Fin N) F) = M ∧ τ g' = GeneralLinearGroup.det g'
-  suffices P g by simpa [P, Units.val_inj]
-  refine diagonal_transvection_induction_of_det_ne_zero P _ g.det_ne_zero ?_ ?_ ?_
-  · intro D hD
-    have hD_ne (i : Fin N) : D i ≠ 0 := by simp_all [prod_ne_zero_iff]
-    exact ⟨diagGL fun i ↦ Units.mk0 (D i) (hD_ne i), rfl, DFunLike.congr_fun τ_diag _⟩
-  · exact fun t ↦ ⟨toGL t.toSpecialLinearGroup, rfl, by simp [map_toGL_transvection_eq_one]⟩
-  · rintro _ _ - - ⟨g₁, rfl, h₁⟩ ⟨g₂, rfl, h₂⟩
-    exact ⟨g₁ * g₂, rfl, by rw [map_mul, map_mul, h₁, h₂]⟩
+  set τ := (firstEntry (F := F) (N := N)).transfer
+  have τ_diag : τ.comp diagGL = GeneralLinearGroup.det.comp diagGL := MonoidHom.pi_ext fun i x ↦
+    (transfer_firstEntry_diagGL_mulSingle i x).trans <| Units.ext (by simp [← Units.coe_prod])
+  have ⟨g', h, h'⟩ := diagonal_transvection_induction_of_det_ne_zero
+    (fun M ↦ ∃ g' : GL (Fin N) F, (g' : Matrix _ _ F) = M ∧ τ g' = GeneralLinearGroup.det g')
+    g g.det_ne_zero
+    (fun D hD ↦ ⟨diagGL fun i ↦ .mk0 (D i) (by simp_all [prod_ne_zero_iff]), rfl,
+      DFunLike.congr_fun τ_diag _⟩)
+    (fun t ↦ ⟨toGL t.toSpecialLinearGroup, rfl, by simp [map_toGL_transvection_eq_one]⟩)
+    (fun _ _ _ _ ⟨g₁, h₁, e₁⟩ ⟨g₂, h₂, e₂⟩ ↦ ⟨g₁ * g₂, by simp [h₁, h₂], by simp [e₁, e₂]⟩)
+  simpa [Units.val_inj.mp h] using h'
 
 /-- Let `F` be a finite field, `l` a homomorphism from `Fˣ` to a commutative group, and `firstEntry`
 the character `g ↦ g 0 0` of the stabiliser in `GL_N(F)` of the line of the first basis vector. The

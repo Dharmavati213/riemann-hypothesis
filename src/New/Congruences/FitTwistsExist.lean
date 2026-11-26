@@ -528,14 +528,14 @@ one for each pair `κ` of a prime `ℓ` and an isomorphism `ℂ ≃ ℚ̄_ℓ`. 
 `ℓ`. -/
 lemma New.exists_isRegularFamily {P : Parameters} (D : Data P) :
     ∃ θ : PrimePadicIso → D.MFoldTwist, D.IsRegularFamily θ := by
-  have h_local_twist (κ : PrimePadicIso) : ∃ τ : D.MFoldTwist, Nat.Coprime κ.1 τ.normQ ∧
+  have h_local_twist (κ : PrimePadicIso) : ∃ τ : D.MFoldTwist, Nat.Coprime κ.prime τ.normQ ∧
       (∀ (j : D.LiftIndex) (p : D.CriticalPair) (s : ℤˣ), p.IsRamified →
-        ‖κ.2 (p.ratio (τ.powTwist j) s)⁻¹‖ ≤ exp (twistError κ.1 D * log (κ.1 : ℕ))) ∧
-      ∀ j : D.LiftIndex, D.HasDenominatorsLe κ.2 (τ.powTwist j) j
-        (clearingBound D κ.1 * log (κ.1 : ℕ) +
+        ‖κ.iso (p.ratio (τ.powTwist j) s)⁻¹‖ ≤ exp (twistError κ.prime D * log (κ.prime : ℕ))) ∧
+      ∀ j : D.LiftIndex, D.HasDenominatorsLe κ.iso (τ.powTwist j) j
+        (clearingBound D κ.prime * log (κ.prime : ℕ) +
           padicValNat κ.1 (Nat.card (StdClasses (n := Unit) D.chosenLevel)) * log (κ.1 : ℕ)) :=
-    have : ThePrime κ.1 := ⟨⟩
-    exists_mFoldTwist_hasDenominatorsLe D ⟨κ.2⟩
+    have : ThePrime κ.prime := ⟨⟩
+    exists_mFoldTwist_hasDenominatorsLe D ⟨κ.iso⟩
   choose θ h_coprime h_ratio h_denominators using h_local_twist
   -- Local choices need not agree at distinct embeddings. Their uniform prime-wise bounds
   -- give the global height and denominator budgets by summing over rational primes.

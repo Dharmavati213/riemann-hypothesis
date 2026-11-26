@@ -410,9 +410,7 @@ lemma exists_stackedDetProd_eq_sum_unitary (f : p ⊕ l ≃ b) (j : m ⊕ l ≃ 
     exists_pairedDetProd_eq_sum_unitary h_card (e.injective.comp inl_injective) ξ
   refine ⟨c, MvPolynomial.funext fun x ↦ ?_, ?_⟩
   · -- At the point `x`, `stackedDetProd e` is a fixed multiple of the product for complex `Y τ`.
-    have h_point (τ : InfinitePlace E) : ∃ (Y : m → p → ℂ) (d : ℂ), ∀ ζ : Matrix p m ℂ,
-        (stackedDet τ ζ e).eval x = d * (ζ * of Y).det := exists_eval_stackedDet_eq e τ x
-    choose Y d hY using h_point
+    choose Y d hY using fun τ : InfinitePlace E ↦ exists_eval_stackedDet_eq e τ x
     have h_eval (ζ : (τ : InfinitePlace E) → ι τ → Matrix p m ℂ) :
         (stackedDetProd e ζ).eval x =
           (∏ τ : InfinitePlace E, d τ ^ card (ι τ)) * pairedDetProd Y ζ := by
@@ -471,7 +469,7 @@ lemma exists_mul_apply_eq_apply_matchedPoly (f : p ⊕ l ≃ b) (j : m ⊕ l ≃
     -- multiple of `matchedPoly (z⁻¹ ^ 2 • ξ)`, so `h_match` applies.
     have h_frame (z : Circle) (τ : InfinitePlace E) (i : ι τ) :
         η τ i * ((k * t z) τ : Matrix m m ℂ)ᵀ = (z⁻¹ : Circle).val ^ 2 • ξ τ i := by
-      simp [η, ξ, ← ext_iff, Matrix.mul_apply, t, standardFrame, frameTorus, mul_comm, ↓diagTorus,
+      simp [η, ξ, ← ext_iff, Matrix.mul_apply, t, standardFrame, frameTorus, ↓diagTorus,
         Matrix.one_apply, ↓diagonal_apply]
     have h_transl (z : Circle) : ℓ (posBlockEmb j (k * t z)) v =
         ℓ' ((∏ τ, ((k * t z) τ : Matrix m m ℂ).det ^ c τ)⁻¹ •
@@ -562,6 +560,7 @@ lemma exists_linearMap_eq_integral_modKernel {s : b → ℤˣ} {t : n → ℤˣ}
            map_smul' c Q := by simp [integral_const_mul] },
     fun Q ↦ rfl⟩ -- by definition of `modKernelBilin`
 
+omit [DecidableEq b] in
 /-- Let `W` have `card l` negative signs and let `I_a` be the positive definite standard space
 `stdSpace E a`. Let the character `α` be tame for `(𝔪, χ)` of weight `card l - card (ι τ)`. Let `Φ`
 have a matched function `Ψ` for `χ⁻¹` (`AreMatched`): for invertible `k` modulo `𝔪` they vanish off

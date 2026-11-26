@@ -694,7 +694,7 @@ lemma snocRel.exists_detTensor_boundary_eq
     refine ⟨_ ⊗ₜ .of ⟨x, hx⟩, rfl, congrArg ULift.up ?_⟩
     simp [volumeForm, ExteriorAlgebra.ιMulti, ↓List.ofFn_succ', a, smul_smul, ← hw, mul_comm]
     -- `erw`, because `hωx` is stated on the subtype of unimodular points.
-    erw [hωx]
+    rw [hωx]
   · -- Otherwise the last column of `l` vanishes, and so do both sides.
     have h_det : det (fun i ↦ (l i).down) = 0 :=
       det_eq_zero_of_column_eq_zero (last d) fun i ↦ (hl i).right.resolve_left hx
@@ -903,7 +903,7 @@ maps the part of `Spec R` off the preimage of `P` into `U`. Third, the pull-back
 `m • [dg / g]` in the Hodge cohomology of `Spec R` relative to that part. -/
 def IsLocalSymbol (ξ : HodgeH (relFreeAb U) d) (y : X.obj R) (P : (K : CommAlg k) → X.obj K → Prop)
     (g : Fin d → R) (m : k) : Prop :=
-  ∃ᵉ (D : CutsOutLocus X P y g) (h),
+  ∃ D : CutsOutLocus X P y g, ∃ h,
     HodgeH.map (relFreeAb.map (pointMap (A := R) y) (U := U) h) ξ =
       m • HodgeH.map (relFreeAb.map _ D.preimage_fieldLocus_not.le) (symbolClass (k := k) (d := d))
 
@@ -925,7 +925,7 @@ relative to the complement of `z`. Nothing is asked of `ξ` away from `s`. -/
 def IsPointSum (s : Set (X (CommAlgCat.of k k))) (n : X (CommAlgCat.of k k) → k)
     (ξ : HodgeH (relFreeAb U) d) :
     Prop :=
-  ∀ z ∈ s, ∃ᵉ (a : EtaleChart d X) (g : Fin d → a.coordRing),
+  ∀ z ∈ s, ∃ a : EtaleChart d X, ∃ g : Fin d → a.coordRing,
     z ∈ a.locus (CommAlgCat.of k k) ∧ IsLocalSymbol ξ a.point (ComesFromPoints {z}) g (n z)
 
 /-- The class of a `k`-point `z` in the Hodge cohomology of degree `d`: the image of a chosen

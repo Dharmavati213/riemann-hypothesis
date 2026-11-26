@@ -277,35 +277,28 @@ lemma v_mul_inv_le_one_iff (hg : g ∈ basicDoubleCoset n w j) :
   -- One direction multiplies `z g⁻¹` by `g`, the other multiplies `z` by the integral matrix
   -- `ϖ g⁻¹`, whose columns reduce into the kernel of `g` mod `w`.
   obtain ⟨hg_int, hg_inv, -⟩ := hg
-  constructor
+  refine ⟨fun h_int ↦ ⟨by simpa using v_matrix_mul_le h_int hg_int, fun x hx ↦ ?_⟩, ?_⟩
   · -- Write `z = (z g⁻¹) g` as a product of integral matrices, and reduce.
-    intro h_int
-    refine ⟨by simpa using v_matrix_mul_le h_int hg_int, fun x hx ↦ ?_⟩
     have h_red : z.map residueOrZero =
         (z * g⁻¹.val).map residueOrZero * g.val.map residueOrZero := by
       simpa using map_residueOrZero_mul h_int hg_int
-    have hx_zero : g.val.map residueOrZero *ᵥ x = 0 := by simpa using hx
-    rw [LinearMap.mem_ker, mulVecLin_apply, h_red, ← mulVec_mulVec, hx_zero, mulVec_zero]
+    simp only [LinearMap.mem_ker, mulVecLin_apply] at hx ⊢
+    rw [h_red, ← mulVec_mulVec, hx, mulVec_zero]
   · -- The matrix `y = ϖ g⁻¹` is integral and `g y = ϖ` reduces to `0`, so the columns of the
     -- reduction of `y` lie in `residueKer g ≤ residueKer z`. Hence `z y` reduces to `0`, and
     -- dividing its entries by `ϖ` leaves the entries of `z g⁻¹` integral.
     rintro ⟨hz, h_ker⟩ a b
     set y : Matrix n n (LocField w) := (uniformizer w).val • g⁻¹.val with hy_def
     have hy (i j : n) : v (y i j) ≤ 1 := by simpa [hy_def, field] using hg_inv i j
-    have h_col : (y.map residueOrZero)ᵀ b ∈ residueKer g.val :=
-      calc (g.val.map residueOrZero * y.map residueOrZero)ᵀ b
-        _ = ((g.val * y).map residueOrZero)ᵀ b := by rw [map_residueOrZero_mul hg_int hy]
-        _ = 0 := by simp [hy_def, funext_iff, Matrix.one_apply, apply_ite v, ite_eq_iff]
-    have h_zero : residueOrZero ((z * y) a b) = 0 :=
-      calc (z * y).map residueOrZero a b
-        _ = (z.map residueOrZero * y.map residueOrZero) a b := by rw [map_residueOrZero_mul hz hy]
-        _ = 0 := congrFun (h_ker h_col) a
-    have h_lt : v ((z * y) a b) < 1 :=
-      (residueOrZero_eq_zero_iff_lt (v_matrix_mul_le hz hy a b)).mp h_zero
-    have h_entry : (z * g⁻¹.val) a b = (uniformizer w).val⁻¹ * (z * y) a b := by
-      simp [hy_def, Matrix.mul_smul]
-    rw [h_entry]
-    exact v_uniformizer_inv_mul_le_one_iff.mpr h_lt
+    have h_col : (y.map residueOrZero)ᵀ b ∈ residueKer g.val := by
+      change (g.val.map residueOrZero * y.map residueOrZero)ᵀ b = 0
+      rw [← map_residueOrZero_mul hg_int hy]
+      simp [hy_def, funext_iff, Matrix.one_apply, apply_ite v, ite_eq_iff]
+    rw [show (z * g⁻¹.val) a b = (uniformizer w).val⁻¹ * (z * y) a b by
+      simp [hy_def, Matrix.mul_smul]]
+    exact v_uniformizer_inv_mul_le_one_iff.mpr <|
+      (residueOrZero_eq_zero_iff_lt (v_matrix_mul_le hz hy a b)).mp <|
+      (congrFun (congrFun (map_residueOrZero_mul hz hy) a) b).trans (congrFun (h_ker h_col) a)
 
 /-- For g in `New.basicDoubleCoset` n w j and g' in `New.basicDoubleCoset` n w i, the element
 g g'⁻¹ lies in GL_n(O_w) if and only if g and g' have the same kernel mod w. -/
@@ -341,7 +334,7 @@ lemma exists_residueKer_eq_and_inv_mul_mem_localIntGL (hg : g ∈ basicDoubleCos
     exact Matrix.ext fun i j ↦ residueOrZero_coe ⟨(l : GL n (LocField w)) i j, l.2.isIntMatrix i j⟩
   have h_comap : U = (residueKer g.val).comap e.toLinearMap :=
     U.eq_of_le_of_finrank_eq
-      (fun x hx ↦ by simpa [← he ⟨x, hx⟩] using (f ⟨x, hx⟩).2)
+      (fun x hx ↦ by simp [← he ⟨x, hx⟩])
       (by rw [← h_finrank, (e.ofSubmodule' _).finrank_eq])
   refine ⟨g * l, by simpa using mul_mul_mem_basicDoubleCoset hg (one_mem _) l.property, ?_, by simp⟩
   -- Reduction is multiplicative, so `residueKer (g * l)` is that same preimage.

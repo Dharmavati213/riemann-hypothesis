@@ -105,7 +105,7 @@ lemma New.GaloisRep.exists_frame_extension {E : Type} [Field E] [CMBase E] {n W 
       ∀ w : SplitFinPlace E, 𝔑 ∉ (star w.val).asIdeal → ∀ x : GL n (𝔸f E),
         ∃ L : (Gf E n → W) →ₗ[ℂ] W, ∀ (y : GL n E) (g : GL n (LocField (w : FinPlace E))),
         φ (toFinGL y * (x * conjAtSplit w g)) =
-          ξ y (L (rightRegular ℂ (Gf E n) W (ofSplitPlace w.2 g) f)) := by
+          ξ y (L (rightRegular ℂ (Gf E n) W (ofSplitPlace w.property g) f)) := by
   have h_frame (u : Gf E n) : IsSignedFrameFor (invTransposeGL u.val) 1 1 :=
     isSignedFrameFor_one (entryConj u)
   let Q (p : GL n E × Gf E n) : GL n (𝔸f E) ⧸ levelGU n 𝔑 := ⟦toFinGL p.1 * invTransposeGL p.2.val⟧
@@ -182,7 +182,7 @@ lemma New.GaloisRep.exists_central_eigenform {E : Type} [Field E] [CMBase E] {d 
       ∀ w : SplitFinPlace E, 𝔑 ∉ (star w.val).asIdeal → ∃ L : (Gf E n → W) →ₗ[ℂ] GL n (𝔸f E) → W,
         ∀ g : GL n (LocField (w : FinPlace E)),
         rightRegular ℂ (GL n (𝔸f E)) W (conjAtSplit w g) ψ =
-          L (rightRegular ℂ (Gf E n) W (ofSplitPlace w.2 g) f) := by
+          L (rightRegular ℂ (Gf E n) W (ofSplitPlace w.property g) f) := by
   obtain ⟨φ, hφ, hφ_level, hφ_zero, hφ_loc⟩ := exists_frame_extension ξ h_rat h_level
   choose L hL using hφ_loc
   let s : (𝔸f (QuadField d))ˣ →* GL n (𝔸f E) := centralScalar
@@ -289,8 +289,7 @@ private lemma New.GaloisRep.card_eq_and_eventually_charpoly_eq_of_hasNoSmallRela
       (T⁻¹.val * (r g).val.map (algebraMap ..)).uncurry = fun i : Fin b × Fin b ↦
         (cyclotomicGp (j g) ^ (-k i.1)).val • j g • T⁻¹.val.uncurry i := by
     refine hT.mono fun g hg ↦ funext fun i ↦ ?_
-    -- `erw`: `Function.uncurry` here takes a matrix, read as a function of two indices
-    erw [← inv_mul_apply_of_isHodgeTateFrame hg]
+    refine Eq.trans ?_ (inv_mul_apply_of_isHodgeTateFrame hg i.1 i.2)
     simp [Matrix.mul_apply, Function.uncurry]
   -- So the cocharacter with weights `k` lies in the Zariski closure of the image of `r`, and
   -- `card_eq_and_charpoly_eq` gives the rank of `r` and its characteristic polynomials.
@@ -533,7 +532,7 @@ private lemma New.GaloisRep.exists_padicRep_of_pel {ℓ : ℕ} {E : Type} {d : �
   let R := Localization.subalgebra E M hM_le
   -- `R` is not a field, as `v` extends to a nonzero proper ideal; so maximal ideals are nonzero
   -- and lie over safe places.
-  have hR_field : ¬IsField R := Ring.not_isField_of_ne_of_ne (Ideal.map_ne_bot_of_ne_bot v.3)
+  have hR_field : ¬IsField R := Ring.not_isField_of_ne_of_ne (Ideal.map_ne_bot_of_ne_bot v.ne_bot)
     ((map_algebraMap_ne_top_iff_disjoint ..).mpr ((hM v).mpr hv_safe))
   have hR (𝔪 : Ideal R) (h𝔪 : 𝔪.IsMaximal) : D.IsGoodAt (𝔪.comap (algebraMap _ R)) :=
     hD_good _ ((hM ⟨_, .comap _, (bot_lt_under_prime M R hM_le 𝔪
@@ -550,7 +549,7 @@ places containing `N` and those of `levelPlaces d S w₀ w₁ w'`, `N` is prime 
 lies over that place too if `ℓ ∈ w'`, then `v`, and `w'` if `w'` and `star w'` lie outside `S`, are
 safe, `𝔑 ∉ star w₀`, and `𝔑` lies in `w₁` but not in `star w₁`. -/
 private lemma New.GaloisRep.isSafe_and_mem_of_mem_iff {ℓ : ℕ} {E : Type} {d : ℕ}
-    [ThePrime ℓ] [Field E] [CMType E] [EmbeddedNumberField E] [HasQuadSubfield d E]
+    [Field E] [CMType E] [EmbeddedNumberField E] [HasQuadSubfield d E]
     {S : Finset (FinPlace E)} {w₀ w₁ v w' : FinPlace E} {N : ℕ+} {𝔑 : 𝓞 E}
     (h𝔑_mem : ∀ w : FinPlace E,
       𝔑 ∈ w.asIdeal ↔ ((N : ℕ) : 𝓞 E) ∈ w.asIdeal ∨ w ∈ levelPlaces d S w₀ w₁ w')
@@ -575,8 +574,8 @@ open Classical in
 `IsSplitPrimeToDisc`, neither that place nor its conjugate lies below `w₁` or below a place of `S`,
 and it is prime to `N`; here `𝔑` lies exactly in the places that contain `N` and in those of
 `levelPlaces d S w₀ w₁ w'`. -/
-private lemma New.GaloisRep.isSafe_of_notMem_image_below {ℓ : ℕ} {E : Type} {d : ℕ}
-    [ThePrime ℓ] [Field E] [CMType E] [EmbeddedNumberField E] [HasQuadSubfield d E]
+private lemma New.GaloisRep.isSafe_of_notMem_image_below {E : Type} {d : ℕ}
+    [Field E] [CMType E] [EmbeddedNumberField E] [HasQuadSubfield d E]
     {S : Finset (FinPlace E)} {w₀ w₁ w' u : FinPlace E} {N : ℕ+} {𝔑 : 𝓞 E}
     (h𝔑_mem : ∀ w : FinPlace E,
       𝔑 ∈ w.asIdeal ↔ ((N : ℕ) : 𝓞 E) ∈ w.asIdeal ∨ w ∈ levelPlaces d S w₀ w₁ w')
@@ -594,8 +593,8 @@ open Classical in
 `𝔑` lies in `w₀`. Here `𝔑` lies exactly in the places that contain `N` and in those of
 `levelPlaces d S w₀ w₁ w'`, each place of `insert w₁ S` or its conjugate lies in that set
 (`h_cover`), `w₀ ∈ S`, and `𝔑` is prime to the conjugate of `w₀`. -/
-private lemma New.GaloisRep.mem_and_notMem_of_isSafe {ℓ : ℕ} {E : Type} {d : ℕ}
-    [ThePrime ℓ] [Field E] [CMType E] [EmbeddedNumberField E] [HasQuadSubfield d E]
+private lemma New.GaloisRep.mem_and_notMem_of_isSafe {E : Type} {d : ℕ}
+    [Field E] [CMType E] [EmbeddedNumberField E] [HasQuadSubfield d E]
     {S : Finset (FinPlace E)} {w₀ w₁ w' : FinPlace E} {N : ℕ+} {𝔑 : 𝓞 E}
     (h𝔑_mem : ∀ w : FinPlace E,
       𝔑 ∈ w.asIdeal ↔ ((N : ℕ) : 𝓞 E) ∈ w.asIdeal ∨ w ∈ levelPlaces d S w₀ w₁ w')
@@ -610,8 +609,8 @@ the integral points trivial at `S ∋ w₀`, and each place of `insert w₁ S` o
 `levelPlaces d S w₀ w₁ w'`, then some multiple `𝔑` of `N` lies exactly in the places containing `N`
 and those of that set, and each `u` whose inverse transpose lies in `levelGU (Fin a) 𝔑` fixes `f`,
 is `≡ 1` modulo `w₀` and lies in `proIwahori` at `w₁`. -/
-private lemma New.GaloisRep.exists_levelGU_le_rightStabilizer {ℓ : ℕ} {E : Type} {d : ℕ}
-    [ThePrime ℓ] [Field E] [CMType E] [EmbeddedNumberField E] [HasQuadSubfield d E]
+private lemma New.GaloisRep.exists_levelGU_le_rightStabilizer {E : Type} {d : ℕ}
+    [Field E] [CMType E] [EmbeddedNumberField E] [HasQuadSubfield d E]
     {a : ℕ} {W : Type} {f : Gf E (Fin a) → W → ℂ}
     (hf_open : IsOpen ((rightStabilizer f : Subgroup (Gf E (Fin a))) : Set (Gf E (Fin a))))
     {S : Finset (FinPlace E)} (hf_off : ∀ k ∈ stdLevel E (Fin a) ⊓ Gf.trivialOn (Fin a) S,
@@ -732,7 +731,7 @@ private lemma New.GaloisRep.exists_padicRep_of_cuspidal_type_at_embedding {ℓ :
   -- `star w'` lie outside `S`.
   obtain ⟨hF_good, h𝔑_star_w₀, h𝔑_w₁, h𝔑_star_w₁⟩ :=
     isSafe_and_mem_of_mem_iff h𝔑_mem hN hS hw₀_split hv hw' hw₁ hw₁_far
-  have h_good (w : FinPlace E) : IsSafe 𝔑 w → 𝔑 ∈ w₀.1 ∧ w ∉ S ∧ star w ∉ S :=
+  have h_good (w : FinPlace E) : IsSafe 𝔑 w → 𝔑 ∈ w₀.asIdeal ∧ w ∉ S ∧ star w ∉ S :=
     mem_and_notMem_of_isSafe h𝔑_mem h_cover hS ⟨h𝔑_star_w₀, h𝔑_w₁, h𝔑_star_w₁⟩ w
   -- `t w j` is the eigenvalue of the `j`-th Hecke operator at `w` on `f`.
   have h_eig_safe (w : SafePlace 𝔑) : HasHeckePolyAt f w.val.val w.val.prop (P w.val.val) := by

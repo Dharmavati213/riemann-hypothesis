@@ -7,6 +7,7 @@ import Lib.General.LinearAlgebra.MatrixPolynomials
 import Lib.Shimura.HeckeTower.Model
 import Lib.Shimura.Transfer.MarkedPairs
 import Lib.Shimura.Uniformisation.HolomorphicFamilies
+import TauCeti.Analysis.Normed.Ring.Ultra
 
 /-!
 # For a function with a cuspidal type at one place, marked and definite orbit sums agree
@@ -767,11 +768,7 @@ lemma finsum_markedTerm_eq_of_irreducible (hn : Odd (Fintype.card n)) (f : hecke
   refine finsum_eq_of_bijective σ σ.bijective ?_
   rintro ⟨⟨x⟩, y, μ⟩
   -- `U` changes the signs, commutes with the centraliser of `y`, and induces `σ` on this orbit.
-  obtain ⟨U, hU_type, hU_comm, hU_move⟩ : ∃ U : GL n (𝔸f E),
-      (∀ (ν : ℚ) (η : InfinitePlace E → n → ℤˣ) (S : Set (Matrix n n (𝔸f E))) (x : GL n (𝔸f E)),
-        HasSignType (η * reflectionSigns True μ) ν y S x ↔ HasSignType η ν y S (U * x)) ∧
-      (∀ z : GL n E, Commute y z → Commute (toFinGL z) U) ∧
-      ∀ q : GL n (𝔸f E) ⧸ levelGU n 𝔑, σ ⟦(q, y, μ)⟧ = ⟦(U • q, y, μ)⟧ := hσ y μ
+  obtain ⟨U, hU_type, hU_comm, hU_move⟩ := hσ y μ
   have h_move : σ ⟦markedTriple (levelGU n 𝔑) x y μ⟧ =
       ⟦markedTriple (levelGU n 𝔑) (U * x) y μ⟧ := hU_move x
   -- The move keeps the argument of `f`; it remains to match the two sign conditions.

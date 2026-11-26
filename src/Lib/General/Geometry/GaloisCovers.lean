@@ -770,7 +770,7 @@ lemma smoothOfRelativeDimension_pullback_snd_comp (d : ℕ) {W Z T E K : Scheme}
     simpa using smoothOfRelativeDimension_comp 0 d (snd c (fst f i)) (snd f i)
   have h_square : IsPullback (fst c (fst f i)) (snd c (fst f i) ≫ snd f i) (c ≫ f) i :=
     .paste_vert (.of_hasPullback _ _) (.of_hasPullback _ _)
-  exact (smoothOfRelativeDimension_isStableUnderBaseChange d).1
+  exact (smoothOfRelativeDimension_isStableUnderBaseChange d).of_isPullback
     ((IsPullback.of_hasPullback (c ≫ f) (ψ ≫ i)).of_right' h_square) h_comp
 
 /-- Let `c : W ⟶ Z` be a Galois covering over `Spec R` for a domain `R`: `c` is surjective, and a

@@ -158,23 +158,16 @@ lemma New.Space.card_le_card_preimage_of_isotropic {E : Type*} [Field E] [CMType
     [Fintype n] [DecidableEq n] [Fintype p] [DecidableEq p] {s : n → ℤˣ} (V : Space E n s)
     {k : Matrix n p E} (hk : HasLeftInv k) (h_iso : kᴴ * V.J * k = 0) (ε : ℤˣ) :
     card p ≤ card (s ⁻¹' {ε}) := by
-  -- At an infinite place w, the frame k in standard coordinates gives a complex matrix X of full
-  -- rank that is isotropic for diag s.
+  -- At an infinite place `w`, `k` in standard coordinates gives a full-rank isotropic matrix `X`.
   let w : NumberField.InfinitePlace E := Classical.ofNonempty
   let X : Matrix n p ℂ := (V.x⁻¹.val * k.map toAdele).map (evalInf w)
-  obtain ⟨l, hl⟩ : ∃ l : Matrix p n E, l * k = 1 := hk
-  let L : Matrix p n ℂ := (l.map toAdele * V.x.val).map (evalInf w)
-  have hLX : L * X = 1 := by simp [L, X, ← Matrix.map_mul, Matrix.mul_assoc, hl]
-  have h_rank : card p ≤ X.rank := by simpa [hLX] using L.rank_mul_le_right X
-  have h_sign : (stdForm E s).map (evalInf w) = signMatrix s := by
-    simp [signMatrix, stdForm]
-  have hX : Xᴴ * signMatrix s * X = 0 :=
-    calc Xᴴ * signMatrix s * X
-        = ((V.x⁻¹.val * k.map toAdele)ᴴ * stdForm E s * (V.x⁻¹.val * k.map toAdele)).map
-            (evalInf w) := by
-          rw [Matrix.map_mul, Matrix.map_mul, h_sign, conjTranspose_map (evalInf w) fun _ ↦ rfl]
-      _ = 0 := by simp only [V.gram_at_point_eq_map, h_iso, Matrix.map_zero, map_zero]
-  exact h_rank.trans (rank_le_card_preimage_of_isotropic hX ε)
+  obtain ⟨l, hl⟩ := hk
+  refine le_trans ?_ (rank_le_card_preimage_of_isotropic (X := X) ?_ ε)
+  · simpa [X, ← Matrix.map_mul, Matrix.mul_assoc, hl] using
+      Matrix.rank_mul_le_right ((l.map toAdele * V.x.val).map (evalInf w)) X
+  · have h_sign : (stdForm E s).map (evalInf w) = signMatrix s := by simp [signMatrix, stdForm]
+    simp only [X, ← h_sign, ← conjTranspose_map (evalInf w) fun _ ↦ rfl, ← Matrix.map_mul,
+      V.gram_at_point_eq_map, h_iso, Matrix.map_zero, map_zero]
 
 /-- Let `k` be a left invertible `n × p` matrix over `E` whose columns span an isotropic subspace of
 `V`, that is, `kᴴ J k = 0` for the Gram matrix `J`. Then `k` is the frame `D.k` of a splitting `D`
@@ -256,7 +249,7 @@ lemma adeleMatrix_radicalCentre (M : Matrix p p (𝔸 E)) :
     (H.radicalCentre M).adeleMatrix = 1 + H.kAdelic * (M - Mᴴ) * H.lCoord := by
   -- The scalars cancel because `star j = -j`.
   simp [radicalCentre, radicalElement, smul_smul, ← map_mul, j_ne_zero, Matrix.mul_add,
-    Matrix.add_mul, Matrix.mul_assoc, sub_eq_add_neg, add_comm]
+    Matrix.add_mul, sub_eq_add_neg, add_comm]
 
 /-- If `g` acts on the isotropic frame k of the splitting by the matrix `c`, that is `g k = k c`,
 then conjugation by `g` carries the element 1 + k(M − Mᴴ)kᴴε of the centre of the radical to the

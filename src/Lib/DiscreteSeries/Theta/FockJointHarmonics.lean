@@ -440,10 +440,8 @@ inductive DiscreteSeries.IsEigenDirection (F : MvPolynomial ι ℂ) (x : ι → 
 
 /-- The translation `G ↦ G (X + x)` commutes with partial derivatives. -/
 theorem DiscreteSeries.bind₁_X_add_C_pderiv {τ : Type*} (x : τ → ℂ) (G : MvPolynomial τ ℂ) (i : τ) :
-    bind₁ (fun j : τ ↦ X j + MvPolynomial.C (x j)) (pderiv i G) =
-      pderiv i (bind₁ (fun j : τ ↦ X j + MvPolynomial.C (x j)) G) := by
-  change aeval (fun j : τ ↦ X j + MvPolynomial.C (x j)) (pderiv i G) =
-    pderiv i (aeval (fun j : τ ↦ X j + MvPolynomial.C (x j)) G)
+    aeval (fun j : τ ↦ X j + MvPolynomial.C (x j)) (pderiv i G) =
+      pderiv i (aeval (fun j : τ ↦ X j + MvPolynomial.C (x j)) G) := by
   induction G using induction_on with
   | C a => simp
   | add p q hp hq => simp only [map_add, hp, hq]
@@ -452,8 +450,7 @@ theorem DiscreteSeries.bind₁_X_add_C_pderiv {τ : Type*} (x : τ → ℂ) (G :
 
 /-- The constant coefficient of `G (X + x)` is the value of `G` at `x`. -/
 theorem DiscreteSeries.coeff_zero_bind₁_X_add_C {τ : Type*} (x : τ → ℂ) (G : MvPolynomial τ ℂ) :
-    (bind₁ (fun j : τ ↦ X j + MvPolynomial.C (x j)) G).coeff 0 = eval x G := by
-  change (aeval (fun j : τ ↦ X j + MvPolynomial.C (x j)) G).coeff 0 = eval x G
+    (aeval (fun j : τ ↦ X j + MvPolynomial.C (x j)) G).coeff 0 = eval x G := by
   rw [← constantCoeff_eq]
   induction G using induction_on with
   | C a => simp

@@ -611,7 +611,7 @@ lemma QZChar.exists_eq_cyclicClass_of_resH2_eq_zero (χ : ↥(QZChar Γ)) (x : (
   -- Evaluate `ha g l` at `γ` and replace `a l (g⁻¹ • γ)` by `h_diff_eq`.
   have ha_γ : z.val (g, l) = N.ρ g (a l) γ - a (g * l) γ + a g γ := congrFun (ha g l) γ
   linear_combination (norm :=
-    (simp [N, c, χ_eq, Finset.smul_sum, sub_eq_zero]
+    (simp [N, c, χ_eq, sub_eq_zero]
      abel)) ha_γ + c g l • sum_invariant (g * l) + congrArg (M.ρ g) h_diff_eq
 
 include K in

@@ -360,7 +360,6 @@ over `B₃` the comparison map `locConstClass` is injective in degree `0` and su
 degree below `n`. Then a class `y` of degree `n` (coefficients `Λ`) over `B` whose restrictions to
 `B₁` and `B₂` come from locally constant functions comes from a locally constant function itself. -/
 private lemma New.Variety.ResiduePlace.exists_locConstClass_eq_of_isSplitting
-    [IsAlgClosed q.ResidueField]
     {v : ∀ B : absIntegrallyClosedSubrings ((algebraMap P q.ResidueField).comp
       (baseRingMap s ξ).hom),
       (placesFiniteOn z J B.val).toFunctor ⟶ reprBy ((quotientFunctor J _).obj B)}

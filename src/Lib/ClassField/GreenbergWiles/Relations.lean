@@ -197,7 +197,7 @@ instance finite_relations [Finite M] (T : Finset (FinPlace K)) : Finite (D.relat
     (fun y hy ↦ ?_) (fun y hy y' hy' h ↦ funext fun g ↦ ?_)
     (finite_cocycles_unramified_outside V h_above)
   · exact ⟨⟨hy.isLocallyConstant.continuous.comp continuous_subtypeVal,
-      fun a b ↦ hy.map_mul a a.2 b b.2⟩,
+      fun a b ↦ hy.map_mul a a.property b b.property⟩,
       fun w hw A hA τ hτ ↦ hy.unramified τ ⟨w.below K, hw, A, hA.isPlaceOver_below, hτ⟩⟩
   · by_cases hg : g ∈ D.subgroup
     · exact congrFun h ⟨g, hg⟩
@@ -608,7 +608,7 @@ theorem exists_card_cocycles_le {ℓ r : ℕ} [Fact ℓ.Prime] [IsTotallyComplex
       fun z hz i ↦ D.apply_eq_zero_of_notMem hS s (hγ i) hz (Set.notMem_empty _)
   -- Every form is the restriction of a relation to the Frobenius elements.
   have h_le : Nat.card F ≤ Nat.card (D.relations T) := by
-    choose y hy y_val using fun ν : F ↦ h_forms ν.1 ν.2
+    choose y hy y_val using fun ν : F ↦ h_forms ν.val ν.property
     refine Nat.card_le_card_of_injective (fun ν : F ↦ ⟨y ν, hy ν⟩) fun ν ν' h ↦
       Subtype.ext (funext fun i ↦ ?_)
     rw [← y_val ν i, ← y_val ν' i, Subtype.mk.inj h]

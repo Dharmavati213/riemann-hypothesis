@@ -337,10 +337,8 @@ with `a ∈ Ô E` integral. -/
 lemma extendToAdeles_sub_adeleOfLocal_add {a : 𝔸f E} (ha : a ∈ Ô E) (z : 𝔸 E) :
     extendToAdeles T r F ((0, a - adeleOfLocal T (evalPlaces T a)) + z) =
       extendToAdeles T r F z := by
-  obtain ⟨-, ha_off⟩ := (mem_Ô_iff T).1 ha
-  have h_int : a - adeleOfLocal T (evalPlaces T a) ∈ Ô E := (sub_adeleOfLocal_mem_iff T).2 ha_off
   have h_off : a - adeleOfLocal T (evalPlaces T a) ∈ integralOff T :=
-    ((mem_Ô_iff T).1 h_int).right
+    sub_mem ((mem_Ô_iff T).1 ha).right (adeleOfLocal_mem_integralOff T _)
   by_cases hz : z.2 ∈ integralOff T
   · rw [extendToAdeles_of_mem T hz, extendToAdeles_of_mem T (add_mem h_off hz)]
     simp
@@ -664,11 +662,11 @@ lemma re_le_of_last_entries_ne [S.IsAdmissible]
     {t s : A} (hts : t ≠ s) (p q : Fin i → A) :
     (J (i + 1) (S.scaledHead T p t) (S.scaledHead T q s)).re ≤
       ε * (Λ (i + 1) (S.scaledHead T p t) * Λ (i + 1) (S.scaledHead T q s)) := by
-  let y : E := (S.M : E)⁻¹ * (t.1⁻¹.1 - s.1⁻¹.1)
+  let y : E := (S.M : E)⁻¹ * (t.val⁻¹.val - s.val⁻¹.val)
   let ξ : (InfinitePlace E → ℂ) × LocProd T := ratPoint T (fun v ↦ S.M / S.frameScaleSq v i) y
   have y_ne : y ≠ 0 := by
     simp [y, sub_eq_zero, Units.val_inj, hts, Nat.Prime.ne_zero]
-  have y_mem : y ∈ ratIntegralOff T := mul_mem hM_inv (sub_mem (hA t t.2) (hA s s.2))
+  have y_mem : y ∈ ratIntegralOff T := mul_mem hM_inv (sub_mem (hA t t.property) (hA s s.property))
   have ξ_unit : IsUnit ξ := by
     simp [ξ, y_ne, ratPoint, Prod.isUnit_iff, Pi.isUnit_iff, IsUnit.map,
       (S.frameScaleSq_pos _ i).ne', Nat.Prime.ne_zero]
@@ -890,7 +888,7 @@ lemma headProduct_injective {A : Finset Eˣ} {i : ℕ} :
   -- `p j` is the quotient of two consecutive products.
   funext j
   have h_quot : headProduct p (j + 1) / headProduct p j =
-      headProduct q (j + 1) / headProduct q j := by rw [h_all (j + 1) j.2, h_all j j.2.le]
+      headProduct q (j + 1) / headProduct q j := by rw [h_all (j + 1) j.isLt, h_all j j.isLt.le]
   simpa [headProduct, prod_range_succ, padTuple, prod_eq_zero_iff, Units.val_inj] using h_quot
 
 omit [WeilData E] [T.StarStable] in
@@ -998,7 +996,7 @@ lemma isIntegral_headProduct_and_norm_le [S.IsAdmissible] {A : Finset Eˣ}
       _ = ‖c‖⁻¹ * ‖c * Φ v (headProduct p (j + 1))‖ := by
         simp [c, prod_ne_zero_iff, (S.frameScaleSq_pos v _).ne']
       _ ≤ S.b ^ (60 * 𝔰.n ^ 2) * S.b ^ (60 * 𝔰.n ^ 2) := by
-        grw [h_small, S.inv_norm_prod_frameScaleSq_le v (j.2.trans_le hi)]
+        grw [h_small, S.inv_norm_prod_frameScaleSq_le v (j.isLt.trans_le hi)]
       _ = _ := by ring
 
 omit [T.StarStable] in
@@ -1023,7 +1021,7 @@ lemma globalWeight_scaledHead_le [S.IsAdmissible] {A : Finset Eˣ}
       √(genIndex (ratToPlaces T (δ j))) ≤ (S.b ^ (120 * 𝔰.n ^ 2)) ^ numInfPlaces E :=
     prod_max_inv_norm_mul_sqrt_genIndex_le T (headProduct_ne_zero p _)
       (headProduct_mem_ratIntegralOff T hA p _)
-      (fun v ↦ (S.inv_norm_prod_frameScaleSq_le v (j.2.trans_le hi)).trans
+      (fun v ↦ (S.inv_norm_prod_frameScaleSq_le v (j.isLt.trans_le hi)).trans
         (pow_le_pow_right₀ hb (by lia)))
       (S.isIntegral_headProduct_and_norm_le T hA hi hp j).2
   rw [globalWeight_scaledHead]

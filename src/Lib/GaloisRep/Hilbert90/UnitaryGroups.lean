@@ -397,7 +397,7 @@ lemma unitary_hilbert90_at_level (hO : IsProfiniteRing O) {m c : O}
   obtain ⟨g, V, hg, hg_fix, hg_frame⟩ :=
     exists_fixed_orthonormal_frame hO h_tame_zero hc hc_unit hτ hkk_unit (by simp) h_fix
   have h_lev : k.valᴴ * k.val - 1 = m • (W + Wᴴ * k.val) := by
-    simp [hk, hm_star, mul_add, add_mul, smul_add, smul_smul, add_comm, add_left_comm, add_assoc,
+    simp [hk, hm_star, mul_add, add_mul, smul_add, smul_smul, add_left_comm, add_assoc,
       sub_eq_iff_eq_add']
   refine ⟨of isUnit_one (k.val * g) (by simpa [conjTranspose_mul, Matrix.mul_assoc] using hg_frame),
     W + k.val * V * (W + Wᴴ * k.val), ?_, ?_⟩

@@ -279,12 +279,6 @@ private lemma Space.map_conjTranspose_mul_map_J_mul_map {a b : Type*} (A : Matri
     Aᴴ.map toAdele * (V.J.map toAdele * B.map toAdele) = (Aᴴ * V.J * B).map toAdele := by
   simp [Matrix.mul_assoc]
 
-/-- `Space.map_conjTranspose_mul_map_J_mul_map` followed by a further factor `X`. -/
-private lemma Space.map_conjTranspose_mul_map_J_mul_map_mul {a b c : Type*} [Fintype b]
-    (A : Matrix n a E) (B : Matrix n b E) (X : Matrix b c (𝔸 E)) :
-    Aᴴ.map toAdele * (V.J.map toAdele * (B.map toAdele * X)) = (Aᴴ * V.J * B).map toAdele * X := by
-  simp [Matrix.mul_assoc]
-
 variable [WeilData E] {n₀ p q : Type*} [Fintype n₀] [DecidableEq n₀] [Fintype p] [DecidableEq p]
   {s₀ : n₀ → ℤˣ} (V₀ : Space E n₀ s₀)
 
@@ -451,8 +445,10 @@ lemma iCoord_mul_lAdelic : D.iCoord * D.lAdelic = 0 := by
 lemma iCoord_mul_iAdelic : D.iCoord * D.iAdelic = 1 := by
   have h_point₀ : V₀.x.valᴴ * (V₀.J.map toAdele * V₀.x.val) = stdForm E s₀ := by
     rw [← Matrix.mul_assoc, V₀.gram_point]
-  simp [iCoord, iAdelic, ratMap, ← V.gram_point, conjTranspose_nonsing_inv, Matrix.mul_assoc,
-    V.map_conjTranspose_mul_map_J_mul_map_mul, h_point₀]
+  simp [iCoord, iAdelic, ratMap, ← V.gram_point, conjTranspose_nonsing_inv, Matrix.mul_assoc]
+  rw [← Matrix.mul_assoc (V.J.map toAdele), ← Matrix.mul_assoc (D.iᴴ.map toAdele),
+    V.map_conjTranspose_mul_map_J_mul_map]
+  simp [h_point₀]
 
 /-- For a splitting, the three coordinate matrices along k, l and V₀ are dual to the adelic frames
 k, l, ι: each times its own frame is the identity, and times either other frame is zero. -/
@@ -988,7 +984,7 @@ lemma levi_mem_Gamma (a : GL p E) {g₀ : G E s₀} (hg₀ : g₀ ∈ V₀.Γ) :
     simp [adeleMatrix_ratEmbed, ← map_inv, map_J, map_J_inv, Matrix.map_add, -coe_units_inv,
       kAdelic, lAdelic, iAdelic, kCoord, lCoord, iCoord, ratMap, Matrix.mul_assoc, Matrix.mul_add,
       Matrix.add_mul, h_cancel]
-  exact V.mem_Gamma_iff_range.mpr fun i j ↦ ⟨_, (congrFun₂ h_rat i j).symm⟩
+  exact V.mem_Gamma_iff_range.2 (mem_ratMatrices.1 ⟨_, h_rat.symm⟩)
 
 /-- The unipotent element `radicalElement (x₀⁻¹ c) b`, for a matrix `c` over `E`, `x₀` the adelic
 frame of `V₀` and `b` an adelic matrix with entries in `E` (hypothesis `hb`), lies in the rational
@@ -1005,7 +1001,7 @@ lemma radicalElement_mem_Gamma (c : Matrix n₀ p E) {b : Matrix p p (𝔸 E)}
     simp [map_J, Matrix.map_add, Matrix.map_sub, Matrix.map_smul', iAdelic, ratMap,
       Matrix.mul_assoc, lCoord, kAdelic, conjTranspose_nonsing_inv, iCoord, Matrix.mul_add,
       Matrix.add_mul, Matrix.mul_sub, Matrix.sub_mul]
-  exact V.mem_Gamma_iff_range.mpr fun i j ↦ ⟨_, (congrFun₂ h_rat i j).symm⟩
+  exact V.mem_Gamma_iff_range.2 (mem_ratMatrices.1 ⟨_, h_rat.symm⟩)
 
 /-- The rational points of the unipotent radical are cocompact. For a splitting `D` of `V` over
 `V₀` along an isotropic subspace of any rank, there is a compact set `K` such that every element

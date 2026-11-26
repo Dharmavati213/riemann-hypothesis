@@ -107,7 +107,7 @@ lemma IsDenseFamily.of_fibres {A S : Scheme} {κ Z : Type} {η : κ → (Spec (.
   obtain ⟨y, hy⟩ : ∃ y : Spec (.of ℂ) ⟶ V, y ≫ V.ι ≫ f = η i :=
     exists_point_over (V.ι ≫ f) ⟨⟨x, hxU⟩, hx.symm⟩
   obtain ⟨z, hz⟩ := h_all i (y ≫ V.ι) hy
-  exact ⟨(y ≫ V.ι) (IsLocalRing.closedPoint ℂ), (y _).2, z, by simp only [hz]⟩
+  exact ⟨(y ≫ V.ι) (IsLocalRing.closedPoint ℂ), (y _).property, z, by simp only [hz]⟩
 
 /-- Let `X` be a commutative group scheme (`grp`, a `New.AddObj` structure) locally of finite type
 over an algebraically closed field `k`, with structure morphism `s`, and let `P` be a property of

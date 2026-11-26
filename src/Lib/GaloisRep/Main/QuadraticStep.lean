@@ -109,7 +109,7 @@ lemma IsSplitPrimeToDisc.exists_place_above_ne [U : HasPrimitiveRoot5040 E]
       obtain ⟨v, ⟨⟩⟩ := FinPlace.comap_surjective (algebraMap K E)
         ⟨P, hP.1, ne_bot_of_mem_primesOver (by simpa using hp.ne_zero) hP⟩
       exact mem_image_of_mem _ (by
-        grind [=_ below_star, star_star, (h_over (v.below _)).mpr (by simpa using hP.2.1.le)])
+        grind [=_ below_star, star_star, (h_over (v.below _)).mpr (by simpa using hP.2.over.le)])
   -- `φ(80) = 32` with exponent `4`, and `φ(63) = 36` with exponent `6`.
   exact hp.not_dvd_one (Nat.dvd_gcd (h_dvd 80 63 4) (h_dvd 63 80 6))
 

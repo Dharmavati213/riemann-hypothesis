@@ -547,13 +547,6 @@ lemma exists_spanning_matrix (hU : c.IsPeriodMatrix U h v) :
   simpa [mulVec, dotProduct, Finset.sum_apply, Subalgebra.smul_def, mul_comm] using
     congrFun h_vals k
 
-omit [DecidableEq d] in
-/-- If `p` does not divide `δ`, then `δ ∣ l · (p ^ n x)` gives `δ ∣ l · x`. -/
-private lemma dvd_dotProduct_of_dvd_dotProduct_pow_smul {δ : Ainf} (hδ : ¬(p : Ainf) ∣ δ)
-    (l x : d → Ainf) (n : ℕ) (h_dvd : δ ∣ l ⬝ᵥ p ^ n • x) : δ ∣ l ⬝ᵥ x := by
-  rw [dotProduct_smul, nsmul_eq_mul, Nat.cast_pow] at h_dvd
-  exact dvd_of_dvd_prime_pow_mul prime_p hδ h_dvd
-
 /-- The approximation step of `dvd_dotProduct_of_spanning`. Let `U` be a period matrix of height `h`
 with Frobenius factor `v` for `c` (`IsPeriodMatrix`). Let `Q` over `A_inf` be such that every `x`
 with `U y = E ^ h x` for some `y` over `S_B = c.bicommutant` equals `Q s` with `s` over `c.S`. Let
@@ -640,8 +633,10 @@ lemma dvd_dotProduct_of_spanning (hU : c.IsPeriodMatrix U h v) {Q : Matrix d d A
   -- `δ` divides `l · (p ^ N x)` as the ideal of `δ` is closed for the `(p, ξ)`-adic topology
   -- (`dvd_of_forall_exists_sub_mem_span_pow`); `p ∤ δ` then removes `p ^ N`.
   obtain ⟨N, h_approx⟩ := hU.exists_dotProduct_pow_smul_sub_mul_mem_span_pow hQ x y hy δ l g hl
-  exact dvd_dotProduct_of_dvd_dotProduct_pow_smul hδ l x N
-    (dvd_of_forall_exists_sub_mem_span_pow prime_p.not_isUnit prime_xi.not_isUnit hδ h_approx)
+  have h_dvd := dvd_of_forall_exists_sub_mem_span_pow
+    prime_p.not_isUnit prime_xi.not_isUnit hδ h_approx
+  rw [dotProduct_smul, nsmul_eq_mul, Nat.cast_pow] at h_dvd
+  exact dvd_of_dvd_prime_pow_mul prime_p hδ h_dvd
 
 /-- Every period matrix `U` has a basis `Q`, `Z` in the sense of `New.Lift.Chart.IsPeriodBasis`:
 the nonsingular `Q` over `A_inf` spans the `x` with `U y = E ^ h x` solvable over `c.bicommutant`,

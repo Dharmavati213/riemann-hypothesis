@@ -164,7 +164,7 @@ structure EtaleChart where
   /-- The `d` coordinates on the chart. -/
   coordinate : Fin d → coordRing
   /-- The coordinates make `R` étale over the polynomial ring in `d` variables. -/
-  etale : (MvPolynomial.aeval (R := k) coordinate).1.Etale
+  etale : (MvPolynomial.aeval (R := k) coordinate).toRingHom.Etale
   /-- The map `Spec R → X` is injective on `A`-points, for every `A`. -/
   injective (A : CommAlg k) : Function.Injective (X.map (X := coordRing) (Y := A) · point)
   /-- The image of `Spec R → X` is an open subfunctor. -/
@@ -480,6 +480,17 @@ lemma EtaleChart.isOpenSubfunctor_of_le_locus {V : Subfunctor X} (h_le : V ≤ a
 
 /-! ### The lifting criterion for étale coordinates -/
 
+/-- A map out of a formally étale algebra lifts uniquely along a surjective algebra map with
+nilpotent kernel. -/
+lemma existsUnique_algHom_lift {S T B C : Type*} [CommRing S] [CommRing T] [CommRing B] [CommRing C]
+    [Algebra S T] [Algebra S B] [Algebra S C] [FormallyEtale S T]
+    (f : T →ₐ[S] C) (g : B →ₐ[S] C) (hg : Function.Surjective g)
+    (hker : IsNilpotent (RingHom.ker (g : B →+* C))) :
+    ∃! f' : T →ₐ[S] B, g.comp f' = f := by
+  have h_lift := FormallySmooth.comp_liftOfSurjective f g hg hker
+  exact ⟨_, h_lift, fun f' hf' ↦ FormallyUnramified.lift_unique' g hker _ _
+    (hf'.trans h_lift.symm)⟩
+
 /-- The ring homomorphism k[X_i] → R sending X_i to x_i. -/
 abbrev polyEval : MvPolynomial (Fin d) k →+* R := (aeval (R := k) x).toRingHom
 
@@ -520,16 +531,13 @@ lemma existsUnique_lift_of_etale_polyEval (h_et : (polyEval x).Etale) {π : B �
   algebraize [polyEval x, polyEval b, polyEval (ζ ∘ x)]
   let ζ' : R →ₐ[MvPolynomial (Fin d) k] A := ⟨ζ.hom, map_aeval_of_forall_eq ζ fun i ↦ rfl⟩
   let π' : B →ₐ[MvPolynomial (Fin d) k] A := ⟨π.hom, map_aeval_of_forall_eq π hb⟩
-  -- The lift `s` exists by formal smoothness.
-  have h_smooth : FormallySmooth (MvPolynomial (Fin d) k) R := h_et.instSmooth.formallySmooth
-  let s := FormallySmooth.liftOfSurjective ζ' π' h_surj ⟨2, h_sq⟩
-  have hs (r : R) : π (s r) = ζ r :=
-    FormallySmooth.liftOfSurjective_apply ζ' π' h_surj ⟨2, h_sq⟩ r
-  refine ⟨ofHom (s.restrictScalars k), ⟨hom_ext (ext hs), fun i ↦ ?_⟩, fun t ⟨ht, htb⟩ ↦ ?_⟩
+  have : FormallyEtale (MvPolynomial (Fin d) k) R := h_et.formallyEtale
+  obtain ⟨s, hs, h_unique⟩ := existsUnique_algHom_lift ζ' π' h_surj ⟨2, h_sq⟩
+  refine ⟨ofHom (s.restrictScalars k), ⟨hom_ext (ext fun r ↦ AlgHom.congr_fun hs r), fun i ↦ ?_⟩,
+    fun t ⟨ht, htb⟩ ↦ ?_⟩
   · simpa [RingHom.algebraMap_toAlgebra] using! s.commutes (X i)
-  · -- It is unique because `R` is formally unramified.
-    let t' : R →ₐ[MvPolynomial (Fin d) k] B := ⟨t.hom, map_aeval_of_forall_eq t htb⟩
-    have h_eq : t' = s := h_et.formallyUnramified.ext' π.hom.toRingHom ⟨2, h_sq⟩ t' s (by aesop)
+  · let t' : R →ₐ[MvPolynomial (Fin d) k] B := ⟨t.hom, map_aeval_of_forall_eq t htb⟩
+    have h_eq : t' = s := h_unique t' (AlgHom.ext fun r ↦ ConcreteCategory.congr_hom ht r)
     exact hom_ext (ext fun r ↦ DFunLike.congr_fun h_eq r)
 
 /-- Let x₁, …, x_d be elements of a k-algebra R of finite type, k Noetherian. If each ζ: R → A lifts

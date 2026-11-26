@@ -57,7 +57,6 @@ lemma norm_sum_stdAddChar_pow_le {k : ZMod q} (hk : k ≠ 0) (X : ℕ) :
   have hx : (k.val : ℝ) = q * x := (mul_div_cancel₀ _ hq_pos.ne').symm
   have hx_pos : 0 < x := div_pos (mod_cast val_pos.mpr hk) hq_pos
   have hx_lt : x < 1 := (div_lt_one hq_pos).mpr (mod_cast k.val_lt)
-  have h_sub_pos : 0 < 1 - x := sub_pos.mpr hx_lt
   have h_ne : stdAddChar k ≠ 1 := by simpa using injective_stdAddChar.ne hk
   calc ‖∑ v ∈ Ioc 0 X, stdAddChar k ^ v‖
       = ‖stdAddChar k ^ (X + 1) - stdAddChar k ^ 1‖ / ‖stdAddChar k - 1‖ := by

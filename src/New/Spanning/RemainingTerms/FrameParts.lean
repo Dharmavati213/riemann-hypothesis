@@ -637,6 +637,19 @@ lemma genIndex_algebraMap_le_pow_of_norm_sq_le {x : E} {e : ℕ}
   grw [genIndex_algebraMap, abs_norm_eq_prod_norm_sq, pow_mul, h_place]
   simp
 
+omit [HasPrimitiveRoot5040 E] [S.IsAdmissible] in
+private lemma genIndex_le_of_norm_le_frame_bound {x : E}
+    (h : ∀ v : InfinitePlace E, ‖Φ v x‖ ≤ S.M * S.b ^ (270 * 𝔰.n ^ 2)) :
+    genIndex (x : 𝔸f E) ≤ S.b ^ (2 * 𝔰.n ^ 3 * numInfPlaces E) := by
+  refine genIndex_algebraMap_le_pow_of_norm_sq_le fun v ↦ ?_
+  have hb : 0 < S.b := b_pos
+  calc ‖Φ v x‖ ^ 2 ≤ (S.b ^ 23 * S.b ^ (270 * 𝔰.n ^ 2)) ^ 2 := by grw [h, M_le_b_pow]
+    _ ≤ S.b ^ (2 * 𝔰.n ^ 3) := by
+      rw [← pow_add, ← pow_mul]
+      apply pow_le_pow_right₀ S.one_le_b
+      have h_cube : 300 * 𝔰.n ^ 2 ≤ 𝔰.n ^ 3 := S.mul_sq_le_cube (by norm_num)
+      linarith [pow_pos 𝔰.ϱ.succ_pos 2]
+
 omit [HasPrimitiveRoot5040 E] in
 /-- Let `S` be admissible, with size parameter `b = S.b` and `M = S.M`, the product of the two level
 primes. Let `ϱ = 𝔰.ϱ` and `n = 𝔰.n = ϱ + 1`, and let `f` be the number of infinite places. Let `γ`
@@ -647,17 +660,12 @@ absolute value of its norm to `ℚ`, is at most `b ^ (2 n³ f)`. -/
 lemma IsNear.genIndex_M_mul_leadingMinor_le {γ : S.G E} (j : Fin (𝔰.ϱ + 2)) (h_near : S.IsNear γ) :
     genIndex ((S.M * leadingMinor (S.frameProducts γ) j : E) : 𝔸f E) ≤
       S.b ^ (2 * 𝔰.n ^ 3 * numInfPlaces E) := by
-  have h_exponent : 23 * 2 + 270 * 𝔰.n ^ 2 ≤ 2 * 𝔰.n ^ 3 := by
-    have h_cube : 300 * 𝔰.n ^ 2 ≤ 𝔰.n ^ 3 := S.mul_sq_le_cube (by norm_num)
-    linarith [pow_pos 𝔰.ϱ.succ_pos 2]
-  refine genIndex_algebraMap_le_pow_of_norm_sq_le fun v ↦ ?_
-  calc ‖Φ v (S.M * leadingMinor (S.frameProducts γ) j)‖ ^ 2
-      = S.M ^ 2 * ‖Φ v (leadingMinor (S.frameProducts γ) j)‖ ^ 2 := by simp [mul_pow]
-    _ ≤ (S.b ^ 23) ^ 2 * S.b ^ (270 * 𝔰.n ^ 2) := by
-        grw [M_le_b_pow, h_near.norm_map_leadingMinor_sq_le]
-    _ ≤ S.b ^ (2 * 𝔰.n ^ 3) := by
-        rw [← pow_mul, ← pow_add]
-        exact pow_le_pow_right₀ S.one_le_b h_exponent
+  refine genIndex_le_of_norm_le_frame_bound fun v ↦ ?_
+  simp only [map_mul, map_natCast, norm_mul, Complex.norm_natCast]
+  gcongr
+  have hb : 1 ≤ S.b ^ (270 * 𝔰.n ^ 2) := one_le_pow₀ S.one_le_b
+  exact le_of_sq_le_sq ((h_near.norm_map_leadingMinor_sq_le j v).trans (le_self_pow₀ hb two_ne_zero))
+    (zero_le_one.trans hb)
 
 omit [S.IsAdmissible] [HasPrimitiveRoot5040 E] in
 /-- If `Z` has integral entries, then the modulus `S.frameModulus j Z = M det (Y Yᴴ)` is integral,
@@ -681,18 +689,8 @@ at most `b ^ (2 n³ f)`. -/
 lemma IsNear.genIndex_frameModulus_le {j : Fin (𝔰.ϱ + 2)} {γ : S.G E} (h_near : S.IsNear γ) :
     genIndex (S.frameModulus j (S.frameProducts γ) : 𝔸f E) ≤
       S.b ^ (2 * 𝔰.n ^ 3 * numInfPlaces E) := by
-  have h_exponent : 23 * 2 + 270 * 𝔰.n ^ 2 * 2 ≤ 2 * 𝔰.n ^ 3 := by
-    have h_cube : 300 * 𝔰.n ^ 2 ≤ 𝔰.n ^ 3 := S.mul_sq_le_cube (by norm_num)
-    linarith [pow_pos 𝔰.ϱ.succ_pos 2]
-  refine genIndex_algebraMap_le_pow_of_norm_sq_le fun v ↦ ?_
-  have hb : 1 ≤ S.b := S.one_le_b
-  calc ‖Φ v (S.frameModulus j (S.frameProducts γ))‖ ^ 2
-      = (S.M * ‖Φ v (leadingMinor (S.frameProducts γ) j)‖ ^ 2) ^ 2 := by
-        simp [frameModulus, sq, mul_assoc]
-    _ ≤ (S.b ^ 23 * S.b ^ (270 * 𝔰.n ^ 2)) ^ 2 := by
-        grw [M_le_b_pow, h_near.norm_map_leadingMinor_sq_le]
-    _ ≤ S.b ^ (2 * 𝔰.n ^ 3) := by
-        rw [mul_pow, ← pow_mul, ← pow_mul, ← pow_add]
-        exact pow_le_pow_right₀ hb h_exponent
+  refine genIndex_le_of_norm_le_frame_bound fun v ↦ ?_
+  simpa [frameModulus, sq, mul_assoc] using
+    mul_le_mul_of_nonneg_left (h_near.norm_map_leadingMinor_sq_le j v) (Nat.cast_nonneg S.M)
 
 end New.Filling

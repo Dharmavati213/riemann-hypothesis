@@ -105,7 +105,8 @@ lemma index_borel_le [Finite K] :
       congrArg (fun g : B ↦ ((g : GL (Fin k) K) : Matrix (Fin k) (Fin k) K)) hxy
     ext i j
     · simpa [low] using congrFun₂ h_low i i
-    · simpa [low, Set.mem_Iio.1 j.2, (Set.mem_Iio.1 j.2).not_gt] using congrFun₂ h_low i j
+    · simpa [low, Set.mem_Iio.1 j.property,
+      (Set.mem_Iio.1 j.property).not_gt] using congrFun₂ h_low i j
   have h_card : (B.index : ℝ) * Nat.card Rows ≤ Nat.card (GL (Fin k) K) :=
     mod_cast (mul_le_mul_right (card_le_card_of_injective f f_inj) _).trans B.index_mul_card.le
   simp [Rows, Nat.card_pi, Nat.card_units, card_GL_eq_prod, prod_range] at h_card
@@ -472,7 +473,7 @@ lemma FrobeniusCycle.exists_coeff_ne_zero_weight_defectWeight_nonpos (T : Froben
   obtain ⟨⟨y, x⟩, hyx⟩ := hR.2 ⟨g, hg⟩
   have h_occurs : (T.polyAction x f).coeff α ≠ 0 := by
     rw [show g = y * x from congrArg Subtype.val hyx.symm, map_mul, AlgHom.mul_apply,
-      T.coeff_polyAction_of_mem_parahoric (Subgroup.mem_subgroupOf.1 y.2) (fun _ ↦ rfl)
+      T.coeff_polyAction_of_mem_parahoric (Subgroup.mem_subgroupOf.1 y.property) (fun _ ↦ rfl)
         (h_least x x.val.property)] at hα
     exact right_ne_zero_of_mul hα
   refine ⟨x, α, h_occurs, fun i b b' hb h_block ↦ ?_⟩
@@ -561,8 +562,8 @@ lemma FrobeniusCycle.exists_mem_defectCone_sum_le (T : FrobeniusCycle N W K) (a 
   · rw [hσ]
     exact ite_nonneg (mul_nonneg hP_sq (hμ_nonneg b)) le_rfl
   · refine ⟨if T.isEven i ∧ b ≤ a then (T.P ^ 2 - 1) * (T.P ^ 2) ^ (a.val - b) else 0, ?_⟩
-    simp only [hσ, μ]
-    by_cases h_even : T.isEven i <;> by_cases hb : b ≤ a <;> simp [h_even, hb]
+    simp only [hσ, μ, ite_and, mul_ite, mul_zero, Int.cast_ite, Int.cast_mul, Int.cast_sub,
+      Int.cast_pow, Int.cast_natCast, Int.cast_one, Int.cast_zero]
   · simp only [hσ]
     split_ifs
     · rw [← Finset.mul_sum, hμ_sum, mul_geom_sum, pow_mul]

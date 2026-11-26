@@ -148,13 +148,13 @@ lemma besselU_mul_apply_eq_add {𝔰 : Shape} (x u : (𝔰.middleGram (1 : ℂ))
   have h_row (k l : 𝔰.BesselIndex) (hk : ∀ b, k = inl b → a < b ∨ j = eStar b)
       (hl : ∀ d, l ≠ eStar d) : U' k l = if k = l then 1 else 0 := by
     have h_low (hkl : BesselIndex.level l ≤ BesselIndex.level k) :
-        U' k l = if k = l then 1 else 0 := mem_besselU.1 u.2 k l hkl
+        U' k l = if k = l then 1 else 0 := mem_besselU.1 u.property k l hkl
     rcases k with b | i | b <;> rcases l with b' | i' | b' <;>
       simp only [BesselIndex.level, elim_inl, elim_inr] at h_low <;>
       grind [IsFreeEntry]
   refine sum_eq_zero fun k _ ↦ mul_eq_zero.2 ?_
   by_cases hk : BesselIndex.level k ≤ BesselIndex.level (inl a : 𝔰.BesselIndex)
-  · exact .inl (sub_eq_zero.2 (mem_besselU.1 x.2 _ k hk))
+  · exact .inl (sub_eq_zero.2 (mem_besselU.1 x.property _ k hk))
   -- Here k has higher level than e_a, and we show that U'(k, j) is the entry of 1.
   refine .inr (sub_eq_zero.2 ?_)
   have hk_row (b : Fin 𝔰.ϱ) (hb : k = inl b) : a < b ∨ j = eStar b :=
@@ -165,8 +165,8 @@ lemma besselU_mul_apply_eq_add {𝔰 : Shape} (x u : (𝔰.middleGram (1 : ℂ))
   -- In the column e*_c use U' · (J U'ᴴ J) = 1.
   let J : Matrix 𝔰.BesselIndex 𝔰.BesselIndex ℂ := (𝔰.middleGram (1 : ℂ)).splitGram
   have h_inv : U' * (J * U'ᴴ * J) = 1 := by
-    rw [← U.coe_inv IsHermitianInvolution.mul_self u.1]
-    exact u.1.1.mul_inv
+    rw [← U.coe_inv IsHermitianInvolution.mul_self u.val]
+    exact u.val.val.mul_inv
   have h_unitary : ∑ d, U' k (inl d) * starRingEnd ℂ (U' (inl c) (eStar d)) + U' k (eStar c) =
       if k = eStar c then 1 else 0 := by
     simpa [Matrix.one_apply, J, Shape.Form.splitGram, h_row (inl c), Matrix.mul_apply] using
@@ -203,7 +203,7 @@ lemma exists_classBasis_eq_fromBlocks {E : Type} [Field E] [CMType E] [HasPrimit
     have h_sq : genIndex c.out.val.val.det ^ 2 = 1 := by
       simpa [← sq] using congrArg (fun A ↦ genIndex (det A))
           (show c.out.val.valᴴ * 1 * c.out.val.val = 1 from
-        mem_unitaryGroupOf_iff.1 c.out.2)
+        mem_unitaryGroupOf_iff.1 c.out.property)
     exact (pow_eq_one_iff_of_nonneg (genIndex_pos c.out.val.det).le two_ne_zero).1 h_sq
   have h_norm : genIndex (S.piN : 𝔸f E) = S.N ^ numInfPlaces E := by
     have h_sq : genIndex (S.piN * star S.piN.val : 𝔸f E) = genIndex (S.N : 𝔸f E) :=
@@ -216,7 +216,7 @@ lemma exists_classBasis_eq_fromBlocks {E : Type} [Field E] [CMType E] [HasPrimit
 conjugates into the principal congruence subgroup of level `S.M`. Then the row of γ − 1 at e_a,
 divided by `S.M`, has integral coordinates in the basis `classBasis c` of the lattice of `c`. -/
 lemma classUnipotent_sub_one_div_M_row_integral {E : Type} [Field E] [CMType E]
-    [HasPrimitiveRoot5040 E] {𝔰 : Shape} {S : Filling E 𝔰} {c : S.Classes} [S.IsAdmissible]
+    [HasPrimitiveRoot5040 E] {𝔰 : Shape} {S : Filling E 𝔰} {c : S.Classes}
     (γ : S.classUnipotent c) (a : Fin 𝔰.ϱ) (j : 𝔰.BesselIndex) :
     (finAdeleMatrix ((S.M : E)⁻¹ • ((γ : Matrix 𝔰.BesselIndex 𝔰.BesselIndex E) - 1)) (inl a) ᵥ*
       (classBasis c).val) j ∈ Ô E := by
@@ -227,7 +227,7 @@ lemma classUnipotent_sub_one_div_M_row_integral {E : Type} [Field E] [CMType E]
       (classBasis c).val = (classBasis c).val * S.ideleM⁻¹ • (k - 1) := by
     simp [k, coe_translateByClassReps, Matrix.map_sub, -Nat.cast_mul, sub_mul, mul_assoc, mul_sub]
     rfl
-  have h_level : S.translateByClassReps c c γ ∈ S.principalLevel := γ.2.2
+  have h_level : S.translateByClassReps c c γ ∈ S.principalLevel := γ.property.2
   have h_int : (S.ideleM⁻¹ • (k - 1)) (inl a) j ∈ Ô E :=
     (S.principalLevel_eq_unitaryLevel.le h_level).2 _ j
   obtain ⟨M, h_basis, -⟩ := exists_classBasis_eq_fromBlocks c
@@ -278,7 +278,7 @@ variable {E : Type} [Field E] [CMType E] {𝔰 : Shape} {S : Filling E 𝔰}
 infinite places of the Bessel unipotent group of G₁. -/
 noncomputable def classUnipotentToInf (c : S.Classes) :
     S.classUnipotent c →* InfinitePlace E → (𝔰.middleGram (1 : ℂ)).besselU :=
-  .mk' (fun γ v ↦ ⟨S.ratToInf γ v, γ.2.1.ratToInf_mem_agreeWithOneOn v⟩) (by aesop)
+  .mk' (fun γ v ↦ ⟨S.ratToInf γ v, γ.property.1.ratToInf_mem_agreeWithOneOn v⟩) (by aesop)
 
 lemma coe_classUnipotentToInf_apply {c : S.Classes} (γ : S.classUnipotent c) (v : InfinitePlace E) :
     (classUnipotentToInf c γ v : 𝔰.G₁) = S.ratToInf γ v := rfl
@@ -461,7 +461,7 @@ lemma rowCoords_mul_fst (x : InfinitePlace E → (𝔰.middleGram (1 : ℂ)).bes
     (h_im : ∀ d : Fin 𝔰.ϱ, a < d → imRowCoords u d = 0) :
     freeRowCoords (x * u) a = freeRowCoords u a + freeRowCoords x a := by
   funext j v
-  refine besselU_mul_apply_eq_add (x v) (u v) (.inr j.2) (fun d hd ↦ congrFun (h_im d hd) v)
+  refine besselU_mul_apply_eq_add (x v) (u v) (.inr j.property) (fun d hd ↦ congrFun (h_im d hd) v)
     fun d k hd hk ↦ congrFun₂ (h_free d ?_) ⟨k, hk⟩ v
   -- If the free column `j` is e*_d, then d > a.
   grind
@@ -550,7 +550,7 @@ lemma exists_fundamental_domain_freeLattice (c : S.Classes) (a : Fin 𝔰.ϱ) :
 (`IsFreeEntry`) of the row e_a of the real image of any `γ ∈ S.classUnipotent c` lie in
 `freeLattice c a`, the lattice of rescaled rational vectors `x` on the free columns with
 `freeBlock c a *ᵥ x` integral. -/
-lemma rowCoords_fst_mem_freeLattice [S.IsAdmissible] (c : S.Classes) (a : Fin 𝔰.ϱ) (γ : S.classUnipotent c) :
+lemma rowCoords_fst_mem_freeLattice (c : S.Classes) (a : Fin 𝔰.ϱ) (γ : S.classUnipotent c) :
     freeRowCoords (classUnipotentToInf c γ) a ∈ freeLattice c a := by
   let row : 𝔰.BesselIndex → 𝔸f E :=
     finAdeleMatrix ((S.M : E)⁻¹ • ((γ : Matrix 𝔰.BesselIndex 𝔰.BesselIndex E) - 1)) (inl a)

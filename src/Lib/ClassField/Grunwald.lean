@@ -835,9 +835,7 @@ private lemma New.GaloisRep.exists_isGrunwaldChar {E : Type} [Field E] [Embedded
     isOpen_of_forall_pow_mem hp.ne_zero fun x ↦ by simpa using hχ_pow x
   let S : Set (FinPlace E) := insert (star w) (insert w {u | (p : 𝓞 E) ∈ u.asIdeal})
   have hS : S.Finite := ((finite_natCast_mem p).insert w).insert (star w)
-  obtain ⟨ν, hν, h_grun⟩ : ∃ ν : QZChar Gal(Ω/E), p • ν = 0 ∧
-      ∀ (u : FinPlace E) (x : (LocField u)ˣ), u ∈ S ∨ ¬u.q.Prime ∧ v x.val = 1 →
-        abelianLift ν (artinMap Gal(Ω/E) (locIdele u x)) = ψ (locIdele u x) :=
+  obtain ⟨ν, hν, h_grun⟩ :=
     grunwald hp hS ψ hχ_open.preimage_of_continuous fun b ↦ hχ_pow (ideleAt w (star b))
   -- on ideles at `w` the character `ψ` is trivial, and `ψ ∘ star` is `χ` there
   have hν_w (x : (LocField w)ˣ) : abelianLift ν (artinAt Gal(Ω/E) w x) = 1 := by

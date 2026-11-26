@@ -471,7 +471,7 @@ lemma exists_isExpansionFamily : ∃ (n : ℕ) (χ : Fin n → G → ℂ), IsExp
     refine ⟨TauCeti.Representation.centralCharacter (ρ (e.symm i)) z, fun y ↦ ?_⟩
     rw [classInner, finMean, finsum_eq_sum_of_fintype, div_eq_inv_mul]
     congr 1
-    have h_repr : ∑ u : G, φ (u⁻¹ * y) • single u (1 : ℂ) = z.1 * single y 1 := by
+    have h_repr : ∑ u : G, φ (u⁻¹ * y) • single u (1 : ℂ) = z.val * single y 1 := by
       ext u
       have h_swap : φ (y * u⁻¹) = φ (u⁻¹ * y) := by
         simpa [mul_assoc] using hφ (u⁻¹ * y) u
@@ -480,7 +480,7 @@ lemma exists_isExpansionFamily : ∃ (n : ℕ) (χ : Fin n → G → ℂ), IsExp
       refine Fintype.sum_equiv (Equiv.inv G) _ _ fun x ↦ ?_
       simp [(hχ i).apply_inv, mul_comm]
     calc ∑ x : G, conj (χ i x) * φ (x * y)
-        = LinearMap.trace ℂ _ ((ρ (e.symm i)).asAlgebraHom (z.1 * single y 1)) := by
+        = LinearMap.trace ℂ _ ((ρ (e.symm i)).asAlgebraHom (z.val * single y 1)) := by
           rw [h_sum, ← h_repr, map_sum, map_sum]
           refine Finset.sum_congr rfl fun u _ ↦ ?_
           simp [χ, Representation.character]

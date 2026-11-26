@@ -54,26 +54,18 @@ lemma exists_monomial_max_norm_coeff [Fintype I] {f : I → MvPowerSeries X ℂ_
       ‖coeff α ((seriesToCp G).subst f * s)‖ ≤ ‖coeff α ((∏ i : I, f i ^ m i) * s)‖ := by
   -- Only the monomials of degree at most `|α|` contribute to the coefficient at `α`. Take the one
   -- with the largest contribution; integral combinations are no larger (ultrametric inequality).
-  let a (d : I →₀ ℕ) : ℂ_[p] := coeff α ((∏ i : I, f i ^ d i) * s)
-  obtain ⟨m, hm_deg, hm_max⟩ : ∃ m ∈ {d : I →₀ ℕ | d.degree ≤ α.degree},
-      ∀ d ∈ {d : I →₀ ℕ | d.degree ≤ α.degree}, ‖a d‖ ≤ ‖a m‖ :=
-    Set.exists_max_image _ _ (finite_of_degree_le _) ⟨0, by simp⟩
+  obtain ⟨m, hm_deg, hm_max⟩ := Set.exists_max_image {d : I →₀ ℕ | d.degree ≤ α.degree}
+    (fun d ↦ ‖coeff α ((∏ i, f i ^ d i) * s)‖) (finite_of_degree_le _) ⟨0, by simp⟩
   refine ⟨m, hm_deg, fun G ↦ ?_⟩
-  have h_trunc (x : MvPowerSeries X ℂ_[p]) :
-      (truncTotal (α.degree + 1) x * truncTotal (α.degree + 1) s).coeff α = coeff α (x * s) :=
-    coeff_truncTotal_mul_truncTotal_eq_coeff_mul x s α.degree.lt_add_one
   -- As the `f i` have no constant term, `G` may be cut down to its terms of degree `≤ |α|`.
-  have h_sum : coeff α ((seriesToCp G).subst f * s) =
-      ∑ d ∈ (finite_of_degree_lt (α.degree + 1)).toFinset, coeff d (seriesToCp G) * a d := by
-    rw [← h_trunc, truncTotal_subst_eq_truncTotal_truncTotal_subst
-      fun i ↦ (hf.const_coeff i).eq_zero, h_trunc]
-    simp [a, subst_coe, truncTotal, truncFinset, Finset.sum_mul, MvPolynomial.aeval_monomial,
-      Finsupp.prod_pow, ← Algebra.smul_def]
-  rw [h_sum]
+  rw [← coeff_truncTotal_mul_truncTotal_eq_coeff_mul _ s α.degree.lt_add_one,
+    truncTotal_subst_eq_truncTotal_truncTotal_subst fun i ↦ (hf.const_coeff i).eq_zero,
+    coeff_truncTotal_mul_truncTotal_eq_coeff_mul _ s α.degree.lt_add_one]
+  simp [subst_coe, truncTotal, truncFinset, Finset.sum_mul, MvPolynomial.aeval_monomial,
+    Finsupp.prod_pow, ← Algebra.smul_def]
   refine norm_sum_le_of_forall_le_of_nonneg (norm_nonneg _) fun d hd ↦ ?_
-  have hd_deg : d.degree ≤ α.degree := by simpa [Nat.lt_succ_iff] using hd
-  have h_coeff : ‖coeff d (seriesToCp G)‖ ≤ 1 := (coeff d G).property
-  simpa only [one_mul] using norm_mul_le_of_le h_coeff (hm_max d hd_deg)
+  simpa using norm_mul_le_of_le (coeff d G).property
+    (hm_max d (by simpa [Nat.lt_succ_iff] using hd))
 
 end New
 

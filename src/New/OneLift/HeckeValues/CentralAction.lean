@@ -3,7 +3,6 @@ module
 public import New.OneLift.HeckeValues.CharacterLift
 public import New.OneLift.TestedForms
 public import New.UpperBound.Size.ShortColumns
-import Lib.General.Algebra.IntegralPowerSeries
 import New.Determinant.Norms.AdjointThetaLift
 
 /-!

@@ -483,14 +483,8 @@ lemma Period.IsPotentiallyCrystalline.index_mul_index_dual [𝒥 : OverGp Γ ℓ
     simpa [← J.count_map_eq_count' (fun u ↦ -u - 1) h_inj] using h_dual.trans (hJ _)
   have h_count : J.countP (· < 0) + (J.map fun u ↦ -u - 1).countP (· < 0) = finrank ℤ_[ℓ] L := by
     grind [countP_map, countP_eq_card_filter, card_eq_countP_add_countP]
-  obtain ⟨h_fin, h_rank⟩ : Module.Finite ℤ_[ℓ] (crysCocycles L.ρ) ∧
-      finrank ℤ_[ℓ] (crysCocycles L.ρ) =
-        finrank ℤ_[ℓ] L + 𝒥.toGp.range.index * J.countP (· < 0) :=
-    finrank_eq hL hJ
-  obtain ⟨h_fin', h_rank'⟩ : Module.Finite ℤ_[ℓ] (crysCocycles L'.ρ) ∧
-      finrank ℤ_[ℓ] (crysCocycles L'.ρ) =
-        finrank ℤ_[ℓ] L' + 𝒥.toGp.range.index * (J.map fun u ↦ -u - 1).countP (· < 0) :=
-    finrank_eq hL' hJ'
+  obtain ⟨h_fin, h_rank⟩ := finrank_eq hL hJ
+  obtain ⟨h_fin', h_rank'⟩ := finrank_eq hL' hJ'
   have h_sum : finrank ℤ_[ℓ] (crysCocycles L.ρ) + finrank ℤ_[ℓ] (crysCocycles L'.ρ) =
       finrank ℤ_[ℓ] L * (2 + 𝒥.toGp.range.index) := by
     grind [b.finrank_eq, finrank_linearMap_self]

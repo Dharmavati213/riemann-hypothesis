@@ -401,6 +401,7 @@ lemma isClopen_setOf_isPrimitiveMatrix : IsClopen {y : Matrix n a F | IsPrimitiv
       isPrimitiveMatrix_iff_int_and_unit_det.2 ⟨L_int.mul z_int, hz⟩
     exact ⟨z_int, L' * L, L'_int.mul L_int, by rwa [L'.mul_assoc]⟩
 
+omit [DecidableEq b] in
 /-- A matrix `x` consists of the rows `a` of `k⁻¹` (`invLastRows`) for some `k` in `GL n O` exactly
 when `xᵀ` is primitive (integral, with an integral left inverse). -/
 lemma exists_eq_invLastRows_iff_isPrimitiveMatrix (e : b ⊕ a ≃ n) (x : Matrix a n F) :

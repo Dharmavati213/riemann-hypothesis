@@ -140,43 +140,10 @@ private lemma totient_add_le_pow_twenty {N l y c : ℕ} (hNy : N ≤ y) (hly : l
     _ ≤ (y ^ 5) ^ 4 := Nat.pow_le_pow_left hMy 4
     _ = y ^ 20 := by ring
 
-/-- Let `K = ℚ(μ_M)` and `l` a prime. A finite family of integers `m i ≥ 2` whose product divides
-the class number of `K` times the index of the ideles that are `M`-th powers above `l` has at
-most `M ^ 3 + 5 M ^ 2 + M` members, since `2 ^ card ι ≤ ∏ m i`. -/
-private lemma card_le_of_prod_dvd_classNumber_mul_index {M l : ℕ} [NeZero M] [ThePrime l]
-    {ι : Type} [Fintype ι] {m : ι → ℕ} (hm : ∀ i : ι, 2 ≤ m i)
-    (h_dvd : ∏ i : ι, m i ∣
-      classNumber (cycloField M) * (idelesPowAt (placesDividing (cycloField M) l) M).index) :
-    Fintype.card ι ≤ M ^ 3 + 5 * M ^ 2 + M := by
-  refine (Nat.pow_le_pow_iff_right one_lt_two).mp ?_
-  calc 2 ^ Fintype.card ι ≤ ∏ i, m i := Finset.pow_card_le_prod Finset.univ m 2 fun i _ ↦ hm i
-    _ ≤ classNumber (cycloField M) * (idelesPowAt (placesDividing (cycloField M) l) M).index :=
-      Nat.le_of_dvd (Nat.mul_pos (classNumber_pos _)
-        (index_idelesPowAt_ne_zero_and_le M _).left.bot_lt) h_dvd
-    _ ≤ 2 ^ (M ^ 3 + 5 * M ^ 2 + M) := OddPart.classNumber_mul_index_idelesPowAt_le M l
-
-open Matrix.Module in
-/-- An element of `Gal(Ω/E)` with the same `l`-adic cyclotomic character as some `x` fixing `μ_M`
-acts trivially, in the twist `tateTwist l E O e`, on the vectors over `O / lⁿ` killed by `M`. -/
-private lemma tateTwist_smul_eq_self_of_nsmul_eq_zero {E : Type} [Field E]
-    [EmbeddedNumberField E] {l M : ℕ} [NeZero M] [ThePrime l] {O : Type} [CommRing O]
-    [PadicIntegerRing O l] {n e : ℕ} {h : Gal(Ω/E)} (x : cycloGalGroup M)
-    (h_char : cyclotomicChar Ω l h = cyclotomicChar Ω l (x : Gal(Ω/ℚ)))
-    {a : Unit → QuotSpan (l ^ n : O)} (ha : M • a = 0) :
-    tateTwist l E O e h • a = a := by
-  have h_fix : (cyclotomicPowDirichlet l e (1 : DirichletCharacter O 1)
-      ((x⁻¹ : cycloGalGroup M) : Gal(Ω/ℚ))).val • a = a :=
-    (OddPart.cyclotomicPowDirichlet_smul_eq_self (O := O) (ψ := 1)
-      (cyclotomicCharMod_eq_one_of_dvd (one_mul M).dvd x⁻¹.prop) ha).left
-  -- The twist at `h` is the value of `cyc ^ e` at `x⁻¹`.
-  -- Without `-map_inv` the factor of the trivial character is left as an inverse.
-  simpa [cyclotomicPowDirichlet, tateTwist, cyclotomicInv, h_char,
-    map_inv (cyclotomicChar Ω l), -map_inv] using h_fix
-
 /-- If a place `v` of an intermediate field `K` of `Ω/ℚ` is prime to `l`, then so is some place of
 `E` lying under the chosen valuation subring `placeOver v` of `Ω`. -/
 private lemma exists_notMem_placesDividing_isPlaceOver (E : Type) [Field E]
-    [EmbeddedNumberField E] {l : ℕ} [ThePrime l] {K : IntermediateField ℚ Ω} [NumberField K]
+    [EmbeddedNumberField E] {l : ℕ} {K : IntermediateField ℚ Ω} [NumberField K]
     {v : FinPlace K} (hv : v ∉ placesDividing K l) :
     ∃ w : FinPlace E, w ∉ placesDividing E l ∧ IsPlaceOver (placeOver v) w := by
   have hv_over : IsPlaceOver (placeOver v) v := v.isPlaceOver_placeOver
@@ -184,6 +151,7 @@ private lemma exists_notMem_placesDividing_isPlaceOver (E : Type) [Field E]
   exact ⟨w, fun h_mem ↦ hv
     (hv_over.valuation_natCast_lt_one_iff.mp (hw.valuation_natCast_lt_one_iff.mpr h_mem)), hw⟩
 
+open scoped Matrix.Module in
 /-- Few points detect unramified cocycles. Let `E` be a number field whose image in the algebraic
 closure `Ω` lies in `ℚ(μ_N)` (`h_sub`), and `l` a prime. There is a finite set `s` in `Gal(Ω/E)`
 with (a) `#s ≤ y ^ 20` whenever `N ≤ y` and `l ≤ y ^ 2`; (b) for all `O` (the integers of a finite
@@ -226,8 +194,14 @@ lemma New.OddPart.exists_detecting_points_cocycles {N : ℕ} {E : Type} [NeZero 
   refine ⟨.image (Sum.elim (invFun f) (r ∘ b)) .univ,
     fun y hNy hly ↦ Finset.card_image_le.trans ?_, ?_⟩
   · -- There are at most `φ(M)` cosets, and few points of `exists_detecting_points_hom`.
-    have h_card : Fintype.card ι ≤ M ^ 3 + 5 * M ^ 2 + M :=
-      card_le_of_prod_dvd_classNumber_mul_index hm h_dvd
+    have h_card : Fintype.card ι ≤ M ^ 3 + 5 * M ^ 2 + M := by
+      apply (Nat.pow_le_pow_iff_right one_lt_two).mp
+      calc 2 ^ Fintype.card ι ≤ ∏ i, m i :=
+            Finset.pow_card_le_prod Finset.univ m 2 fun i _ ↦ hm i
+        _ ≤ classNumber K * (idelesPowAt (placesDividing K l) M).index :=
+          Nat.le_of_dvd (Nat.mul_pos (classNumber_pos _)
+            (index_idelesPowAt_ne_zero_and_le M (placesDividing K l)).left.bot_lt) h_dvd
+        _ ≤ 2 ^ (M ^ 3 + 5 * M ^ 2 + M) := OddPart.classNumber_mul_index_idelesPowAt_le M l
     calc (Finset.univ : Finset ((ZMod M)ˣ ⊕ ι)).card = φ M + Fintype.card ι := by simp
       _ ≤ y ^ 20 := totient_add_le_pow_twenty hNy hly hM_gt h_card
   intro O _ _ n e z hz h_zero
@@ -243,7 +217,13 @@ lemma New.OddPart.exists_detecting_points_cocycles {N : ℕ} {E : Type} [NeZero 
     obtain ⟨h_coc, h_unr, -, h_lc⟩ := mem_selmerModule_iff.mp hz
     -- on `G_K` the twist acts trivially on elements killed by `M`
     have h_add (x : cycloGalGroup M) (g : Gal(Ω/E)) : z (r x * g) = z (r x) + z g := by
-      rw [h_coc, tateTwist_smul_eq_self_of_nsmul_eq_zero (h := r x) x rfl (congrFun hMz g)]
+      rw [h_coc]
+      have h_fix := (OddPart.cyclotomicPowDirichlet_smul_eq_self (O := O) (e := e) (ψ := 1)
+        (cyclotomicCharMod_eq_one_of_dvd (one_mul M).dvd x⁻¹.prop) (congrFun hMz g)).left
+      have h_char : cyclotomicChar Ω l (r x) = cyclotomicChar Ω l (x : Gal(Ω/ℚ)) := rfl
+      rw [show tateTwist l E O e (r x) • z g = z g by
+        simpa [cyclotomicPowDirichlet, tateTwist, cyclotomicInv, h_char,
+          map_inv (cyclotomicChar Ω l), -map_inv] using h_fix]
     -- an inertia group of `K` away from `l` lies in an inertia group of `E` away from `l`
     have h_unr' (v : FinPlace K) (hv : v ∉ placesDividing K l) (g : cycloGalGroup M)
         (hg : g ∈ inertiaGroup (cycloGalGroup M) (placeOver v)) : z (r g) = 0 := by

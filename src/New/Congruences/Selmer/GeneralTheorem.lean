@@ -3,7 +3,6 @@ module
 public import New.Congruences.Selmer.Line
 import New.Congruences.Selmer.RootsOfUnity
 import New.Congruences.Selmer.StickelbergerLine
-import TauCeti.Analysis.Normed.Ring.Ultra
 
 /-!
 # Twisting, general form

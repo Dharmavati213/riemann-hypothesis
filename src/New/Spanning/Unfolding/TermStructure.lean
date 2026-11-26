@@ -602,7 +602,7 @@ theorem CharsAgree.add_finrank_commonIsotropic_eq {j : Fin (𝔰.ϱ + 2)}
 `gr(γ) = S.termDisc γ` vanish, and let `j + rk I_γ = ϱ` for `I_γ = A ∩ γ A` and `A = ⟨e_1, …, e_ϱ⟩`.
 Then `γ` has the cell rank `j`: a norm-one pair occurs for it from the index `j` on, and the leading
 minor `δ_j` of the products of the frame with its image is not zero. -/
-theorem CharsAgree.hasCellRank_of_add_finrank_eq {j : Fin (𝔰.ϱ + 2)} [HasPrimitiveRoot5040 E]
+theorem CharsAgree.hasCellRank_of_add_finrank_eq {j : Fin (𝔰.ϱ + 2)}
     (h_agree : S.CharsAgree γ) (h_disc : S.termDisc γ = 0)
     (hj : j.val + finrank E (commonIsotropic γ) = 𝔰.ϱ) : S.HasCellRank j γ := by
   obtain ⟨i, h_rank⟩ := h_agree.exists_hasCellRank h_disc

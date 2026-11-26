@@ -110,7 +110,7 @@ lemma eventually_forall_apply_add_smul_eq {A n : Type} [SemilocalField A]
 constant along `Q` at the points of `C`. Then for some unit `u` one has `φ x = φ y` whenever
 `x ∈ Q`, `y ∈ C ∩ Q` and `x - y` lies in `u • L`. -/
 lemma exists_unit_forall_apply_eq_of_inv_smul_sub_mem {A n : Type} [SemilocalField A] [StarRing A]
-    [P : IntegralPlace A] [Fintype n] {Q C L : Set (n → A)} (hC : IsCompact C) (hL : IsCompact L)
+    [P : IntegralPlace A] {Q C L : Set (n → A)} (hC : IsCompact C) (hL : IsCompact L)
     {φ : (n → A) → ℂ} (h_loc : ∀ e ∈ C, ∀ᶠ x : n → A in nhds e, x ∈ Q → φ x = φ e) :
     ∃ u : Aˣ, ∀ x ∈ Q, ∀ y ∈ C ∩ Q, u⁻¹ • (x - y) ∈ L → φ x = φ y := by
   -- Units are dense, since almost every element is a unit.
@@ -466,7 +466,7 @@ lemma exists_isCompact_scaledOrbitalIntegral_support {F : PlaceData ι T (m + 1)
   have h_back : (weylElem 𝔰.ϱ (star p) * l)⁻¹ * y' = y := by
     simp [y', mul_assoc, (weylElem_mul_left_comm hl).1]
   have y'_mem : y' ∈ S := Γ.hasMatrixSize_of_ne_zero h_cut hp.star_head hl hy' (by rwa [h_back])
-  exact ⟨(y, y'), ⟨y_mem, y'_mem⟩, by simp [y', mul_assoc]⟩
+  exact ⟨(y, y'), ⟨y_mem, y'_mem⟩, by simp [y']⟩
 
 /-- At a large lattice datum `F` and for `l` in the floor group G^(ϱ), the pairing of the scaled
 orbital integrals with heads `p`, `q` at `l` is the density `F.headDensity 𝔰.ϱ p q` of the two heads

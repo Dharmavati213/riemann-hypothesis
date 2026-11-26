@@ -349,12 +349,8 @@ lemma length_add_length_tiedSelmer_le (hp : IsTiedPrimes ℓ S₀ V W N P₀ J x
     ⟨T.mem_cocycles_tiedSetting hp hV hN ha A (T.mem_selmerModule_erase hp ha hc)
       (Set.union_subset_union_left _ Set.subset_union_left) Set.subset_union_left,
       T.apply_γ_eq_zero hc⟩
-  calc length O (n → QuotSpan a) + length O (T.tiedSelmer J J x i a)
-      ≤ length O (n → QuotSpan a) + length O ↥(Z ⊓ LinearMap.ker ev) :=
-        add_le_add_right (length_mono h_ker) _
-    _ = relLength Z (LinearMap.ker ev) + length O ↥(Z ⊓ LinearMap.ker ev) := by
-        rw [relLength_ker, h_onto, length_top]
-    _ = length O Z := relLength_add_length_inf Z (LinearMap.ker ev)
+  rw [← length_map_add_length_inf_ker Z ev, h_onto, length_top]
+  exact add_le_add_right (length_mono h_ker) _
 
 open scoped Classical in
 /-- A case of the Greenberg–Wiles inequality. Let `J` be a set of tied primes, where `V i g` says

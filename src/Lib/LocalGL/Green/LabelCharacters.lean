@@ -60,12 +60,6 @@ private lemma Matrix.vecMulVec_left_injective_of_ne_zero {m p R : Type*} [Field 
   funext i
   simpa [Matrix.vecMulVec_apply, hj] using congrFun (congrFun h_eq i) j
 
-/-- For a linear map `g` from a field `R` to itself, `g 1` (its determinant) is minus the
-constant coefficient of its characteristic polynomial. -/
-private lemma LinearMap.apply_one_eq_neg_charpoly_coeff_zero {R : Type*} [Field R]
-    (g : Module.End R R) : g 1 = -(LinearMap.charpoly g).coeff 0 := by
-  simp [← LinearMap.det_ring, LinearMap.det_eq_sign_charpoly_coeff]
-
 namespace New
 
 /-!
@@ -471,8 +465,10 @@ lemma hyperplaneSum_mul_labelIdem {c : Polynomial k} {χ : MulChar k ℂ}
         (Ξ ∘ N.subtype * ρ.character) (param g x) =
           starRingEnd ℂ ((detChar χ).rankPart (Module.finrank k k) (simClassOf g.val)) *
             labelChar (faithfulChar k) c (simClassOf (blockTriangularEnd 1 g.val x)) := by
+      have h_const : g.val 1 = -(LinearMap.charpoly g.val).coeff 0 := by
+        simp [← LinearMap.det_ring, LinearMap.det_eq_sign_charpoly_coeff]
       simp [Ξ, ρ, param, mul_comm (labelChar _ c _), h_det, h_cls, ← χ.star_apply', Hall.evalGL,
-        LinearMap.apply_one_eq_neg_charpoly_coeff_zero, character, detChar]
+        h_const, character, detChar]
     rw [finMean_equiv (.ofBijective _ h_param) (fun p ↦ h_term p.1 p.2), finMean_prod]
     simpa only [finMean_const_mul] using h_skew_at
   -- Orthogonality kills every translate of the character, hence every coefficient of the product.

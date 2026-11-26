@@ -466,8 +466,8 @@ lemma exists_inertia_smul_add_ofZMod [NeZero M] {q : Nat.Primes} (hq : B.valuati
     cyclotomicCharMod_eq_of_dvd (dvd_pow_self (q : ℕ) one_ne_zero)
       ((pow_dvd_cyclotomicChar_sub_iff 1).mp (by simp only [cyc_τ, sub_self, dvd_zero]))
   -- Without `-inv_coe_unit` this `simp` call loops.
-  simp [← map_nsmul, ← cyclotomicCharMod_eq_of_dvd _ zmod_eq_natCast_val, cyc_M, cyc_mod_q,
-    -inv_coe_unit]
+  simp [← map_nsmul, ← cyclotomicCharMod_eq_of_dvd _ (ZMod.natCast_zmod_val _).symm, cyc_M,
+    cyc_mod_q, -inv_coe_unit]
 
 /-- Let `g` lie in the inertia group of a place `B` at which `m` is a unit, let `γ` act on the
 `m`-th roots of unity by `a`, and let `g r / r = ζᵇ`. Suppose that `g y / y` and `γ y / y'` are
@@ -579,7 +579,7 @@ lemma derivative_sub_frob_mem_principalUnits (γ : Gal(Ω/ℚ)) (hq : B.valuatio
   have root : (k * m) • W 1 = 0 := by
     simpa [W, ← smul_sub, smul_sum, smul_comm _ (lg _), hτY, mul_smul] using h_diff
   have γ_mem : galUnitsRep γ (W 1) ∈ principalUnits B := by
-    rw [cyclotomicCharMod_eq_iff_unitsRep.mp zmod_eq_natCast_val root]
+    rw [cyclotomicCharMod_eq_iff_unitsRep.mp (ZMod.natCast_zmod_val _).symm root]
     exact nsmul_mem (by simpa using W_mem 1) _
   -- Conjugating by `φ` and `τ` does not change how `γ` acts on these roots of unity.
   have h_conj_τ : ∑ u : (ZMod q)ˣ, lg u • galUnitsRep γ (galUnitsRep τ (Y (v * u)) - Y u) =
@@ -745,7 +745,8 @@ private lemma cyclotomicPowDirichlet_sub_one_smul_sum_eq_zero_of_isJacobiFamily
   -- Take `τ` in the inertia group at `B` moving an `lⁿ`-th root `r` of a uniformiser by `ζ`. As
   -- `y x ^ lⁿ` is a unit times `r ^ (lⁿ floorDiff c x)`, the exponent of `y x` at `τ` is
   -- `a floorDiff c x - floorDiff c (a x)`, where `a` is the cyclotomic character of `γ`.
-  obtain ⟨a, ha⟩ : ∃ a : ℕ, (cyclotomicCharMod Ω (N * l ^ n) γ).val = a := ⟨_, zmod_eq_natCast_val⟩
+  obtain ⟨a, ha⟩ : ∃ a : ℕ, (cyclotomicCharMod Ω (N * l ^ n) γ).val = a :=
+    ⟨_, (ZMod.natCast_zmod_val _).symm⟩
   obtain ⟨v, hv, -⟩ := exists_isPlaceOver_prime hpB
   obtain ⟨τ, hτ, π, r, unif, hr, τ_r⟩ := exists_isTameGeneratorFor Gal(Ω/ℚ) (l ^ n) hv
   have h_unit {x : QZ} (hx : (N * l ^ n) • x = 0) :
@@ -783,7 +784,7 @@ private lemma derivativeSum_commutatorLog_mul_eq_of_isJacobiFamily
   change derivativeSum e ψ L I 0 (F (g * g')) = derivativeSum e ψ L I 0 (F g) +
     (cyclotomicPowDirichlet l (e + 1) ψ g).val • derivativeSum e ψ L I 0 (F g')
   have killed {v : QuotSpan (l ^ n : O)} : l ^ n • v = 0 := nsmul_quot_eq_zero dvd_rfl v
-  obtain ⟨a, ha⟩ : ∃ a : ℕ, (cyclotomicCharMod Ω M g).val = a := ⟨_, zmod_eq_natCast_val⟩
+  obtain ⟨a, ha⟩ : ∃ a : ℕ, (cyclotomicCharMod Ω M g).val = a := ⟨_, (ZMod.natCast_zmod_val _).symm⟩
   have ha_N : (cyclotomicCharMod Ω (N * l ^ n) g).val = a := cyclotomicCharMod_eq_of_dvd hM ha
   have h_exponent {x : QZ} (hx : M • x = 0) : (a • F g') x = (F (g * g') - F g) (a • x) := by
     have hax : M • a • x = 0 := by simp [smul_comm M, hx]
@@ -852,7 +853,8 @@ private lemma derivativeSum_commutatorLog_mem_vanishingCocycles_of_isJacobiFamil
       simp +contextual [hlA, hIA]
     have hgM : g ∈ cycloGalGroup M :=
       mem_cycloGalGroup_of_mem_inertiaGroup hg h_cofactor (by rw [← hM_eq, mul_assoc]) hgN
-    obtain ⟨a, ha⟩ : ∃ a : ℕ, (cyclotomicCharMod Ω M γ).val = a := ⟨_, zmod_eq_natCast_val⟩
+    obtain ⟨a, ha⟩ : ∃ a : ℕ, (cyclotomicCharMod Ω M γ).val = a :=
+      ⟨_, (ZMod.natCast_zmod_val _).symm⟩
     have h_unit {x : QZ} (hx : M • x = 0) :
         A.valuation (l ^ n • (y x - floorDiff c x • (0 : DiscreteUnits Ω))).toMul.val = 1 := by
       simpa using hJ.valuation_eq_one hx A hpA
@@ -905,7 +907,8 @@ private lemma sum_mul_commutatorLog_eq_of_isJacobiFamily {q : Nat.Primes}
       (hφ.cyclotomicCharMod_eq (hq_cop.valuation_eq_one hqA))
   have hτ_Y (u : ZMod q) : l ^ n • (galUnitsRep τ (Y (v * u)) - Y u) = 0 := by
     simpa only [hτ_cyc x hx u] using
-      nsmul_galUnitsRep_sub_eq_zero_of_isJacobiFamily hJ_q (h_level (v * u)) τ _ zmod_eq_natCast_val
+      nsmul_galUnitsRep_sub_eq_zero_of_isJacobiFamily hJ_q (h_level (v * u)) τ _
+        (ZMod.natCast_zmod_val _).symm
   have h_dist : IsOfFinAddOrder (l ^ n • (∑ b : ZMod q, Y b - y ((q : ℕ) • x))) := by
     simpa [Y, smul_sub, smul_sum] using
       hJ_q.isOfFinAddOrder_sum_sub (h_level 0) q (dvd_mul_right _ _)

@@ -247,7 +247,6 @@ lemma _root_.New.IsValuationPair.exists_firstCols_iff [Finite a] [Finite b]
     (hO : IsValuationPair O) :
     (∃ k ∈ intGL n O, y = firstCols e k) ↔ IsPrimitiveMatrix O y := by
   classical
-  have := Fintype.ofFinite a
   have := Fintype.ofFinite b
   refine ⟨?_, fun hy ↦ ?_⟩
   · rintro ⟨k, hk, rfl⟩

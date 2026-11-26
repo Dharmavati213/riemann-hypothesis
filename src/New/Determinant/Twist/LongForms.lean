@@ -251,9 +251,13 @@ theorem integral_forms_long_with_completion_cost {n : ℕ} {y : Fin n → D.targ
   -- The product formula gives one inequality, including the cost of the completion.
   have h_product_formula : 0 ≤ c + 2 * δ + n' * (2 * D.x₁ ^ 2 * D.b ^ 2 + D.b) +
       D.targetDim * (D.b + D.f * D.a * D.logB ^ 4 - D.mainAmount) :=
-    TwistedLattice.covolume_add_index_nonneg injective_lift_targetLattice h_completed_indep
+    TwistedLattice.covolume_add_index_nonneg (injective_lift_targetLattice 1) h_completed_indep
       h_completed_card h_small_ratios.coprime
-      hc hδ hγ_ne hz_int hz_short h_auxiliary_scalar_height h_chain_ratio_height
+      (fun ι ↦ TwistedLattice.volume_ne_zero (injective_lift_targetLattice (θ ι)))
+      hc hδ (γ := fun ι ↦ γ (θ ι)) (fun ι ↦ hγ_ne (θ ι))
+      (fun ι i ↦ hz_int i ι (θ ι) (h_small_ratios.coprime ι))
+      (fun ι i ↦ hz_int i ι.conj (θ ι) (h_small_ratios.coprime ι))
+      hz_short h_auxiliary_scalar_height h_chain_ratio_height
   have h_dim : (D.targetDim : ℝ) = n + n' := mod_cast h_completed_card
   have h_missing_dimension : (n' : ℝ) = D.targetDim - n := by linarith
   rw [h_missing_dimension] at h_product_formula

@@ -522,6 +522,12 @@ lemma submatrix_inl_map_J :
       stdForm E (1 : X → ℤˣ) := by
   simp [← ext_iff, Y.gram_eq, gradedGram, Matrix.one_apply]
 
+private lemma ratCoordMatrix_inr_inl_eq_zero {g : G E ε} (hg : g ∈ Y.besselGroup)
+    (a : Fin s) (x : X) (ha : Y.gradeOf (Y.indexEquiv (Sum.inr a)) ≤ 0) :
+    V.ratCoordMatrix g (Y.indexEquiv (Sum.inr a)) (Y.indexEquiv (Sum.inl x)) = 0 := by
+  rw [Y.mem_besselGroup_iff.1 hg _ _ (by rwa [gradeOf_inl]) (by simp),
+    Matrix.one_apply_ne (by simp)]
+
 /-- For g in `New.Grading.besselGroup`, the X-block B of its matrix in rational coordinates
 satisfies Bᴴ S B = S, where S is the standard form of the definite space on X. -/
 lemma submatrix_inl_ratCoordMatrix_unitary {g : G E ε} (hg : g ∈ Y.besselGroup) :
@@ -531,14 +537,14 @@ lemma submatrix_inl_ratCoordMatrix_unitary {g : G E ε} (hg : g ∈ Y.besselGrou
       stdForm E (1 : X → ℤˣ) := by
   have h_zero (a : Fin s) (x : X) (ha : s ≤ 2 * a.val + 1) :
       V.ratCoordMatrix g (Y.indexEquiv (Sum.inr a)) (Y.indexEquiv (Sum.inl x)) = 0 := by
-    rw [Y.mem_besselGroup_iff.1 hg _ _ (by simp; omega) (by simp), Matrix.one_apply_ne (by simp)]
+    exact ratCoordMatrix_inr_inl_eq_zero Y hg a x (by simp; omega)
   calc
     _ = ((V.ratCoordMatrix g)ᴴ * V.J.map toAdele * V.ratCoordMatrix g).submatrix
           (Y.indexEquiv ∘ Sum.inl) (Y.indexEquiv ∘ Sum.inl) := by
       -- The string contributes nothing, since dual string indices have opposite weights and g has
       -- no entry from X to a string index of weight ≤ 0.
       simp [← ext_iff, Matrix.mul_apply, reindex_equiv Y.indexEquiv, Y.gram_eq, gradedGram,
-        Matrix.mul_assoc, Matrix.one_apply]
+        Matrix.one_apply]
       grind -funext [star_zero, sum_eq_zero]
     _ = _ := by
       rw [show (V.ratCoordMatrix g)ᴴ * V.J.map toAdele * V.ratCoordMatrix g = V.J.map toAdele from
@@ -559,8 +565,7 @@ lemma submatrix_inl_ratCoordMatrix_mul {g h : G E ε} (hg : g ∈ Y.besselGroup)
     obtain h_nonneg | h_nonpos := le_total 0 (Y.gradeOf (Y.indexEquiv (Sum.inr a)))
     · rw [Y.mem_besselGroup_iff.1 hg _ _ (by rwa [gradeOf_inl]) (by simp),
         Matrix.one_apply_ne (by simp), zero_mul]
-    · rw [Y.mem_besselGroup_iff.1 hh _ _ (by rwa [gradeOf_inl]) (by simp),
-        Matrix.one_apply_ne (by simp), mul_zero]
+    · rw [ratCoordMatrix_inr_inl_eq_zero Y hh a y h_nonpos, mul_zero]
   exact Matrix.ext fun x y ↦ by simp [Matrix.mul_apply, reindex_equiv Y.indexEquiv, h_string]
 
 /-- The projection from `New.Grading.besselGroup` to the adelic unitary group of the standard
@@ -889,13 +894,6 @@ multiple of the next one. -/
 lemma formAdjoint_stringMap_mul_stringMap_eq_shift :
     V.formAdjoint V' (Y.stringMap Y') * Y.stringMap Y' = Y.shift := by
   -- `T` keeps the number of a string vector and `T†` raises it by one; the factors multiply.
-  have h_factor (a b : ℕ) (hab : a = b + 1) :
-      (if Odd s ↔ s < 2 * a + 1 then 1 else (Y.genericConst : E)) * (if 2 * a = s then -N else 1) *
-          ((if Odd s ↔ 2 * b + 1 < s then 1 else (Y.genericConst : E)) *
-            (if 2 * b + 1 = s then -N else 1)) =
-        Y.genericConst * (if 2 * b + 1 = s then -N else if 2 * a = s then -N * Y.genericConst else
-          1) := by
-    grind
   rw [formAdjoint_stringMap, stringMap, shift, ← Matrix.map_mul, Matrix.submatrix_mul_equiv,
     Matrix.fromBlocks_multiply]
   simp only [Matrix.zero_mul, Matrix.mul_zero, add_zero, zero_add]
@@ -903,12 +901,10 @@ lemma formAdjoint_stringMap_mul_stringMap_eq_shift :
   ext a b
   by_cases hb : b.val < s - 1
   · rw [Matrix.mul_apply, Fintype.sum_eq_single ⟨b, hb⟩ (by simp +contextual [Fin.ext_iff])]
-    by_cases hab : a.val = b + 1
-    · simpa [hab] using h_factor a b hab
-    · simp [hab]
-  · -- the last string vector is killed by both sides
-    have h_ne (k : Fin (s - 1)) : k.val ≠ b := by omega
-    simp [Matrix.mul_apply, h_ne, show a.val ≠ b + 1 by omega]
+    by_cases hab : a.val = b + 1 <;> simp [hab]
+    grind
+  · simp [Matrix.mul_apply, show ∀ k : Fin (s - 1), k.val ≠ b by omega,
+      show a.val ≠ b + 1 by omega]
 
 /-- Let `s' = s - 1`, `T = Y.stringMap Y'` and let `T†` be its adjoint for the two forms. If `Y` and
 `Y'` have the same constant of the generic character, `Y'.genericConst = Y.genericConst`, then
@@ -916,14 +912,6 @@ lemma formAdjoint_stringMap_mul_stringMap_eq_shift :
 lemma stringMap_mul_formAdjoint_stringMap_eq_shift (hc : Y'.genericConst = Y.genericConst) :
     Y.stringMap Y' * V.formAdjoint V' (Y.stringMap Y') = Y'.shift := by
   -- `T†` raises the number of a string vector by one and `T` keeps it; the factors multiply.
-  have h_factor (a b : ℕ) (hab : a = b + 1) (ha : a < s) :
-      (if Odd s ↔ 2 * a + 1 < s then 1 else (Y.genericConst : E)) *
-        (if 2 * a + 1 = s then -N else 1) *
-          ((if Odd s ↔ s < 2 * a + 1 then 1 else (Y.genericConst : E)) *
-            (if 2 * a = s then -N else 1)) =
-        Y.genericConst * (if 2 * b + 1 = s - 1 then -N else if 2 * a = s - 1 then -N *
-          Y.genericConst else 1) := by
-    grind
   rw [formAdjoint_stringMap, stringMap, shift, hc, ← Matrix.map_mul, Matrix.submatrix_mul_equiv,
     Matrix.fromBlocks_multiply]
   simp only [Matrix.zero_mul, Matrix.mul_zero, add_zero, zero_add]
@@ -931,9 +919,8 @@ lemma stringMap_mul_formAdjoint_stringMap_eq_shift (hc : Y'.genericConst = Y.gen
   ext a b
   rw [Matrix.mul_apply,
     Fintype.sum_eq_single ⟨b + 1, by omega⟩ (by simp +contextual [Fin.ext_iff])]
-  by_cases hab : a.val = b + 1
-  · simpa [hab] using h_factor a b hab (by omega)
-  · simp [hab]
+  by_cases hab : a.val = b + 1 <;> simp [hab]
+  grind [a.isLt, b.isLt]
 
 /-- Let `Y` present `V` as `X ⊕ J_s` and `Y'` present `V'` as `X' ⊕ J_{s-1}` with the same `N`, each
 carrying a constant `c = c̄ ≠ 0`. Let `T = Y.stringMap Y'` be the map `V → V'` that kills `X` and

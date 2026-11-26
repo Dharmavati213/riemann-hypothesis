@@ -116,21 +116,14 @@ lemma range_abelianLift_comp_artinAt :
   · -- The local symbol of `x` is the class of some `g` in the decomposition group.
     rintro _ ⟨x, rfl⟩
     obtain ⟨g, hg⟩ := QuotientGroup.mk_surjective (localArtin Γ A v x)
-    have h_art : New.artinAt Γ v x = ((g : Γ) : TopologicalAbelianization Γ) :=
-      h.artinAt_eq_of_localArtin_eq hg.symm
-    refine ⟨g, g.property, ?_⟩
-    rw [MonoidHom.comp_apply, h_art, toHom_eq_abelianLift]
+    refine ⟨g, g.2, ?_⟩
+    rw [MonoidHom.comp_apply, h.artinAt_eq_of_localArtin_eq hg.symm, toHom_eq_abelianLift]
   · -- `localArtin` has dense range, so it meets the open fibre of `χ` through `g`.
     rintro _ ⟨g, hg, rfl⟩
-    let ψ : QZChar (decompGroup Γ A) := comap (subgroupIncl (decompGroup Γ A)) χ
-    -- Every subset of `ℚ/ℤ` is open.
-    have fibre_open : IsOpen (abelianLift ψ ⁻¹' {toHom χ g}) :=
-      (continuous_abelianLift ψ).isOpen_preimage _ trivial
-    have g_mem : (⟦⟨g, hg⟩⟧ : TopologicalAbelianization (decompGroup Γ A)) ∈
-        abelianLift ψ ⁻¹' {toHom χ g} := by
-      simp [ψ, QZChar.comap, toHom_eq_abelianLift, subgroupIncl]
-    obtain ⟨x, hx : abelianLift ψ (localArtin Γ A v x) = toHom χ g⟩ :=
-      h.denseRange_localArtin.exists_mem_open fibre_open ⟨_, g_mem⟩
+    let ψ := comap (subgroupIncl (decompGroup Γ A)) χ
+    obtain ⟨x, hx⟩ := h.denseRange_localArtin.exists_mem_open
+      ((continuous_abelianLift ψ).isOpen_preimage {toHom χ g} trivial)
+      ⟨⟦⟨g, hg⟩⟧, by simp [ψ, QZChar.comap, toHom_eq_abelianLift, subgroupIncl]⟩
     exact ⟨x, (h.abelianLift_artinAt χ x).trans hx⟩
 
 /-- Let `A` be a place of `Ω` over `v`. A character `χ` kills all local symbols at `v` exactly when

@@ -5,6 +5,7 @@ public import New.Spanning.Unfolding.Climbing
 import New.Spanning.Frames.FiniteShells
 import New.Spanning.Frames.FixedLines
 import New.Spanning.MainTerm.GlobalToLocal
+import TauCeti.Analysis.Normed.Ring.Ultra
 
 /-!
 # The sieve system at the finite places
@@ -115,7 +116,7 @@ n⁷) / 2) / [O : O ∩ ξ⁻¹ O] ^ 3 * b ^ (n⁹ f)` times the weights `finHea
 `0` if some `D` is not integral. Here `n = 𝔰.n = ϱ + 1`, `k = 𝔰.k`, `b = S.b`, `f` is the number of
 infinite places, and `[O : ξ O]` is the generalised index `genIndex ξ`. -/
 lemma IsFillingData.norm_floorForm_div_massRatio_le {E : Type} {𝔰 : Shape} [Field E] [CMType E]
-    [WeilData E] {S : Filling E 𝔰} [S.IsAdmissible] {T : Finset (FinPlace E)} [T.StarStable]
+    {S : Filling E 𝔰} {T : Finset (FinPlace E)} [T.StarStable]
     {P : IntegralPlace (LocProd T)}
     {F : PlaceData (Fin (𝔰.k - (6 * 𝔰.ϱ + 13))) (S.latticeMiddle (LocProd T)) (𝔰.ϱ + 1 + 2 * 𝔰.ϱ +
       5)}
@@ -123,8 +124,8 @@ lemma IsFillingData.norm_floorForm_div_massRatio_le {E : Type} {𝔰 : Shape} [F
     {j : ℕ} {p q : ℕ → (LocProd T)ˣ}
     {ξ : LocProd T} {ω : (S.latticeMiddle (LocProd T)).G → ℂ} (hj : j ≤ 𝔰.ϱ) (hξ : IsUnit ξ)
     (hω : (ω = fun x : (S.latticeMiddle (LocProd T)).G ↦
-        P.ψ (ξ * ((S.latticeMiddle (LocProd T)).frameGram x.1.1).diag ⟨j, by lia⟩)) ∨
-      ∃ i : ℕ, j = i + 1 ∧ ω = 1 ∧ ξ = F.levelUnit⁻¹.1 * ((p i)⁻¹.1 - (q i)⁻¹.1)) :
+        P.ψ (ξ * ((S.latticeMiddle (LocProd T)).frameGram x.val.val).diag ⟨j, by lia⟩)) ∨
+      ∃ i : ℕ, j = i + 1 ∧ ω = 1 ∧ ξ = F.levelUnit⁻¹.val * ((p i)⁻¹.val - (q i)⁻¹.val)) :
     ‖F.floorForm j p q Z.besselVector ω / Z.massRatio.toReal‖ ≤
       S.frequencyDecay T ξ * (finHeadWeight (𝔰.n ^ 6) j p * finHeadWeight (𝔰.n ^ 6) j q) := by
   obtain ⟨pow_four_le, half_pow_le_inv_pow_six, pow_seven_le⟩ : 10 ^ 10 * 𝔰.n ^ 4 ≤ 𝔰.n ^ 6 ∧
@@ -177,7 +178,7 @@ character, `b = S.b` for the size parameter and `k = 𝔰.k` for the rank of the
 `F.floorForm 0` of `Z.besselVector`, divided by `Z.massRatio = vol(Z) vol(K(g)) / F.unipotentMass ^
 2`, has norm at most `(1 + b⁻¹ ^ 6) / (b ^ (6 k)) ^ s`. -/
 lemma IsFillingData.norm_floorForm_zero_div_massRatio_le {E : Type} {𝔰 : Shape} [Field E]
-    [CMType E] [WeilData E] {S : Filling E 𝔰} [S.IsAdmissible] {T : Finset (FinPlace E)}
+    [CMType E] {S : Filling E 𝔰} {T : Finset (FinPlace E)}
     [T.StarStable] {P : IntegralPlace (LocProd T)}
     {F : PlaceData (Fin (𝔰.k - (6 * 𝔰.ϱ + 13))) (S.latticeMiddle (LocProd T)) (𝔰.ϱ + 1 + 2 * 𝔰.ϱ +
       5)}

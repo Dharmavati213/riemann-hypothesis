@@ -103,7 +103,12 @@ lemma boundary_comp_boundary (m : ℕ) : boundary R (m + 1) ≫ boundary R m = 0
   cases m with
   | zero =>
     -- Dropping the two witnesses of a point in either order gives the same point.
-    simpa [boundary, add_neg_eq_zero] using freeAb.hom_ext
+    rw [boundary, boundary, Fin.sum_univ_two, Fin.sum_univ_one]
+    simp only [Fin.val_zero, Fin.val_one, pow_zero, pow_one, one_smul, neg_one_zsmul,
+      Preadditive.add_comp, Preadditive.neg_comp, add_neg_eq_zero, ← freeAb.map_comp]
+    refine congrArg freeAb.map ?_
+    ext A t
+    exact Subtype.ext (Prod.ext rfl (Subsingleton.elim _ _))
   | succ m =>
     -- The points with `m + 1` witnesses, for all `m`, form a simplicial object, and `boundary`
     -- is the differential of its alternating face map complex.
@@ -131,8 +136,9 @@ variable {R}
 private lemma boundary_apply {A : C} (t : (witnessed R (m + 1)).obj A) :
     (boundary R m).app A (of t) =
       ∑ j : Fin (m + 1), (-1 : ℤ) ^ j.val • of ((reindexWitness R j.succAbove).app A t) := by
-  unfold boundary
-  erw [sum_app_apply]
+  refine (sum_app_apply (A := A) (x := of t)
+    (g := fun j : Fin (m + 1) ↦
+      (-1) ^ j.val • freeAb.map (reindexWitness R j.succAbove))).trans ?_
   exact Finset.sum_congr rfl fun _ _ ↦ rfl
 
 /-- A point of `V` that has a witness is a boundary, as a chain without witnesses. -/
@@ -141,10 +147,9 @@ lemma proj_boundary_of_eq_zero {A : C} {t : (witnessed R 0).obj A}
     (π (boundary R 0)).app A (of t) = 0 := by
   obtain ⟨l, hl⟩ := h_wit
   -- `t` is the boundary of the same point with the one witness `l`.
-  refine (eq_zero_iff _).2 ⟨of ⟨(t.val.fst, fun _ ↦ l), fun _ ↦ hl⟩, ?_⟩
-  erw [boundary_apply]
-  apply congrArg of
-  exact Subtype.ext (Prod.ext rfl (Subsingleton.elim _ _))
+  let t' : (witnessed R 1).obj A := ⟨(t.val.fst, fun _ ↦ l), fun _ ↦ hl⟩
+  exact (eq_zero_iff _).2 ⟨of t', (boundary_apply t').trans
+    (congrArg of (Subtype.ext (Prod.ext rfl (Subsingleton.elim _ _))))⟩
 
 /-- With `Cₘ` the chains on points with `m` witnesses, the sequence
 `0 → Cₘ₊₁/∂Cₘ₊₂ → Cₘ → Cₘ/∂Cₘ₊₁ → 0` is short exact. -/
@@ -163,8 +168,12 @@ lemma shortExact_boundaryFromCoker :
         c m (of t) = of (prepend m t h) := by
       simp only [c, FreeAddCommGroup.lift_apply_of]
       exact finsum_eq_single _ h fun g hne ↦ (hne (Subsingleton.elim g h)).elim
+    let d₁ : FreeAddCommGroup ((witnessed R (m + 2)).obj A) →+
+        FreeAddCommGroup ((witnessed R (m + 1)).obj A) := ((boundary R (m + 1)).app A).hom
+    let d₀ : FreeAddCommGroup ((witnessed R (m + 1)).obj A) →+
+        FreeAddCommGroup ((witnessed R m).obj A) := ((boundary R m).app A).hom
     have h_contr (t : (witnessed R (m + 1)).obj A) :
-        (boundary R (m + 1)).app A (-c _ (of t)) = c m ((boundary R m).app A (of t)) - of t := by
+        d₁ (-c (m + 1) (of t)) = c m (d₀ (of t)) - of t := by
       have h_wit : ∃ l, (t.val.1, l) ∈ R.obj A := ⟨_, t.property 0⟩
       have h_zero :
           (reindexWitness R (0 : Fin (m + 2)).succAbove).app A (prepend (m + 1) t h_wit) = t := by
@@ -189,15 +198,18 @@ lemma shortExact_boundaryFromCoker :
           c m (of ((reindexWitness R j.succAbove).app A t)) =
             of (prepend m ((reindexWitness R j.succAbove).app A t) h_wit) :=
         hc m _ h_wit
-      erw [hc (m + 1) t h_wit, map_neg, boundary_apply, boundary_apply, map_sum]
+      have h_bd0 : d₀ (of t) =
+          ∑ j : Fin (m + 1), (-1 : ℤ) ^ j.val • of ((reindexWitness R j.succAbove).app A t) :=
+        boundary_apply t
+      have h_bd1 : d₁ (of (prepend (m + 1) t h_wit)) =
+          ∑ j : Fin (m + 2), (-1 : ℤ) ^ j.val •
+            of ((reindexWitness R j.succAbove).app A (prepend (m + 1) t h_wit)) :=
+        boundary_apply (prepend (m + 1) t h_wit)
+      rw [hc (m + 1) t h_wit, map_neg, h_bd1, h_bd0, map_sum]
       rw [Fin.sum_univ_succ]
       simp only [map_zsmul, h_c, h_zero, h_succ, Fin.val_zero, pow_zero, one_smul, Fin.val_succ,
         pow_succ, mul_neg_one, neg_zsmul, Finset.sum_neg_distrib]
       abel
-    let d₁ : FreeAddCommGroup ((witnessed R (m + 2)).obj A) →+
-        FreeAddCommGroup ((witnessed R (m + 1)).obj A) := ((boundary R (m + 1)).app A).hom
-    let d₀ : FreeAddCommGroup ((witnessed R (m + 1)).obj A) →+
-        FreeAddCommGroup ((witnessed R m).obj A) := ((boundary R m).app A).hom
     have h_inv : (mk' d₁.range).comp ((c m).comp d₀) = mk' d₁.range :=
       lift_ext _ _ fun t ↦ eq_iff_sub_mem.2 ⟨_, h_contr t⟩
     exact Function.HasLeftInverse.injective ⟨fun x ↦ ⟦c m x⟧, Quot.ind (DFunLike.congr_fun h_inv)⟩
@@ -304,7 +316,9 @@ lemma map_cocycleClass (Φ : AbFunctor C ⥤ AbFunctor C') [IsExactFunctor Φ] (
       boundary R' m ≫ q m = q (m + 1) ≫ Φ.map (π _) ≫ Φ.map (boundaryFromCoker R m) :=
     calc
       _ = q (m + 1) ≫ Φ.map (boundary R m) := by
-        simp [boundary, Preadditive.sum_comp, Preadditive.comp_sum, h_reindex]
+        rw [boundary, boundary, Preadditive.sum_comp, Φ.map_sum, Preadditive.comp_sum]
+        refine Finset.sum_congr rfl fun j _ ↦ ?_
+        rw [Preadditive.zsmul_comp, Φ.map_zsmul, Preadditive.comp_zsmul, h_reindex]
       _ = q (m + 1) ≫ Φ.map (π _) ≫ Φ.map (boundaryFromCoker R m) := by
         rw [← Φ.map_comp, proj_comp_boundaryFromCoker]
   let k (m : ℕ) : abCoker (boundary R' m) ⟶ Φ.obj (abCoker (boundary R m)) :=
@@ -584,13 +598,22 @@ lemma isPullback_iff :
       (∀ z : V.obj B, p B (v B z) = u B (q B z)) ∧
       (∀ z₁ z₂ : V.obj B, v B z₁ = v B z₂ → q B z₁ = q B z₂ → z₁ = z₂) ∧
       ∀ (x : E.obj B) (w : W.obj B), p B x = u B w → ∃ z : V.obj B, v B z = x ∧ q B z = w := by
-    simp [IsPullback.iff_app, Types.isPullback_iff, ConcreteCategory.hom_ext_iff]
-  grind [ExistsUnique]
+    simp only [IsPullback.iff_app, Types.isPullback_iff, ConcreteCategory.hom_ext_iff,
+      ConcreteCategory.comp_apply, and_imp]
+  refine h_app.trans ⟨fun h ↦ ⟨fun B ↦ (h B).1, fun B w x hx ↦ ?_⟩, fun ⟨hc, hu⟩ B ↦
+    ⟨hc B, fun z₁ z₂ hv hq ↦ ?_, fun x w hx ↦ ?_⟩⟩
+  · obtain ⟨z, hv, hq⟩ := (h B).2.2 x w hx
+    exact ⟨z, ⟨hq, hv⟩, fun z' ⟨hq', hv'⟩ ↦ (h B).2.1 z' z (hv'.trans hv.symm) (hq'.trans hq.symm)⟩
+  · obtain ⟨z, _, huniq⟩ := hu B (q B z₁) (v B z₁) (hc B z₁)
+    exact (huniq z₁ ⟨rfl, rfl⟩).trans (huniq z₂ ⟨hq.symm, hv.symm⟩).symm
+  · obtain ⟨z, ⟨hq, hv⟩, _⟩ := hu B w x hx
+    exact ⟨z, hv, hq⟩
 
 /-- The fibre product of `u : W ⟶ Y` and `p : E ⟶ Y` with its two projections is a pull-back
 square. -/
-lemma isPullback_fibreProd : IsPullback (snd u p) (fst u p) p u := by
-  simp_all [fibreProd, fst, snd, ExistsUnique]
+lemma isPullback_fibreProd : IsPullback (snd u p) (fst u p) p u :=
+  isPullback_iff.mpr ⟨fun _ z ↦ z.2.symm, fun _ w x hx ↦
+    ⟨⟨(w, x), hx.symm⟩, ⟨rfl, rfl⟩, fun _ ⟨h1, h2⟩ ↦ Subtype.ext (Prod.ext h1 h2)⟩⟩
 
 /-- The fibre power with `m + 2` factors is the pull-back of `p` along the fibre power with `m + 1`
 factors, by the first coordinate `proj p (m + 1) 0` (`proj p m i` is the `i`-th coordinate map of
@@ -800,8 +823,11 @@ lemma bijectiveUpTo_of_cech_pred (w : p' ≫ u = v ≫ c.functor.whiskerLeft p) 
     cech_descent_step leftToRight (c.devissage _ τ).toStepwiseFourLemma
       (allBijective_iff_forall_bijectiveUpTo.mp hv r) h_cech
   -- The images have the same cohomology as `Y'` and `Y`.
-  exact (BijectiveUpTo.congr hp hp' (map_pull_eq_pull_map (freeAb.hom_ext fun _ _ ↦ rfl))).mpr
-    h_range
+  have h_comm : freeAb.map (range p').ι ≫ freeAbMap u =
+      τ (freeAb (range leftToRight).toFunctor) ≫
+        whiskerLeft c.functor (freeAb.map (range p).ι) :=
+    freeAb.hom_ext fun _ _ ↦ rfl
+  exact (BijectiveUpTo.congr hp hp' (map_pull_eq_pull_map h_comm)).mpr h_range
 
 /-- Let `u : Y' ⟶ c.functor ⋙ Y` and `t : E ⟶ Y`, and let `v : E' ⟶ c.functor ⋙ E`, with
 `p' : E' ⟶ Y'`, be the pull-back of `u` along `t`. Suppose that for every point `x` of `E A` the
@@ -933,7 +959,9 @@ lemma HasUniversalPoints.isBijective_subfunctor (h_points : c.HasUniversalPoints
     c.IsBijective (freeAbMap (Y := toFunctor U) ((U.whisker c.functor).fromPreimage u)) := by
   -- the map from the preimage of `U` to `U` is the base change of `u` along the inclusion
   refine h_points.isBijective_of_isPullback (Subfunctor.ι _) U.ι (isPullback_iff.mpr ?_)
-  aesop (add simp [ExistsUnique, toFunctor])
+  exact ⟨fun _ _ ↦ rfl, fun B w x (hx : x.1 = u.app B w) ↦
+    ⟨⟨w, (hx ▸ x.2 : u.app B w ∈ U.obj (c.functor.obj B))⟩,
+      ⟨rfl, Subtype.ext hx.symm⟩, fun _ ⟨hz, _⟩ ↦ Subtype.ext hz⟩⟩
 
 /-- With universal points, a subfunctor `U` of `Y` has the cohomology of `Y` for `F` if and only
 if its preimage `S` in `Y'` has the cohomology of `Y'` for `F'`. -/
@@ -980,12 +1008,9 @@ lemma bijectiveUpTo_congr (w : p' ≫ u = v ≫ c.functor.whiskerLeft p)
 lemma isBijective_congr (w : p' ≫ u = v ≫ c.functor.whiskerLeft p)
     (hp_equiv : IsCohomEquiv F (freeAb.map p)) (hp'_equiv : IsCohomEquiv F' (freeAb.map p')) :
     c.IsBijective (freeAbMap u) ↔ c.IsBijective (freeAbMap v) := by
-  calc c.IsBijective (freeAbMap u)
-      ↔ ∀ r : ℕ, BijectiveUpTo (fun n : ℕ ↦ c.pull (freeAbMap u) n) r :=
-        allBijective_iff_forall_bijectiveUpTo
-    _ ↔ ∀ r : ℕ, BijectiveUpTo (fun n : ℕ ↦ c.pull (freeAbMap v) n) r :=
-        forall_congr' fun r ↦ bijectiveUpTo_congr w hp_equiv hp'_equiv
-    _ ↔ c.IsBijective (freeAbMap v) := allBijective_iff_forall_bijectiveUpTo.symm
+  exact forall_congr' fun n ↦
+    bijective_iff_of_comm_sq (fun x ↦ (map_pull_eq_pull_map (freeAb.map_commSq ⟨w⟩).w n x).symm)
+      (hp_equiv n) (hp'_equiv n)
 
 end Comparison
 

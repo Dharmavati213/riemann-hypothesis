@@ -297,21 +297,16 @@ lemma four_lemma (h : Hom L L' a b c) (hb : BijectiveUpTo (fun n : ℕ ↦ b n) 
     BijectiveUpTo (fun n : ℕ ↦ a n) r := by
   -- Both halves are one of the chases above for a rotation of the sequences, in which the maps of
   -- degree n - 1 are the components in degree n (`rotateMap`; zero maps of zero groups for n = 0).
-  refine fun n ↦ ⟨fun hn ↦ ?_, fun hn y ↦ ?_⟩
-  · -- injectivity on Aⁿ, from Bⁿ⁻¹ → Cⁿ⁻¹ → Aⁿ → Bⁿ
-    refine (injective_iff_map_eq_zero (a n)).2 fun (x : L.A n) (hx : a n x = 0) ↦ ?_
-    have hfx : L.f n x = 0 := hb.injective hn (by simp [h.comm_f, hx])
-    have hb_prev : Surjective (rotateMap (L := L.rotate) (L' := L'.rotate) b n) :=
-      rotateMap_surjective _ fun m hm ↦ hb.surjective (by lia)
-    have hc_prev : Function.Injective (rotateMap c n) :=
-      rotateMap_injective c fun m hm ↦ hc.injective (by lia)
-    exact h.rotate.rotate.eq_zero_of_delta_eq_zero hb_prev hc_prev x hx hfx
-  · -- surjectivity on Aⁿ, from Cⁿ⁻¹ → Aⁿ → Bⁿ → Cⁿ: first lift the image of `y` in B'ⁿ
-    obtain ⟨x, hx⟩ : ∃ x : L.B n, b n x = L'.f n y := hb.surjective hn _
-    have hc_prev : Surjective (rotateMap c n) :=
-      rotateMap_surjective c fun m hm ↦ hc.surjective (by lia)
-    obtain ⟨z, hz, -⟩ := h.rotate.exists_preimage (n := n) hc_prev (hc.injective (by lia)) y x hx
-    exact ⟨z, hz⟩
+  refine fun n ↦ ⟨fun hn ↦ (injective_iff_map_eq_zero (a n)).2 fun x hx ↦
+    h.rotate.rotate.eq_zero_of_delta_eq_zero
+      (rotateMap_surjective _ fun _ hm ↦ hb.surjective (by lia))
+      (rotateMap_injective _ fun _ hm ↦ hc.injective (by lia))
+      x hx (hb.injective hn (by simp [h.comm_f, hx])), fun hn y ↦ ?_⟩
+  -- surjectivity on Aⁿ, from Cⁿ⁻¹ → Aⁿ → Bⁿ → Cⁿ: first lift the image of `y` in B'ⁿ
+  obtain ⟨x, hx⟩ := hb.surjective hn (L'.f n y)
+  exact (h.rotate.exists_preimage (n := n)
+    (rotateMap_surjective c fun _ hm ↦ hc.surjective (by lia))
+    (hc.injective (by lia)) y x hx).imp fun _ ↦ And.left
 
 /-- Five lemma for the morphism h = (a, b, c) from the long exact sequence L to L': if c is
 bijective in all degrees (`AllBijective`), then b is bijective in all degrees exactly when a is. -/

@@ -519,7 +519,7 @@ lemma goodProjTranslate_mem_integralForms {P : Parameters} {D : Data P} {l : ℕ
   have h_int : IsIntegral ℤ (Nat.card D.chosenGL * D.e₀.coeff t) :=
     D.isCentralProj_e₀.isChar_card_mul_coeff.isIntegral _
   rw [weylGauge_smul, ← weylGauge_mul_of_mem_integralAbove
-    (hk := stdLevel_le_localLevel (firstBlockLift ϑ (t * s)).2)]
+    (hk := stdLevel_le_localLevel (firstBlockLift ϑ (t * s)).property)]
   exact (mul_le_of_le_one_left (norm_nonneg _) (norm_le_one_of_isIntegral _ h_int)).trans
     (h_integral _)
 

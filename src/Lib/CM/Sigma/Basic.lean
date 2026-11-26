@@ -625,18 +625,7 @@ coefficients. -/
 abbrev taylorVia {K : Type*} [Semiring K] (ι : ℂ →+* K) (f : ℂ → ℂ) : PowerSeries K :=
   (taylorAtZero f).map ι
 
-/-- The linear form ∑ c_i z_i, as a power series in the variables z_i. -/
-def linearSeries {ι R : Type*} [Fintype ι] [CommSemiring R] (c : ι → R) : MvPowerSeries ι R :=
-  ∑ i : ι, c i • MvPowerSeries.X i
-
 /-! ### Lattices with complex multiplication -/
-
-/-- The complex number ω = (1 + i√d)/2. -/
-def quadGen (d : ℕ) : ℂ := (1 + I * √d) / 2
-
-/-- The image in ℂ of the ring of integers of K = ℚ(i√d), as a subring of ℂ. -/
-def quadInt (d : ℕ) : Subring ℂ :=
-  ((algebraMap (QuadField d) ℂ).comp (algebraMap (𝓞 (QuadField d)) (QuadField d))).range
 
 /-- A lattice `Λ` with a point `t` of order two modulo `Λ`, scaled so that `℘''(t) = 2`, and a
 square root `a₁` of `12 ℘(t)`. If `d ≠ 0`, then moreover `Λ` is stable under the ring of integers of

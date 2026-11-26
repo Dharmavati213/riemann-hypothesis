@@ -195,8 +195,8 @@ abbrev IsLiftWithTwistedLattice {P : Parameters} {D : Data P} {ℓ : ℕ} [ThePr
 that clears denominators. Here `r′ = card r`, `t′ = O.rankDiff`, `loc = localDefectBound D ℓ` and
 `err = denominatorError D ℓ`; `ram` bounds the ramification of the twist and `sel` the lengths of
 the Selmer groups. -/
-noncomputable def liftValuationBound {P : Parameters} {D : Data P} (ℓ : ℕ) [ThePrime ℓ]
-    {r n : Type} [Fintype r] [DecidableEq r] [Fintype n] [DecidableEq n] (O : DescentPair D.E r n)
+noncomputable def liftValuationBound {P : Parameters} {D : Data P} (ℓ : ℕ)
+    {r n : Type} [Fintype r] [DecidableEq r] [Fintype n] (O : DescentPair D.E r n)
     (ram sel : ENNReal) : ENNReal :=
   sel + 2 * O.rankDiff * ram + card r * localDefectBound D ℓ + denominatorError D ℓ
 

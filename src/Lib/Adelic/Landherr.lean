@@ -12,7 +12,6 @@ import Lib.ClassField.Global.NormTheorems
 import Lib.GaloisRep.Hilbert90.TameActions
 import Lib.GaloisRep.Hilbert90.UnitaryGroups
 import Lib.General.LinearAlgebra.MatrixPolynomials
-import Lib.Shimura.ComplexTheta.AppellHumbertData
 
 /-!
 # Sums of two squares, Landherr's theorem and the Hasse principle for unitary cocycles

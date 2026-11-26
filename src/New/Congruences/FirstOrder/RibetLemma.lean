@@ -467,14 +467,14 @@ lemma exists_smul_eq_zero_of_mem_ribetCocyclesIn [DVR O] [Fintype Y] {r : Type} 
 
 /-- From coefficients modulo powers of `p` to coefficients in `K/O = Frac(O) / O`. Let `u x` be a
 finite family of representations of `G` over `O`. Consider the cocycles `c` of `ρ` that vanish on
-`T` and at `γ` and have `∑ θ g • c g = 0` whenever `∑ θ g • (u x g - 1) = 0` for all `x`. If for
-every `M` those modulo `p ^ M` have length at most `b`, where `p ≠ 0` is not a unit, so have those
-with values in `K/O`: division by `a = p ^ (b + 1)` maps the cocycles modulo `a` onto the
-`a`-torsion, and as `v(a) > b` this torsion is everything. -/
+`T` and at `γ` and have `∑ θ g • c g = 0` whenever `∑ θ g • (u x g - 1) = 0` for all `x`. It suffices to bound the length by `b` at the single
+level `a = p ^ (b + 1)`, where `p ≠ 0` is not a unit. Division by `a` maps the cocycles modulo
+`a` onto the `a`-torsion; as `v(a) > b`, this torsion is everything. No uniform bound over all
+truncation levels is needed. -/
 lemma length_ribetCocyclesVanishingOn_divisibleQuot_le [DVR O] [Fintype Y] {r : Type}
     [Fintype r] [DecidableEq r] (ρ : G →* Matrix r r O) (T : Set G) (γ : G) {p : O} (hp : p ≠ 0)
     (hp_unit : ¬IsUnit p) {b : ℕ}
-    (h_length_pow : ∀ M : ℕ, length O (ribetCocyclesVanishingOn u ρ (QuotSpan (p ^ M)) T γ) ≤ b) :
+    (h_length_pow : length O (ribetCocyclesVanishingOn u ρ (QuotSpan (p ^ (b + 1))) T γ) ≤ b) :
     length O (ribetCocyclesVanishingOn u ρ (DivisibleQuot O) T γ) ≤ b := by
   set V : Submodule O (G → r → DivisibleQuot O) :=
     ribetCocyclesVanishingOn u ρ (DivisibleQuot O) T γ
@@ -500,7 +500,7 @@ lemma length_ribetCocyclesVanishingOn_divisibleQuot_le [DVR O] [Fintype Y] {r : 
     simpa only [hc'] using h_obey
   have h_length : length O (torsionBy O V a) ≤ b := by
     rw [(Submodule.equivMapOfInjective V.subtype V.injective_subtype _).length_eq]
-    exact (length_le_of_le_map E _ h_le).trans (h_length_pow (b + 1))
+    exact (length_le_of_le_map E _ h_le).trans h_length_pow
   -- Every member of `V` is torsion and `v(a) ≥ b + 1`, so the `a`-torsion is all of `V`.
   have h_torsion : ∀ w : V, ∃ a' : O, a' ≠ 0 ∧ a' • w = 0 := by
     rintro ⟨c, hcV⟩

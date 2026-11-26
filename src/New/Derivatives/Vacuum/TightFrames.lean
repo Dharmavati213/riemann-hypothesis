@@ -754,12 +754,11 @@ lemma IsResolutionProduct.norm_iota_apply_le_one {C : CMLattice P.d} {b : ℂ} {
   have h_value : F (finVec y) = ∏ i : I × n,
       C.twistedTranslate (m i.1) (resolutionShift b w γ i) (C.monomialSection (x i)) 0 := by
     rw [← theta_rho, ← hγ, hF.theta_translate γ]
+  -- Clear the denominators of the whole finite vector at once. Then `N * L` times
+  -- each shift is a period.
+  obtain ⟨L, hL, hLγ⟩ := exists_forall_mul_mem_Ô (finiteImage γ)
   rw [h_value, map_prod, norm_prod]
   refine prod_le_one₀ (by simp) fun i _ ↦ ?_
-  -- The shift is a torsion point: `L * finiteImage γ` is integral for some `L ≠ 0`, so `N * L`
-  -- times the shift is a period.
-  obtain ⟨L, hL, hLγ⟩ : ∃ L : ℕ, L ≠ 0 ∧ ∀ k : n, L * finiteImage γ k ∈ Ô (P.E s) :=
-    exists_forall_mul_mem_Ô (finiteImage γ)
   have h_integral : finiteImage id (L * γ i.2) ∈ Ô (P.E s) := by
     simpa [finiteImage, mul_left_comm] using hLγ i.2
   let t : ℂ := ∑ τ : InfinitePlace (P.E s), Φ τ (L * γ i.2) * conj (Φ τ (w i.1))

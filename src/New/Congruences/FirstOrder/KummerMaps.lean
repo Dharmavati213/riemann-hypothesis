@@ -848,10 +848,8 @@ theorem exists_card_lt_finrank_kummerReductions {ν : ℕ} (hν : 0 < ν) (e : �
   have h_torsion : Nat.card {a : tateTwistPlus ℓ E ν e // ℓ • a = 0} = ℓ :=
     (IsAddCyclic.card_nsmulAddMonoidHom_ker (ZMod (ℓ ^ ν)) ℓ).trans
       (by simp [Nat.gcd_eq_right hℓ_dvd])
-  obtain ⟨T, hT, h_count⟩ : ∃ T : Finset (FinPlace (maximalRealSubfield E)),
-      familyPrimes ℓ x ⊆ T ∧
-        ℓ ^ (#{u ∈ D.localPrimes | ↑ℓ ∉ u.asIdeal} + 1) ≤ Nat.card (D.reductions ℓ T) :=
-    -- The last argument is the definition of the local conditions above `ℓ` in `kummerSetting`.
+  -- The last argument is the definition of the local conditions above `ℓ` in `kummerSetting`.
+  obtain ⟨T, hT, h_count⟩ :=
     D.exists_pow_le_card_reductions hℓ_dvd (by rwa [card_infinitePlace_eq_card_infinitePlace E])
       continuous_cyclotomicPlus (fun g ↦ four_dvd_cyclotomicChar_sub_one _) h_ker h_torsion fun _ ↦
         rfl

@@ -46,7 +46,7 @@ lemma tsum_le_tsum_mul_of_encard_le {I Y : Type} {v : I → ℝ≥0∞} {w : Y �
   calc ∑' i, v i = ∑' y, ∑' i : chosenY ⁻¹' {y}, v i := (tsum_fiberwise v chosenY).symm
     _ ≤ ∑' y, w y * x := tsum_le_tsum fun y ↦ by
       have h_const (i : chosenY ⁻¹' {y}) : v i = w y := by
-        rw [h_weight i, show chosenY i = y from i.2]
+        rw [h_weight i, show chosenY i = y from i.property]
       have h_subset : chosenY ⁻¹' {y} ⊆ {i : I | R i y} :=
         fun i (hi : chosenY i = y) ↦ by simpa [hi] using h_over i
       rw [tsum_congr h_const, tsum_set_const, mul_comm]

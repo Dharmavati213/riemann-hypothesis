@@ -93,7 +93,7 @@ lemma exists_elementary_divisors_mod_summand {O E : Type*} [CommRing O] [IsDomai
     have h_sum : (U.val * diagonal t * (P.val * Q)) *ᵥ η =
         ∑ j : K, ((P.val * Q) *ᵥ η) j • t j • U.val.col j := by
       rw [← mulVec_mulVec, mulVec_eq_sum]
-      simp [funext_iff, mul_left_comm]
+      simp [funext_iff]
     rw [mulVecLin_apply, h_right, add_mulVec, h_sum, ← mulVec_mulVec]
     exact add_mem_sup ⟨_, rfl⟩ (Submodule.sum_mem _ fun j _ ↦ smul_mem _ _ (subset_span ⟨j, rfl⟩))
   · rw [span_le]
@@ -696,11 +696,11 @@ theorem exists_isEdgeCondition (hp : ¬IsUnit (T.p : O)) {r : ℕ} {θ : ℝ}
   -- `Av` is the averaging map, and `dim S` is bounded by counting monomials of small defect.
   set c : ℕ := T.congruencePrecision k
   have hr_pos : 0 < r := h_large.block_pos
-  have h_two : 2 ≤ N * T.multinomialExponent k :=
-    T.two_le_mul_multinomialExponent h_large.two_le_rank
-  have hc : 0 < c := Nat.mul_pos (by norm_num) (zero_lt_two.trans_le h_two)
+  have hc : 0 < c :=
+    Nat.mul_pos (by decide) (zero_lt_two.trans_le (T.two_le_mul_multinomialExponent h_large.two_le_rank))
   lift r to Fin k using by linarith [h_large.two_mul_block_le]
-  obtain ⟨a, ha⟩ : ∃ a : Fin k, a + 1 = r.val := ⟨⟨r - 1, by lia⟩, by lia⟩
+  obtain ⟨a, ha⟩ : ∃ a : Fin k, a + 1 = r.val :=
+    ⟨⟨r - 1, by lia⟩, Nat.sub_one_add_one_eq_of_pos hr_pos⟩
   have h_char : CharP (ResidueField O) (T.map (residue O)).p := T.charP_residueField hp
   let C : Submodule O (Exponents N k n → O) :=
     T.defectConditions n a r (span {T.sqrtPrime ^ c}) (3 * defectThreshold k c)

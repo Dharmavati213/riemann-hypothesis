@@ -160,7 +160,7 @@ lemma normLength_dualDefect_le_of_hasCupExponent {k : ℕ} (hL : IsPotentiallyCr
   have h_sub : I • ⊤ ≤ (cupOrthogonal 𝒬 L).submoduleOf (crysCocycles L.ρ) := by
     rw [ideal_span_singleton_smul]
     rintro _ ⟨c, -, rfl⟩
-    exact h_exp _ c.2
+    exact h_exp _ c.property
   calc _ ≤ O.normLength (length O (crysCocycles L.ρ ⧸ I • (⊤ : Submodule O _))) := by
         grw [dualDefect, relLength, length_le_of_surjective _ (factor_surjective h_sub)]
     _ = finrank O (crysCocycles L.ρ) * k := by

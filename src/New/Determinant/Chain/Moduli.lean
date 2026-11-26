@@ -313,7 +313,7 @@ lemma isPrimitiveMulChar_of_isTameFor {ϑ : D.TameChar} {ν : AutChar D.E}
   -- that `1 + c * a` is `x` at `w` and `1` at the other places.
   intro a ha
   obtain ⟨-, ψ, -, hψ, hχ⟩ := h_tame
-  obtain ⟨w, hw, ha'⟩ : ∃ᵉ (w : FinPlace D.E) (hw : w ∈ (D.twistModulus ϑ 1).places),
+  obtain ⟨w, hw, ha'⟩ : ∃ w : FinPlace D.E, ∃ hw : w ∈ (D.twistModulus ϑ 1).places,
       modulusResidue (D.twistModulus ϑ 1) hw a ≠ 0 := by
     -- The modulus is a product of distinct primes: Chinese remainder theorem, for `a` as a
     -- `1 × 1` matrix.

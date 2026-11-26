@@ -4,7 +4,6 @@ public import Lib.Adelic.Reduction.FiniteVolume
 public import Lib.Adelic.Reduction.FirstMinimumShortBases
 public import Lib.DiscreteSeries.FlenstedJensen.Defs
 public import Lib.General.Measure.IdempotentKernel
-public import Lib.Shimura.ComplexTheta.AppellHumbertData
 import Lib.Adelic.Adeles.StrongApproximation
 import Lib.Adelic.Reduction.DefiniteClassSums
 import TauCeti.Topology.Algebra.Group.Units
@@ -344,7 +343,7 @@ theorem exists_height_le_mul (hK : IsCompact K) :
 above on the set of g that a point of Γ moves into K. Here ht is the height of V, the inverse of
 the first minimum cut off at 1. -/
 theorem exists_mul_height_pow_le (hK : IsCompact K) (C : ℝ) :
-    ∃ D : ℝ, ∀ᵉ (g : G E s) (γ ∈ V.Γ), γ * g ∈ K → C * V.height g ^ B ≤ D := by
+    ∃ D : ℝ, ∀ g : G E s, ∀ γ ∈ V.Γ, γ * g ∈ K → C * V.height g ^ B ≤ D := by
   obtain ⟨C', hC'_one, hC'⟩ := V.exists_height_le_mul hK
   refine ⟨|C| * (C' * V.height 1) ^ B, fun g _ ⟨γ, hγ⟩ hg ↦ ?_⟩
   -- As `γ * g ∈ K`, the height of `g` is comparable to the height of `1`.

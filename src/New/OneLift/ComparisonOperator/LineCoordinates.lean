@@ -322,7 +322,7 @@ def addedDatum (u : Matrix D.CarrierIndex (FirstFactorIndex j) (D.untwistedModul
   if z.submatrix id (Sum.map id Sum.inl) = inclMatrix (D.twistModulus ϑ 2).ResidueRing
     (.map (inr ∘ inr) id)
     then
-    ∑ g : GL D.CarrierIndex _, traceChar u (z.toCols₂.toCols₂.map (forgetTwist ϑ) * g.1)
+    ∑ g : GL D.CarrierIndex _, traceChar u (z.toCols₂.toCols₂.map (forgetTwist ϑ) * g.val)
   else 0
 
 /-- The coordinate l of the series Υ at h, for the choice `i`: the kernel of ((E^j)⁻, V″)
@@ -393,7 +393,7 @@ lemma card_detIndex_le (j : D.LiftIndex) (τ : NumberField.InfinitePlace D.E) :
     Fintype.card (DetIndex j τ) ≤ D.natB + D.offWeight + D.gap + D.m * D.gap := by
   -- By `card_detIndex_add_firstFactorCharExp` the count is at most the weight `D.liftWeight j τ`,
   -- and `j ≤ m`.
-  have h_mul : j * D.gap ≤ D.m * D.gap := mul_le_mul_left j.2.2 D.gap
+  have h_mul : j * D.gap ≤ D.m * D.gap := mul_le_mul_left j.property.2 D.gap
   grind [card_detIndex_add_firstFactorCharExp j τ, D.weight_le_natB_add_offWeight τ]
 
 /-- Let `Z` have the `2 m + card (FirstFactorIndex j)` rows of a determinant det(𝖼; X z) at `j`, and

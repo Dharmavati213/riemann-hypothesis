@@ -148,6 +148,10 @@ def signMatrix (s : n → ℤˣ) : Matrix n n ℂ := Matrix.diagonal fun i : n �
 @[simp]
 lemma signMatrix_one : signMatrix (n := n) 1 = 1 := by simp [signMatrix]
 
+/-- The diagonal matrix of a vector of signs ε is Hermitian. -/
+lemma conjTranspose_signMatrix {ε : n → ℤˣ} : (signMatrix ε)ᴴ = signMatrix ε := by
+  simp [signMatrix]
+
 variable [Fintype n] [CommRing R] [CommRing S] {O : Subring R}
 
 /-- Multiplying M on the right by the inclusion matrix of u selects the columns u(j) of M. -/
@@ -174,7 +178,7 @@ lemma coe_diagGL (t : n → Rˣ) : (diagGL t).val = Matrix.diagonal fun i : n �
 @[simps]
 def transposeGL (g : GL n R) : GL n R where
   val := gᵀ
-  inv := g⁻¹.1ᵀ
+  inv := g⁻¹.valᵀ
   val_inv := by simp [← transpose_mul]
   inv_val := by simp [← transpose_mul]
 
@@ -246,11 +250,11 @@ lemma mem_span_singleton_iff_exists_mul {a x : R} : x ∈ O ∙ a ↔ ∃ y ∈ 
 rows e(i) are congruent to those of 1 modulo M; for e the identity, the principal congruence
 subgroup of level M. -/
 def congruenceGL (M : Submodule O R) (e : m → n) : Subgroup (GL n R) :=
-  Subgroup.ofDiv {g ∈ intGL n O | ∀ (i : m) (j : n), (g.1 - 1) (e i) j ∈ M} ⟨1, by simp⟩ <| by
+  Subgroup.ofDiv {g ∈ intGL n O | ∀ (i : m) (j : n), (g.val - 1) (e i) j ∈ M} ⟨1, by simp⟩ <| by
     rintro g ⟨hg, hg_row⟩ k ⟨hk, hk_row⟩
     refine ⟨div_mem hg hk, fun i j ↦ ?_⟩
     -- `g k⁻¹ - 1 = ((g - 1) - (k - 1)) k⁻¹`, and `k⁻¹` has entries in `O`.
-    have h_eq : (g * k⁻¹).1 - 1 = ((g.1 - 1) - (k.1 - 1)) * k⁻¹.1 := by simp [sub_mul]
+    have h_eq : (g * k⁻¹).val - 1 = ((g.val - 1) - (k.val - 1)) * k⁻¹.val := by simp [sub_mul]
     rw [h_eq, Matrix.mul_apply]
     refine sum_mem fun l _ ↦ ?_
     rw [mul_comm]
@@ -355,13 +359,13 @@ lemma mem_range_map {f : R →+* S} (hf_star : ∀ x : R, f (star x) = star (f x
 
 /-- For x in GL_n(R) with xᴴJx = J', the isomorphism U(J') ≅ U(J), g ↦ x g x⁻¹. -/
 @[simps! apply_coe symm_apply_coe]
-def conj (x : GL n R) {J} {J' : Matrix n n R} (h : x.1ᴴ * J * x = J') : U J' ≃* U J where
+def conj (x : GL n R) {J} {J' : Matrix n n R} (h : x.valᴴ * J * x = J') : U J' ≃* U J where
   toFun g := ⟨x * g * x⁻¹, mem_unitaryGroupOf_iff.2 <|
-    gram_mul_of_gram_eq (gram_mul_of_gram_eq h (mem_unitaryGroupOf_iff.1 g.2))
+    gram_mul_of_gram_eq (gram_mul_of_gram_eq h (mem_unitaryGroupOf_iff.1 g.property))
         (gram_inv_of_gram_eq h)⟩
   invFun g := ⟨x⁻¹ * g * x, mem_unitaryGroupOf_iff.2 <|
     gram_mul_of_gram_eq (gram_mul_of_gram_eq (gram_inv_of_gram_eq h)
-        (mem_unitaryGroupOf_iff.1 g.2)) h⟩
+        (mem_unitaryGroupOf_iff.1 g.property)) h⟩
   left_inv g := by simp [mul_assoc]
   right_inv g := by simp [mul_assoc]
   map_mul' g k := by simp [mul_assoc]

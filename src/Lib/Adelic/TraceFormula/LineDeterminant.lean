@@ -193,7 +193,7 @@ lemma det_one_add_smul_of_isIdempotentElem {e : End ℂ B} (he : IsIdempotentEle
     simpa only [h_range x hx] using Submodule.smul_mem _ (1 + c) hx
   have h_restrict : (1 + c • e).restrict h_stable = (1 + c) • 1 := by
     ext x
-    simpa using h_range x x.2
+    simpa using h_range x x.property
   have h_quotient : (range e).mapQ (range e) (1 + c • e) h_stable = 1 := by
     ext x
     simp

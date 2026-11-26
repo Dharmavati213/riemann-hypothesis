@@ -197,6 +197,7 @@ theorem leFibreMeasure_conjTranspose_mul_mul {E : Matrix ι n₁ ℂ} {R : Matri
   exact .of_measurePreserving (measurePreserving_mul_mul_add_mul hE hR h_orth h_card)
     (by fun_prop) h_proj fun _ ↦ Continuous.continuousAt (by fun_prop)
 
+omit [DecidableEq n] [DecidableEq n₁] in
 /-- Choosing `g` with law `m` and completing `g E₁` by further columns with the Lebesgue measure, in
 the places given by `e` (`joinCols`), is the same as completing `E₁` first and then moving all
 columns by `g`. -/
@@ -217,7 +218,7 @@ theorem map_joinCols_prod_volume (e : n₁ ⊕ n₂ ≃ n) (E₁ : Matrix ι n�
       (f := fun y : Matrix ι n₂ ℂ ↦ K (joinCols e (g.val.val * E₁, y))) (by fun_prop)
   simp only [mul_joinCols, Prod.swap_prod_mk, h_subst]
 
-omit [DecidableEq n₁] [IsHermitianInvolution J] in
+omit [DecidableEq n] [DecidableEq n₁] [DecidableEq n₂] [IsHermitianInvolution J] in
 /-- Let `E = joinCols e (E₁, E₂)` have the columns of `E₁` and `E₂`. If `m'` is carried by the
 elements that fix `E₁`, then the law of `g (E₁, g' E₂)` under `m × m'` is the law of `g E` under
 the convolution `m ∗ₘ m'`. -/

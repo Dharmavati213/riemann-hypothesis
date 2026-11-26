@@ -897,14 +897,8 @@ lemma nonempty_characterRows [DVR O] [Fintype J] [LinearOrder J] [DecidableEq G]
       ∃ d ∈ fittingIdeal (K e), ∃ ζ ∈ 𝔮 e, d + ζ = Γ e * ∏ j with ty j = e, .X j :=
     mem_sup.1 (fittingIdeal.sup_smul_top_le (hΓ e))
   choose d hd ζ hζ hdζ using h_split
-  have h_expand (e : Fin t) : ∃ (l : ℕ) (w : Fin l → Λ) (B : Fin l → Matrix s s Λ)
-      (B' : Fin l → s → W ⊕ s₀ ⊕ s → Λ[G]),
-      (∀ (i : Fin l) (j : s), B' i j ∈ N) ∧
-      (∀ (i : Fin l) (j : s) (k : s₀), η e (B' i j (inr (inl k))) = 0) ∧
-      (∀ (i : Fin l) (j : s), (fun k : s ↦ η e (B' i j (inr (inr k)))) = B i j) ∧
-      ∑ i : Fin l, w i * (B i).det = d e :=
+  choose l w B B' hB' hB'_zero hB'_eq hw using fun e : Fin t ↦
     exists_sum_mul_det_of_mem_fittingIdeal_evalRowAtChar (ξ e) hν (hν_eq e) (hd e)
-  choose l w B B' hB' hB'_zero hB'_eq hw using h_expand
   -- Choose one `B e (i e)` for each `e`. Without the coordinates of the `δ v`, the rows `ν j` and
   -- `B' e (i e) j` meet the hypotheses of `exists_rows_det_eq_pow_mul_det`.
   let forget : (W ⊕ s₀ ⊕ s → Λ[G]) →ₗ[Λ[G]] s₀ ⊕ s → Λ[G] := LinearMap.funLeft _ _ inr

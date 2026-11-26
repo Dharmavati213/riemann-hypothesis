@@ -503,13 +503,14 @@ lemma exists_smul_mulVec_mem_latticeBall {Ω : Set (Gf E n)} (hΩ : IsCompact Ω
     (isOpen_Ô.matrix.mem_nhds (Ô E).matrix.zero_mem)
   refine ⟨c, hc, fun {γ g g' R} h_mem h_norm y hy ↦ ?_⟩
   -- The matrix of `g⁻¹ γ g'` takes the coordinates of `y` at `g'` to those of `γ y` at `g`.
+  let k := (g⁻¹ * V.ratEmbed γ * g').adeleMatrix
   have h_crd : (V.move g).vecAtPoint ((c : E) • γ *ᵥ y) =
-      c • (g⁻¹ * V.ratEmbed γ * g').adeleMatrix *ᵥ (V.move g').vecAtPoint y := by
-    simp [vecAtPoint_move, ← ratEmbed_mulVec_vecAtPoint, ← G.adeleMatrix_mul, funext_iff]
-  have h_entries : ∀ i j : n, (c : 𝔸f E) * ((g⁻¹ * V.ratEmbed γ * g').adeleMatrix i j).2 ∈ Ô E :=
+      c • k *ᵥ (V.move g').vecAtPoint y := by
+    simp [k, vecAtPoint_move, ← ratEmbed_mulVec_vecAtPoint, ← G.adeleMatrix_mul, funext_iff]
+  have h_entries : ∀ i j : n, (c : 𝔸f E) * (k i j).2 ∈ Ô E :=
     h_integral _ ⟨_, h_mem, rfl⟩
-  exact ⟨mem_baseLattice_of_vecAtPoint_eq h_crd h_entries hy,
-    norm_archCoords_le_of_vecAtPoint_eq (k := (g⁻¹ * V.ratEmbed γ * g').adeleMatrix) h_norm h_crd⟩
+  obtain ⟨h_lattice, h_length⟩ := mem_and_norm_le_of_vecAtPoint _ _ _ k c h_norm h_crd
+  exact ⟨h_lattice h_entries hy, h_length⟩
 
 variable (V) in
 /-- The hermitian form `V.J` takes algebraic integer values on pairs of vectors of the lattice

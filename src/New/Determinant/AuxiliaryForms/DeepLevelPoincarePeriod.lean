@@ -710,7 +710,7 @@ lemma New.Exchange.norm_poincare_period_sub_le {E n : Type} {s : n → ℤˣ} [F
     (integral_norm_poincareKernel_le ha hA_sq h_gap ω α (hk γ) one_pos fun h ↦
       (le_prod_opNorm (transl γ h).1).1).1
   have term_int (γ : supp) : Integrable (term γ) :=
-    (kernel_int γ).mul_bdd hF.1.aestronglyMeasurable (.of_forall hS)
+    (kernel_int γ).mul_bdd hF.continuous.aestronglyMeasurable (.of_forall hS)
   -- the decay: the product of the local operator norms of `transl γ h` is at least `‖col γ‖ / d`
   have term_le (γ : Elem {base}ᶜ) :
       ∫ h, ‖term γ h‖ ≤ vol * sliceConst A α ω * S * (d / ‖col γ‖) ^ A := by
@@ -741,7 +741,7 @@ lemma New.Exchange.norm_poincare_period_sub_le {E n : Type} {s : n → ℤˣ} [F
       exact ⟨δ * h, by simpa [transl, mul_assoc] using level⟩
     have cosets : ∑' γ : Z.Γ, p γ = ∑' q : supp × V.Γ, p (q.1 * inlLine E s q.2) :=
       V.tsum_eq_tsum_cosets hC p_supp
-    simpa [hF.2, p, term, transl, mul_assoc] using cosets
+    simpa [hF.rat_mul, p, term, transl, mul_assoc] using cosets
   -- unfolding over `V.Γ` turns the period into the sum of the integrals of `term γ` over the group
   have summable_norm : Summable fun γ : supp ↦ ∫ h, ‖term γ h‖ :=
     .compl_add (s := {base}) (.of_nonneg_of_le (fun _ ↦ integral_nonneg fun _ ↦ norm_nonneg _)

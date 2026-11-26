@@ -161,7 +161,7 @@ lemma New.exists_eigenvector_of_commute (hS : ∀ m : ι, ∀ x ∈ S, φ m x �
   -- A weight of `L` has a weight vector `x`; evaluate the weight on the generators `f m` of `L`.
   let f (m : ι) : L := ⟨(φ m).restrict (hS m), subset_lieSpan ⟨m, rfl⟩⟩
   obtain ⟨x, hx, h_eigen⟩ := exists_forall_lie_eq_smul k L S χ
-  refine ⟨fun m ↦ χ (f m), ?_, x, x.2, by simpa using hx, fun m ↦ ?_⟩
+  refine ⟨fun m ↦ χ (f m), ?_, x, x.property, by simpa using hx, fun m ↦ ?_⟩
   · -- The generalised eigenspace of `f m` for `χ (f m)` is its generalised weight space.
     exact fun h_le ↦ hχ ((le_iInf_comp _ f).trans h_le)
   · -- The bracket of `f m` with `x` is the value of `φ m` at `x`.
@@ -272,7 +272,7 @@ lemma trace_restrict_ne_zero {p : Submodule ℂ V} [FiniteDimensional ℂ p] {b 
   -- `b - c` is nilpotent on `p`, so it has trace zero: the trace of `b` is `c * finrank ℂ p`.
   have h_nil : IsNilpotent (restrict b h_stable - c • 1) :=
     isNilpotent_iff_of_finite.2 fun v ↦ mem_genEigenspace_top.1
-      ((genEigenspace_restrict b p ⊤ c h_stable).ge (hp_le v.2))
+      ((genEigenspace_restrict b p ⊤ c h_stable).ge (hp_le v.property))
   have h_trace : trace ℂ p (restrict b h_stable) = c * finrank ℂ p := by
     simpa [sub_eq_zero] using isNilpotent_trace_of_isNilpotent h_nil
   simp [h_trace, hc, hp_ne]
@@ -511,7 +511,7 @@ lemma exists_eigenvector_of_trace_mul_eq [FiniteDimensional ℂ V] [FiniteDimens
   -- non-zero map of `U` to itself: so `χ` is `θ` on the first pairs and `0` on the others.
   have h_eig (v : U) (a : κ) : (x * A b) v ∈ maxGenEigenspace (G a).1 (Sum.elim θ 0 a) := by
     rcases a with a | e
-    · exact (mem_iInf _).1 (hU hx v v.2) a
+    · exact (mem_iInf _).1 (hU hx v v.property) a
     · exact eigenspace_le_maxGenEigenspace (mem_eigenspace_iff.2 (by simp [G]))
   have hχ (a : κ) : χ a = Sum.elim θ 0 a := by
     by_contra h_ne

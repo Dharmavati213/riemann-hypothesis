@@ -552,7 +552,7 @@ lemma LevelForm.innerAt_eq_stdClassSum :
       stdLevelIndex (levelOf S.placeAt H) * classIntegral stdRatPoints (stdLevel E n) f := by
     have h_values (ψ : S.LevelForm H χ κ e) : (toSmoothForm ψ).val = ψ := rfl
     simp [innerAt, f, smoothPairing, h_values, toLinearMapₛₗ₂'_apply, gramForm_apply, dotProduct,
-      mulVec, mul_sum, mul_comm, mul_left_comm]
+      mulVec, mul_sum, mul_comm]
   have h_left : stdRatPoints.FixesLeft f := by
     rintro _ ⟨γ, rfl⟩ g
     have h_equivariant (ψ : S.LevelForm H χ κ e) :

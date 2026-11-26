@@ -536,18 +536,18 @@ theorem smul_top_coeff_mem_ellIntegralForms (hQ : ∀ j : J, D.IsOffLevel ![] (Q
   exact (heckeAction (A ^ (i + 1)) * G - μ' • W).property u (Ψ.property (d • l) hd)
 
 omit [Fintype J] [DecidableEq J] in
-/-- If `f` multiplies every `β i` into the ideal `I`, it multiplies
+/-- If `f` multiplies every selected `β (g k)` into the ideal `I`, it multiplies
 `∏ k, (value k - β (g k)) - ∏ k, value k` into `I`: that difference lies in the ideal spanned by
-the `β i`. -/
+the selected `β (g k)`. -/
 lemma C_prod_sub_prod_mul_mem {R : Type*} [CommRing R] {ι K : Type*} [Fintype K]
     {I : Ideal (MvPolynomial J R)} {f : MvPolynomial J R} {β : ι → R}
-    (hI : ∀ i : ι, .C (β i) * f ∈ I) (g : K → ι) (value : K → R) :
+    (g : K → ι) (hI : ∀ k : K, .C (β (g k)) * f ∈ I) (value : K → R) :
     .C (∏ k, (value k - β (g k)) - ∏ k, value k) * f ∈ I := by
-  -- The elements that `f` multiplies into `I` form an ideal modulo which every `β i` is zero.
+  -- The elements that `f` multiplies into `I` form an ideal modulo which each selected factor is zero.
   suffices h_mem : ∏ k, (value k - β (g k)) - ∏ k, value k ∈ (I.colon {f}).comap MvPolynomial.C by
     simpa [Submodule.mem_colon_singleton] using h_mem
-  have h_zero_mod (i : ι) : Ideal.Quotient.mk ((I.colon {f}).comap MvPolynomial.C) (β i) = 0 :=
-    Ideal.Quotient.eq_zero_iff_mem.2 (by simpa [Submodule.mem_colon_singleton] using hI i)
+  have h_zero_mod (k : K) : Ideal.Quotient.mk ((I.colon {f}).comap MvPolynomial.C) (β (g k)) = 0 :=
+    Ideal.Quotient.eq_zero_iff_mem.2 (by simpa [Submodule.mem_colon_singleton] using hI k)
   rw [← Ideal.Quotient.eq_zero_iff_mem]
   simp [map_prod, h_zero_mod]
 
@@ -690,7 +690,7 @@ lemma exists_diagOp_mem_ellIntegralForms (hQ : ∀ j : J, D.IsOffLevel ![] (Q.pl
   -- `δ₀ - n₀` lies in the ideal spanned by the `β i`, which `f` multiplies into the tied ideal.
   have h_mul_mem : .C (δ₀ - algebraMap _ _ n₀) * f ∈ tiedIdeal Q hN H := by
     simpa [δ₀, n₀, map_prod] using
-      C_prod_sub_prod_mul_mem hI sel fun k ↦ algebraMap EllAdicIntegers _ (liftValue k)
+      C_prod_sub_prod_mul_mem sel (fun k ↦ hI (sel k)) fun k ↦ algebraMap EllAdicIntegers _ (liftValue k)
   refine ⟨(A ^ (Fintype.card J + 1) * f.coeff (∑ j, .single j 1) :),
     (ellVal_le_ellVal ?_).trans h_top, fun l hl d hd y hy y_supp y_eq ↦ ?_⟩
   · simp [A_one π fun g i ↦ by simp]

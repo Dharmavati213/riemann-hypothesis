@@ -606,9 +606,8 @@ lemma lintegral_floorMeasure_mul_right {s : T.G} {S : Subgroup T.G} {f : T.G →
     (hf_inv : (partialUnitriangularGroup (l + 1) ⊓ S).FixesLeft f)
     (hs : s ∈ partialUnitriangularGroup l ⊓ S) (hf : Measurable f := by fun_prop) :
     ∫⁻ x : T.G, f (x * s) ∂F.floorMeasure l = ∫⁻ x : T.G, f x ∂F.floorMeasure l := by
-  obtain ⟨hs_unitri, hsS⟩ : s ∈ partialUnitriangularGroup l ∧ s ∈ S := Subgroup.mem_inf.mp hs
-  obtain ⟨γ, hγ, ν, hν, rfl⟩ : ∃ γ ∈ floorGroup l, ∃ ν ∈ unipotentBelow l, s = γ * ν :=
-    exists_floorGroup_mul_unipotentBelow hs_unitri
+  obtain ⟨hs_unitri, hsS⟩ := Subgroup.mem_inf.mp hs
+  obtain ⟨γ, hγ, ν, hν, rfl⟩ := exists_floorGroup_mul_unipotentBelow hs_unitri
   -- The factor ν drops out: x γ ν = ((x γ) ν (x γ)⁻¹) x γ, and f is invariant under the conjugate.
   have h_drop (x : T.G) (hx : x ∈ floorGroup l) : f (x * (γ * ν)) = f (x * γ) := by
     have h_unitri : x * γ * ν * (x * γ)⁻¹ ∈ partialUnitriangularGroup (l + 1) :=
@@ -772,8 +771,7 @@ lemma lintegral_mul_left_eq_of_factor {ν ρ : Measure T.G} [SFinite ν] [SFinit
   -- Take `f > 0` integrable for `F.groupMeasure`. For any `μ` with `F.groupMeasure = ρ ∗ₘ μ`, the
   -- integral of `Φ` for `μ` is the integral for `F.groupMeasure` of `Φ * f` divided by the
   -- `ρ`-average of `f`, an expression that does not mention `μ`.
-  obtain ⟨f, hf_pos, hf, hf_int⟩ : ∃ f : T.G → NNReal,
-      (∀ x : T.G, 0 < f x) ∧ Measurable f ∧ ∫⁻ x : T.G, f x ∂F.groupMeasure < ∞ :=
+  obtain ⟨f, hf_pos, hf, hf_int⟩ :=
     exists_pos_lintegral_lt_of_sigmaFinite F.groupMeasure top_ne_zero
   let avg (g : T.G) : ℝ≥0∞ := ∫⁻ y : T.G, f (y * g) ∂ρ
   have h_avg (y : T.G) (hy : y ∈ S) (g : T.G) : avg (y * g) = avg g :=

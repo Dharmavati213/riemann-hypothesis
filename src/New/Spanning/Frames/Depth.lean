@@ -415,8 +415,7 @@ lemma lintegral_invDepthWeight_le {g : T.G} (hj : j ≤ 𝔰.ϱ) (hp : Γ.IsHead
       (∏ a ∈ Finset.range j, F.floorModulus a (p a)⁻¹) * Γ.floorsConst := by
   -- Move `g` into the box `F.boxSet`, then use induction on the length of the head.
   obtain ⟨ξ, hξ, h_box⟩ : ∃ ξ ∈ partialUnitriangularGroup j, ξ * g ∈ F.boxSet := h_near
-  obtain ⟨γ, hγ, n, hn, rfl⟩ : ∃ γ ∈ floorGroup j, ∃ n ∈ unipotentBelow j, ξ = γ * n :=
-    exists_floorGroup_mul_unipotentBelow hξ
+  obtain ⟨γ, hγ, n, hn, rfl⟩ := exists_floorGroup_mul_unipotentBelow hξ
   have h_floors (a : ℕ) (ha : a ≤ j) :
       ∫⁻ ν, F.invDepthWeight a x (weylElem a p * (ν * (γ * n * g))) ∂ascConv heisenbergMeasure a ≤
         (∏ l ∈ .range a, F.floorModulus l (p l)⁻¹) * Γ.loss ^ (10 ^ 6 * (𝔰.n * (𝔰.n * a))) := by
@@ -701,8 +700,7 @@ lemma lintegral_depthWeight_le (hj : j ≤ 𝔰.ϱ) (g y : T.G) (h_near : F.IsNe
   -- Move both points by the element `γ * n` of `R^(j)` that takes `g` into the box `F.boxSet`,
   -- then use induction on the length.
   obtain ⟨ξ, hξ, hg⟩ : ∃ ξ ∈ partialUnitriangularGroup j, ξ * g ∈ F.boxSet := h_near
-  obtain ⟨γ, hγ, n, hn, rfl⟩ : ∃ γ ∈ floorGroup j, ∃ n ∈ unipotentBelow j, ξ = γ * n :=
-    exists_floorGroup_mul_unipotentBelow hξ
+  obtain ⟨γ, hγ, n, hn, rfl⟩ := exists_floorGroup_mul_unipotentBelow hξ
   have h_floors (a : ℕ) (ha : a ≤ 𝔰.ϱ) (y : T.G) :
       ∫⁻ ν, Γ.positionsOfSize.indicator (F.depthWeight a (γ * n * g)) ((γ * n * g)⁻¹ * (ν * y))
         ∂ascConv heisenbergMeasure a ≤ ∏ l ∈ .range a,
@@ -761,8 +759,7 @@ lemma exists_hasMatrixSize_of_isNear (hj : j ≤ 𝔰.ϱ) (hp : Γ.IsHead j p) (
       Γ.HasMatrixSize (60 * 𝔰.n ^ 2) (σ * g).val.val ∧
       Γ.HasMatrixSize (99 * 𝔰.n ^ 2) (σ * ((weylElem j p)⁻¹ * g)).val.val := by
   obtain ⟨ξ, hξ, h_box⟩ : ∃ ξ ∈ partialUnitriangularGroup j, ξ * g ∈ F.boxSet := hg
-  obtain ⟨σ, hσ, ν, hν, rfl⟩ : ∃ σ ∈ floorGroup j, ∃ ν ∈ unipotentBelow j, ξ = σ * ν :=
-    exists_floorGroup_mul_unipotentBelow hξ
+  obtain ⟨σ, hσ, ν, hν, rfl⟩ := exists_floorGroup_mul_unipotentBelow hξ
   -- Apply `hasMatrixSize_of_isHead` to `σ * g` and `σ * ν * σ⁻¹`; `σ` commutes with `weylElem j p`.
   have h_comm : σ * ((weylElem j p)⁻¹ * g) = (weylElem j p)⁻¹ * (σ * g) :=
     (weylElem_mul_left_comm hσ).right.symm

@@ -591,7 +591,7 @@ lemma New.Variety.exists_map_separating_class {p : ℕ} {k : Type} [Field k] [Em
         fun i ↦ ?_
       have h_coord := mk_eq_mk_iff_cross_mul (v := ψ ∘ _).mp hy i.succ 0
       simp [hw₁, hU] at h_coord ⊢
-      erw [h_coord]
+      rw [h_coord]
       rfl
     erw [← Functor.map_comp_apply, hψ]
     rfl

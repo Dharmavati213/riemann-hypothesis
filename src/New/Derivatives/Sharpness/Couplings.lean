@@ -2,6 +2,7 @@ module
 
 public import New.Derivatives.Divisibility.NormalForm
 public import New.Derivatives.Sharpness.LeastValuation
+import TauCeti.RingTheory.MvPowerSeries.Derivative
 
 /-!
 # Least valuations along couplings

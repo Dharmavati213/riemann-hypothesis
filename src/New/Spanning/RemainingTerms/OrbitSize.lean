@@ -88,7 +88,7 @@ lemma IsNear.termDiscNorm_le [S.IsAdmissible] (h_near : S.IsNear γ) :
 
 /-- The second moment `D_j` against which the size of a term of cell rank `j` is measured is
 nonnegative. -/
-lemma cellRankSecondMoment_nonneg [S.IsAdmissible] (j : Fin (𝔰.ϱ + 2)) :
+lemma cellRankSecondMoment_nonneg (j : Fin (𝔰.ϱ + 2)) :
     0 ≤ S.cellRankSecondMoment j := by
   rw [cellRankSecondMoment]
   split_ifs <;> positivity [mainSecondMoment_nonneg (S := S), identitySecondMoment_nonneg (S := S),

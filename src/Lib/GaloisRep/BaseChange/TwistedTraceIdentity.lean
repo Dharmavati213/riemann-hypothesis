@@ -11,7 +11,6 @@ import Lib.GaloisRep.BaseChange.GlobalRoot
 import Lib.General.LinearAlgebra.MatrixPolynomials
 import Lib.General.LinearAlgebra.PartnerAlgebra
 import Lib.Shimura.TraceFormula.DefiniteTrace
-import TauCeti.NumberTheory.NumberField.Countable
 
 /-!
 # Twisted trace identity for a step E'/E of CM fields of prime degree
@@ -283,8 +282,10 @@ lemma New.Space.isSampleTotal_twisted_trace {K L : Subgroup (Gf E n)} (σ : Gf E
       (fun γ : U V.J ↦ cosetFn L a (x⁻¹ * j γ * σ x) *
         (ρ γ * s).trace ℂ (WeylIndex n κ.fst → ℂ)).HasFiniteSupport := by
     refine .mul_left ((cosetFn L a).hasFiniteSupport.preimage' fun q _ ↦
-      .ofFinset (S L (x * q.out) (σ x)) ?_) _
-    simp [j, hS, mul_assoc, ← QuotientGroup.eq, eq_comm]
+      .ofFinset (S L (x * q.out) (σ x)) fun γ ↦ ?_) _
+    rw [hS, mul_inv_rev, mul_assoc, mul_assoc, ← mul_assoc x⁻¹, ← QuotientGroup.eq]
+    exact ⟨fun ⟨_, h⟩ ↦ h.symm.trans (Quotient.out_eq q),
+      fun h ↦ ⟨⟨γ, rfl⟩, (Quotient.out_eq q).trans h.symm⟩⟩
   refine ⟨∑ i, ∑ γ ∈ (h_fin i.out).toFinset, .single (i.out, γ) (wt i), ?_, ?_⟩
   · -- apply `trace_eq_weighted_sum` to the forms of level `L`, seen as functions on the group
     refine (trace_eq_weighted_sum (e := j) (ρ := ρ) (s := s) (D := ∅) (a := a)
@@ -400,7 +401,13 @@ lemma New.exists_trace_mul_weightRep_eq_of_twistedNorm_eq [DecidableEq n] (hσ :
     refine (Nat.bijective_iff_injective_and_card _).2 ⟨?_, ?_⟩
     · -- equal pairs give `(Φ u).comp conj = (Φ u').comp conj` by `hi`; cancel `conj`, then `mk_Φ`
       intro u u' h_pair
-      grind [mk_Φ, cancel_right, surjective]
+      have h1 : i u = i u' := congrArg Sigma.fst h_pair
+      have h2 : u.comap (algebraMap E E') = u'.comap (algebraMap E E') := congrArg Sigma.snd h_pair
+      have hΦ : (Φ u).comp conj = (Φ u').comp conj := by rw [← hi u, ← hi u', h1, h2]
+      rw [← mk_Φ u, ← mk_Φ u']
+      exact congrArg InfinitePlace.mk (RingHom.ext fun x ↦ by
+        have h := DFunLike.congr_fun hΦ (conj x)
+        simpa only [RingHom.comp_apply, starRingEnd_self_apply] using h)
     · simp [mul_comm, hE, h_unram.card_infinitePlace]
   let e : InfinitePlace E' ≃ Σ _ : Fin (k + 1), InfinitePlace E := ofBijective _ h_bij
   -- A basis index of `ρ` is a family of `k + 1` basis indices of the weight `κ`.
@@ -450,8 +457,12 @@ lemma New.exists_trace_mul_weightRep_eq_of_twistedNorm_eq [DecidableEq n] (hσ :
   · -- Both traces are the sum of `h_cycle` for `M = G 0 δ`.
     have h_char : ((stdSpace E n).weightRep κ.fst κ.snd γ).trace ℂ (WeylIndex n κ.fst → ℂ) =
         trace (G 0 (j γ)) := by
-      simp [LinearMap.ext (g := toLin' _) (stdSpace_weightRep_apply γ), G, φ, j, U.map, weylRep,
-        Units.smul_def, comp_def]
+      rw [LinearMap.ext (g := toLin' _) (stdSpace_weightRep_apply γ), trace_toLin'_eq]
+      refine congrArg (fun g ↦ trace (weylRep κ.fst κ.snd g)) (funext fun v ↦ Units.ext ?_)
+      ext a b
+      change ((Φ v).comp conj) ((γ : Matrix n n E) a b) =
+        (φ v) ((σ ^ 0 : Gal(E'/E)) (algebraMap E E' ((γ : Matrix n n E) a b)))
+      rw [pow_zero, AlgEquiv.one_apply, lift_algebraMap_apply]
     -- by `h_norm_eq`, `j γ = δ * twistedNorm ω k (ω δ)`
     rw [h_char, ← h_norm_eq, hE, h_norm, Subgroup.coe_mul, (G 0).map_mul, h_cycle k δ (G 0 δ)]
     -- the trace of `s * ρ δ` unfolds to the same cycle sum
@@ -690,14 +701,32 @@ private lemma New.isBaseChangeMaps (μ : (𝔸f E)ˣ →* ℂˣ) [IsStep (E := E
         (map_one (algebraMap E' (𝔸f E')).mapMatrix)
     New.IsBaseChangeMaps σ j ω e := by
   intro j ω e
-  have ⟨j_inj, e_inj, e_ω, e_j, ω_j, σ_bc⟩ :
-      Injective j ∧ Injective e ∧ (∀ δ : U (1 : Matrix n n E'), e (ω δ) = galoisGf σ (e δ)) ∧
-      (∀ γ : U (1 : Matrix n n E), e (j γ) = baseChangeGf ((stdSpace E n).embFin γ)) ∧
-      (∀ γ : U (1 : Matrix n n E), ω (j γ) = j γ) ∧
-      ∀ g : Gf E n, galoisGf σ (baseChangeGf g) = baseChangeGf g := by
-    simp +zetaDelta [baseChangeGf, U.map, DFunLike.ext_iff, Gf.val_ext_iff, Units.ext_iff,
-      ← ext_iff, Function.Injective, RingHom.comp]
-  refine ⟨j_inj, e_inj, e_ω, e_j, ω_j, σ_bc, fun g hg ↦ ?_, fun δ hδ ↦ ?_,
+  have hσ_alg : (σ : E' →+* E').comp (algebraMap E E') = algebraMap E E' :=
+    RingHom.ext σ.commutes
+  refine ⟨fun γ₁ γ₂ h ↦ Subtype.ext (Units.ext (Matrix.ext fun a b ↦
+      (algebraMap E E').injective
+        (congr_fun₂ (congrArg (fun u : U (1 : Matrix n n E') ↦ (u : Matrix n n E')) h) a b))),
+    fun δ₁ δ₂ h ↦ Subtype.ext (Units.ext (Matrix.ext fun a b ↦
+      (algebraMap E' (𝔸f E')).injective
+        (congr_fun₂ (congrArg (fun u : Gf E' n ↦ (u : Matrix n n (𝔸f E'))) h) a b))),
+    fun δ ↦ Subtype.ext (Units.ext (Matrix.ext fun a b ↦
+      (adeleMap_algebraMap (σ : E' →+* E') ((δ : Matrix n n E') a b)).symm)),
+    fun γ ↦ Subtype.ext (Units.ext (Matrix.ext fun a b ↦ by
+      have h_std : (((stdSpace E n).embFin γ : Gf E n) : Matrix n n (𝔸f E)) =
+          (γ : Matrix n n E).map (algebraMap E (𝔸f E)) := by
+        change (((stdSpace E n).ratEmbed γ).2 : Matrix n n (𝔸f E)) = _
+        dsimp only [Space.ratEmbed, Space.toRatCoords, stdSpace, G.toUnitary,
+          MonoidHom.comp_apply, MulEquiv.symm_trans_apply, MulEquiv.coe_toMonoidHom,
+          MulEquiv.coe_mk, Equiv.coe_fn_symm_mk]
+        simp only [U.map, U.conj, inv_one, one_mul, mul_one]
+        rfl
+      change algebraMap E' (𝔸f E') (algebraMap E E' ((γ : Matrix n n E) a b)) =
+        adeleMap (algebraMap E E') ((((stdSpace E n).embFin γ : Gf E n) : Matrix n n (𝔸f E)) a b)
+      rw [h_std, Matrix.map_apply, adeleMap_algebraMap])),
+    fun γ ↦ Subtype.ext (Units.ext (Matrix.ext fun a b ↦ σ.commutes ((γ : Matrix n n E) a b))),
+    fun g ↦ Subtype.ext (Units.ext (Matrix.ext fun a b ↦
+      (adeleMap_adeleMap _ _ _).trans (congrArg (fun f ↦ adeleMap f _) hσ_alg))),
+    fun g hg ↦ ?_, fun δ hδ ↦ ?_,
     fun s u hs hN ↦ hasse_principle_coboundary hσ u hs hN⟩
   · -- Galois descent for adelic points, entry by entry.
     have h_entry (a b : n) : adeleMap (σ : E' →+* E') ((g : Matrix n n (𝔸f E')) a b) =
@@ -736,8 +765,10 @@ private lemma New.IsBaseChangeMaps.semiconjBy_twistedNorm [IsGalois E E']
   have h_conj : e δ * twistedNorm (galoisGf σ) (finrank E E') ((e δ)⁻¹ * e δ * galoisGf σ (e δ)) =
       e δ * ((e δ)⁻¹ * e (twistedNorm ω (finrank E E') δ) * e δ) := by
     rw [H.twistedNorm_conj]
-  simpa [← H.map_apply_eq_galoisGf, ← map_twistedNorm e H.map_apply_eq_galoisGf,
-    map_twistedNorm ω (fun _ ↦ rfl), mul_assoc] using h_conj
+  rw [inv_mul_cancel, one_mul, ← H.map_apply_eq_galoisGf,
+    ← map_twistedNorm e H.map_apply_eq_galoisGf, ← map_twistedNorm ω (fun _ ↦ rfl),
+    mul_assoc (e δ)⁻¹, mul_inv_cancel_left, ← map_mul, ← map_mul] at h_conj
+  exact h_conj
 
 /-- `(A ν)⁻¹` commutes with a good `ν`: take `g = ν' = ν` in
 `IsMatchingRoots.good_and_conj_of_semiconjBy`. -/
@@ -752,13 +783,6 @@ private lemma New.IsMatchingRoots.semiconjBy_inv (R : New.IsMatchingRoots σ K f
     SemiconjBy (A (j γ))⁻¹ (ω (j γ)) (j γ) := by
   rw [H.map_apply_eq_self]
   exact R.commute_inv h_good
-
-/-- `B ν` commutes with `e ν` for a good `ν`: take `g = ν' = ν` in
-`IsMatchingRoots.good_and_conj_of_semiconjBy`. -/
-private lemma New.IsMatchingRoots.commute_map (R : New.IsMatchingRoots σ K f φ j ω e Good A B)
-    {ν : U (1 : Matrix n n E')} (h_good : Good ν) : Commute (B ν) (e ν) := by
-  obtain ⟨-, -, hB⟩ := R.good_and_conj_of_semiconjBy ν h_good rfl
-  exact mul_eq_of_eq_mul_inv hB
 
 /-- For a good base change `j γ`, the twisted norm of `(A (j γ))⁻¹` is `j γ`. -/
 private lemma New.IsMatchingRoots.twistedNorm_inv (R : New.IsMatchingRoots σ K f φ j ω e Good A B)
@@ -779,7 +803,9 @@ private lemma New.IsMatchingRoots.apply_inv_mul_embFin_mul_eq [IsGalois E E']
   -- Take `δ = (A (j γ))⁻¹` in `exists_inv_mul_eq`; its twisted norm is `j γ`.
   have h_semi : SemiconjBy (A (j γ))⁻¹ (ω (j γ)) (j γ) := R.semiconjBy_inv H h_good
   obtain ⟨r, hrδ, h_match⟩ := R.exists_inv_mul_eq h_good h_semi
-  have h_comm_B : Commute (B (j γ)) (e (j γ)) := R.commute_map h_good
+  have h_comm_B : Commute (B (j γ)) (e (j γ)) := by
+    obtain ⟨-, -, hB⟩ := R.good_and_conj_of_semiconjBy (j γ) h_good rfl
+    exact mul_eq_of_eq_mul_inv hB
   set y : Gf E' n := (B (j γ))⁻¹ * baseChangeGf x
   have hr_eq : r = e (A (j γ))⁻¹ * (galoisGf σ (B (j γ)))⁻¹ * B (j γ) := by
     simpa [eq_inv_mul_iff_mul_eq, eq_mul_inv_iff_mul_eq, mul_assoc] using congrArg Inv.inv hrδ
@@ -815,7 +841,9 @@ private lemma New.exists_isMatchingRoots (hσ : σ ≠ 1) {μ : (𝔸f E)ˣ →*
       (e δ : Matrix n n (𝔸f E')).charpoly = (q δ).map (algebraMap E' (𝔸f E')) := charpoly_map _ _
   have charpoly_conj (x : Gf E' n) (ν : U (1 : Matrix n n E')) :
       ((x⁻¹ * e ν * x : Gf E' n) : Matrix n n (𝔸f E')).charpoly =
-        (q ν).map (algebraMap E' (𝔸f E')) := by simp [charpoly_e]
+        (q ν).map (algebraMap E' (𝔸f E')) := by
+    rw [← charpoly_e ν, Subgroup.coe_mul, Units.val_mul, Matrix.charpoly_mul_comm,
+      ← Units.val_mul, ← Subgroup.coe_mul, mul_inv_cancel_left]
   let supp : Set (Gf E' n) :=
     baseChangeGf '' support f ∪ twistedNorm (galoisGf σ) (finrank E E') '' support φ
   let C (P : E'[X]) : Prop := P.map (algebraMap E' (𝔸f E')) ∈
@@ -829,8 +857,14 @@ private lemma New.exists_isMatchingRoots (hσ : σ ≠ 1) {μ : (𝔸f E)ˣ →*
   have h_fixed (P : E'[X]) (hP : C P) :
       (P.map (algebraMap E' (𝔸f E'))).map (adeleMap (σ : E' →+* E')) =
         P.map (algebraMap E' (𝔸f E')) := by
-    ext i
-    simpa using congrArg (fun Q : E'[X] ↦ Q.coeff i) (fixed_of_C P hP)
+    rw [Polynomial.map_map]
+    have h_eq : (adeleMap (σ : E' →+* E')).comp (algebraMap E' (𝔸f E')) =
+        (algebraMap E' (𝔸f E')).comp (σ : E' →+* E') :=
+      RingHom.ext fun x ↦ adeleMap_algebraMap (σ : E' →+* E') x
+    have hσP := fixed_of_C P hP
+    rw [smul_eq_map] at hσP
+    rw [h_eq, ← Polynomial.map_map]
+    exact congrArg (Polynomial.map (algebraMap E' (𝔸f E'))) hσP
   choose! z hz hz_match using fun (P : E'[X]) (hP : C P) ↦ h_pair _ hP.left (h_fixed P hP)
   -- `A ν` is a rational and `B ν` an adelic root quotient at `ν`.
   obtain ⟨A, B, h_conj, h_root⟩ := exists_isRootQuotient_of_isNormRoot hσ fixed_of_C hz
@@ -843,8 +877,9 @@ private lemma New.exists_isMatchingRoots (hσ : σ ≠ 1) {μ : (𝔸f E)ˣ →*
       exists_inv_mul_eq := fun {ν δ} hν_C hν ↦ ?_ }⟩
   · -- `j γ` is fixed by `ω`, and `e (j γ)` is conjugate to the base change of `x⁻¹ * γ * x`.
     have h_mem : (baseChangeGf x)⁻¹ * e (j γ) * baseChangeGf x ∈ supp :=
-      Or.inl ⟨x⁻¹ * (stdSpace E n).embFin γ * x, hf, by simp [H.map_apply_eq_baseChangeGf]⟩
-    exact h_C 1 (by simp [H.map_apply_eq_self]) (baseChangeGf x) h_mem
+      Or.inl ⟨x⁻¹ * (stdSpace E n).embFin γ * x, hf,
+        by rw [map_mul, map_mul, map_inv, ← H.map_apply_eq_baseChangeGf]⟩
+    exact h_C 1 (by rw [SemiconjBy, one_mul, mul_one, H.map_apply_eq_self]) (baseChangeGf x) h_mem
   · have h_mem : x⁻¹ * e (twistedNorm ω (finrank E E') δ) * x ∈ supp :=
       Or.inr ⟨x⁻¹ * e δ * galoisGf σ x, hφ, H.twistedNorm_conj x δ⟩
     exact h_C δ (H.semiconjBy_twistedNorm δ) x h_mem
@@ -899,29 +934,35 @@ private lemma New.IsMatchingRoots.exists_bijOn_of_ne_zero [IsGalois E E']
   set ν : U (1 : Matrix n n E') := twistedNorm ω (finrank E E') δ with hν_def
   have hν : SemiconjBy δ (ω ν) ν := H.semiconjBy_twistedNorm δ
   have hν_good : Good ν := R.good_twistedNorm x δ hφ
-  have norm_one : twistedNorm ω (finrank E E') (A ν * δ) = 1 := by
-    apply H.e_injective
-    simpa [inv_mul_eq_one, mul_assoc] using left_eq_mul.mp (R.map_twistedNorm_eq hν_good hν)
+  have norm_one : twistedNorm ω (finrank E E') (A ν * δ) = 1 := H.e_injective <| by
+    have h1 : (B ν)⁻¹ * e (twistedNorm ω (finrank E E') (A ν * δ)) * B ν = 1 :=
+      left_eq_mul.mp (R.map_twistedNorm_eq hν_good hν)
+    rw [map_one]
+    exact mul_left_cancel ((mul_eq_one_iff_eq_inv.mp h1).trans (mul_one (B ν)⁻¹).symm)
   -- A twisted conjugate of `A ν * δ` lies in `K`, by the matching condition at `x`.
   have mem_K : (B ν * x)⁻¹ * e (A ν * δ) * galoisGf σ (B ν * x) ∈ K := by
     obtain ⟨r, hrδ, h_match⟩ := R.exists_inv_mul_eq hν_good hν
     have h_eq : (x⁻¹ * r * x)⁻¹ * (x⁻¹ * e δ * galoisGf σ x) =
         (B ν * x)⁻¹ * e (A ν * δ) * galoisGf σ (B ν * x) :=
       calc _ = x⁻¹ * (r⁻¹ * e δ) * galoisGf σ x := by group
-        _ = _ := by simp [hrδ, mul_assoc]
+        _ = _ := by rw [hrδ, map_mul (galoisGf σ) (B ν) x]; group
     simpa only [h_eq] using (h_match x).right _ (H.twistedNorm_conj x δ) hφ
   -- It splits in `K` by `hK_split`, hence adelically, hence rationally by the Hasse principle.
   obtain ⟨k, hk, hk_eq⟩ := hK_split _ mem_K <| by
-    simpa [norm_one] using H.twistedNorm_conj (B ν * x) (A ν * δ)
+    rw [H.twistedNorm_conj, norm_one, map_one, mul_one, inv_mul_cancel]
   have h_split_ad : e (A ν * δ) = B ν * x * k * (galoisGf σ (B ν * x * k))⁻¹ := by
     rw [map_mul (galoisGf σ) (B ν * x) k, hk_eq]
     group
   obtain ⟨g, hg⟩ := H.exists_ω_eq_inv_mul (A ν * δ) (B ν * x * k) h_split_ad norm_one
   -- Twisting by `g` gives `σ`-fixed elements, which descend to a pair `(y, γ)` over `E`.
   obtain ⟨y, hy⟩ : ∃ y : Gf E n, baseChangeGf y = e g⁻¹ * B ν * x * k :=
-    H.exists_baseChangeGf_eq _ (by simp [← H.map_apply_eq_galoisGf, hg, hk_eq, mul_assoc])
+    H.exists_baseChangeGf_eq _ (by
+      simp only [map_mul, map_inv, ← H.map_apply_eq_galoisGf, hg, hk_eq]
+      group)
   obtain ⟨γ, hγ⟩ : ∃ γ : U (1 : Matrix n n E), j γ = g⁻¹ * ν * g := H.exists_j_eq _ <| by
-    simp [eq_inv_mul_of_mul_eq hν, hg, ← (R.commute_inv hν_good).left_comm, mul_assoc]
+    rw [map_mul, map_mul, map_inv, hg, eq_inv_mul_of_mul_eq hν]
+    calc _ = g⁻¹ * A ν * (ν * (A ν)⁻¹) * g := by group
+      _ = g⁻¹ * ν * g := by rw [← (R.commute_inv hν_good).eq]; group
   -- `a ↦ (g * j a)⁻¹` matches the moves from `p` to `(y, γ)` with those from `(x, δ)` to `m p`.
   refine ⟨(y, γ), fun a ↦ (g * j a)⁻¹, fun p ↦
     ⟨fun a ⟨ha_mem, ha_conj⟩ ↦ ?_, ?_, fun a ⟨⟨ha_mem, ha_conj⟩, hp_good⟩ ↦ ?_⟩⟩
@@ -996,20 +1037,33 @@ lemma New.twisted_trace_identity {E E' n : Type} [Field E] [CMType E] [Field E']
   let e : U (1 : Matrix n n E') →* Gf E' n :=
     U.map (algebraMap E' (𝔸f E')) (fun x : E' ↦ (star_algebraMap_finAdele x).symm)
       (map_one (algebraMap E' (𝔸f E')).mapMatrix)
-  have h_emb : (stdSpace E' n).embFin = e := by simp [e, U.map, DFunLike.ext_iff, Gf.val_ext_iff]
+  have h_emb : (stdSpace E' n).embFin = e :=
+    MonoidHom.ext fun γ ↦ Subtype.ext (Units.ext (by
+      change (((stdSpace E' n).ratEmbed γ).2 : Matrix n n (𝔸f E')) = _
+      dsimp only [Space.ratEmbed, Space.toRatCoords, stdSpace, G.toUnitary,
+        MonoidHom.comp_apply, MulEquiv.symm_trans_apply, MulEquiv.coe_toMonoidHom,
+        MulEquiv.coe_mk, Equiv.coe_fn_symm_mk]
+      simp only [U.map, U.conj, inv_one, one_mul, mul_one]
+      rfl))
   have h_maps : New.IsBaseChangeMaps σ j ω e := New.isBaseChangeMaps μ hσ
   -- The trace formula over `E` (untwisted) and over `E'` (twisted by `σ`, as an automorphism).
-  -- `τ` and `θ` are data built by tactics; `erw`: `simp` leaves `σ⁻¹` and `σ` composed as an
-  -- unnamed identity ring hom, which `adeleMap_id` matches only up to unfolding.
   let τ : U 1 ≃* U 1 := by
     apply ω.toMulEquiv (mapEnd (map_star_CM ↑σ⁻¹)) <;> ext <;> simp [ω, U.map]
-  let θ : Gf E' n ≃* Gf E' n := by
-    apply (galoisGf σ).toMulEquiv (galoisGf σ⁻¹) <;> ext <;> simp [U.map, Gf.atPlace,
-      RingHom.comp] <;> erw [adeleMap_id]
+  have hσ_l : ((σ⁻¹ : Gal(E'/E)) : E' →+* E').comp (σ : E' →+* E') = RingHom.id E' :=
+    RingHom.ext fun x ↦ AlgEquiv.symm_apply_apply σ x
+  have hσ_r : (σ : E' →+* E').comp ((σ⁻¹ : Gal(E'/E)) : E' →+* E') = RingHom.id E' :=
+    RingHom.ext fun x ↦ AlgEquiv.apply_symm_apply σ x
+  let θ : Gf E' n ≃* Gf E' n :=
+    (galoisGf σ).toMulEquiv (galoisGf σ⁻¹)
+      (MonoidHom.ext fun x ↦ Subtype.ext (Units.ext (Matrix.ext fun a b ↦
+        (adeleMap_adeleMap _ _ _).trans (by rw [hσ_l, adeleMap_id]; rfl))))
+      (MonoidHom.ext fun x ↦ Subtype.ext (Units.ext (Matrix.ext fun a b ↦
+        (adeleMap_adeleMap _ _ _).trans (by rw [hσ_r, adeleMap_id]; rfl))))
   have hK_E : K.comap baseChangeGf ≤ stdLevel E n := fun _ h ↦ baseChangeGf_mem_stdLevel.1 (hK h)
   obtain ⟨c, hc, h_forms, h_level, h_tr⟩ :=
     (stdSpace E n).isSampleTotal_twisted_trace κ 1 continuous_id hK_E (L.comap_mono hL)
-      (hL_open.preimage continuous_baseChangeGf) rfl 1 (by simp) 1 (by simp)
+      (hL_open.preimage continuous_baseChangeGf) rfl 1 (fun _ ↦ rfl) 1
+      (fun _ ↦ (one_mul _).trans (mul_one _).symm)
   have h_tr'_of := (stdSpace E' n).isSampleTotal_twisted_trace κ.baseChange θ
     (continuous_map : Continuous (galoisGf σ⁻¹)) hK hL hL_open hL_σ τ
   rw [h_emb] at h_tr'_of
@@ -1018,8 +1072,10 @@ lemma New.twisted_trace_identity {E E' n : Type} [Field E] [CMType E] [Field E']
     (s.compLeft (Gf E' n) ∘ₗ LinearMap.funLeft ℂ (WeylIndex n κ.baseChange.1 → ℂ) θ.symm).restrict
       ht, fun g ψ ↦ ?_, ht', fun f φ h_pair T T' hT hT' ↦ ?_⟩
   · -- The operator precomposes with `σ⁻¹`, which turns translation by `g` into that by `σ g`.
-    ext
-    simp [show θ.symm (galoisGf σ g) = g from θ.symm_apply_apply g]
+    ext x i
+    change s ((ψ : Gf E' n → _) (θ.symm x * g)) i =
+      s ((ψ : Gf E' n → _) (θ.symm (x * galoisGf σ g))) i
+    rw [map_mul, show θ.symm (galoisGf σ g) = g from θ.symm_apply_apply g]
   rw [div_mul_eq_mul_div, eq_div_iff hc]
   obtain ⟨Good, A, B, h_roots : New.IsMatchingRoots σ K f φ j ω e Good A B⟩ :=
     New.exists_isMatchingRoots hσ h_pair h_maps

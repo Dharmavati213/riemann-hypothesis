@@ -522,7 +522,7 @@ lemma exists_rep_of_trace_identities [IsAlgClosed k] [CharZero k] {T : G → k}
   -- If `x g x = 0` for all `g`, each `x g` has square zero, so `t (x g) = 0` (`τ_nat` with `l = 0`)
   -- and `x ∈ I`.
   let π : G →* k[G] ⧸ I := (mk I).toMonoidHom.comp (of k G)
-  have h_semisimple (x : k[G] ⧸ I) (_hx_span : x ∈ span k (Set.range π))
+  have h_semisimple (x : k[G] ⧸ I)
       (hx : ∀ g : G, x * π g * x = 0) : x = 0 := by
     obtain ⟨x, rfl⟩ := mk_surjective (I := I) x
     refine eq_zero_iff_mem.mpr ?_
@@ -534,7 +534,7 @@ lemma exists_rep_of_trace_identities [IsAlgClosed k] [CharZero k] {T : G → k}
   -- Wedderburn: `π = F ∘ s`, where `s G` spans a product of matrix algebras and `F` is an algebra
   -- map from it to the quotient.
   obtain ⟨b, d, hd, s, F, -, hs_span, hF⟩ :=
-    exists_wedderburn (k := k) π (.id G) h_semisimple ⟨by simp⟩
+    exists_wedderburn (k := k) π (.id G) (fun x _ ↦ h_semisimple x) ⟨by simp⟩
   -- On the product of matrix algebras `τ ∘ₗ F` is a trace, natural on the idempotents
   -- `piMatrixUnit i` (`τ_nat` with `l = 1`) and `card n` at `1`; so `exists_rep_of_trace` applies.
   have hτF_comm (x y : PiMatrix k d) :

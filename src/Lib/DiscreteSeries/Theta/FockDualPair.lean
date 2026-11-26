@@ -480,7 +480,7 @@ variable [DecidableEq R] [DecidableEq C]
 /-- Let `P ≠ 0` be termwise harmonic for both sides, and `K`-highest of weight `ν` for the rows and
 of weight `ν'` for the columns of `T`. Then it is so for `T.swap`, with the parameters `l`, `l'`
 and the weights `ν`, `ν'` exchanged. -/
-theorem FockDualPair.IsJointHighest.swap [Fintype ι]
+theorem FockDualPair.IsJointHighest.swap
     {l' : HCParam ε'} {l : HCParam ε} {P : MvPolynomial ι ℂ}
     {ν : R → ℤ} {ν' : C → ℤ} (hP : T.IsJointHighest l l' P ν ν') :
     T.swap.IsJointHighest l' l P ν' ν where

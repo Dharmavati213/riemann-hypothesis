@@ -187,21 +187,21 @@ lemma length_quotient_span_row (N : Matrix k k O) :
   obtain ⟨Q, -, P, -, d, rfl⟩ : ∃ Q ∈ intGL k (⊤ : Subring O), ∃ P ∈ intGL k (⊤ : Subring O),
       ∃ d : k → O, N = Q.val * diagonal d * P.val := isValuationPair_top.smith_normal_form N
   let π : (k → O) →ₗ[O] ∀ i, QuotSpan (d i) :=
-    LinearMap.piMap (fun i ↦ (Ideal.span {d i}).mkQ) ∘ₗ P⁻¹.1.vecMulLinear
+    LinearMap.piMap (fun i ↦ (Ideal.span {d i}).mkQ) ∘ₗ P⁻¹.val.vecMulLinear
   have h_surj : Function.Surjective π :=
-    (Function.Surjective.piMap fun _ ↦ mkQ_surjective _).comp fun v ↦ ⟨v ᵥ* P.1, by simp⟩
-  have h_ker : π.ker = span O (Set.range (Q.1 * diagonal d * P.1).row) := by
+    (Function.Surjective.piMap fun _ ↦ mkQ_surjective _).comp fun v ↦ ⟨v ᵥ* P.val, by simp⟩
+  have h_ker : π.ker = span O (Set.range (Q.val * diagonal d * P.val).row) := by
     ext v
     rw [mem_span_row_mul_diagonal_mul_iff, LinearMap.mem_ker, funext_iff]
     exact forall_congr' fun i ↦ Ideal.Quotient.eq_zero_iff_dvd (d i) _
-  have h_unit (U : GL k O) : addVal O U.1.det = 0 :=
+  have h_unit (U : GL k O) : addVal O U.val.det = 0 :=
     addVal_eq_zero_iff.2 ((isUnit_iff_isUnit_det _).1 U.isUnit)
-  calc length O ((k → O) ⧸ span O (Set.range (Q.1 * diagonal d * P.1).row))
+  calc length O ((k → O) ⧸ span O (Set.range (Q.val * diagonal d * P.val).row))
     _ = length O (∀ i, QuotSpan (d i)) := by
         rw [← h_ker, (π.quotKerEquivOfSurjective h_surj).length_eq]
     _ = addVal O (∏ i, d i) := by
         simp only [length_pi_of_fintype, length_quot_span_eq_addVal, addVal_prod]
-    _ = addVal O (Q.1 * diagonal d * P.1).det := by simp [h_unit]
+    _ = addVal O (Q.val * diagonal d * P.val).det := by simp [h_unit]
 
 /-- Over a discrete valuation ring and for `a ≠ 0` the lattice `rowLattice A a` of the rows of
 `A` and `a • 1` is free of full rank, so it is spanned by the rows of a square matrix. -/

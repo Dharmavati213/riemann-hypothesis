@@ -91,7 +91,7 @@ structure Fits (S : Filling E 𝔰) (V : Space E 𝔰.BesselIndex ε)
   `S.latticeBasis` times an integral matrix that reduces to 1 at the chosen places. -/
   exists_point_eq : ∃ k : intGL 𝔰.BesselIndex (Ô E),
     (∀ (i : Fin 2) (w : S.chosenPlaces i), intGL.map (reduceAt w) k = 1) ∧
-    ∃ u : (𝔸f E)ˣ, V.xFin = u • (toBesselH 𝔰 ↑S.N η).1 * S.latticeBasis * k.1
+    ∃ u : (𝔸f E)ˣ, V.xFin = u • (toBesselH 𝔰 ↑S.N η).val * S.latticeBasis * k.val
   /-- The element η commutes with every element of the finite adelic unitary group on κ. -/
   central (a : Gf E 𝔰.κ) : Commute η a
 
@@ -142,8 +142,7 @@ seal Finset.sum in
 group. -/
 theorem adelicEquiv_ratEquiv (γ : S.G E) : X.adelicEquiv (X.ratEquiv γ) = S.ratToAdelic γ := by
   -- The conjugations by the point of `V` in `X.adelicEquiv` and in `X.ratEquiv` cancel.
-  erw [V.toRatCoords.trans_apply, V.toRatCoords.apply_symm_apply]
-  rfl
+  exact X.adelicEquiv.apply_symm_apply (S.ratToAdelic γ)
 
 /-- Let the hermitian space V fit the filling data S, and let x_v be the component of the point
 `V.x` at an infinite place v. Then x_vᴴ J x_v is the diagonal matrix of the signs ε, where J is the
@@ -345,7 +344,7 @@ theorem tsum_cutBessel_classUnipotent :
       (S.classRep a.1)⁻¹ * (S.ratToFin u * x) ∈ S.principalLevel ↔
         (S.classRep a.1)⁻¹ * x ∈ S.principalLevel := by
     have hu : (S.classRep a.1)⁻¹ * S.ratToFin u * S.classRep a.1 ∈ S.principalLevel := by
-      simpa using (Subgroup.mem_inf.1 u.2).2
+      simpa using (Subgroup.mem_inf.1 u.property).2
     simp [← S.principalLevel.mul_mem_cancel_left hu (y := (S.classRep a.1)⁻¹ * x), mul_assoc]
   simp only [cutBessel_ratEquiv_mul, besselFn_mul_of_mem_classUnipotent, h_level, x]
   split
@@ -651,14 +650,14 @@ omit [HasPrimitiveRoot5040 E] p in
 the translate by an integral k of a function of principal level has principal level. -/
 theorem hasLevel_mul_right {S : Filling E 𝔰} {z : New.G E ε → ℂ}
     (hz : HasLevel z S.stdPrincipalLevel.toSubgroup) (k : stdLevel E 𝔰.BesselIndex) :
-    HasLevel (fun g : New.G E ε ↦ z (g * (1, k.1))) S.stdPrincipalLevel.toSubgroup := by
+    HasLevel (fun g : New.G E ε ↦ z (g * (1, k.val))) S.stdPrincipalLevel.toSubgroup := by
   rintro _ ⟨u, hu, rfl⟩ g
   have h_conj : ((k⁻¹ * u * k : stdLevel E 𝔰.BesselIndex) : Gf E 𝔰.BesselIndex) ∈
       S.stdPrincipalLevel.toSubgroup :=
     ⟨k⁻¹ * u * k, Normal.conj_mem' inferInstance u hu k, rfl⟩
-  have h_swap : g * (1, u.1) * (1, k.1) = g * (1, k.1) * (1, (k⁻¹ * u * k).1) := by
+  have h_swap : g * (1, u.val) * (1, k.val) = g * (1, k.val) * (1, (k⁻¹ * u * k).val) := by
     simp [mul_assoc]
-  exact (congrArg z h_swap).trans (hz _ h_conj (g * (1, k.1)))
+  exact (congrArg z h_swap).trans (hz _ h_conj (g * (1, k.val)))
 
 omit [HasPrimitiveRoot5040 E] in
 /-- Let S be filling data, K = `S.latticeStabilizer` the integral points of its finite adelic
@@ -750,7 +749,7 @@ theorem petersson_poincare {S : Filling E 𝔰} {V : Space E 𝔰.BesselIndex ε
     obtain ⟨hk_mem, hk_red⟩ := (X.reduction_finiteEquiv_iff k s).2 ⟨k.property, hs⟩
     have h_one : (S.classRep c)⁻¹ * S.classRep c ∈ S.principalLevel := by simp
     have h_term (γ : S.G E) :
-        X.cutBessel (c', i') ((X.ratEquiv γ⁻¹ : New.G E ε) * ((x, X.classPoint c) * (1, k.1))) =
+        X.cutBessel (c', i') ((X.ratEquiv γ⁻¹ : New.G E ε) * ((x, X.classPoint c) * (1, k.val))) =
           if γ ∈ S.termsOver c s c' then
             (S.classCutoff c' ((S.ratToInf γ)⁻¹ * X.realHomeomorph x)).toReal •
               S.besselFn .full ((S.ratToInf γ)⁻¹ * X.realHomeomorph x) i' else 0 := by
@@ -759,14 +758,15 @@ theorem petersson_poincare {S : Filling E 𝔰} {V : Space E 𝔰.BesselIndex ε
     calc
       _ = ∑' γ : S.G E,
           X.cutBessel (c', i')
-            ((X.ratEquiv γ⁻¹ : New.G E ε) * ((x, X.classPoint c) * (1, k.1))) := by
-        change (X.poincareMap (.single (c', i') 1)).val ((x, X.classPoint c) * (1, k.1)) = _
+            ((X.ratEquiv γ⁻¹ : New.G E ε) * ((x, X.classPoint c) * (1, k.val))) := by
+        change (X.poincareMap (.single (c', i') 1)).val ((x, X.classPoint c) * (1, k.val)) = _
         rw [X.coe_poincareMap]
         simp [poincareSeries, ← ((Equiv.inv (S.G E)).trans X.ratEquiv.toEquiv).tsum_eq]
       _ = _ := by
-        rw [← tsum_subtype_eq_of_support_subset (s := Set.univ ∩ S.termsOver c s c')]
-        · exact tsum_congr fun γ ↦ by rw [h_term, ite_eq_left γ.property.2]
-        · exact fun γ hγ ↦ ⟨trivial, by_contra fun h ↦ hγ ((h_term γ).trans (ite_eq_right h))⟩
+        rw [_root_.tsum_subtype (Set.univ ∩ S.termsOver c s c') (fun γ : S.G E ↦
+          (S.classCutoff c' ((S.ratToInf γ)⁻¹ * X.realHomeomorph x)).toReal •
+            S.besselFn .full ((S.ratToInf γ)⁻¹ * X.realHomeomorph x) i')]
+        simp only [h_term, Set.univ_inter, Set.indicator]
   calc
     _ = ∫ g : New.G E ε, star (z g) * X.poincareSeries (.single (c, i) 1) g ∂V.Γ.quotMeasure := by
       rw [← X.coe_poincareMap]

@@ -206,8 +206,12 @@ lemma exists_sub_mem_deepElements_of_smul_sub_mem (hk : k.IsUnramified) {a : ℕ
     obtain ⟨-, h_deep_inv⟩ := h_reach.apply_mem_of_kerWithOrders_le
       locKisinPart_kerWithOrders_le_deepElements h_deep h_deep
     have h_le (l : ℕ) (v : ℤ) : raiseOrder c a u l v ≤ c l v + if a = l then 1 else 0 := by
-      unfold raiseOrder
-      lia
+      refine Int.add_le_add_left ?_ _
+      split_ifs with h₁ h₂ h₂'
+      · exact le_rfl
+      · exact absurd h₁.1.symm h₂
+      · exact zero_le_one
+      · exact le_rfl
     rw [h_smul_eq, Submodule.coe_add, hAw_sub]
     exact add_mem h_deep_inv (smul_sub_mem_withOrders
       (frobEUnit_zpow_smul_mem_withOrders a 1 hw'_exp fun l v _ ↦ h_le l v))
@@ -731,7 +735,6 @@ lemma relLength_deepConstants_negativeWindowDepth_le {k : KummerChart Γ} {O : k
   have h_anti : AntitoneOn (negativeWindowDepth a η W (b i) 1) (S.jumpSet m) := fun u hu v hv h_le ↦
     by
     have hu_win := low_or_far_of_fitsWindows (h_window m) hu
-    have hv_win := low_or_far_of_fitsWindows (h_window m) hv
     simp only [negativeWindowDepth, one_ne_zero, ite_false, ite_true, abs_le]
     lia
   have h_level_one : relLength (S.deepConstants i 0 d)

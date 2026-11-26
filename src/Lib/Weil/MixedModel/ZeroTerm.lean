@@ -230,18 +230,12 @@ lemma zeroTerm_comp [WeilData E]
   ext y
   let φ : (q → 𝔸 E) × (p → 𝔸 E) →+ (p ⊕ q → 𝔸 E) :=
     .mk' (fun a ↦ a.2 ⊕ᵥ a.1) (by simp [funext_iff])
-  have hφ : Continuous φ :=
-    Homeomorph.sumArrowHomeomorphProdArrow.continuous_invFun.comp continuous_swap
-  have h_rat : ∀ a ∈ New.ratVectors E q, ∀ b ∈ New.ratVectors E p,
-      φ (a, b) ∈ New.ratVectors E (p ⊕ q) := by simp_all [φ, mem_ratVectors]
-  have h_point (a : q → 𝔸 E) (b : p → 𝔸 E) :
-      (D.comp D').iAdelic *ᵥ y + (D.comp D').kAdelic *ᵥ φ (a, b) =
-        D.iAdelic *ᵥ (D'.iAdelic *ᵥ y + D'.kAdelic *ᵥ a) + D.kAdelic *ᵥ b := by
-    simp [φ, iAdelic, ratMap, comp, Matrix.mul_assoc, kAdelic, fromCols_map, mulVec_add,
-      add_right_comm, add_assoc]
   rw [zeroTerm_apply, ← quotMean_quotMean (New.ratVectors E q) (isContPeriodic_along_k f _)
-    (New.ratVectors E p) φ hφ h_rat fun b ↦ ⟨(b ∘ Sum.inr, b ∘ Sum.inl), Sum.elim_comp_inl_inr b⟩]
-  simp only [h_point, zeroTerm_apply]
+    (New.ratVectors E p) φ (Homeomorph.sumArrowHomeomorphProdArrow.continuous_invFun.comp
+      continuous_swap) (by simp_all [φ, mem_ratVectors])
+    fun b ↦ ⟨(b ∘ Sum.inr, b ∘ Sum.inl), Sum.elim_comp_inl_inr b⟩]
+  simp [φ, zeroTerm_apply, iAdelic, ratMap, comp, Matrix.mul_assoc, kAdelic, fromCols_map,
+    mulVec_add, add_right_comm, add_assoc]
 
 /-- If the frame k′ of a second splitting D′ of V over V₀ has no l-coordinate in D and both
 splittings read off the same V₀-coordinate, then k′ is spanned by k, with its k-coordinates in D as
@@ -421,7 +415,7 @@ lemma IsMixedLaw.apply_omega_rho_finFrameVector
     ext1 ((i | i) | i) <;> rfl
   obtain ⟨h_l, h_k, h_i⟩ : D.lCoord *ᵥ v = t.val⁻¹ᴴ *ᵥ finVec a ∧
       D.kCoord *ᵥ v = t.val *ᵥ finVec b ∧ D.iCoord *ᵥ v = finVec w := by
-    simp [hv, h_split, frameAt, G.adeleMatrix, mulVec_add, ← Matrix.mul_assoc]
+    simp [hv, h_split, frameAt, G.adeleMatrix, mulVec_add]
   have h_add : finVec (x + a) = finVec x + finVec a := by simp [finVec, funext_iff, mul_add]
   -- `finVec` scales by `α`, so `stdAddChar` with the factor `j / 2` becomes `selfDualAddChar` with
   -- `half`.

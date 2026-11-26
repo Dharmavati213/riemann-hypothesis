@@ -73,10 +73,6 @@ variable {X : Scheme.{0}} {ι : Type} {L : LineBundle X ι} {R : Type} [CommRing
 private lemma _root_.New.LineBundle.H0.isSection_val (r : L.H0 R) : L.IsSection r.val :=
   r.prop.left
 
-private lemma _root_.New.LineBundle.H0.isRegularOn_val (r : L.H0 R) (i : ι) :
-    (r.val i).IsRegularOn (L.opens i) :=
-  (LineBundle.H0.isSection_val r).left i
-
 /-- At a point that lands in the charts `i` and `j`, the components of a global section `r`
 differ by the transition function: `r i = g_ij · r j`. -/
 private lemma _root_.New.LineBundle.H0.val_eq_transition_mul (r : L.H0 R) (i j : ι)
@@ -512,7 +508,7 @@ lemma exists_section_of_hasThetaCoords (π : A' ⟶ A) [IsAdditive π] {f : V �
       comp_translation_eq_translation_comp u π h_lift z₀
     let Q := M.mul (N.pull π.left)
     obtain ⟨⟨b, b₁, b', i'⟩, hb⟩ := (M.mul ((M.pull T).mul (Q.pull ν))).exists_landsIn (ζ ≫ p)
-    have hr_reg (j : κ) := LineBundle.H0.isRegularOn_val (r j : N.H0 O)
+    have hr_reg (j : κ) := (LineBundle.H0.isSection_val (r j : N.H0 O)).left
     have hw_unit (x) := hw.isUnit_apply x (.of K)
     obtain ⟨h_lin, h_ah, h_mem, h_lifts⟩ := hf
     have hM_reg (i j : κ) : (M.transition i j).IsRegularOn (M.opens i) :=

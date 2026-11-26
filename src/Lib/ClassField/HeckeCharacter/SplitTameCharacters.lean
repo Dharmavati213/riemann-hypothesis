@@ -365,8 +365,10 @@ lemma localChar_apply_of_isUnit (k : ℤ) (u : O (F := LocProd 𝔠.ramifiedPlac
       𝔠.tamePart i (residueAt i u) := by
   have h_val : ∀ i : 𝔠.ramifiedPlaces, Valued.v (u.val i) = 1 :=
     isIntegralUnit_iff_v_eq_one.mp (isIntegralUnit_iff_isUnit.mpr hu)
-  -- `erw`: `u.val` is the value of the unit `(hu.map O.subtype).unit` only up to unfolding.
-  erw [ofUnitHom_coe _ (hu.map O.subtype).unit]
+  have h_unit : (↑(hu.map O.subtype).unit : LocProd 𝔠.ramifiedPlaces) = u.val :=
+    (hu.map O.subtype).unit_spec
+  unfold localChar
+  rw [← h_unit, ofUnitHom_coe]
   -- The components of `u` have absolute value one, so the factors `√‖u i‖ ^ k` drop out; it
   -- remains to compare the factors at each `i ∈ S`.
   simp [FinitePlace.norm_def, h_val]
@@ -392,7 +394,7 @@ lemma character_apply_of_integral (u : unitary (𝔸 E)) (hu : (u : 𝔸 E).2 �
   have hψ_off : ∀ w ∉ 𝔠.ramifiedPlaces, 𝔠.tamePart w = 1 := fun w ↦ (𝔠.ne_one_iff w).not_right.mpr
   -- `erw`: `𝔠.semilocalChar` at `evalPlaces 𝔠.ramifiedPlaces u.2` is `localChar … 0` at the value
   -- of the unit `⟨evalPlaces 𝔠.ramifiedPlaces u.2, h_mem⟩` only up to unfolding.
-  erw [𝔠.hasWeight.apply_eq u hu, finprod_tame_eq_prod_reduceU1 _ hψ_off,
+  rw [𝔠.hasWeight.apply_eq u hu, finprod_tame_eq_prod_reduceU1 _ hψ_off,
     ← 𝔠.ramifiedPlaces.prod_attach,
     localChar_apply_of_isUnit 𝔠 0 ⟨evalPlaces 𝔠.ramifiedPlaces (u : 𝔸 E).2, h_mem⟩ h_unit]
   -- The reductions of `u` at each `i` by `reduceU1` and by `residueAt` agree by definition.

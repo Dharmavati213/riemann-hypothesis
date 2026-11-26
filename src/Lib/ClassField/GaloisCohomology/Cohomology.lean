@@ -93,8 +93,7 @@ def smulRingHom (n : ℕ) : R →+* AddMonoid.End (A.H n) where
       (ContinuousMonoidHom.id Γ) n
     ext x
     simp only [h, TauCeti.ContinuousCohomology.coeffMap_def]
-    erw [h0]
-    rfl
+    exact congrArg (fun f ↦ f.hom x) h0
   map_add' r s := by
     have h : A.smulMor (r + s) = A.smulMor r + A.smulMor s :=
       TopRep.hom_ext (DFunLike.ext _ _ fun m ↦ add_smul r s (m : A.V))
@@ -102,8 +101,7 @@ def smulRingHom (n : ℕ) : R →+* AddMonoid.End (A.H n) where
       (ContinuousMonoidHom.id Γ) (A.smulMor r) (A.smulMor s) n
     ext x
     simp only [h, TauCeti.ContinuousCohomology.coeffMap_def]
-    erw [h2]
-    rfl
+    exact congrArg (fun f ↦ f.hom x) h2
 
 -- This belongs in Tau Ceti: the `R`-module structure on the cohomology of a discrete `R`-module.
 instance (n : ℕ) : Module R (A.H n) := Module.compHom (A.H n) (A.smulRingHom n)
@@ -154,9 +152,9 @@ def π₁ : Z1 A.ρ →ₗ[R] A.H 1 where
     refine congrArg _ ?_
     simp only [H1pi, QuotientAddGroup.mk'_apply, explicitCoeff1_mk]
     refine congrArg _ (Subtype.ext ?_)
-    erw [coe_cocyclesMap1]
     ext g
-    erw [cochainsMap1_apply]
+    symm
+    refine (cocyclesMap1_apply Γ A.V Γ A.V (ContinuousMonoidHom.id Γ) _ _ _ _ g).trans ?_
     rfl
 
 lemma π₁_apply (z : Z1 A.ρ) : A.π₁ z = A.classMap z := rfl
@@ -178,6 +176,54 @@ its intersection with the coboundaries. -/
 theorem length_eq_length_map_π₁_add_length_inf_B1 (W : Submodule R (Z1 A.ρ)) :
     length R W = length R (W.map A.π₁) + length R ↥(W ⊓ B1 A.ρ) :=
   length_eq_length_map_add_length_inf_B1 A.π₁ A.ker_π₁ W
+
+/-- The explicit `H¹`, continuous 1-cocycles modulo coboundaries, is `H¹(Γ, A)`, `R`-linearly. -/
+def quotEquivH1 : (Z1 A.ρ ⧸ B1 A.ρ) ≃ₗ[R] A.H 1 :=
+  (Submodule.quotEquivOfEq _ _ A.ker_π₁.symm).trans (A.π₁.quotKerEquivOfSurjective A.π₁_surjective)
+
+@[simp]
+lemma quotEquivH1_mk (z : Z1 A.ρ) : A.quotEquivH1 (Submodule.Quotient.mk z) = A.π₁ z := rfl
+
+/-! ### Restriction in degree one -/
+
+section Restriction
+
+variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (φ : G →ₜ* Γ)
+
+/-- Restriction of continuous 1-cocycles along a continuous homomorphism `φ : G → Γ`:
+`z ↦ z ∘ φ`. -/
+def resZ1 : Z1 A.ρ →ₗ[R] Z1 (A.restrictAlong φ).ρ where
+  toFun z := ⟨fun g ↦ (z : Γ → A) (φ g), z.2.1.comp φ.continuous, fun g h ↦
+    (congrArg (z : Γ → A) (map_mul φ g h)).trans (z.2.2 (φ g) (φ h))⟩
+  map_add' _ _ := rfl
+  map_smul' _ _ := rfl
+
+omit [IsTopologicalGroup Γ] [IsTopologicalGroup G] in
+@[simp]
+lemma coe_resZ1_apply (z : Z1 A.ρ) (g : G) : (A.resZ1 φ z : G → A) g = (z : Γ → A) (φ g) := rfl
+
+omit [IsTopologicalGroup Γ] [IsTopologicalGroup G] in
+lemma resZ1_mem_B1 {z : Z1 A.ρ} (hz : z ∈ B1 A.ρ) : A.resZ1 φ z ∈ B1 (A.restrictAlong φ).ρ := by
+  obtain ⟨m, hm⟩ := mem_B1_iff.1 hz
+  exact mem_B1_iff.2 ⟨m, fun g ↦ hm (φ g)⟩
+
+-- This belongs in Tau Ceti: restriction on `H¹` with its value on classes of cocycles.
+/-- Restriction `H¹(Γ, A) → H¹(G, A)` along a continuous homomorphism `φ : G → Γ`, on classes of
+cocycles `z ↦ z ∘ φ`. -/
+def resH1 : A.H 1 →ₗ[R] (A.restrictAlong φ).H 1 :=
+  (A.restrictAlong φ).quotEquivH1.toLinearMap ∘ₗ
+    (B1 A.ρ).mapQ (B1 (A.restrictAlong φ).ρ) (A.resZ1 φ) (fun _ hz ↦ A.resZ1_mem_B1 φ hz) ∘ₗ
+      A.quotEquivH1.symm.toLinearMap
+
+@[simp]
+lemma resH1_π₁ (z : Z1 A.ρ) : A.resH1 φ (A.π₁ z) = (A.restrictAlong φ).π₁ (A.resZ1 φ z) := by
+  have h : A.quotEquivH1.symm (A.π₁ z) = Submodule.Quotient.mk z :=
+    (LinearEquiv.symm_apply_eq _).2 rfl
+  simp only [resH1, LinearMap.coe_comp, LinearEquiv.coe_coe, Function.comp_apply, h,
+    Submodule.mapQ_apply]
+  rfl
+
+end Restriction
 
 /-! ### Degree two -/
 
@@ -230,9 +276,9 @@ def π₂ : Z2 A.ρ →ₗ[R] A.H 2 where
     refine congrArg _ ?_
     simp only [QuotientAddGroup.mk'_apply, explicitCoeff2_mk]
     refine congrArg _ (Subtype.ext ?_)
-    erw [coe_cocyclesMap2]
     ext ⟨g, h⟩
-    erw [cochainsMap2_apply]
+    symm
+    refine (cocyclesMap2_apply Γ A.V Γ A.V (ContinuousMonoidHom.id Γ) _ _ _ _ g h).trans ?_
     rfl
 
 lemma π₂_apply (z : Z2 A.ρ) : A.π₂ z = A.classMap₂ z := rfl

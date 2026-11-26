@@ -68,14 +68,11 @@ Lebesgue measure divided by π^|ι|. -/
 noncomputable def fockMoment : ENNReal := ∫⁻ y : ι → ℂ,
   (1 + ‖y‖ₑ) ^ N * ‖v y‖ₑ ∂normalizedVolume ι
 
-private lemma enorm_eq_lintegral_enorm (f : fockSpace ε) :
-    ‖f‖ₑ = ∫⁻ x : ι → ℂ, ‖f x‖ₑ ∂normalizedVolume ι := by
-  rw [← ofReal_norm, Heisenberg.IsVacuum.norm_eq_integral_norm f,
-    ofReal_integral_norm_eq_lintegral_eNorm (Model.integrable f)]
-
 /-- The moment of order 0 is the L¹ norm of the Fock vector `v`. -/
 lemma fockMoment_zero : fockMoment 0 v = ‖v‖ₑ := by
-  simp [fockMoment, enorm_eq_lintegral_enorm]
+  rw [← ofReal_norm, Heisenberg.IsVacuum.norm_eq_integral_norm v,
+    ofReal_integral_norm_eq_lintegral_eNorm (Model.integrable v)]
+  simp [fockMoment]
 
 lemma fockMoment_smul : fockMoment N (c • v) = ‖c‖ₑ * fockMoment N v := by
   simp [fockMoment, mul_comm, ← lintegral_const_mul', ← mul_assoc]

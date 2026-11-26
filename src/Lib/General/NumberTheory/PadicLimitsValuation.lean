@@ -1,9 +1,9 @@
 module
 
-public import Lib.CM.Sigma.Basic
 public import Lib.Cohomology.Etale.Basic
 public import Lib.GaloisRep.Main.SelmerModules
 public import Lib.General.NumberTheory.CoefficientRings
+public import Lib.General.NumberTheory.ImaginaryQuadraticField
 import Lib.General.Geometry.GaloisCovers
 import Lib.PadicComparison.Descent.TestCategory
 import Lib.PadicHodge.Crystalline.Basic

@@ -3,8 +3,8 @@ module
 public import Lib.General.LinearAlgebra.MatrixPolynomials
 public import Lib.General.NumberTheory.CoefficientRings
 import Lib.ClassField.Places.DecompositionCompletion
-import Lib.Cohomology.Etale.Basic
 import Lib.General.LinearAlgebra.MatrixNormBounds
+import Lib.PadicComparison.Descent.TestCategory
 import TauCeti.LinearAlgebra.Trace.Idempotent
 
 /-!
@@ -161,7 +161,7 @@ value on `piMatrixUnit i` (the matrix unit E_00 in factor `i`, zero elsewhere) f
 with `τ 1 = card n`. Then there is a representation `r : G →* GL n k` with trace `τ ∘ s` whose trace
 form is non-degenerate on the span of the `r g`, meaning any `x` in that span with
 `tr (x * r g) = 0` for all `g` is zero. -/
-lemma exists_rep_of_trace [CharZero k] [IsAlgClosed k]
+lemma exists_rep_of_trace [CharZero k]
     {s : G →* PiMatrix k d} (h_span : span k (Set.range s) = ⊤)
     (τ : PiMatrix k d →ₗ[k] k) (h_comm : ∀ x y : PiMatrix k d, τ (x * y) = τ (y * x))
     (h_nat : ∀ i : Fin m, ∃ c : ℕ, τ (piMatrixUnit i) = c) (h_one : τ 1 = Fintype.card n) :

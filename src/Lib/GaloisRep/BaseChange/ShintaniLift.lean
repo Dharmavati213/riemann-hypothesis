@@ -147,8 +147,9 @@ lemma reduceGL_map_locMap [CMType E'] {u : FinPlace E'} {ι : E →+* E'} (he : 
   have h_ψx : ψ (reduceGL ⟨g, (map_locMap_mem_intGL_iff he).1 hg⟩ i j) =
       ↑(RingOfIntegers.mapRingHom ι x : 𝓞 E') := (congrArg ψ hx).symm.trans (hψ x)
   refine (h_ψx.trans ?_).symm
-  erw [residue_eq_iff_valuation_sub_lt_one] at hx ⊢
-  simpa using! ((isEquiv_comap_locMap ι he).lt_one_iff_lt_one (x := (x : E) - _)).2 hx
+  have h_val := residue_eq_iff_valuation_sub_lt_one.mp hx
+  apply residue_eq_iff_valuation_sub_lt_one.mpr
+  simpa using! ((isEquiv_comap_locMap ι he).lt_one_iff_lt_one (x := (x : E) - _)).2 h_val
 
 variable [Algebra E E'] [CMTypeOver E E'] {u : FinPlace E'}
   {μ : (𝔸f E)ˣ →* ℂˣ} [hμ : IsStep E' μ]

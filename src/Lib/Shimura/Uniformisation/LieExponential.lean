@@ -3,6 +3,7 @@ module
 public import Lib.Shimura.Uniformisation.HolomorphicFamilies
 import Lib.General.Analysis.HolomorphicIntegrals
 import Lib.General.Geometry.GeometricPoints
+import Lib.PadicComparison.Descent.TestCategory
 
 /-!
 # Exponential of compact commutative Lie groups and uniformisation of abelian varieties

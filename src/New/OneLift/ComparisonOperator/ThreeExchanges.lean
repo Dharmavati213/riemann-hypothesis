@@ -265,7 +265,7 @@ level `stdLevel`, of the theta kernel of `(I_m, I_m)` with characters `c⁻¹, c
 sum of the kernel of `(I_m⁻, I_m)` with characters `c υ ^ m, c υ ^ m` and function `χ ∘ det`. Here
 `υ = upsilonU1` is the splitting character of `WeilData E` on the norm-one ideles, and
 `η = 𝔪.normNegOne` is the unit mod 𝔪 that is the reduction of a chosen element of norm -1. -/
-lemma exists_stdClassSum_modKernelStdSpace_neg_eq_one {m : ℕ} [NeZero m] :
+lemma exists_stdClassSum_modKernelStdSpace_neg_eq_one {m : ℕ} :
     ∃ n : ℂ, ‖n‖ = 1 ∧ ∀ (𝔪 : Modulus E) (c : AutChar E) (χ : MulChar 𝔪.ResidueRing ℂ) (γ : ℂ),
       (∀ g : G E (1 : Fin m → ℤˣ), γ * stdClassSum (stdLevel E (Fin m))
         (modKernelStdSpace (stdSpace E (Fin m)) c⁻¹ c⁻¹ 𝔪
@@ -868,7 +868,7 @@ lemma exists_mul_thirdExchangeLeftSide_eq_choiceFn : ∃ (C : ℂ) (c : D.Twist 
 /-- The product datum `Ψ^×` at `x = (x' x″)`, with `x″` square: the datum `columnDatum` of the rows
 `w` on the columns of `x″` at `W_j`, times `ψ^inv_Λ (x')` if the other columns of `x″` are those of
 `1` (`FixesColsOff`), and `0` otherwise. -/
-def productDatum {a : Type} [Fintype a]
+def productDatum {a : Type}
     (w : Matrix a (FirstFactorIndex j) (D.untwistedModulus 2).ResidueRing)
     (Λ : Matrix D.CarrierIndex (FirstFactorIndex j) (D.untwistedModulus 2).ResidueRing)
     (x : Matrix (FirstFactorIndex j) (D.CarrierIndex ⊕ FirstFactorIndex j)

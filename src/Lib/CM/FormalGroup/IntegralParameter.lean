@@ -1,5 +1,6 @@
 module
 
+public import Lib.CM.Sigma.Basic
 public import Lib.General.Algebra.IntegralPowerSeries
 import Lib.CM.Integrality.TorsionValues
 import TauCeti.RingTheory.PowerSeries.Rescale

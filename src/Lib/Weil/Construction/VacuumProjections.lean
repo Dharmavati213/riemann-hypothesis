@@ -776,18 +776,18 @@ noncomputable def finitePart (V : Space E n s) : Submodule ℂ (𝒮 V) :=
 @[simp]
 lemma vacElem_mem_finitePart : V.vacElem ∈ V.finitePart := subset_span ⟨0, by simp⟩
 
+private lemma mapsTo_finitePart_of_translates (L : 𝒮 V →L[ℂ] 𝒮 V)
+    (h : ∀ z : n → 𝔸f E, L (V.finHeisenbergOp z V.vacElem) ∈ V.finitePart) :
+    Set.MapsTo L V.finitePart V.finitePart :=
+  (show V.finitePart ≤ V.finitePart.comap L.toLinearMap from span_le.2 (range_subset_iff.2 h))
+
 /-- The finite part is stable under the operators ϱ_f(x) of finite adelic vectors x. -/
 lemma finHeisenbergOp_mem_finitePart (hf : f ∈ V.finitePart) :
     V.finHeisenbergOp x f ∈ V.finitePart := by
-  induction hf using span_induction with
-  | mem _ h_gen =>
-    obtain ⟨z, rfl⟩ := h_gen
-    -- ϱ_f(x) ϱ_f(z) vac is a multiple of the generator ϱ_f(x + z) vac.
-    rw [finHeisenbergOp_finHeisenbergOp]
-    exact smul_mem _ _ (subset_span ⟨x + z, rfl⟩)
-  | zero => simp
-  | add f₁ f₂ _ _ h₁ h₂ => simpa using add_mem h₁ h₂
-  | smul c f₁ _ h₁ => simpa using smul_mem _ c h₁
+  refine mapsTo_finitePart_of_translates (V.finHeisenbergOp x) (fun z ↦ ?_) hf
+  -- ϱ_f(x) ϱ_f(z) vac is a multiple of the generator ϱ_f(x + z) vac.
+  rw [finHeisenbergOp_finHeisenbergOp]
+  exact smul_mem _ _ (subset_span ⟨x + z, rfl⟩)
 
 /-- The finite part is stable under the Heisenberg operators ϱ(x) of finite adelic vectors x. -/
 lemma rho_finVec_mem_finitePart (hf : f ∈ V.finitePart) : V.ϱ (finVec x) f ∈ V.finitePart :=
@@ -842,32 +842,21 @@ lemma isLocallyConstant_rho_finVec (hf_mem : f ∈ V.finitePart) :
 /-- The finite part is stable under the projection P^S = `projOn` S. -/
 lemma projOn_mem_finitePart {S : Set (FinPlace E)} (hf : f ∈ V.finitePart) :
     V.projOn S f ∈ V.finitePart := by
-  induction hf using span_induction with
-  | mem _ h_gen =>
-    obtain ⟨z, rfl⟩ := h_gen
-    -- P^S ϱ_f(z) vac is 0 or ϱ_f(z) vac, as P^S fixes the vacuum.
-    rw [V.projOn_finHeisenbergOp V.projOn_vacElem z]
-    exact smul_mem _ _ (subset_span ⟨z, rfl⟩)
-  | zero => simp
-  | add f₁ f₂ _ _ h₁ h₂ => simpa using add_mem h₁ h₂
-  | smul c f₁ _ h₁ => simpa using smul_mem _ c h₁
+  refine mapsTo_finitePart_of_translates (V.projOn S) (fun z ↦ ?_) hf
+  -- P^S ϱ_f(z) vac is 0 or ϱ_f(z) vac, as P^S fixes the vacuum.
+  rw [V.projOn_finHeisenbergOp V.projOn_vacElem z]
+  exact smul_mem _ _ (subset_span ⟨z, rfl⟩)
 
 /-- The finite part is stable under ω(1, g) for finite adelic points g of the unitary group. -/
 lemma omega_mem_finitePart (g : Gf E n) (hf : f ∈ V.finitePart) : V.ω (1, g) f ∈ V.finitePart := by
-  induction hf using span_induction with
-  | mem _ h_gen =>
-    -- `ω (1, g)` turns `finHeisenbergOp z` into `finHeisenbergOp (g z)`, and `ω (1, g) vacElem` is
-    -- a combination of generators `finHeisenbergOp (g y) vacElem` (`omega_vacElem_sum`).
-    obtain ⟨z, rfl⟩ := h_gen
-    have h_gen_mem (y : n → 𝔸f E) : V.finHeisenbergOp y V.vacElem ∈ V.finitePart :=
-      subset_span ⟨y, rfl⟩
-    rw [omega_finHeisenbergOp, omega_vacElem_sum]
-    refine finHeisenbergOp_mem_finitePart _ (smul_mem _ _ ?_)
-    exact finsum_induction (fun v : 𝒮 V ↦ v ∈ V.finitePart) (zero_mem _)
-      (fun _ _ h₁ h₂ ↦ add_mem h₁ h₂) fun q ↦ h_gen_mem _
-  | zero => simp
-  | add f₁ f₂ _ _ h₁ h₂ => simpa using add_mem h₁ h₂
-  | smul c f₁ _ h₁ => simpa using smul_mem _ c h₁
+  refine mapsTo_finitePart_of_translates (V.ω (1, g)) (fun z ↦ ?_) hf
+  -- The Weil operator carries each Heisenberg translate into the span of vacuum translates.
+  have h_gen_mem (y : n → 𝔸f E) : V.finHeisenbergOp y V.vacElem ∈ V.finitePart :=
+    subset_span ⟨y, rfl⟩
+  rw [omega_finHeisenbergOp, omega_vacElem_sum]
+  refine finHeisenbergOp_mem_finitePart _ (smul_mem _ _ ?_)
+  exact finsum_induction (fun v : 𝒮 V ↦ v ∈ V.finitePart) (zero_mem _)
+    (fun _ _ h₁ h₂ ↦ add_mem h₁ h₂) fun q ↦ h_gen_mem _
 
 /-- Let g be in G_f and f in the finite part 𝒮_f. If all operators `New.Space.finHeisenbergOp` at
 gy, y in Ô^n, fix f, then f is a complex multiple of ω(g)vac. -/
@@ -895,24 +884,17 @@ lemma eventually_omega_eq_self (hf : f ∈ V.finitePart) :
     ∀ᶠ k : Gf E n in nhds 1, V.ω (1, k) f = f := by
   induction hf using span_induction with
   | zero => simp
-  | add f₁ f₂ _ _ h₁ h₂ =>
-    filter_upwards [h₁, h₂] with k hk₁ hk₂
-    rw [map_add, hk₁, hk₂]
-  | smul c f₁ _ h₁ =>
-    filter_upwards [h₁] with k hk₁
-    rw [map_smul, hk₁]
+  | add _ _ _ _ h₁ h₂ => exact (h₁.and h₂).mono fun k ⟨hk₁, hk₂⟩ ↦ by simp [hk₁, hk₂]
+  | smul _ _ _ h₁ => exact h₁.mono fun k hk ↦ by simp [hk]
   | mem _ h_gen =>
-    obtain ⟨z, rfl⟩ := h_gen
-    -- Near `1`, `k` lies in `stdLevel`, so it fixes the vacuum, and by local constancy `k z` acts
-    -- on the vacuum as `z` does. As `k` is unitary, `semichar (k z) = semichar z`.
-    have h_const :
-        IsLocallyConstant fun k : Gf E n ↦ V.ϱ (finVec ((k : Matrix n n (𝔸f E)) *ᵥ z)) V.vacElem :=
+    rcases h_gen with ⟨z, rfl⟩
+    -- Near `1`, `k` lies in `stdLevel` (fixing the vacuum) and `k z` acts on the vacuum as `z`.
+    have h_const : IsLocallyConstant fun k : Gf E n ↦
+        V.ϱ (finVec ((k : Matrix n n (𝔸f E)) *ᵥ z)) V.vacElem :=
       (isLocallyConstant_rho_finVec V.vacElem_mem_finitePart).comp_continuous (by fun_prop)
     filter_upwards [h_const.eventually_eq 1, isOpen_stdLevel.mem_nhds (by simp)] with k hk_z hk_mem
-    have h_supp : k ∈ Gf.supportedOn n (⊤ : Set (FinPlace E)) := by simp
-    have h_vac : V.ω (1, k) V.vacElem = V.vacElem :=
-      V.omega_eq_self_of_mem_stdLevel h_supp V.projOn_vacElem hk_mem
-    rw [omega_finHeisenbergOp, h_vac]
+    rw [omega_finHeisenbergOp,
+      V.omega_eq_self_of_mem_stdLevel (by simp : k ∈ Gf.supportedOn n ⊤) V.projOn_vacElem hk_mem]
     simp [finHeisenbergOp, semichar, star_mulVec_dotProduct_mulVec, hk_z]
 
 attribute [irreducible] finitePart

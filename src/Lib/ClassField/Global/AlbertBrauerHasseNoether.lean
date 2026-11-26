@@ -92,7 +92,7 @@ lemma Cohomology.isReal_comp_algebraMap {j : Ω →+* ℂ} (hj : ∀ x : Ω, j (
   simp [← hj, ← star_def]
 
 variable (Γ) in
-/-- If the number field `K` has a real place `w`, some `c` in `Γ` acts on the field `Ω` (`New.Ω`,
+/-- If the field `K` has a real place `w`, some `c` in `Γ` acts on the field `Ω` (`New.Ω`,
 the algebraic closure of `ℚ`) as complex conjugation (`New.IsComplexConj`: under some embedding
 `j : Ω →+* ℂ`, `j (c • x)` is the complex conjugate of `j x`). -/
 lemma exists_isComplexConj {w : InfinitePlace K} (hw : w.IsReal) :

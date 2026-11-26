@@ -885,11 +885,7 @@ lemma New.abs_log_mass_ratio_sub_le (E : Type) [Field E] [CMType E] [WeilData E]
   -- difference in the claim is `-log ‖x‖`.
   have h_diff : log (mass E (j + 1)) - log (mass E j) - Core.numInfPlaces E *
       ((j + 1 / 2) * log (rootDiscr E) + log j.factorial - (j + 1) * log (2 * π)) = -log ‖x‖ := by
-    have h_log : log ‖(mass E j : ℂ)‖ = log ‖(mass E (j + 1) : ℂ) *
-        √√((rootDiscr E ^ Core.numInfPlaces E) ^ 2) *
-        (π ^ (j + 1) / j.factorial) ^ Core.numInfPlaces E *
-        (x * volÔ E ^ Fintype.card (Fin j ⊕ Unit))‖ := by
-      rw [← siegel]
+    have h_log := congrArg (fun z : ℂ ↦ log ‖z‖) siegel
     simp (disch := positivity) [volÔ_eq, abs_of_pos, log_mul, log_div, log_sqrt] at h_log ⊢
     linarith
   -- Finally `|log ‖x‖| ≤ 3 / 2 * ‖x - 1‖`, as `‖x - 1‖ ≤ 1 / 2`.

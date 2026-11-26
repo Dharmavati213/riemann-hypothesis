@@ -205,7 +205,7 @@ lemma exists_int_eq_sum_re {E : Type} [Field E] [CMType E] [HasPrimitiveRoot5040
     exact ⟨n, by rw [← trace_eq_sum_Φ, ← hn, eq_intCast, Rat.cast_intCast]⟩
   obtain ⟨p, hp⟩ : ∃ p : ℤ, ∑ v : InfinitePlace E, 2 * (Φ v x).re = p := h_trace hx
   obtain ⟨q, hq⟩ : ∃ q : ℤ, ∑ v : InfinitePlace E, 2 * (Φ v (i * x)).re = q :=
-    h_trace (i.2.mul hx)
+    h_trace (i.property.mul hx)
   let t (v : InfinitePlace E) : ℂ := if Φ v i = Complex.I then Φ v x else star (Φ v x)
   have h_term (v : InfinitePlace E) : t v = (Φ v x).re - (Φ v (i * x)).re * Complex.I := by
     have h_sq : Φ v i ^ 2 = Complex.I ^ 2 := by

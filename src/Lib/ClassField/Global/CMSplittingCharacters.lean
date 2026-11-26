@@ -852,6 +852,11 @@ lemma IsFromU1.apply_idOrConjInv (h : IsFromU1 S I χ) (g : Gal(Ω/E)) :
     simp [hη x g hx, hη _ _ hx_conj, inv_mul_eq_div]
   · rfl
 
+private lemma ideleAt_locIdele_div_star_eq_one (a : (LocField v)ˣ)
+    (a' : (LocField (star v))ˣ) {w : FinPlace E} (hw : w ≠ v) (hw' : w ≠ star v) :
+    ideleAt w (locIdele v a / locIdele (star v) a') = 1 := by
+  rw [map_div, ideleAt_locIdele_of_ne hw, ideleAt_locIdele_of_ne hw', div_one]
+
 /-- Let `S` and `I` be sets of finite places of the CM field `E`, and let `χ` be a character of
 `Gal(Ω/E)` with `IsFromU1 S I χ`. This means `χ(Art x) = η(x / x̄)` for an idele class character `η`
 of modulus `I` that is trivial on the local components at `S ∪ S̄`. Then `χ` kills the decomposition
@@ -877,8 +882,8 @@ lemma IsFromU1.eq_one_of_mem_decompGroup (h : IsFromU1 S I χ) (hv : v ∈ S)
   have h_star_v_mem : star v ∈ S.conjClosure := Or.inr (by simpa using hv)
   have h_at_one (a : (LocField v)ˣ) (a' : (LocField (star v))ˣ) (w : FinPlace E)
       (hw : w ∉ S.conjClosure) : ideleAt w (locIdele v a / locIdele (star v) a') = 1 := by
-    rw [map_div, ideleAt_locIdele_of_ne (ne_of_mem_of_not_mem hv_mem hw).symm,
-      ideleAt_locIdele_of_ne (ne_of_mem_of_not_mem h_star_v_mem hw).symm, div_one]
+    exact ideleAt_locIdele_div_star_eq_one a a'
+      (ne_of_mem_of_not_mem hv_mem hw).symm (ne_of_mem_of_not_mem h_star_v_mem hw).symm
   apply hη_one
   · simp +contextual [idelesUnitOff, h_at_one]
   · intro w hw
@@ -906,6 +911,6 @@ lemma IsFromU1.eq_one_of_mem_inertiaAbove (h : IsFromU1 S I χ) (g : Gal(Ω/E))
   · rintro w ⟨hw_I, -⟩
     have hw_ne_v : w ≠ v := ne_of_mem_of_not_mem hw_I fun hv_I ↦ hv_not_mem (Or.inl hv_I)
     have hw_ne_star_v : w ≠ star v := ne_of_mem_of_not_mem hw_I fun hv_I ↦ hv_not_mem (Or.inr hv_I)
-    simp [ideleAt_locIdele_of_ne hw_ne_v, ideleAt_locIdele_of_ne hw_ne_star_v]
+    simp [ideleAt_locIdele_div_star_eq_one _ _ hw_ne_v hw_ne_star_v]
 
 end New

@@ -406,8 +406,8 @@ structure ThetaTorus extends PeriodMap D g ℓ V where
   /-- In suitable coordinates `a ∈ 𝓞 E` acts diagonally: at `v₀` by `Φ v₀ a` on the line and by its
   conjugate on the complement, and by `Φ w a` at each place `w ≠ v₀`. -/
   exists_std_equiv : ∃ e : V ≃ₗ[ℂ] BallFibre E D.Index, ∀ a : 𝓞 E,
-    e.1 ∘ₗ toPeriodMap.intAction a ∘ₗ e.symm.1 =
-      .prodMap (.prodMap (Φ v₀ a.val • 1) (star (Φ v₀ a.val) • 1)) (.piMap (Φ ·.1 a • 1))
+    e.toLinearMap ∘ₗ toPeriodMap.intAction a ∘ₗ e.symm.toLinearMap =
+      .prodMap (.prodMap (Φ v₀ a.val • 1) (star (Φ v₀ a.val) • 1)) (.piMap (Φ ·.val a • 1))
 
 namespace PeriodMap
 

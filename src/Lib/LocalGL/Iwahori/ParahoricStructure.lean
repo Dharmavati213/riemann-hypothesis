@@ -288,14 +288,14 @@ lemma mem_proIwahori_iff_of_unitriangular (hg_tri : g ∈ unitriangular id F) :
   -- On and below the diagonal `g` agrees with the identity, so only the entries above it matter.
   have hg_one : ∀ a b : n, b ≤ a → g a b = (1 : Matrix n n F) a b := hg_tri
   rw [mem_proIwahori]
-  refine ⟨fun ⟨hg_int, _⟩ i j _ ↦ hg_int i j,
-    fun h_above ↦ ⟨fun i j ↦ ?_, fun i j h_lt ↦ ?_, fun i ↦ ?_⟩⟩
-  · rcases lt_trichotomy i j with h_lt | rfl | h_gt
-    · exact h_above i j h_lt
-    · simp [hg_one i i le_rfl]
-    · simp [hg_one i j h_gt.le, h_gt.ne']
-  · simp [hg_one i j h_lt.le, h_lt.ne']
-  · simp [hg_one i i le_rfl]
+  refine ⟨fun ⟨hg_int, _⟩ i j _ ↦ hg_int i j, fun h_above ↦ ?_⟩
+  have h_below (i j : n) (hji : j < i) : v (g i j) < 1 := by
+    simp [hg_one i j hji.le, hji.ne']
+  have h_diag (i : n) : g i i = 1 := by simp [hg_one i i le_rfl]
+  refine ⟨fun i j ↦ ?_, h_below, fun i ↦ ?_⟩
+  · rcases lt_trichotomy i j with hij | rfl | hji
+    exacts [h_above i j hij, (by simp [h_diag]), (h_below i j hji).le]
+  · simp [h_diag]
 
 /-- For `i ≠ j` (hypothesis `hij`), the transvection `1 + a E_ij` lies in `New.proIwahori` when `a`
 lies in the maximal ideal, or when `a` is integral and `i < j`. -/

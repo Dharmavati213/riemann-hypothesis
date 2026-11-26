@@ -392,13 +392,6 @@ private lemma mvPolynomialX_map_eval_uncurry (M : Matrix N N k) :
     (mvPolynomialX N N k).map (MvPolynomial.eval (uncurry M)) = M :=
   mvPolynomialX_map_eval₂ (RingHom.id k) M
 
-omit [Fintype N] [DecidableEq N] in
-/-- The matrix of variables `X (i, j)`, evaluated at the entries of a matrix `M` over a
-`k`-algebra `S`, is `M`. -/
-private lemma mvPolynomialX_map_aeval_uncurry {S : Type} [CommRing S] [Algebra k S]
-    (M : Matrix N N S) : (mvPolynomialX N N k).map (MvPolynomial.aeval (uncurry M)) = M :=
-  mvPolynomialX_map_eval₂ (algebraMap k S) M
-
 /-- Let `E` be a number field inside `Ω`, a fixed algebraic closure of `ℚ`, let `r` be a continuous
 representation of `Gal(Ω/E)` on `K ^ N`, and let `k` be a normed field over `K`. Suppose:
 * the span of the image of `r` contains every diagonal matrix;
@@ -449,8 +442,14 @@ lemma card_eq_and_charpoly_eq [NeZero n] {E : Type} [Field E] [NumberField E] [A
         simpa [M, φ, ρ, mvPolynomialX_map_eval_uncurry, units_smul_def, mul_assoc, ofId,
           comp_def] using congrFun hg a
     simp only [M, map_powMinor, AlgHom.mapMatrix_apply, Matrix.map_mul, Matrix.map_map, comp_def,
-      mvPolynomialX_map_aeval_uncurry, MvPolynomial.aeval_C] at h_poly
-    simpa [mul_assoc, ← Matrix.map_mul, LaurentPolynomial.algebraMap_apply, comp_def] using h_poly
+      MvPolynomial.aeval_C] at h_poly
+    let B := diagonal (T ∘ κ) * (Q : Matrix N N k).map LaurentPolynomial.C
+    have h_eval : (mvPolynomialX N N k).map (MvPolynomial.aeval B.uncurry) = B :=
+      mvPolynomialX_map_eval₂ (algebraMap k k[T;T⁻¹]) B
+    let C := ((Q⁻¹ * ρ x : GL N k) : Matrix N N k).map LaurentPolynomial.C
+    have h_minor : powMinor (B * C) m a = 0 :=
+      (congrArg (fun X ↦ powMinor (X * C) m a) h_eval).symm.trans h_poly
+    simpa [B, C, mul_assoc, ← Matrix.map_mul] using h_minor
   -- The minors of order `n + 1` vanish at most Frobenius elements, hence everywhere.
   have h_all (g : Gal(Ω/E)) : powMinor (φ (r g)) (n + 1) = 0 := by
     refine (h_closed (n + 1)).closure_subset (dense_of_mostFrobenii (hP.mono ?_) g)

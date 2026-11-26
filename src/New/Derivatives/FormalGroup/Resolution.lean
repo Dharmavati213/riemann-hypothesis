@@ -2,6 +2,7 @@ module
 
 public import Lib.CM.Integrality.LogTheta
 public import Lib.Weil.Construction.ThetaJets
+import TauCeti.RingTheory.MvPowerSeries.Derivative
 
 /-!
 # Resolutions of the identity and power series in the compositions `y(μ_i z)`

@@ -761,8 +761,8 @@ lemma IsSection.pull (hs : L.IsSection s) (p : Y ⟶ X) :
 
 /-- Pulling back a frame of a line bundle gives a frame of the pulled-back bundle. -/
 lemma IsFrame.pull (hu : L.IsFrame u) (p : Y ⟶ X) :
-    (L.pull p).IsFrame fun i : ι ↦ (u i).pull p := by
-  aesop (add simp [IsFrame, IsSection, IsRegularOn])
+    (L.pull p).IsFrame fun i : ι ↦ (u i).pull p :=
+  ⟨hu.1.pull p, fun i A t ht ↦ hu.2 i A (t ≫ p) (landsIn_preimage.1 ht)⟩
 
 /-- The pointwise inverse of a frame `u` of `L` is a frame of the dual bundle `L.inv`. -/
 lemma IsFrame.inv (hu : L.IsFrame u) :
@@ -771,10 +771,8 @@ lemma IsFrame.inv (hu : L.IsFrame u) :
   refine ⟨⟨fun i A B φ t ht ↦ ?_, fun i j A t hi hj ↦ ?_⟩,
     fun i A t hi ↦ (u_unit i A t hi).ringInverse⟩
   · -- a ring map sends the inverse of a unit to the inverse of its image
-    have h_map_unit : IsUnit (φ (u i A t)) := (u_unit i A t ht).map φ.hom
     simp only [u_regular i φ t ht]
-    apply h_map_unit.mul_left_cancel
-    rw [mul_inverse_cancel _ h_map_unit, ← map_mul, mul_inverse_cancel _ (u_unit i A t ht), map_one]
+    exact ((u_unit i A t ht).map_ringInverse φ.hom).symm
   · -- both sides are inverse to `u i`
     have hj_inv : u j A t * inverse (u j A t) = 1 := mul_inverse_cancel _ (u_unit j A t hj)
     apply (u_unit i A t hi).mul_left_cancel

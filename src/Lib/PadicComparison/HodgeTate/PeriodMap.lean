@@ -376,8 +376,11 @@ lemma New.Variety.exists_hasHodgeTateWeight {p h : ℕ} {R : CommRingCat} {E k :
     -- It remains that `B` commutes with the pull-back along `u`: `B` is `mapₗ` along the maps
     -- `toGenericPoints`, which are natural in the scheme.
     rw [(B W).symm_apply_eq.mpr]
-    refine (map_comp _ (freeAb.map (toGenericPoints k h_compat Y)) ξ).symm.trans
-      (.trans ?_ (map_comp (freeAb.map (toGenericPoints k h_compat W)) _ ξ))
+    -- `τ Z'` is that map, typed with the source of `B Z'`, so that unification does not unfold `B`
+    let τ (Z' : Over (Spec R)) : freeAb.obj (testPoints.obj Z') ⟶
+        genericOver ⋙ restrictAlg E k ⋙ freeAb (algPointsOf E R Z') :=
+      freeAb.map (toGenericPoints k h_compat Z')
+    refine (map_comp _ (τ Y) ξ).symm.trans (.trans ?_ (map_comp (τ W) _ ξ))
     -- the two composite maps of points agree
     exact congrArg (H.map genericCoeff · (q + h) ξ) hom_ext
 

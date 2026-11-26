@@ -212,14 +212,11 @@ private lemma absNorm_span_natCast_rat {p : ℕ} : absNorm (span {(p : 𝓞 ℚ)
   -- `↓`: `absNorm_span_natCast` applies before simp turns the norm into `Algebra.norm`.
   simp [↓absNorm_span_natCast, rank]
 
-/-- For a prime number `p`, the ideal `(p)` of `𝓞 ℚ` is prime, as its norm `p` is prime. -/
-private lemma prime_span_natCast_rat {p : ℕ} (hp : p.Prime) : _root_.Prime (span {(p : 𝓞 ℚ)}) := by
-  have h_irred : Irreducible (absNorm (span {(p : 𝓞 ℚ)})) := by rwa [absNorm_span_natCast_rat]
-  exact (irreducible_of_irreducible_absNorm h_irred).prime
-
 /-- The place of `ℚ` at a prime number `p`: the prime ideal `(p)` of `𝓞 ℚ`. -/
 def ratPlace {p : ℕ} (hp : p.Prime) : FinPlace ℚ :=
-  ofPrime (p := span {(p : 𝓞 ℚ)}) (by exact prime_span_natCast_rat hp)
+  ofPrime (p := span {(p : 𝓞 ℚ)}) (by
+    apply (irreducible_of_irreducible_absNorm ?_).prime
+    rwa [absNorm_span_natCast_rat])
 
 lemma q_ratPlace {p : ℕ} (hp : p.Prime) : (ratPlace hp).q = p := absNorm_span_natCast_rat
 

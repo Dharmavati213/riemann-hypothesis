@@ -446,14 +446,14 @@ preserves `D.SourceForm`. -/
 noncomputable def IsMarked.scaledHeckeOperator (h : D.IsMarked Λ) (l : Λ) :
     Module.End embValRing D.SourceForm :=
   LinearMap.restrictScalars embValRing <|
-    (p : ℂ) ^ heckeScalingExponent l.1 •
-      (heckeSplit (algFormRep D.columnCount (D.lastEntry 0)) (h.isSplit l.2)
+    (p : ℂ) ^ heckeScalingExponent l.val •
+      (heckeSplit (algFormRep D.columnCount (D.lastEntry 0)) (h.isSplit l.property)
         (D.ceilLogLifts p)).restrict
         fun _ hv ↦
           -- a vector of level `D.levelX 0` is spherical at `l`, by
           -- `maxCompactAt_le_levelX`
           heckeSplit_mem_levelSpace _ (D.ceilLogLifts p)
-            (levelSpace_anti (h.maxCompactAt_le_levelX l.2) hv) IsLevel.le hv
+            (levelSpace_anti (h.maxCompactAt_le_levelX l.property) hv) IsLevel.le hv
 
 /-! ### Collisions and full marks -/
 
@@ -501,7 +501,7 @@ lemma IsMarked.card_mul_transferExponent_add_sum_lowColumns_le (hj : j < D.m) [P
   -- The size of `p < x₁`, as an instance for `D.le_of_hasLogBound`.
   have hp_size : D.HasLogUpper p D.logX₁ :=
     D.hasLogUpper_of_le_of_nonneg hΛ.isSmallNonsplit.1.le p.cast_nonneg
-  have hp : 0 < p := q.1.pos
+  have hp : 0 < p := q.out.pos
   have h_place (σ : D.Φ) (hσ : σ ∈ placesInducing Λ) :
       D.ceilLogLifts p * (D.lowColumns j σ : ℝ) ≤ D.a / p / D.m + ite (σ ∈ D.aPlaces) (D.a / D.x₁)
         0 := by

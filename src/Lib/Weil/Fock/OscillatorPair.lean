@@ -542,7 +542,7 @@ lemma oscillatorRep_detTwist_inr (γ γ' : ℤ) :
       (fun Y ↦ by simp [coe_pairHom, kroneckerBilinear])
     obtain rfl | h_ne := eq_or_ne a b <;>
       simp [kroneckerBilinear, weilDeriv_single_kronecker_one,
-        oscRows, oscRowsUnit, GlModule.E, smul_eq_C_mul, *]
+        oscRows, oscRowsUnit, smul_eq_C_mul, *]
   · -- `z ⊗ 1` is positive definite and keeps the columns.
     refine fun P z hP_ne hP hz_pos ↦ fockInner_detTwist_pos Prod.snd hP_ne hz_pos
       (by simpa [coe_pairHom] using hz_pos.kronecker (PosDef.one (n := C)))

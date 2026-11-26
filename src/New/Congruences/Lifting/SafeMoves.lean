@@ -98,7 +98,7 @@ lemma antitone_shiftedOrders (h_anti : ∀ a : ℕ, Antitone (o a)) (l : ℕ) (n
 
 /-- The coordinate `k.z` of the chart, a Teichmüller lift that is not a unit, lies in the ideal
 `W(𝔪^♭)` of `Ainf`. -/
-lemma z_mem_wittOfMaxIdeal : k.z.1 ∈ wittOfMaxIdeal := by
+lemma z_mem_wittOfMaxIdeal : k.z.val ∈ wittOfMaxIdeal := by
   rw [k.z_eq_teichmuller]
   refine teichmuller_mem_wittOfMaxIdeal fun h ↦ k.chart.not_isUnit_z ?_
   rw [k.seriesMap_X]
@@ -108,9 +108,9 @@ lemma z_mem_wittOfMaxIdeal : k.z.1 ∈ wittOfMaxIdeal := by
 `O(1)` falls into the image `smallPart P.exponent` of `W(𝔪^♭)`. -/
 lemma z_smul_map_mem_smallPart {ξ : (tateLattice O).Ambient}
     (hξ : ξ ∈ (tateLattice O).ainfLattice) :
-    k.z.1 • DiagTensor.map (mkQ (Ideal.span {(p : ℤ_[p]) ^ P.exponent}) ∘ₗ P.toZp) ξ ∈ smallPart
+    k.z.val • DiagTensor.map (mkQ (Ideal.span {(p : ℤ_[p]) ^ P.exponent}) ∘ₗ P.toZp) ξ ∈ smallPart
       P.exponent := by
-  let red := k.z.1 • (DiagTensor.map (mkQ (Ideal.span {(p : ℤ_[p]) ^ P.exponent}) ∘ₗ P.toZp) :
+  let red := k.z.val • (DiagTensor.map (mkQ (Ideal.span {(p : ℤ_[p]) ^ P.exponent}) ∘ₗ P.toZp) :
     (tateLattice O).Ambient →ₗ[WittCFlat] DiagTensor (.of (charRep _ χ))).restrictScalars Ainf
   refine (span_le (p := (smallPart P.exponent).comap red)).2 (Set.forall_mem_range.2 fun t ↦ ?_) hξ
   refine ⟨_, smul_of_tower_mem _ (P.toZp t) (z_mem_wittOfMaxIdeal (k := k)), ?_⟩

@@ -414,7 +414,7 @@ lemma ThetaTori.ThetaTorus.exists_eigenline (b : ℤ) {ρ : 𝓞 E →+* ℂ}
   obtain ⟨ε, hε⟩ := x.exists_std_equiv
   have h_std (d : 𝓞 E) (z : V) : ε (x.intAction d z) =
       ((Φ v₀ d.val * (ε z).fst.fst, star (Φ v₀ d.val) • (ε z).fst.snd),
-        fun w ↦ Φ w.1 d.val • (ε z).snd w) := by
+        fun w ↦ Φ w.val d.val • (ε z).snd w) := by
     -- `using!`: the last component comes out as `Pi.map` of the diagonal maps, which is the
     -- stated function only after unfolding.
     simpa using! LinearMap.congr_fun (hε d) (ε z)
@@ -1093,7 +1093,7 @@ theorem Variety.exists_thetaFamily_of_points (j : ι → κ) (hη : IsDenseFamil
     exact hd
   -- The fibre over `η i` is the base change of `A` along `η i`, so it has the same dimension.
   choose u hu_theta hu_e hu_L _ using fun i : κ ↦
-    h_unif i _ ((smoothOfRelativeDimension_isStableUnderBaseChange _).1
+    h_unif i _ ((smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback
       (isGroupBaseChange_counit (O := 𝓞 E) (A := A) (η i)).isPullback h_dim)
   refine ⟨{ total := A, lineBundle := N, embeds := hN, levelPoints := ς, class_laws := h_class
             relative_dim := h_dim

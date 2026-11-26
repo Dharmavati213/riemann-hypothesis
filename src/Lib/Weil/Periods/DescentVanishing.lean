@@ -734,10 +734,7 @@ lemma DescentsVanish.integral_frameChar_eq_zero {T : Set (FinPlace E)} {Y : G E 
       (isRapid_of_isCocompact hY_cont hY_inv V.isCocompact_Gamma) υ f g₀
   have h_gram : IsUnit (x₀ᴴ * V.J * x₀) :=
     ⟨1, by simp [x₀, V, inclMatrix, Matrix.mul_apply, ← ext_iff, Matrix.one_apply]⟩
-  obtain ⟨h_int, h_coeff⟩ : Integrable (fun g ↦ A.thetaTerm V υ 1 f g₀ x₀ g * Y g) ν ∧
-      A.centreCoeff (j (E := E) • (x₀ᴴ * V.J * x₀))
-          (fun g ↦ ∫ h, pairTheta (hyperbolicSpace E n₁) V υ 1 f (g, h) * Y h ∂V.quotMeasure) g₀ =
-        ∫ g, A.thetaTerm V υ 1 f g₀ x₀ g * Y g ∂ν :=
+  obtain ⟨h_int, h_coeff⟩ :=
     (A.centreCoeff_eq_integral_stabilizer h_terms hY_cont hY_inv h_gram
       (mem_map_Gamma_secondBlock o hs)).right
   have h_zero : ∫ g, A.thetaTerm V υ 1 f g₀ x₀ g * Y g ∂ν = 0 := by

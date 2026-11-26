@@ -281,7 +281,7 @@ lemma lineTerm_eq_comp_zeroTerm (β : Bool) (a : 𝔸 E) :
     -- The hypotheses of `zeroTerm_congr`: the frames `k` are orthogonal, the embeddings `i` equal.
     cases β <;> apply zeroTerm_congr <;>
       simp [planeModel, planeSplitting, removePlanes, Splitting.symm, Splitting.comp, hom,
-        homSource, homTarget, conjTranspose_J, ← W'.J⁻¹.mul_assoc, ← Matrix.mul_assoc _ (i _),
+        homSource, homTarget, conjTranspose_J, ← Matrix.mul_assoc _ (i _),
         conjTranspose_nonsing_inv, conjTranspose_fromCols_eq_fromRows_conjTranspose,
         fromCols_mul_fromRows, conjTranspose_fromRows_eq_fromCols_conjTranspose, gram_kk, gram_ki,
         gram_kl, gram_lk, conjTranspose_kronecker,

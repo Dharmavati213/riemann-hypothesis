@@ -3,6 +3,7 @@ module
 public import Lib.ClassField.Places.GaloisDefs
 public import Lib.General.Algebra.AbsIntegrallyClosed
 public import Lib.General.Algebra.AdicCompletion
+public import TauCeti.Analysis.Normed.Ring.Ultra
 public import TauCeti.NumberTheory.Padics.AlgebraicClosure.Basic
 public import TauCeti.Topology.Algebra.UniformMulAction
 public import TauCeti.Topology.MetricSpace.IsometricSMul
@@ -334,7 +335,7 @@ inclusion `coe'` of `ℚ̄_p` into its completion `ℂ_p`, of the fixed field of
 lemma ax_mem_closure_fixedField (J : Subgroup (Gp p)) {x : ℂ_[p]} (hx : ∀ g ∈ J, g • x = x) :
     x ∈ closure (coe' '' fixedField J) := by
   -- this is Tau Ceti's `PadicComplex.fixedPoints_eq_closure_fixedField`
-  have hx_fixed : x ∈ MulAction.fixedPoints J ℂ_[p] := fun g ↦ hx g g.2
+  have hx_fixed : x ∈ MulAction.fixedPoints J ℂ_[p] := fun g ↦ hx g g.property
   rw [PadicComplex.fixedPoints_eq_closure_fixedField] at hx_fixed
   simpa [Set.image_eq_range] using hx_fixed
 

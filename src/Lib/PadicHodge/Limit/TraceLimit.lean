@@ -721,49 +721,14 @@ private lemma periodTensorMap_sum_lTensor_eq [L : PadicPlaceEmbedding E A ℓ] {
       linearFrob_twist_cyclotomicGp h_crys.isPotentiallyCrystalline hw d viaGroupRing_tateTwistHom]
   choose G hG using fun N ↦ (Y N).exists_finset
   -- apply `Q.coeff N` to `hY N`, untwist by `h_pow`, and sum over `N < n`
-  have h_sum : ∑ N ∈ range n, coeffEnd (PadicAlgCl ℓ) (σ.Index → PadicAlgCl ℓ) (Q.coeff N)
-        (periodTensorMap Amax Bmax (applyVec u.toLinearMap v) (Y N)) =
-      ∑ N ∈ range n, coeffEnd (PadicAlgCl ℓ) (σ.Index → PadicAlgCl ℓ) (Q.coeff N)
-        ((((ℓ ^ (k * d) : Bmax) • linearFrob (decompRep σ.rep A) ⟨s, hs⟩ k) ^ N)
-          ((ℓ ^ (k * d)) ^ (n - N) •
-            periodTensorMap Amax Bmax (applyVec u.toLinearMap v) (δ ⊗ₜ[ℤ_[ℓ]] 1))) :=
-    Finset.sum_congr rfl fun N _ ↦ by rw [hY N, h_pow N, map_nsmul]
+  have h_term (N : ℕ) := congrArg
+    (coeffEnd (PadicAlgCl ℓ) (σ.Index → PadicAlgCl ℓ) (Q.coeff N)) (hY N)
+  simp only [h_pow, map_nsmul] at h_term
+  have h_sum := Finset.sum_congr (rfl : range n = range n) fun N _ ↦ h_term N
   -- `pow_add` with `mem_range_le` (`N ≤ n`) merges `ℓ ^ (k d N)` and `ℓ ^ (k d (n - N))`
   simpa +contextual [eval₂_eq_sum_range' _ hQ, smul_sum, periodTensorMap, hG, smul_comm _ δ,
     tmul_eq_smul_one_tmul δ, ← Nat.cast_smul_eq_nsmul Bmax, smul_smul, ← pow_add,
     mem_range_le, _root_.smul_pow] using h_sum
-
-omit [PadicIso ℓ] in
-/-- Integral representatives. In the setting of `periodTensorMap_sum_lTensor_eq`, let `u ∘ q` be the
-action of the group ring on `σ` (`hu`), and let `q (y f N)` be the element that the linear form `f`
-reads off `Y N` (`hy`). Write `V` for the space `σ.Index → ℚ̄_ℓ` of `σ`. Then one `M ∈ Amax ⊗ V`
-has image `(δ • (ℓ ^ (k d)) ^ n) • Q(β) (1 ⊗ v)` in `Bmax ⊗ V`, and every `f` reads `M` as
-`(∑ N < n, Q.coeff N • y f N) *ᵥ v` on `σ`. -/
-private lemma exists_periodTensorMap_eq_and_lift_eq [L : PadicPlaceEmbedding E A ℓ] {s : Gal(Ω/E)}
-    (hs : s ∈ decompGroup Gal(Ω/E) A) {k d n : ℕ} (hw : IsWeilPair (L.toGp ⟨s, hs⟩) k)
-    {σ : PadicRep Gal(Ω/E) ℓ}
-    (h_twist : IsCrystallineUpTo (2 * d) (viaGroupRing (tateTwistHom A d) σ))
-    (h_crys : IsCrystalline (decompRep σ.rep A)) {T : Type} [Ring T] [Algebra ℤ_[ℓ] T]
-    (q : ℤ_[ℓ][Gal(Ω/E)] →ₐ[ℤ_[ℓ]] T) (u : T →ₐ[ℤ_[ℓ]] Matrix σ.Index σ.Index (PadicAlgCl ℓ))
-    (hu : ∀ z : ℤ_[ℓ][Gal(Ω/E)], u (q z) = groupRingHom σ z) (δ : Amax) (Y : ℕ → Amax ⊗[ℤ_[ℓ]] T)
-    (hY : ∀ (N : ℕ) (v : σ.Index → PadicAlgCl ℓ),
-      periodTensorMap Amax Bmax (applyVec u.toLinearMap v) (Y N) =
-        linearFrob (viaGroupRing (tateTwistHom A d) σ) (⟨s, hs⟩ ^ N) (N * k)
-          (periodTensorMap Amax Bmax (applyVec u.toLinearMap v)
-            ((ℓ ^ (k * d)) ^ (n - N) • δ ⊗ₜ[ℤ_[ℓ]] 1)))
-    (y : (Amax →ₗ[ℤ_[ℓ]] ℤ_[ℓ]) → ℕ → ℤ_[ℓ][Gal(Ω/E)])
-    (hy : ∀ (f : Amax →ₗ[ℤ_[ℓ]] ℤ_[ℓ]) (N : ℕ), q (y f N) = lift (lsmul ℤ_[ℓ] T ∘ₗ f) (Y N))
-    {Q : (PadicAlgCl ℓ)[X]} (hQ : Q.natDegree < n) (v : σ.Index → PadicAlgCl ℓ) :
-    ∃ M : Amax ⊗[ℤ_[ℓ]] (σ.Index → PadicAlgCl ℓ),
-      periodTensorMap Amax Bmax id M =
-        (δ • (ℓ ^ (k * d) : Bmax) ^ n) • Q.eval₂ (coeffEnd (PadicAlgCl ℓ) (σ.Index → PadicAlgCl ℓ))
-          (linearFrob (decompRep σ.rep A) ⟨s, hs⟩ k) (1 ⊗ₜ v) ∧
-      ∀ f : Amax →ₗ[ℤ_[ℓ]] ℤ_[ℓ], lift (lsmul ℤ_[ℓ] (σ.Index → PadicAlgCl ℓ) ∘ₗ f) M =
-        (∑ N ∈ range n, Q.coeff N • groupRingHom σ (y f N)) *ᵥ v := by
-  refine ⟨∑ N ∈ range n, lTensor Amax (Q.coeff N • applyVec u v) (Y N), ?_, fun f ↦ ?_⟩
-  · exact periodTensorMap_sum_lTensor_eq hs hw h_twist h_crys u δ Y v (fun N ↦ hY N v) hQ
-  · choose G hG using fun N ↦ (Y N).exists_finset
-    simp [← hu, hy, hG, sum_mulVec, smul_mulVec, smul_sum, smul_comm (Q.coeff _)]
 
 /-- The case of `polyKillsAt` at a place `A` above `ℓ`, given by an embedding `L` of Ω in ℚ̄_ℓ.
 Assume the trace of `r` is the uniform limit along `F` of ∑ᵢ `a η i`·tr `ρ η i` (`h`). Let `Q η i`
@@ -818,20 +783,28 @@ theorem isKilledBy (h : IsTraceLimit r A F a ρ) [L : PadicPlaceEmbedding E A �
   -- The group ring elements that a linear form f reads off `frobPow θ N`.
   let relElt (f : Amax →ₗ[ℤ_[ℓ]] ℤ_[ℓ]) (θ : I) (N : ℕ) : ℤ_[ℓ][Gal(Ω/E)] :=
     surjInv (hq θ) (lift (lsmul ℤ_[ℓ] (T θ) ∘ₗ f) (frobPow θ N))
-  -- δ ℓ ^ (k d n) Q' (β) (1 ⊗ v) is the image of some `M θ o hQ' v ∈ Amax ⊗ _` (`hM`), and
-  -- `h_read` says how each f reads that element as a relation in the `relElt f θ N`.
-  have h_int (θ : I) (o : Option (ι θ)) {Q' : (PadicAlgCl ℓ)[X]} (hQ' : Q'.natDegree < n)
+  -- The coefficient-weighted sum of the Frobenius representatives has period image
+  -- δ ℓ ^ (k d n) Q' (β) (1 ⊗ v). A linear form reads it as the same sum of group ring actions.
+  let M (θ : I) (o : Option (ι θ)) (Q' : (PadicAlgCl ℓ)[X]) (v : (X θ o).Index → PadicAlgCl ℓ) :=
+    ∑ N ∈ range n, lTensor Amax (Q'.coeff N • applyVec (u θ o) v) (frobPow θ N)
+  have hM (θ : I) (o : Option (ι θ)) {Q' : (PadicAlgCl ℓ)[X]} (hQ' : Q'.natDegree < n)
       (v : (X θ o).Index → PadicAlgCl ℓ) :=
-    exists_periodTensorMap_eq_and_lift_eq hs hw (h_in θ o) (h_crys θ o) (q θ) (u θ o) (hu θ o) δ
-      (frobPow θ) (fun N v ↦ h_frobPow θ N o v) (fun f N ↦ relElt f θ N)
-      (fun f N ↦ surjInv_eq (hq θ) _) hQ' v
-  choose M hM h_read using h_int
+    periodTensorMap_sum_lTensor_eq hs hw (h_in θ o) (h_crys θ o) (u θ o) δ (frobPow θ) v
+      (fun N ↦ h_frobPow θ N o v) hQ'
+  have h_read (θ : I) (o : Option (ι θ)) (Q' : (PadicAlgCl ℓ)[X])
+      (v : (X θ o).Index → PadicAlgCl ℓ) (f : Amax →ₗ[ℤ_[ℓ]] ℤ_[ℓ]) :
+      lift (lsmul ℤ_[ℓ] ((X θ o).Index → PadicAlgCl ℓ) ∘ₗ f) (M θ o Q' v) =
+        (∑ N ∈ range n, Q'.coeff N • groupRingHom (X θ o) (relElt f θ N)) *ᵥ v := by
+    choose G hG using fun N ↦ (frobPow θ N).exists_finset
+    have h_rel (N : ℕ) : q θ (relElt f θ N) = _ := surjInv_eq (hq θ) _
+    simp [M, ← hu, h_rel, hG, sum_mulVec, smul_mulVec, smul_sum,
+      smul_comm (Q'.coeff _)]
   have h_zero (f : Amax →ₗ[ℤ_[ℓ]] ℤ_[ℓ]) :
       ∑ N ∈ range n, P.coeff N • groupRingHom ⟨r⟩ (relElt f t₀ N) = 0 := by
     refine h.eq_zero_of_relation (n := n) h_coeff (relElt f)
       (fun θ x ↦ ext_iff_mulVec.mpr fun v ↦ ?_) fun θ ↦ ext_iff_mulVec.mpr fun v ↦ ?_
     · -- `Q θ x` kills s on `ρ θ x`.
-      have hMx : M θ x (hQ θ x) v = 0 := by
+      have hMx : M θ x (Q θ x) v = 0 := by
         obtain ⟨-, h_Q_zero⟩ := (h_kill θ x).right hw
         have h_Q : (δ • (ℓ ^ (k * d) : Bmax) ^ n) • (Q θ x).eval₂
             (coeffEnd (PadicAlgCl ℓ) ((ρ θ x).Index → PadicAlgCl ℓ))
@@ -841,28 +814,27 @@ theorem isKilledBy (h : IsTraceLimit r A F a ρ) [L : PadicPlaceEmbedding E A �
         rw [map_zero]
         exact h_Q
       -- `M θ x = 0`, so the value read off it is `0`
-      have h_read_x := h_read θ x (hQ θ x) v f
+      have h_read_x := h_read θ x (Q θ x) v f
       rw [hMx, map_zero] at h_read_x
       rw [zero_mulVec]
       exact h_read_x.symm
     · -- For r the element M does not depend on θ.
-      have h_indep : M θ none hP v = M t₀ none hP v :=
+      have h_indep : M θ none P v = M t₀ none P v :=
         periodTensorMap_injective ((hM θ none hP v).trans (hM t₀ none hP v).symm)
-      exact (h_read θ none hP v f).symm.trans
-        ((congrArg _ h_indep).trans (h_read t₀ none hP v f))
+      exact (h_read θ none P v f).symm.trans
+        ((congrArg _ h_indep).trans (h_read t₀ none P v f))
   -- The coordinates of `Amax` separate points, so M vanishes; δ and ℓ are cancelled.
-  have hMr : M t₀ none hP v = 0 := by
+  have hMr : M t₀ none P v = 0 := by
     refine tensor_eq_zero_of_separating c.eq_zero_of_coord _ fun i ↦ ?_
     -- each coordinate reads `M` as the relation `h_zero` applied to `v`
-    exact (h_read t₀ none hP v _).trans
+    exact (h_read t₀ none P v _).trans
       ((congrArg (· *ᵥ v) (h_zero _)).trans (zero_mulVec v))
   -- `hM` at `t₀` for `r` (`X t₀ none` unfolds to `r`): the scaled value is `0`
   have h_scaled : (δ • (ℓ ^ (k * d) : Bmax) ^ n) •
       P.eval₂ (coeffEnd (PadicAlgCl ℓ) (m → PadicAlgCl ℓ)) (linearFrob (decompRep r A) ⟨s, hs⟩ k)
         (1 ⊗ₜ v) = 0 := by
-    have h_t₀ := hM t₀ none hP v
-    rw [hMr, map_zero] at h_t₀
-    exact h_t₀.symm
+    exact (hM t₀ none hP v).symm.trans
+      ((congrArg (periodTensorMap Amax Bmax id) hMr).trans (map_zero _))
   simpa [hδ.ne_zero, Algebra.smul_def δ, (NeZero.of_faithfulSMul ℚ_[ℓ] _ ℓ).out,
     -map_eq_zero, -isUnit_map_iff] using h_scaled
 

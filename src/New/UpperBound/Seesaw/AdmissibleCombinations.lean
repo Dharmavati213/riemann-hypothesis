@@ -842,7 +842,7 @@ lemma star_idem_smul_mem_translations {q : ℕ} (𝔪 : Modulus E) {d : Ô E}
     simp only [t, star_mul', star_natCast]
     ring
   have h_int : q * t ∈ Ô E := by
-    simpa only [h_eq] using star_mem_Ô (mul_mem (idem_mem_Ô _) (mul_mem h_dq (z i).2))
+    simpa only [h_eq] using star_mem_Ô (mul_mem (idem_mem_Ô _) (mul_mem h_dq (z i).property))
   have h_unit : Valued.v ((q : 𝔸f E) w) = 1 := by simpa using v_algebraMap_eq_one hw
   calc Valued.v (t w) = Valued.v ((q : 𝔸f E) w * t w) := by rw [map_mul, h_unit, one_mul]
     _ ≤ 1 := mem_Ô.1 h_int w

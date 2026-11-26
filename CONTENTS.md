@@ -398,6 +398,7 @@ The heads of these files give an overview of a theory: `Lib/ClassField/Global/Ar
 - `New/Congruences/Selmer/StickelbergerSystems` (162): Stickelberger systems
 - `New/Congruences/Selmer/StickelbergerLine` (383): Stickelberger systems on a line
 - `New/Congruences/Selmer/Line` (421): Restriction to a line
+- `New/Congruences/Selmer/TiedClassCounts` (90): The descent bounds for tied Selmer groups, stated for classes
 - `New/Congruences/Selmer/RootsOfUnity` (353): Roots of unity `ζ` with polynomials hardly more divisible at `ζ - 1` than at given points
 - `New/Congruences/Selmer/GeneralTheorem` (279): Twisting, general form
 - `New/Congruences/Selmer/MainSummands` (230): Main summands are Selmer data
@@ -447,7 +448,7 @@ The heads of these files give an overview of a theory: `Lib/ClassField/Global/Ar
 
 ## Lib
 
-- `Lib/Speed` (56): Speed settings
+- `Lib/Speed` (23): Speed settings
 - `Lib/Base` (7): The adjoint of a matrix for the Hermitian dot product
 
 ### Adelic: Adeles, unitary groups and automorphic forms
@@ -611,6 +612,8 @@ The heads of these files give an overview of a theory: `Lib/ClassField/Global/Ar
 - `Lib/ClassField/GreenbergWiles/CocycleCounts` (539): Counts of trivialised Galois cocycles for projective modules and central scalars
 - `Lib/ClassField/GreenbergWiles/SelmerRelations` (343): Relations at split primes and their number (Greenberg–Wiles)
 - `Lib/ClassField/GreenbergWiles/Relations` (414): Relations at split primes
+- `Lib/ClassField/GreenbergWiles/SelmerClasses` (190): Selmer groups of cohomology classes and the Greenberg–Wiles bound for them
+- `Lib/ClassField/GreenbergWiles/RelationClasses` (50): The Greenberg–Wiles bound for classes in a relation setting
 - `Lib/ClassField/GreenbergWiles/RelationsModL` (319): Relations modulo ℓ
 
 **HeckeCharacter**: Hecke characters and characters of U(1)

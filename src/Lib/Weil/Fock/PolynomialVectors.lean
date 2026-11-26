@@ -250,35 +250,22 @@ private lemma differentiableAt_realWeil_polyVector [DecidableEq ι] {γ : ℝ �
     (hγ : HasDerivAt (fun t : ℝ ↦ ((γ t : GL ι ℂ) : Matrix ι ι ℂ)) Y 0) (P : MvPolynomial ι ℂ) :
     DifferentiableAt ℝ (fun t : ℝ ↦ realWeil (γ t) (polyVector ε P)) 0 := by
   -- By `weilRep_eq_integral`, ω₀(γ(t))v_P = conj(det(P₊ + P₋γ(t))) • I(γ(t)⁻¹, (γ(t)⁻¹)*), where
-  -- P₊ = `posProj ε`, P₋ = 1 − P₊ and I(a, b) is the integral in `integral` below. Its integrand
-  -- is holomorphic in `(a, b)`, so I is differentiable at `a₀` by
-  -- `differentiableAt_integral_smul_realHeisenbergOp`; the determinant is differentiable by
-  -- `hasDerivAt_det_posProj_add_mul`.
-  have inv : DifferentiableAt ℝ (fun t : ℝ ↦ Ring.inverse ((γ t : GL ι ℂ) : Matrix ι ι ℂ)) 0 :=
-    hγ.differentiableAt.inverse (by simp)
+  -- I is differentiable by `differentiableAt_integral_smul_realHeisenbergOp` and the determinant
+  -- by `hasDerivAt_det_posProj_add_mul`.
+  have inv := hγ.differentiableAt.inverse (by simp)
   let f : Matrix ι ι ℂ × Matrix ι ι ℂ → ℂ × (ι → ℂ) → (ι → ℂ) × ℂ := fun (a, b) (_, y) ↦
     (a *ᵥ y + posProj ε *ᵥ (star y ᵥ* b - a *ᵥ y), -(star y ᵥ* b ⬝ᵥ a *ᵥ y) / 2)
-  let g₀ : Matrix ι ι ℂ := Ring.inverse ((γ 0 : GL ι ℂ) : Matrix ι ι ℂ)
-  let a₀ : Matrix ι ι ℂ × Matrix ι ι ℂ := (g₀, star g₀)
-  have f_diff (x : ℂ × (ι → ℂ)) : Differentiable ℂ (f · x) := by
-    fun_prop [mulVec, vecMul, dotProduct]
-  have f_cont : Continuous f.uncurry := by fun_prop [mulVec, vecMul, dotProduct]
-  have f_at_a₀ (y : ℂ × (ι → ℂ)) : f a₀ y =
-    (holomorphicCoord ε y.snd, -(star y.snd ⬝ᵥ y.snd) / 2) := by
-    simp [f, a₀, g₀, hγ_zero, holomorphicCoord]
-  have f_hom (z : Matrix ι ι ℂ × Matrix ι ι ℂ) (r : ℝ) (y : ℂ × (ι → ℂ)) :
-      f z (r • y) = (r • (f z y).fst, r ^ 2 • (f z y).snd) := by
-    simp [f, star_trivial, smul_vecMul, field, ← smul_sub, mulVec_smul]
-  have integral : DifferentiableAt ℂ (fun z : Matrix ι ι ℂ × Matrix ι ι ℂ ↦
-        ∫ x : ι → ℂ, (eval (f z (1, x)).fst P * Complex.exp (f z (1, x)).snd) •
-          realHeisenbergOp x (vacVector : fockSpace ε) ∂normalizedVolume ι)
-      a₀ := differentiableAt_integral_smul_realHeisenbergOp ε P f f_diff f_cont f_at_a₀ f_hom
   -- (`using!`: after `simp` the two sides differ only in the instance paths of the module
   -- structures, which plain `simpa` does not unfold.)
   simpa [f, star_mulVec, weilRep_eq_integral, ← principalMinor_sign_eq_det, holomorphicCoord,
     realVac] using!
     (hasDerivAt_det_posProj_add_mul hγ_zero hγ).differentiableAt.star.smul
-      ((integral.restrictScalars ℝ).comp 0 (inv.prodMk inv.star))
+      (((differentiableAt_integral_smul_realHeisenbergOp ε P f
+        (fun _ ↦ by fun_prop [mulVec, vecMul, dotProduct])
+        (by fun_prop [mulVec, vecMul, dotProduct])
+        (fun _ ↦ by simp [f, hγ_zero, holomorphicCoord])
+        (fun _ _ _ ↦ by simp [f, star_trivial, smul_vecMul, field, ← smul_sub, mulVec_smul])
+      ).restrictScalars ℝ).comp 0 (inv.prodMk inv.star))
 
 /-- The polynomial vector of A_a B_b 1 = `New.Fock.glOp` ε a b 1 (A_a = X_a or −∂_a, B_b = ∂_b or
 X_b by the signs) takes at 0 the value −1 if a = b has sign −1, and 0 otherwise: minus the (b, a)

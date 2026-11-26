@@ -441,7 +441,7 @@ def algFormCentralRep {J : Subgroup (Gf E n)} {χ : J →* ℂ} :
     Representation ℂ (unitary (𝔸f E)) (levelSpace (algFormRep κ e) J χ) :=
   Representation.subrepresentation ((algFormRep κ e).comp (scalarFin n))
     (levelSpace (algFormRep κ e) J χ) fun _ _ hφ ↦ map_mem_levelSpace_of_commute hφ fun k ↦
-      (Seesaw.commute_scalarFin k.1).symm.map (algFormRep κ e)
+      (Seesaw.commute_scalarFin k.val).symm.map (algFormRep κ e)
 
 /-- For `φ` in the level space of `algFormRep κ e` for `J` and `χ`, the form underlying
 `algFormCentralRep z φ` is `φ` right-translated by the scalar matrix `scalarFin n z` under

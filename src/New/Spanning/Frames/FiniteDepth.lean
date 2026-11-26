@@ -483,7 +483,7 @@ theorem exists_volume_stableProducts_le {F : PlaceData ι T (m + 1)} [h : IsLarg
   -- `Gauge.hasMatrixSize_sub_one_of_stableProducts` the matrix `(x - 1) / g` has size `99 * 𝔰.n`.
   have h_scale : (α ^ (10 * 𝔰.n) * C).val ∈ integers := mul_mem (pow_mem hα_mem _) hC
   let Γ' : Gauge F :=
-    h.gauge (α ^ (10 * 𝔰.n) * C) h_scale (by simp [hα_star, hC_star, mul_comm])
+    h.gauge (α ^ (10 * 𝔰.n) * C) h_scale (by simp [hα_star, hC_star])
   have h_subset : Γ.ofSize (10 * 𝔰.n) ⊆ Γ'.ofSize 1 := by
     intro b hb
     have hb_int : α.val ^ (10 * 𝔰.n) * b ∈ integers := by simpa [hΓ] using hb

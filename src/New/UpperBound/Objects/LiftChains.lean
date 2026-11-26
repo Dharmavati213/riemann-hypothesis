@@ -137,7 +137,7 @@ theorem TensorChain.lift_algFormRep_of_map_eq {z : ∀ i : ℕ, Gf E (n i)}
 /-- Let `φ` be fixed by the level `K 0`, and let each `a j` lie in `K j`. Acting on each datum `Φ i`
 by `(a i, a (i + 1))` and applying the chain to `φ` gives the right translate by `a j` of the chain
 applied to `φ`. -/
-lemma chain_equivariant [WeilData E] {φ : AlgForm (n 0) κ (e 0)}
+lemma chain_equivariant {φ : AlgForm (n 0) κ (e 0)}
     (hφ : φ ∈ levelSpace (algFormRep κ (e 0)) (K 0)) (a : ∀ j : ℕ, K j)
     (Φ : (j : ℕ) → S j) (j : ℕ) :
     chain k (fun i : ℕ ↦ (k i).ω (a i, (a (i + 1)).val) (Φ i)) j φ =
@@ -219,7 +219,7 @@ each datum `Φ x j` by `ω(a j, a (j + 1))`, with `a m = 1`. Let the levels `K j
 trivial stabilisers `classAut`. Then ∑_x L_x(value at `g m` of the chain with data `Φ x` applied to
 `φ`) is the sum, over tuples `c` of double cosets `StdClasses (K j)`, `j < m`, of ∑_x
 L_x(`kernelProduct`). -/
-theorem IsJointlyInvariant.sum_chain_eq_sum_kernelProduct [WeilData E]
+theorem IsJointlyInvariant.sum_chain_eq_sum_kernelProduct
     {X : Type*} {m : ℕ} {s : Finset X}
     {L : X → (WeylIndex (n m) κ → ℂ) →ₗ[ℂ] M} {Φ : X → ∀ j : ℕ, S j}
     (h_inv : IsJointlyInvariant k m s L Φ)
@@ -514,7 +514,7 @@ elements reduce to `1` at the chosen places above the prime `D.levelPrime i`. If
 `4 * D.n D.m` elements, four times the rank of the last stage, the stabiliser of each coset gK in
 the rational unitary group is trivial. -/
 theorem classAut_eq_bot_of_le_levelOf_chosenPlace (i : Fin 2)
-    (hK : K ≤ levelOf (n := n) (fun w : D.ChosenPlace i ↦ w.1) ⊥)
+    (hK : K ≤ levelOf (n := n) (fun w : D.ChosenPlace i ↦ w.val) ⊥)
     (hn : Fintype.card n ≤ 4 * D.n D.m) (g : Gf D.E n) : classAut stdRatPoints K g = ⊥ := by
   -- `Variety.classAut_eq_bot` asks that the norms of the places multiply to more than
   -- `(2 * card n) ^ [E : ℚ]`. The `f` places have norm p_i, and `[E : ℚ] = 2 * f`.
@@ -532,7 +532,7 @@ theorem classAut_eq_bot_of_le_levelOf_chosenPlace (i : Fin 2)
 sufficiently small: the stabiliser of each point gK in the rational unitary group is trivial. -/
 lemma classAut_eq_bot_of_le_chosenLevel (hK : K ≤ D.chosenLevel)
     (hn : Fintype.card n ≤ 2 * D.n D.m) : ∀ g : Gf D.E n, classAut stdRatPoints K g = ⊥ := by
-  have h_le : D.chosenLevel ≤ levelOf (n := n) (fun w : D.ChosenPlace 0 ↦ w.1) ⊥ := by
+  have h_le : D.chosenLevel ≤ levelOf (n := n) (fun w : D.ChosenPlace 0 ↦ w.val) ⊥ := by
     intro k hk
     obtain ⟨hk_int, hk_red⟩ := mem_levelOf.1 hk
     exact mem_levelOf.2 ⟨hk_int, mem_bot.2 (funext fun w ↦ congrFun (mem_bot.1 hk_red) ⟨0, w⟩)⟩

@@ -155,17 +155,17 @@ lemma exists_rescale_theta_eq_pow_mul_aeval (hp : chiK d p ≠ 1) :
       2 * R.natDegree < primeNorm d p ∧
       rescale (ιₚ (piPrime d p)) (taylorVia ιₚ C.θ) =
         taylorVia ιₚ C.θ ^ primeNorm d p * R.aeval (taylorVia ιₚ C.translatedX) := by
-  -- `θ(π z)` is an even section of degree `q` with integral torsion values.
+  -- `θ(π z)` is an even section of degree `q`, bounded by the `q`-th power of the naive height.
   have h_isog : C.IsIsogeny C.periodPair (piPrime d p) (primeNorm d p) :=
     ⟨C.mul_mem_of_quadInt (piPrime_mem_quadInt d), by rw [piPrime_mul_conj d hp]⟩
   let f : ℂ → ℂ := fun z ↦ C.θ (piPrime d p * z)
   have h_mem : f ∈ C.sections (primeNorm d p) := by
     simpa only [one_mul] using C.comp_mul_mem_sections h_isog C.theta_mem
-  have h_int : C.HasIntegralValues (primeNorm d p) f := by
-    simpa only [one_mul] using C.hasIntegralValues_theta.comp_isogeny h_isog
+  have h_le (z : ℂ) : ‖ιₚ (f z)‖ ≤ C.naiveHeight z ^ primeNorm d p :=
+    (C.norm_theta_le_naiveHeight _).trans (C.naiveHeight_mul_le h_isog z)
   have h_even : f.Even := fun z ↦ by simp only [f, mul_neg, theta_neg]
   obtain ⟨R, hR⟩ : ∃ R : Polynomial ℂ, C.IsIntegralEvenExpansion (primeNorm d p) f R :=
-    C.exists_polynomial_of_even h_mem h_int h_even
+    C.exists_polynomial_of_even h_mem h_le h_even
   refine ⟨R.map ιₚ, ?_, ?_⟩
   · obtain ⟨k, hk⟩ : Odd (primeNorm d p) := odd_primeNorm hp
     have h_deg : 2 * R.natDegree ≤ primeNorm d p := hR.two_mul_natDegree_le

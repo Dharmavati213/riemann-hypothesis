@@ -326,7 +326,7 @@ lemma besselFn_adelicToInf_mul_eq_prod_wave_smul {x : S.G (𝔸 E)} {side : Full
   have h_loc (v : InfinitePlace E) (g : 𝔰.G₁) :
     (S.besselSystem v).besselFn side (S.adelicToInf x v * g) =
       wave (simpleRootSum (S.adelicToInf x v)) • (S.besselSystem v).besselFn side g :=
-    ((S.besselSystem v).isCutPair.isBesselFunction side).2 _ (h_inf v) g
+    ((S.besselSystem v).isCutPair.isBesselFunction side).map_unipotent_mul _ (h_inf v) g
   funext i
   simp [besselFn, h_loc, prod_mul_distrib]
 
@@ -363,7 +363,7 @@ factor by which multiplication by `D` scales Haar measure. It is `0` unless all 
 products lie in the ring of integers `SemilocalField.O`. -/
 noncomputable def finHeadWeight {A : Type*} [SemilocalField A] (K i : ℕ) (p : ℕ → Aˣ) : ℝ :=
   ∏ l ∈ Finset.range i,
-    let D : A := ∏ a ∈ Finset.range (l + 1), (p a).1
+    let D : A := ∏ a ∈ Finset.range (l + 1), (p a).val
     if D ∈ SemilocalField.O then √(genIndex D) ^ K else 0
 
 open Matrix Fin Sum Floors Finset
@@ -565,7 +565,7 @@ lemma intGL_map_reduceAboveM (k : S.latticeStabilizer) (i : Fin 2) (w : S.chosen
       rw [U.form_mul_inv_eq]
     simpa only [transpose_mul, Matrix.map_mul, transpose_splitGram, map_splitGram_latticeMiddle]
       using h_form
-  have h_conj : (intGL.map (S.reduceAboveM (⟨i, w⟩, true)) ⟨k, k.2⟩).val =
+  have h_conj : (intGL.map (S.reduceAboveM (⟨i, w⟩, true)) ⟨k, k.property⟩).val =
       Aᴴᵀ.map (reduceAt p) := rfl
   have h_inv : (invTransposeGL (S.reduction k i w)).val = A_invᵀ.map (reduceAt p) := rfl
   rw [idOrInvAdjoint_true, invAdjoint, MulAut.mul_apply, MulAut.conj_apply, inv_inv, mul_assoc,
@@ -624,7 +624,7 @@ to `1` modulo the level `M = S.ideleM`, that is, `M⁻¹ (k - 1)` has integral e
 lemma reduction_eq_one_iff (k : S.latticeStabilizer) :
     S.reduction k = 1 ↔ IsIntMatrix (Ô E)
       (S.ideleM⁻¹ • (((k : S.GFin) : Matrix 𝔰.BesselIndex 𝔰.BesselIndex (𝔸f E)) - 1)) := by
-  let k' : intGL 𝔰.BesselIndex (Ô E) := ⟨k, k.2⟩
+  let k' : intGL 𝔰.BesselIndex (Ô E) := ⟨k, k.property⟩
   calc
     -- At a conjugate place the reduction is the inverse adjoint of the one at the place itself.
     _ ↔ ∀ (i : Fin 2) (w : S.chosenPlaces i) (b : Bool),
@@ -714,31 +714,24 @@ closure of the image of 𝖴(E). -/
 lemma New.besselU_dense {T : 𝔰.Form E} [IsHermitianUnit T] {T' : 𝔰.Form (𝔸f E)}
     (hT : T.splitGram.map (↑) = T'.splitGram) :
     T'.besselU ≤ (T.besselU.map (U.map (algebraMap E (𝔸f E)) (h := hT))).topologicalClosure := by
-  have : IsHermitianUnit T'.splitGram := by
-    rw [← hT]
-    exact ⟨IsHermitian.map conjTranspose_eq _ fun _ ↦ by simp, isUnit.map (mapMatrix _)⟩
-  set C : Subgroup T'.G :=
-    (T.besselU.map (U.map (algebraMap E (𝔸f E)) (h := hT))).topologicalClosure
-  -- `besselU` is built floor by floor from the groups `floorUnipotent l`, so it is enough that each
-  -- of them lies in the closure.
-  suffices h_floor : ∀ l : ℕ, ∀ x ∈ floorUnipotent l, x ∈ C by
-    rw [← unipotentBelow_eq_besselU (l := 𝔰.ϱ) le_rfl]
-    exact unipotentBelow_induction (C := fun _ x ↦ x ∈ C) (one_mem C)
-      (fun l x hx y hy ↦ mul_mem (h_floor l x hx) hy) 𝔰.ϱ
-  intro l x hx
+  have : IsHermitianUnit T'.splitGram :=
+    hT ▸ ⟨IsHermitian.map conjTranspose_eq _ fun _ ↦ by simp, isUnit.map (mapMatrix _)⟩
+  -- `besselU` is built floor by floor from `floorUnipotent l`.
+  rw [← unipotentBelow_eq_besselU (l := 𝔰.ϱ) le_rfl]
+  refine unipotentBelow_induction (C := fun _ x ↦ x ∈ _) (one_mem _)
+    (fun l x hx _ hy ↦ mul_mem ?_ hy) 𝔰.ϱ
   obtain hl | hl := le_or_gt 𝔰.ϱ l
-  · -- For `ϱ ≤ l` the group `floorUnipotent l` is trivial.
-    simp [eq_one_of_mem_floorGroup_inf hx (.inr hl)]
+  · simp [eq_one_of_mem_floorGroup_inf hx (.inr hl)]
   -- For `l < ϱ`, `x` is a Heisenberg element, and rational parameters are dense.
   let a : Fin 𝔰.ϱ := ⟨l, hl⟩
   obtain ⟨p, rfl⟩ : ∃ p, x = heisenbergElem a p := exists_eq_heisenbergElem_of_mem hx
-  have h_dense : DenseRange fun q : ({i : 𝔰.BesselIndex // a + 1 ≤ floorOf i} → E) × E ↦
-      (fun i ↦ (q.1 i : 𝔸f E), skewPart (q.2 : 𝔸f E)) :=
-    (DenseRange.piMap fun _ ↦ denseRange_algebraMap_finAdele).prodMap denseRange_skewPart_algebraMap
-  refine map_mem_closure (continuous_heisenbergElem_finAdele a) (h_dense p) ?_
+  refine map_mem_closure (continuous_heisenbergElem_finAdele a)
+    (((DenseRange.piMap fun _ ↦ denseRange_algebraMap_finAdele).prodMap
+      denseRange_skewPart_algebraMap) p) ?_
   rintro _ ⟨⟨v, t⟩, rfl⟩
-  obtain ⟨-, h_below⟩ := heisenbergElem_mem_floorUnipotent (T := T) a (v, skewPart t)
-  exact ⟨_, unipotentBelow_le_besselU h_below, map_heisenbergElem_finAdele hT a v t⟩
+  exact ⟨_, unipotentBelow_le_besselU
+    (heisenbergElem_mem_floorUnipotent (T := T) a (v, skewPart t)).2,
+    map_heisenbergElem_finAdele hT a v t⟩
 
 end Density
 
@@ -905,7 +898,7 @@ contains a primitive 5040th root of unity, and let `S` be filling data over `E`.
 Let `γ` be a rational point of the standard unitary group in `n` variables, `|n| ≤ 𝔰.k`, and `g` a
 finite adelic point. If `g⁻¹ γ g` is integral (lies in `stdLevel E n`) and reduces to `1` at every
 place of `S.chosenPlaces i`, then `γ = 1`. -/
-lemma eq_one_of_reduceAt_eq_one [HasPrimitiveRoot5040 E] {n : Type}
+lemma eq_one_of_reduceAt_eq_one {n : Type}
     [Fintype n] [DecidableEq n] (hn : card n ≤ 𝔰.k) (i : Fin 2) {γ : U (stdSpace E n).J}
     {g : Gf E n} (h_int : g⁻¹ * (stdSpace E n).embFin γ * g ∈ stdLevel E n)
     (h_red : ∀ w : S.chosenPlaces i,
@@ -919,7 +912,7 @@ lemma eq_one_of_reduceAt_eq_one [HasPrimitiveRoot5040 E] {n : Type}
       _ < 𝔰.k ^ 10 := Nat.pow_lt_pow_right (by grind [S.thousand_mul_le_k]) (by norm_num)
       _ ≤ S.levelPrime i := by
         exact_mod_cast (pow_le_pow_left₀ 𝔰.k.cast_nonneg S.k_le_b 10).trans (S.le_levelPrime i)
-  have h_prod : (2 * card n) ^ Module.finrank ℚ E < ∏ w : S.chosenPlaces i, w.1.q := by
+  have h_prod : (2 * card n) ^ Module.finrank ℚ E < ∏ w : S.chosenPlaces i, w.val.q := by
     simp only [S.chosenPlaces_q i _ (Subtype.prop _), Finset.prod_const, Finset.card_univ,
       S.card_chosenPlaces, finrank_eq_two_mul_card_infinitePlace, pow_mul]
     gcongr

@@ -315,18 +315,13 @@ noncomputable def charName : MulChar k ℂ ≃* kˣ :=
             (DFunLike.congr_fun ha (y : k)).trans (MulChar.one_apply_coe y)
       exact h_inj.bijective_of_nat_card_le (card_eq_card_units_of_hasEnoughRootsOfUnity k ℂ).le))
 
-/-- The inverse of `charName T` sends a unit `a` to the restriction of θ_a to `k`. -/
-private lemma charName_symm_apply (a : kˣ) (y : k) :
-    (charName T).symm a y = thetaChar T (Nat.card k) (algebraMap k K a) (algebraMap k K y) :=
-  rfl
-
 /-- Let `T` be faithful (`K` algebraically closed, `T : K → ℂ` injective), and let θ_a = T^j
 (j = `thetaExponent`) be formed with Q = |k|. Let x_χ = `charName T χ` ∈ kˣ be the element attached
 to a multiplicative character χ of `k` by inverting the isomorphism a ↦ θ_a restricted to `k`. Then
 θ_{x_χ}(y) = χ(y) for all y ∈ k, so every χ is the restriction of θ_{x_χ} to `k`. -/
 lemma thetaChar_charName (χ : MulChar k ℂ) (y : k) :
     thetaChar T (Nat.card k) (algebraMap k K (charName T χ)) (algebraMap k K y) = χ y := by
-  rw [← charName_symm_apply, MulEquiv.symm_apply_apply]
+  exact DFunLike.congr_fun ((charName T).symm_apply_apply χ) y
 
 variable {T}
 

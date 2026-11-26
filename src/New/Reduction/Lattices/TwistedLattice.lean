@@ -5,6 +5,7 @@ public import Lib.General.LinearAlgebra.GramDeterminant
 public import New.Reduction.Lattices.Colength
 public import New.Reduction.Lattices.Heights
 import Lib.General.LinearAlgebra.MinorProducts
+import TauCeti.Analysis.Normed.Ring.Ultra
 
 /-!
 # Twisted lattices
@@ -445,26 +446,29 @@ lemma heightLe_pow_mul_det_gram {n n' : ℕ} {y : Fin n → V} {z : Fin n' → V
 
 end
 
-/-- **A twist for each prime.** Let `L` be a twisted lattice on `V` with maps `Θ_ξ = L.lift ξ`, all
-injective. Let `y_1, …, y_n, z_1, …, z_n'` be a basis of `V`, and let `ξ_ι = θ ι` be allowed at the
-prime of `ι`. Suppose that
+/-- **A twist for each prime.** Let `L` be a twisted lattice on `V` with maps `Θ_ξ = L.lift ξ`.
+Let `y_1, …, y_n, z_1, …, z_n'` be a basis of `V`, and let `ξ_ι = θ ι` be allowed at the prime of `ι`.
+Only the untwisted map must be injective, and only the selected volumes `Z(ξ_ι)` must be nonzero.
+Write `ῑ = ι.conj`. Suppose that
 * `y` has covolume at most `c` and index at most `δ`;
-* `γ(ξ) ≠ 0`, and `γ(ξ) Θ_ξ z_i` is integral at all `ι ∣ l` for `ξ` allowed at `l`;
+* `γ_ι ≠ 0`, and `γ_ι Θ_{ξ_ι} z_i` is integral at both `ι` and `ῑ`;
 * `⟨σ Θ₁ z_i, σ Θ₁ z_i⟩ ≤ exp b_short` for all automorphisms `σ` of `ℂ`;
-* the families `|γ(ξ_ι)| ^ (-2)` and `Z(1) / Z(ξ_ι)` have height at most `b_denom` and `b_volume`
+* the families `|γ_ι| ^ (-2)` and `Z(1) / Z(ξ_ι)` have height at most `b_denom` and `b_volume`
   respectively.
 
 Then `c + 2 δ + n' (b_short + b_denom) + b_volume ≥ 0`. -/
 theorem covolume_add_index_nonneg {n n' : ℕ} {y : Fin n → V} {z : Fin n' → V}
-    (h_inj : ∀ ξ : T, Function.Injective (L.lift ξ))
+    (h_inj : Function.Injective (L.lift 1))
     (h_indep : LinearIndependent ℂ (Sum.elim y z)) (h_card : finrank ℂ V = n + n')
     {θ : PrimePadicIso → T} (hθ : ∀ ι : PrimePadicIso, L.IsAllowed ι.prime (θ ι))
+    (h_volume_ne : ∀ ι : PrimePadicIso, L.volume (θ ι) ≠ 0)
     {c δ b_volume b_short b_denom : ℝ} (hc : L.CovolumeLe y c) (hδ : L.IndexLe y δ)
-    {γ : T → ℂ} (hγ_ne : ∀ ξ : T, γ ξ ≠ 0)
-    (hz_int : ∀ (i : Fin n') (ι : PrimePadicIso) (ξ : T), L.IsAllowed ι.prime ξ →
-      γ ξ • L.lift ξ (z i) ∈ L.lattice ξ ι)
+    {γ : PrimePadicIso → ℂ} (hγ_ne : ∀ ι, γ ι ≠ 0)
+    (hz_int : ∀ (ι : PrimePadicIso) (i : Fin n'), γ ι • L.lift (θ ι) (z i) ∈ L.lattice (θ ι) ι)
+    (hz_conj : ∀ (ι : PrimePadicIso) (i : Fin n'),
+      γ ι • L.lift (θ ι) (z i) ∈ L.lattice (θ ι) ι.conj)
     (hz_short : ∀ (i : Fin n') (σ : ℂ ≃+* ℂ), L.normSqAt (z i) σ ≤ exp b_short)
-    (hγ : HeightLe b_denom fun ι : PrimePadicIso ↦ ((‖γ (θ ι)‖ : ℂ) ^ 2)⁻¹)
+    (hγ : HeightLe b_denom fun ι : PrimePadicIso ↦ ((‖γ ι‖ : ℂ) ^ 2)⁻¹)
     (hZ : HeightLe b_volume fun ι : PrimePadicIso ↦ L.volume 1 / L.volume (θ ι)) :
     0 ≤ c + 2 * δ + n' * (b_short + b_denom) + b_volume := by
   -- Write `Gram(1)` as a product of three factors, add their heights, and compare with the
@@ -474,20 +478,19 @@ theorem covolume_add_index_nonneg {n n' : ℕ} {y : Fin n → V} {z : Fin n' →
   have h_basis_factorization (ξ : T) : Gram ξ = L.volume ξ * (gram ℂ (Sum.elim y z)).det :=
     det_gram_comp (L.lift ξ) _ (by simpa using h_card)
   have h_twist_factorization (ι : PrimePadicIso) :
-      Gram 1 = ((‖γ (θ ι)‖ : ℂ) ^ 2) ^ n' * Gram (θ ι) *
-      ((‖γ (θ ι)‖ : ℂ) ^ 2)⁻¹ ^ n' * (L.volume 1 / L.volume (θ ι)) := by
-    have hγ_norm : (‖γ (θ ι)‖ : ℂ) ≠ 0 := by simpa using hγ_ne (θ ι)
-    have hZ_ne : L.volume (θ ι) ≠ 0 := volume_ne_zero (h_inj (θ ι))
+      Gram 1 = ((‖γ ι‖ : ℂ) ^ 2) ^ n' * Gram (θ ι) *
+      ((‖γ ι‖ : ℂ) ^ 2)⁻¹ ^ n' * (L.volume 1 / L.volume (θ ι)) := by
+    have hγ_norm : (‖γ ι‖ : ℂ) ≠ 0 := by simpa using hγ_ne ι
+    have hZ_ne : L.volume (θ ι) ≠ 0 := h_volume_ne ι
     simp [h_basis_factorization, field]
   -- The local index loss is counted twice, once at each conjugate place.
-  have h_local_height : HeightLe (2 * δ) fun ι ↦ ((‖γ (θ ι)‖ : ℂ) ^ 2) ^ n' * Gram (θ ι) :=
-    heightLe_pow_mul_det_gram hδ hθ (fun ι i ↦ hz_int i ι (θ ι) (hθ ι))
-      fun ι i ↦ hz_int i ι.conj (θ ι) (hθ ι)
+  have h_local_height : HeightLe (2 * δ) fun ι ↦ ((‖γ ι‖ : ℂ) ^ 2) ^ n' * Gram (θ ι) :=
+    heightLe_pow_mul_det_gram hδ hθ hz_int hz_conj
   have h_total_height : HeightLe (2 * δ + n' * b_denom + b_volume) fun _ ↦ Gram 1 := by
     simpa only [← h_twist_factorization, Pi.mul_def, Pi.pow_def] using
       (h_local_height.mul (hγ.pow n')).mul hZ
   have h_gram_ne : Gram 1 ≠ 0 :=
-    det_gram_ne_zero_iff_linearIndependent.2 (h_indep.map_injOn _ (h_inj 1).injOn)
+    det_gram_ne_zero_iff_linearIndependent.2 (h_indep.map_injOn _ h_inj.injOn)
   -- At infinity, adjoining the short vectors costs `n' * b_short` by Fischer and Hadamard.
   have h_archimedean (σ : ℂ ≃+* ℂ) : ‖σ (Gram 1)‖ ≤ exp (c + n' * b_short) :=
     (hc.sumElim (covolumeLe_of_normSqAt_le hz_short)).norm_map_det_gram_le σ

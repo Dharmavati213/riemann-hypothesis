@@ -591,7 +591,7 @@ out `w = W.map ζ a.point` and generates `ker ζ`; `m` is the Jacobian ratio at 
 relative to the complement of `w`, `δ.baseChange` (`δ` read on `E`-algebras through
 `restrictAlg k E`) pulls back along `scaledGraph t u c` to `m • [df / f]`. -/
 private lemma map_pointMap_map_scaledGraph_eq_smul_symbolClass {E : Type}
-    [Field E] [CharZero E] [Algebra k E] {W : CommAlg E ⥤ Type 1} {u c : W ⟶ restrictAlg k E ⋙ X}
+    [Field E] [Algebra k E] {W : CommAlg E ⥤ Type 1} {u c : W ⟶ restrictAlg k E ⋙ X}
     {s : Finset (W.obj (of E E))} {t m : E} {δ : HodgeH (relFreeAb (offDiagonal X)) d}
     {A : EtaleChart d X} {O : Subfunctor (X ⊗ X)} (hO : IsOpenSubfunctor O)
     (h_near : IsDiagonalSymbolOn δ A O)

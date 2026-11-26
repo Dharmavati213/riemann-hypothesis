@@ -102,10 +102,23 @@ lemma thickeningOver.mulMu_twist [EmbeddedInQpBar p k] (g : Gp p) (c : PadicTest
   have h_sq : algebraMap Ainf c'.Thickening mu ^ 2 = 0 :=
     c'.ker_thickeningProj_sq.le (Ideal.pow_mem_pow c'.thetaGeneric_mu 2)
   rw [mulMu_thickeningProj, h_mu, h_tw]
-  -- On the right, lift the scalar to `c.Thickening` along `c.uniqueLift` and move it out of `mulMu`
-  -- by `mulMu_proj_mul`. `erw`: the thickening and the generic ring of `c'` are those of `c` only
-  -- up to unfolding the twist
-  erw [← c.thickeningProj_uniqueLift, mulMu_proj_mul, mulMu_thickeningProj, AlgHom.commutes]
+  -- Lift the scalar to the thickening and move it out of `mulMu`.
+  let χ := (cyclotomicGp g⁻¹).val
+  let z := algebraMap ℤ_[p] (PadicAlgCl p) χ
+  let lift : c'.Thickening := c.uniqueLift z
+  have h_proj : c'.thickeningProj lift = c.genericStructureMap z :=
+    c.thickeningProj_uniqueLift z
+  let m : c'.Thickening := mulMu c' (c'.thickeningProj x)
+  have h_mu_scalar : mulMu c' (c.genericStructureMap z * c.thickeningProj x) =
+      lift * m :=
+    (congrArg (fun s : c'.GenericRing ↦ mulMu c' (s * c'.thickeningProj x)) h_proj.symm).trans
+      (mulMu_proj_mul c' lift (c'.thickeningProj x))
+  refine Eq.trans ?_ h_mu_scalar.symm
+  refine Eq.trans ?_ (congrArg (fun y : c'.Thickening ↦ lift * y)
+    (mulMu_thickeningProj c' x)).symm
+  have h_lift : lift = algebraMap ℤ_[p] c'.Thickening χ :=
+    c.uniqueLift.commutes χ
+  rw [h_lift]
   simp [Algebra.smul_def, ← IsScalarTower.algebraMap_apply, h_sq]
   -- what remains is associativity, in rings that agree only up to unfolding the twist
   exact mul_assoc _ _ _

@@ -4,6 +4,7 @@ public import Lib.Cohomology.Etale.Basic
 public import Lib.General.NumberTheory.CoefficientRings
 import Lib.ClassField.Places.TameInertia
 import Lib.General.NumberTheory.PadicLimitsValuation
+import Lib.PadicComparison.Descent.TestCategory
 
 /-!
 # Coefficient rings with a large residue field

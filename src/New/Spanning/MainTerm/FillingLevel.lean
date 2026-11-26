@@ -113,7 +113,7 @@ class IsFillingData [P : IntegralPlace (LocProd T)]
 lemma eventually_mem_integralOff (a : 𝔸f E) :
     ∀ᶠ T : Finset (FinPlace E) in Filter.atTop, a ∈ integralOff T := by
   -- It suffices that `T` contain the finitely many places where `a` is not integral.
-  have h_fin : {w : FinPlace E | a w ∉ LocInt w}.Finite := a.2
+  have h_fin : {w : FinPlace E | a w ∉ LocInt w}.Finite := a.property
   filter_upwards [eventually_ge_atTop h_fin.toFinset] with T hT
   have h_int (w : FinPlace E) (hw : w ∉ T) : a w ∈ LocInt w :=
     by_contra fun h_not ↦ hw (hT (h_fin.mem_toFinset.2 h_not))

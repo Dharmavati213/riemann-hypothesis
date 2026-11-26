@@ -3,7 +3,6 @@ module
 public import New.Congruences.Selmer.Mirror
 import Lib.ClassField.GreenbergWiles.SelmerRelations
 import Lib.GaloisRep.Main.DivisibleSelmerModules
-import New.Congruences.Selmer.OneSystem
 
 /-!
 # The descent
@@ -114,10 +113,6 @@ lemma tilting {O m B : Type*} [CommRing O] [DVR O] [Fintype m] [AddCommGroup B]
   have h_ker : C' ⊓ evγ.ker ≤ C ⊓ evγ.ker ⊓ (C.map evγ).comap evφ :=
     le_inf (inf_le_inf_right _ hC')
       (inf_le_left.trans (h_image.trans (comap_mono (map_mono hC'))))
-  -- Every map splits the length of `C'` into the lengths of image and kernel.
-  have h_split (Φ : B →ₗ[O] m → O ⧸ I) :
-      length O (C'.map Φ) + length O ↥(C' ⊓ Φ.ker) = length O C' := by
-    rw [← relLength_ker C' Φ, relLength_add_length_inf]
   have h_le : C ⊓ (a • evγ - evφ).ker ≤ C' ⊓ (a • evγ - evφ).ker :=
     le_inf (le_iSup (fun t : O ↦ C ⊓ (t • evγ - evφ).ker) a) inf_le_right
   -- The image has finite length, so it cancels.
@@ -125,7 +120,8 @@ lemma tilting {O m B : Type*} [CommRing O] [DVR O] [Fintype m] [AddCommGroup B]
   calc length O (C'.map (a • evγ - evφ)) + length O ↥(C ⊓ (a • evγ - evφ).ker)
     _ ≤ length O (C'.map (a • evγ - evφ)) + length O ↥(C' ⊓ (a • evγ - evφ).ker) :=
       add_le_add_right (length_mono h_le) _
-    _ = length O (C'.map evγ) + length O ↥(C' ⊓ evγ.ker) := by rw [h_split, h_split]
+    _ = length O (C'.map evγ) + length O ↥(C' ⊓ evγ.ker) := by
+      simp only [length_map_add_length_inf_ker]
     _ ≤ length O (C'.map (a • evγ - evφ)) + length O ↥(C ⊓ evγ.ker ⊓ (C.map evγ).comap evφ) :=
       add_le_add (length_mono h_map) (length_mono h_ker)
 

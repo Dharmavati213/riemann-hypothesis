@@ -410,8 +410,8 @@ lemma translatedYThetaCube_sq_add (z : ℂ) :
   -- G = yθ³.
   revert z
   refine C.eq_of_eq_off_lattice C.t (by fun_prop [translatedYThetaCube]) (by fun_prop) fun z hz ↦ ?_
-  rw [show C.σ z ^ 6 = (C.σ z ^ 2) ^ 3 by ring, C.sigma_sq_eq_translatedX_mul_theta_sq hz,
-    C.translatedYThetaCube_eq_translatedY_mul_theta_cube hz]
+  obtain ⟨hσ, hY⟩ := C.sigma_sq_eq_and_translatedYThetaCube_eq z hz
+  rw [show C.σ z ^ 6 = (C.σ z ^ 2) ^ 3 by ring, hσ, hY]
   linear_combination C.θ z ^ 6 * C.weierstrass_equation hz
 
 /-! ### Isogenies and the multiplier of θ -/
@@ -646,8 +646,8 @@ lemma monomialSection_eq (e : ℕ × ℕ × ℕ) (z : ℂ) (hz : z + C.t ∉ C.�
     C.monomialSection e z =
       C.θ z ^ monomialDeg e * (C.translatedX z ^ e.2.1 * C.translatedY z ^ e.2.2) := by
   simp only [monomialSection, Pi.mul_apply, Pi.pow_apply]
-  rw [C.sigma_sq_eq_translatedX_mul_theta_sq hz,
-    C.translatedYThetaCube_eq_translatedY_mul_theta_cube hz]
+  obtain ⟨hσ, hY⟩ := C.sigma_sq_eq_and_translatedYThetaCube_eq z hz
+  rw [hσ, hY]
   ring
 
 /-- For a triple e = (a, b, c), the monomial `C.monomialSection e` = θ^a(σ²)^b G^c is a section of

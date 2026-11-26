@@ -186,7 +186,7 @@ structure JumpLattice (O : Coeffs) extends toGalLattice : GalLattice O Γ where
   inClass : InClass (Filter.map k.subgroup.subtype ⊤) ⊥ embJumps toGalLattice
   /-- The set at a letter i contains the set of every embedding g with g(ζ) = θ(ω(i)). -/
   embJumps_subset {g : O →ₐ[ℤ_[p]] ℂ_[p]} {i : Letter} :
-      g O.ζ = (theta (k.letterTeich i)).1 → embJumps g ⊆ jumpSet i
+      g O.ζ = (theta (k.letterTeich i)).val → embJumps g ⊆ jumpSet i
 
 variable {k} {O : Coeffs} {L : JumpLattice O} (L' : JumpLattice O) (i : Letter) (l a : ℕ) (u : ℤ)
 
@@ -278,7 +278,7 @@ def frobKisinAinf : Submodule Ainf L.Ambient := L.kisinAinf.comap (semilinearAct
 /-- The x in W(C^♭) ⊗ L that some product of the φ^a E multiplies into
 `New.Lift.KummerChart.JumpLattice.kisinAinf`. -/
 def kisinLocAinf : Submodule Ainf L.Ambient :=
-  saturateBy (Submonoid.closure (range fun a ↦ (k.frobE a).1)) L.kisinAinf
+  saturateBy (Submonoid.closure (range fun a ↦ (k.frobE a).val)) L.kisinAinf
 
 /-- The Kisin module N with all φ^a E inverted: the x in
 `New.Lift.KummerChart.JumpLattice.kisinLocAinf` on which all forms take values in the field 𝒦₀. -/
@@ -456,10 +456,17 @@ lemma gal_smul_letterProj (x : L.Ambient) :
 lemma phi_pow_smul_letterTeich :
     φ ^ l • (k.letterTeich i⁻¹).val = k.letterTeich ((k.letterFrob ^ l) i)⁻¹ := by
   -- `φ ^ l` raises the Teichmüller lift `letterTeich i⁻¹` to the power `p ^ l`, as `letterFrob ^ l`
-  -- does with `i`. We use `erw`, as `frobEnd` is `x ↦ x ^ p` only up to unfolding.
-  erw [phi_pow_smul, k.letterFrob.coe_pow, pow_iterate, map_pow, k.S.coe_pow, Subtype.coe_mk,
-    map_teichmuller]
-  simp
+  -- does with `i`.
+  rw [phi_pow_smul, k.letterFrob.coe_pow]
+  change _ = (k.letterTeich (((fun j : Letter ↦ j ^ p)^[l] i)⁻¹)).val
+  rw [pow_iterate]
+  change _ = (k.letterTeich ((i ^ p ^ l)⁻¹)).val
+  rw [← inv_pow, map_pow, k.S.coe_pow]
+  let a : flatFq k.f := (↑(i⁻¹ : (flatFq k.f)ˣ) : flatFq k.f)
+  have h_teich : (k.letterTeich i⁻¹).val =
+      teichmuller p (algebraMap (flatFq k.f) OFlat a) := by
+    exact map_teichmuller _ _ _
+  rw [h_teich, iterate_frobEnd_teichmuller]
 
 /-- The projector to the letter i takes values in the part at the letter i. -/
 lemma letterProj_mem_letterPart : L.letterProj i x ∈ letterPart i := by
@@ -667,13 +674,13 @@ lemma exists_span_formsOfType_mod_pred (i : Letter) (u : ℤ) :
   -- `IsPotentiallyCrystalline.sum_jump_eq_jump_overZp` bounds their span. In a basis of symbols the
   -- coordinates are Galois invariant, hence algebraic (Ax–Sen–Tate).
   have h_type (μ : L.formsOfType i u) (t : Rep.of (overZp L.ρ)) :
-      ∃ y : BdRPlus, y • (tUnit ^ (-u)).1 = μ.1 (L.letterProj i (.mk 1 t)) :=
+      ∃ y : BdRPlus, y • (tUnit ^ (-u)).val = μ.val (L.letterProj i (.mk 1 t)) :=
     mem_span_singleton.1 (μ.property.2 t)
   -- Write `μ (letterProj i (1 ⊗ t)) = a μ t • tUnit ^ (-u)` with `a μ t` in `B_dR⁺`.
   choose a ha using h_type
   -- The leading coefficient can be computed from any expression `y • tUnit ^ (-u)`.
   have theta_a {μ : L.formsOfType i u} {t : Rep.of (overZp L.ρ)} {z : ℂ_[p]} {y : BdRPlus}
-      (h : μ.1 (L.letterProj i (.mk 1 t)) = y • (tUnit ^ (-u)).1)
+      (h : μ.val (L.letterProj i (.mk 1 t)) = y • (tUnit ^ (-u)).val)
       (hz : thetaBdR y = z := by simp +zetaDelta [smul_def', -toRingHom_ofId]) :
       thetaBdR (a μ t) = z := by
     rw [show a μ t = y from (smul_left_inj (Units.ne_zero _)).1 ((ha μ t).trans h), hz]
@@ -684,15 +691,15 @@ lemma exists_span_formsOfType_mod_pred (i : Letter) (u : ℤ) :
   -- `g` multiplies `tUnit ^ (-u)` by the cyclotomic character to the power `-u`, and `ζ` acts on
   -- the letter `i` by `letterTeich i`.
   have f_gal (μ : L.formsOfType i u) (t : Rep.of (overZp L.ρ)) (g : k.subgroup) :
-      f μ (L.ρ g t) = (χ g ^ (-u)).1 • toGp g • f μ t :=
+      f μ (L.ρ g t) = (χ g ^ (-u)).val • toGp g • f μ t :=
     theta_a <| by
       erw [comp_letterProj_mem_forms μ.property.1, ← ha, smul_distrib_smul, smul_tUnit_zpow,
         smul_comm, ← smul_assoc]
   have f_ζ (μ : L.formsOfType i u) (t : Rep.of (overZp L.ρ)) :
-      f μ (O.ζ.1 • t) = theta (k.letterTeich i) * f μ t :=
+      f μ (O.ζ.val • t) = theta (k.letterTeich i) * f μ t :=
     theta_a (by
       erw [← mulZeta.wittMap_letterProj (.mk 1 t),
-        mem_letterPart_iff_mulZeta.1 letterProj_mem_letterPart, μ.1.map_smul, ← ha, ← smul_assoc])
+        mem_letterPart_iff_mulZeta.1 letterProj_mem_letterPart, μ.val.map_smul, ← ha, ← smul_assoc])
   -- A basis `b` of the span of the symbols, made of symbols `b m = f (ν m)`.
   obtain ⟨b, hb, span_b, b_indep⟩ := exists_fun_fin_finrank_span_eq ℂ_[p] (.range f)
   choose ν hν using hb
@@ -700,7 +707,7 @@ lemma exists_span_formsOfType_mod_pred (i : Letter) (u : ℤ) :
   -- span has dimension at most the jump multiplicity.
   have h_rank :
       Module.finrank ℂ_[p] (Submodule.span ℂ_[p] (Set.range f)) ≤ L.jumpMultiplicity i u :=
-    L.inClass.isPotentiallyCrystalline.sum_jump_eq_jump_overZp.2 O.ζ.1 (theta (k.letterTeich i)) u
+    L.inClass.isPotentiallyCrystalline.sum_jump_eq_jump_overZp.2 O.ζ.val (theta (k.letterTeich i)) u
       (range f)
       (forall_mem_range.2 fun μ ↦ ⟨fun t ↦ nearOne_le (f_gal μ t), f_ζ μ⟩)
   refine ⟨_, h_rank, ν, ?_⟩

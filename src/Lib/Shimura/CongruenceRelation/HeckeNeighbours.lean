@@ -601,25 +601,17 @@ lemma IsTwistedReduction.pull_picClass_eq_nsmul (hg : IsTwistedReduction hx₀ h
 schemes. -/
 lemma IsTwistedReduction.surjective [IsAlgClosed k] (hg : IsTwistedReduction hx₀ hx ψ g)
     (hπ : Function.Surjective π) [Surjective ψ.left] : Surjective g.left := by
-  have h_closed : IsClosedImmersion hx.schemeMap.left :=
+  have : IsClosedImmersion hx.schemeMap.left :=
     IsClosedImmersion.isStableUnderBaseChange.of_isPullback hx.isGroupBaseChange.isPullback.flip
       (.spec_of_surjective _ ((bijective_iterateFrobenius k l f).surjective.comp hπ))
   refine ⟨fun c' ↦ ?_⟩
-  -- A preimage under `ψ` of the image of `c'` lies in the special fibre, so it comes from a
-  -- point `c` of `x₀.groupScheme`; Frobenius does not move points.
+  -- Lift a preimage of `c'` under `ψ` to `x₀.groupScheme`; Frobenius fixes underlying points.
   obtain ⟨a, ha⟩ := ψ.left.surjective (hx.schemeMap.left c')
-  -- `a` lies over the image of `c'` in `Spec k`, moved by the Frobenius of `k`
-  have h_over : y.groupScheme.hom.base a =
-      (specMap π).base ((specMap (iterateFrobenius k l f)).base (x.groupScheme.hom.base c')) := by
-    simpa [specMap, ← ψ.w, ha, -Over.w] using congrArg (fun φ ↦ φ.base c') hx.schemeMap.w
-  obtain ⟨c, hc, -⟩ :=
-    Scheme.exists_preimage_of_isPullback hx₀.isGroupBaseChange.isPullback a _ h_over
+  obtain ⟨c, hc, -⟩ := Scheme.exists_preimage_of_isPullback hx₀.isGroupBaseChange.isPullback a _
+    (by simpa [specMap, ← ψ.w, ha, -Over.w] using congrArg (fun φ ↦ φ.base c') hx.schemeMap.w)
   refine ⟨c, hx.schemeMap.left.isClosedEmbedding.injective ?_⟩
-  have h_point_left : (hx.isGroupBaseChange.pointEquiv (𝟙 x₀.groupScheme ≫ g)).left c =
-      ((frobeniusTwist π l f).app x₀.groupScheme ≫
-        hx₀.isGroupBaseChange.pointEquiv (𝟙 x₀.groupScheme) ≫ ψ).left c := by
-    rw [hg.pointEquiv_comp]
-  simpa [ha, hc, frobeniusTwist, absFrobenius_apply, pointEquiv_apply] using h_point_left
+  simpa [ha, hc, frobeniusTwist, absFrobenius_apply, pointEquiv_apply] using
+    congrArg (fun φ ↦ φ.left c) (hg.pointEquiv_comp (𝟙 x₀.groupScheme))
 
 /-- If `x₀` is rigid, `g` has multiplier `μ` and `μ` kills the kernel of `ψ`, then `μ` kills the
 points of the kernel of `g` with values in local Noetherian rings. -/

@@ -954,14 +954,9 @@ lemma IsCohomContinuous.of_hasCohomDenseImage {T : CommRingCat} {q : reprBy T �
         rw [h_nat, h_iso, h_a]
         simp only [← reprFunctor.map_comp_assoc, ← op_comp, Category.assoc, ι_post,
           ← θ.naturality, Functor.id_map]
-      have h_dense_colim :
-          HasCohomDenseImage Λ (reprMap (θ.app (colimit B)) ≫ e'.hom ≫ ε.app c.pt) :=
-        h_dense none e'
-      refine (h_dense_colim.mono ?_).isCohomEquiv
-      have h_comp : mapOnTests (reprMap (post B E) ≫ aHom) =
-          mapOnTests (reprMap (post B E)) ≫ mapOnTests aHom :=
-        whiskerLeft_comp testIncl (reprMap (post B E)) aHom
-      rw [h_fac, h_comp]
+      refine ((h_dense none e').mono ?_).isCohomEquiv
+      dsimp only [R', Option.elim]
+      simp only [h_fac, mapOnTests, whiskerLeft_comp]
       exact range_comp_le (mapOnTests (reprMap (post B E))) (mapOnTests aHom)
     · -- the induction hypothesis applies to the system of the fibre powers of the `p j`, over `Y`
       let toY : toArrowFunctor.obj (.mk p) ⋙ cechFunctor m ⟶ (const _).obj Y :=

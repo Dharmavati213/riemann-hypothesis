@@ -140,9 +140,6 @@ lemma norm_sub_one_sq (g : USign ε) :
     _ = 2 * ‖y‖ ^ 2 - 2 * x.trace.re := by
       simp [frobenius_norm_sq_eq_sum, trace, re_sum, mul_sum, sum_sub_distrib]
 
-omit [Fintype n] in
-lemma conjTranspose_signMatrix : (signMatrix ε)ᴴ = signMatrix ε := by simp [signMatrix]
-
 lemma norm_signMatrix_mul (A : Matrix n n ℂ) : ‖signMatrix ε * A‖ = ‖A‖ :=
   frobenius_norm_mul_of_unitary (by rw [conjTranspose_signMatrix, signMatrix_mul_self]) A
 
@@ -596,7 +593,7 @@ lemma IsLaplaceDatum.norm_subOnePair_mul_intDiagonal_sq_le (hj : IsLaplaceDatum 
     simp only [map_inv, Prod.fst_inv, U.coe_inv (signMatrix_mul_self ε) (j s).1]
     ext a b
     rcases eq_or_ne a b with rfl | hab
-    · rcases units_eq_one_or (ε a) with ha | ha <;> simp [signMatrix, ha, mul_comm]
+    · rcases units_eq_one_or (ε a) with ha | ha <;> simp [signMatrix, ha]
     · simp [signMatrix, hab, mul_comm, mul_left_comm]
   calc ‖(subOnePair j s).1 * intDiagonal (offBlockIndicator e)‖ ^ 2
       = ‖intDiagonal (offBlockIndicator e) * (subOnePair j s⁻¹).1‖ ^ 2 := by

@@ -311,23 +311,18 @@ lemma exists_isPrimitiveMatrix_basis :
   -- The string vectors form a basis `S`. Some invertible `b` makes the coordinates of `S * b` in
   -- the frame of `x` primitive.
   let S : Matrix ι (Fin s) (𝔸f E) := inclMatrix (𝔸f E) fun b ↦ Y.indexEquiv (.inr b)
-  have h_left : Sᵀ * S = 1 := by
-    ext1 a b
-    simp [S, inclMatrix, Matrix.mul_apply, Matrix.one_apply, eq_comm]
-  have h_proj (y : ι → 𝔸f E) : Y.stringProj y = S *ᵥ Sᵀ *ᵥ y := by
-    ext1 i
+  have h_left : Sᵀ * S = 1 :=
+    Matrix.ext fun a b ↦ by simp [S, inclMatrix, Matrix.mul_apply, Matrix.one_apply, eq_comm]
+  have h_proj (y : ι → 𝔸f E) : Y.stringProj y = S *ᵥ Sᵀ *ᵥ y := funext fun i ↦ by
     obtain ⟨a | a, rfl⟩ := Y.indexEquiv.surjective i <;>
       simp [S, inclMatrix, mulVec, dotProduct, Matrix.one_apply, stringProj_apply_inl,
         stringProj_apply_inr]
   have h_inv : HasLeftInv ((V.xFin * x.val)⁻¹.val * S) :=
     ⟨Sᵀ * (V.xFin * x.val).val, by simpa [Matrix.mul_assoc] using h_left⟩
   obtain ⟨b, -, hb⟩ := isValuationPair_Ô.exists_isPrimitiveMatrix_mul h_inv
-  refine ⟨S * b.val, by rwa [← Matrix.mul_assoc], fun y ↦ ?_⟩
-  rw [h_proj, mulVec_mulVec]
-  refine ⟨fun hy ↦ ⟨(b⁻¹.val * Sᵀ) *ᵥ y, ?_⟩, ?_⟩
-  · simpa [Matrix.mul_assoc] using hy
-  · rintro ⟨c, rfl⟩
-    simp [← Matrix.mul_assoc, h_left, Matrix.mul_assoc S]
+  refine ⟨S * b.val, by rwa [← Matrix.mul_assoc], fun y ↦ ⟨fun hy ↦ ⟨(b⁻¹.val * Sᵀ) *ᵥ y,
+    by simpa [h_proj, mulVec_mulVec, Matrix.mul_assoc] using hy⟩, fun ⟨c, hc⟩ ↦ hc ▸ by
+    simp [h_proj, mulVec_mulVec, ← Matrix.mul_assoc, h_left]⟩⟩
 
 /-- A vector `z` of `X^⊥` lies in the projection `Λ'⁺` of the lattice of `x` to `X^⊥` if and only
 if its products with the intersection `Λ'⁻` of this lattice with `X^⊥` are integral. -/

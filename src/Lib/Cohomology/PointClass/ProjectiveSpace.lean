@@ -62,7 +62,7 @@ trivial; no sheafification is made. -/
 def New.Variety.projSpace : CommAlg k ⥤ Type 1 where
   -- Unimodular vectors of length `d + 1`, up to scaling by a unit.
   obj A := Quot ((MulAction.orbitRel Aˣ (Fin (d + 1) → A)).comap
-    (·.1.1 : @unimodular k _ (d + 1) A → Fin (d + 1) → A))
+    (·.val.down : @unimodular k _ (d + 1) A → Fin (d + 1) → A))
   -- Vectors that differ by the unit `u` are sent to vectors that differ by the unit `f u`.
   map f := ↾Quot.map (unimodular.toFunctor.map f) fun _ _ ⟨u, h⟩ ↦ ⟨u.map f.hom.toMonoidHom, by
     simpa [Units.smul_def, _root_.funext_iff] using! congr(f ∘ $h)⟩
@@ -221,7 +221,7 @@ def stdChart : EtaleChart d (projSpace k d) where
   isOpenSubfunctor A := by
     -- The chart is the locus where the `i`-th coordinate is a unit.
     rintro ⟨v⟩
-    exact ⟨span {v.1.down i}, fun B φ ↦ (mk_mem_stdChart_iff i).trans (by simp [map_span])⟩
+    exact ⟨span {v.val.down i}, fun B φ ↦ (mk_mem_stdChart_iff i).trans (by simp [map_span])⟩
 
 /-- Projective `d`-space has an atlas of dimension `d`: finitely many charts whose images contain
 every field-valued point, and for any two points an ideal whose vanishing locus is where they agree.

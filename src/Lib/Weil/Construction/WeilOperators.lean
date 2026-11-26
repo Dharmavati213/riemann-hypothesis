@@ -308,25 +308,15 @@ representation on `Model H` (the integrable v with v(x) = ∫ v(y) β(y,x) e(x�
 ω(g)v = Δ(g) ∫ v(y) ρ(g • y) e dμ(y). Then the overlap ⟨vac, ω(g) vac⟩ = (ω(g) vac)(0) of the Weil
 operator of `g` is the inverse of conj Δ(g): conj Δ(g) · (ω(g) e)(0) = 1. -/
 lemma conj_delta_mul_weilRep_vacElem : starRingEnd ℂ (A.Δ g) * weilRep A g vacElem 0 = 1 := by
-  -- The overlap determines `ω(g)` (`integrated_moveBy_vacElem_eq_smul`); compare with the
-  -- definition of `ω(g)` on the unit vector `ω(g) vac`.
-  have h_surj : Function.Surjective (weilRep A g) := fun v ↦
-    ⟨weilRep A g⁻¹ v, by rw [rep_apply_apply, mul_inv_cancel, map_one, one_apply_eq_self]⟩
+  -- The overlap determines `ω(g)` (`integrated_moveBy_vacElem_eq_smul`); pair with `ω(g) vac`.
   have h_eq : weilRep A g vacElem =
-      (A.Δ g * starRingEnd ℂ (weilRep A g vacElem 0)) • weilRep A g vacElem := by
-    calc weilRep A g vacElem = A.Δ g • (heisenbergRep.moveBy A g).integrated vacElem vacElem := rfl
-      _ = (A.Δ g * starRingEnd ℂ (weilRep A g vacElem 0)) • weilRep A g vacElem := by
-        rw [mul_smul, integrated_moveBy_vacElem_eq_smul A g vacElem (weilRep A g) h_surj
-          (modelInner_weilRep A g) fun y w ↦ weilRep_heisenbergOp A g y w]
-  have h_unit : modelInner (weilRep A g vacElem) (weilRep A g vacElem) = 1 := by
-    rw [modelInner_weilRep, modelInner_vacElem, vacElem_apply, he.apply_zero]
-  have h_one : A.Δ g * starRingEnd ℂ (weilRep A g vacElem 0) = 1 := by
-    calc A.Δ g * starRingEnd ℂ (weilRep A g vacElem 0)
-        = modelInner (weilRep A g vacElem)
-            ((A.Δ g * starRingEnd ℂ (weilRep A g vacElem 0)) • weilRep A g vacElem) := by
-          rw [map_smul, h_unit, smul_eq_mul, mul_one]
-      _ = 1 := by rw [← h_eq, h_unit]
-  simpa using congrArg (starRingEnd ℂ) h_one
+      A.Δ g • (starRingEnd ℂ (weilRep A g vacElem 0) • weilRep A g vacElem) :=
+    congrArg (A.Δ g • ·) <| integrated_moveBy_vacElem_eq_smul A g vacElem (weilRep A g)
+      (fun v ↦ ⟨weilRep A g⁻¹ v, by
+        rw [rep_apply_apply, mul_inv_cancel, map_one, one_apply_eq_self]⟩)
+      (modelInner_weilRep A g) (weilRep_heisenbergOp A g)
+  simpa [modelInner_weilRep, modelInner_vacElem, vacElem_apply, he.apply_zero] using
+    congrArg (fun v ↦ starRingEnd ℂ (modelInner (weilRep A g vacElem) v)) h_eq.symm
 
 /-- For a multiplier action `A` of `G` on `W` with cocycle 1, preserving β and `μ`, with vacuum `e`,
 consider the Weil operator `weilRep A g` on the model space `Model H`, which carries the L¹ norm.
@@ -537,27 +527,20 @@ lemma OrthogonalSum.isVacuum [LocallyCompactSpace W₁] [LocallyCompactSpace W�
     H.IsVacuum ((μ₁.prod μ₂).map S.equiv) e := by
   -- Read through `S.equiv`, `e` is the product of the two vacua, and each property holds
   -- factorwise.
-  have h₁ : H₁.IsVacuum μ₁ e₁ := inferInstance
-  have h₂ : H₂.IsVacuum μ₂ e₂ := inferInstance
+  have ⟨h₁, h₂⟩ : H₁.IsVacuum μ₁ e₁ ∧ H₂.IsVacuum μ₂ e₂ := ⟨inferInstance, inferInstance⟩
   have he_eq : e = (fun x : W₁ × W₂ ↦ e₁ x.1 * e₂ x.2) ∘ S.equiv.symm :=
-    funext fun x ↦ by rw [Function.comp_apply, ← S.vac_equiv, S.equiv.apply_symm_apply]
-  have h_cont : Continuous e := by
-    rw [he_eq]
-    exact (h₁.cont.fst'.mul h₂.cont.snd').comp S.equiv.symm.continuous
-  exact
-    { cont := h_cont
-      apply_zero := by simp [he_eq, h₁.apply_zero, h₂.apply_zero]
-      apply_neg := by simp [he_eq, h₁.apply_neg, h₂.apply_neg]
-      conj_apply := by simp [he_eq, h₁.conj_apply, h₂.conj_apply]
-      twisted_conv := S.equiv.surjective.forall₂.mpr fun y x ↦ by
-        -- The convolution integral over the product is the product of the two convolutions.
-        rw [integral_map (by fun_prop) (by fun_prop), S.vac_equiv, S.vac_equiv, mul_mul_mul_comm,
-          ← h₁.twisted_conv, ← h₂.twisted_conv]
-        simp [← map_sub, ← map_add, vac_equiv, beta_equiv, ← integral_prod_mul, mul_comm,
-          mul_assoc, mul_left_comm]
-      integrable := by
-        rw [integrable_map_measure (by fun_prop) (by fun_prop)]
-        simpa [Function.comp_def, vac_equiv] using h₁.integrable.mul_prod h₂.integrable }
+    funext fun x ↦ by simp [← S.vac_equiv]
+  have h_cont := he_eq.symm ▸ (h₁.cont.fst'.mul h₂.cont.snd').comp S.equiv.symm.continuous
+  refine ⟨h_cont, by simp [he_eq, h₁.apply_zero, h₂.apply_zero],
+    by simp [he_eq, h₁.apply_neg, h₂.apply_neg], by simp [he_eq, h₁.conj_apply, h₂.conj_apply],
+    S.equiv.surjective.forall₂.mpr fun y x ↦ ?_, ?_⟩
+  · -- The convolution integral over the product is the product of the two convolutions.
+    rw [integral_map (by fun_prop) (by fun_prop), S.vac_equiv, S.vac_equiv, mul_mul_mul_comm,
+      ← h₁.twisted_conv, ← h₂.twisted_conv]
+    simp [← map_sub, ← map_add, vac_equiv, beta_equiv, ← integral_prod_mul, mul_comm, mul_assoc,
+      mul_left_comm]
+  · rw [integrable_map_measure (by fun_prop) (by fun_prop)]
+    simpa [Function.comp_def, vac_equiv] using h₁.integrable.mul_prod h₂.integrable
 
 /-- A vacuum fixes the normalisation of the Haar measure, so `S.equiv` carries `μ₁ × μ₂` to `μ`. -/
 lemma OrthogonalSum.measurePreserving_equiv [LocallyCompactSpace W] [LocallyCompactSpace W₁]
@@ -668,26 +651,13 @@ lemma OrthogonalSum.weilRep_tmul [LocallyCompactSpace W] [LocallyCompactSpace W�
 lemma Rep.integrated_tmul [LocallyCompactSpace W] [LocallyCompactSpace W₁]
     [LocallyCompactSpace W₂] :
     R.integrated (S.tmul v w) f = (R.left S).integrated v ((R.right S).integrated w f) := by
-  -- The left side is an integral over `W₁ × W₂`, the right side the iterated integral. Fubini's
-  -- theorem applies: the integrand is the integrable `v ⊗ w` times a continuous function
-  -- bounded by `‖f‖`.
-  have h_integrable :
-      Integrable (fun x : W₁ × W₂ ↦ (v x.1 * w x.2) • R.ρ (S.equiv x) f) (μ₁.prod μ₂) :=
-    (v.integrable.mul_prod w.integrable).smul_bdd ‖f‖ (by fun_prop) (by simp [norm_map])
-  have h_rho (a : W₁) (b : W₂) :
-      (R.left S).ρ a ((R.right S).ρ b f) = R.ρ (S.equiv (a, b)) f := by
-    simp [mul, OrthogonalSum.beta_equiv, ← map_add]
-  have h_inner (a : W₁) : ∫ b : W₂, (v a * w b) • R.ρ (S.equiv (a, b)) f ∂μ₂ =
-      v a • (R.left S).ρ a ((R.right S).integrated w f) := by
-    simp_rw [map_integrated_eq_integral, h_rho, ← integral_smul, smul_smul]
-  calc R.integrated (S.tmul v w) f
-    _ = ∫ x : W₁ × W₂, (v x.1 * w x.2) • R.ρ (S.equiv x) f ∂μ₁.prod μ₂ := by
-      simp_rw [integrated_apply, S.integral_eq_integral_prod, S.tmul_apply,
-        S.equiv.symm_apply_apply]
-    _ = ∫ a : W₁, ∫ b : W₂, (v a * w b) • R.ρ (S.equiv (a, b)) f ∂μ₂ ∂μ₁ :=
-      integral_prod _ h_integrable
-    _ = (R.left S).integrated v ((R.right S).integrated w f) := by
-      simp_rw [h_inner, (R.left S).integrated_apply]
+  -- Rewrite the LHS via Fubini's theorem and simplify the iterated integral on the RHS.
+  rw [integrated_apply, (R.left S).integrated_apply, S.integral_eq_integral_prod]
+  simp_rw [S.tmul_apply, S.equiv.symm_apply_apply]
+  rw [integral_prod (fun x : W₁ × W₂ ↦ (v x.1 * w x.2) • R.ρ (S.equiv x) f)
+    ((v.integrable.mul_prod w.integrable).smul_bdd ‖f‖ (by fun_prop) (by simp [norm_map]))]
+  simp_rw [map_integrated_eq_integral, ← integral_smul, smul_smul]
+  simp [mul, OrthogonalSum.beta_equiv, ← map_add]
 
 omit [μ₁.IsAddHaarMeasure] [μ₂.IsAddHaarMeasure] in
 /-- Let `S` be an orthogonal sum: an isomorphism φ : W₁ × W₂ ≃ W of topological groups under which

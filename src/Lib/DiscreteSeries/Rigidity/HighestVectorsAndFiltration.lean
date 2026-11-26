@@ -869,8 +869,8 @@ theorem HCParam.IsKHighest.coeffMap_eq_zero [InnerProductSpace ℂ H] {ρ : GlMo
       ‖c (g * expU (t • Y)) v‖ ≤ exp (m * -decay t) * (exp (R + 1 + s) * (|D| * ‖v‖ + 1)) := by
     induction hk : m - s using Nat.strong_induction_on generalizing s with | _ k ih => ?_
     intro v hv
-    have hYv_le : ‖ρ Y v‖ ≤ (card n + 1) ^ 4 * (R + 1 + s) * ‖Y.val‖ * ‖v‖ :=
-      hx.norm_apply_le_mul_norm h_inv (fun i ↦ toNat_le.1 (hR i)) hv Y
+    obtain ⟨hYv_mem, hYv_le⟩ :=
+      hx.norm_apply_le_of_mem_filtration h_inv (fun i ↦ toNat_le.1 (hR i)) hv Y
     refine image_norm_le_of_norm_deriv_right_lt_deriv_boundary
       (HasDerivAt.continuousOn fun t _ ↦ h_coef g Y v t)
       (fun t _ ↦ (h_coef g Y v t).hasDerivWithinAt)
@@ -892,7 +892,7 @@ theorem HCParam.IsKHighest.coeffMap_eq_zero [InnerProductSpace ℂ H] {ρ : GlMo
       positivity
     -- as `s < m` the induction hypothesis bounds `f_v' = f_{Y v}` below the barrier's derivative
     calc _ ≤ exp (m * -decay t) * (exp (R + 1 + (s + 1 : ℕ)) * (|D| * ‖ρ Y v‖ + 1)) :=
-          ih _ (by omega) (s + 1) rfl _ (GlModule.apply_mem_filtration_succ hv Y) t
+          ih _ (by omega) (s + 1) rfl _ hYv_mem t
             ⟨ht_nonneg, ht_lt.le⟩
       _ < exp (m * -decay t) * (exp (R + 1 + (s + 1 : ℕ)) *
           ((growth + 1) * (m * decay t) * (|D| * ‖v‖ + 1))) := by gcongr

@@ -232,13 +232,13 @@ abbrev padSigns : D.RowIndex ⊕ PadIndex j → ℤˣ := D.signsW j ⊕ᵥ (-1 �
 /-- The m chosen negative rows of the padded W_j: i < m goes to the i-th index of the padding block
 of size j if i < j, and to `New.Data.rowIndexOfNumber`(k + i − 1) otherwise. -/
 def negIndex (i : Fin D.m) : D.RowIndex ⊕ PadIndex j :=
-  if hi : i.1 < j then inr (inl ⟨i, hi⟩) else inl (D.rowIndexOfNumber (D.posRank i))
+  if hi : i.val < j then inr (inl ⟨i, hi⟩) else inl (D.rowIndexOfNumber (D.posRank i))
 
 /-- The 2m constant rows for a column of height h < r₊ = k + j − 1, all basis vectors: i < 2m goes
 to the basis vector number h + i of W_j if h + i < r₊, and otherwise to index i of the positive
 padding block. -/
 def posRowIndex (h : ℕ) (i : Fin (2 * D.m)) : D.RowIndex ⊕ PadIndex j :=
-  if h + i.1 < D.posRank j then inl (D.rowIndexOfNumber (h + ↑i)) else inr
+  if h + i.val < D.posRank j then inl (D.rowIndexOfNumber (h + ↑i)) else inr
     (inr (i.castAdd (D.m - j)))
 
 /-- The j-th descent pair `New.Data.descentPair` at the trivial character: the data of the lift from
@@ -450,7 +450,7 @@ lemma t_eq_five_mul_r : D.t = 5 * D.r := rfl
 /-- The index set of `V″` has `r + 9 m + 1` elements: `r` for `W_j`, `3 m` for the padding and
 `6 m + 1` for `W♭`. -/
 lemma card_firstFactorIndex : card (FirstFactorIndex j) = D.r + 9 * D.m + 1 := by
-  grind [card_sum, card_rowIndex, card_fin, j.2.2]
+  grind [card_sum, card_rowIndex, card_fin, j.property.2]
 
 /-- Twice the sum of the number of determinants in the positive columns at `τ` (`DetIndex j τ`), the
 rank of `V″` and `m` is at most `5 b`, with `b = D.b` the size parameter of the weights

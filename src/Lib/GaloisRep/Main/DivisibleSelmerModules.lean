@@ -21,7 +21,7 @@ so it is no longer than the latter.
   the coefficients, the Selmer module with coefficients in `O / a` has the length of the `a`-torsion
   of the other.
 * `New.Selmer.divisibleSelmerLength`, `New.Selmer.length_le_divisibleSelmerLength`: the length of
-  the Selmer module with coefficients in `Frac(O) / O` (for `E` with `CMFieldWithRoot5040 E`), which
+  the Selmer module with coefficients in `Frac(O) / O` (for an embedded number field `E`), which
   bounds the lengths of those with coefficients in `O / a`.
 
 Notions from other files:
@@ -145,19 +145,18 @@ end SelmerLevels
 
 section DivisibleLength
 
-variable {E O n : Type} [Field E] [CMFieldWithRoot5040 E] [CommRing O] [DVR O] [Fintype n]
+variable {E O n : Type} [Field E] [EmbeddedNumberField E] [CommRing O] [DVR O] [Fintype n]
   [DecidableEq n]
   {ρ : Gal(Ω/E) → Matrix n n O} {S : Set (FinPlace E)} {L : Set (Gal(Ω/E) →₀ Matrix n n O)}
 
 variable (ρ S L) in
-/-- For `E` a CM field containing the 5040th roots of unity (`CMFieldWithRoot5040`), the length over
-`O` of the Selmer module with coefficients in `Frac(O) / O`: the locally constant cocycles for `ρ`
+/-- For an embedded number field `E`, the length over `O` of the Selmer module with coefficients
+in `Frac(O) / O`: the locally constant cocycles for `ρ`
 that are unramified outside `S` and obey the relations `L`. -/
 noncomputable def divisibleSelmerLength : ℕ∞ :=
   Module.length O (selmerModule ρ S L (DivisibleQuot O))
 
-/-- Let `E` be a CM field containing the 5040th roots of unity (`CMFieldWithRoot5040`) and `a ≠ 0`.
-The Selmer module (cocycles for `ρ` unramified outside `S` that obey the relations `L`) with
+/-- Let `E` be an embedded number field and `a ≠ 0`. The Selmer module (cocycles for `ρ` unramified outside `S` that obey the relations `L`) with
 coefficients in `O / a` has length at most `divisibleSelmerLength ρ S L`, the length of the one with
 coefficients in `Frac(O) / O`. -/
 lemma length_le_divisibleSelmerLength {a : O} (ha : a ≠ 0) :

@@ -283,9 +283,8 @@ noncomputable def homTiltIso {b : CommAlg OFlat} [PerfectRing b p] :
     fun c ↦ by
       -- By the adjunction `algBaseChangeAdj` a map from `OC ⊗ W(b)` is an algebra map
       -- `g : W(b) → c.ProdRing`; in these terms the transformation sends `f` to `θ ∘ W(f)`.
-      -- `erw`: the points of the base change match the adjunction's hom-set only after unfolding.
-      erw [← (Equiv.ulift.trans (algBaseChangeAdj.homEquiv ..)).comp_bijective,
-        bijective_iff_existsUnique]
+      refine ((Equiv.ulift.trans (algBaseChangeAdj.homEquiv ..)).comp_bijective _).mp ?_
+      refine (bijective_iff_existsUnique _).mpr ?_
       rintro ⟨g : WittVector p b →+* c.ProdRing, hg⟩
       -- `b` is not zero, as `W(b)` maps to the nonzero `c.ProdRing`, so it has characteristic `p`.
       have h_nontrivial : Nontrivial b :=

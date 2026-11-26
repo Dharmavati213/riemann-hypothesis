@@ -216,10 +216,7 @@ lemma mean_coefficient_eq_sum_norm_sq [Nonempty n] [hg : l.HasLargeGap A]
   -- With `u = l.dsGenerator` and `ι = hg.toL2`, put `φ w = ∫_K conj (weightMinors ν k) * ⟪ι u,
   -- rightRegularL2 x (rightRegularL2 k w)⟫`. A vector `v` of `V` represents `φ ∘ ι`; compare the
   -- two at the translate `rightRegularL2 x⁻¹ (ι u)`.
-  have hd : IsDerivedAction rightRegularL2 hg.toL2 l.dsAction := hg.isDerivedAction_toL2
-  have h_coef (y : l.DsModule) (g : USign ε) :
-      ⟪hg.toL2 l.dsGenerator, rightRegularL2 g (hg.toL2 y)⟫_ℂ = y.val.val g :=
-    hg.inner_toL2_dsGenerator_rightRegularL2 y g
+  obtain ⟨hd, h_coef, -⟩ := hg.isDerivedAction_toL2_and_inner_toL2
   have h_cont : ∀ w : Lp ℂ 2 volume, Continuous fun g : USign ε ↦ rightRegularL2 g w :=
     (isUnitaryRep_rightRegularL2 (ε := ε)).continuous
   let T : (USign ε →₂[volume] ℂ) →L[ℂ] ℂ := innerSL ℂ (hg.toL2 l.dsGenerator) ∘L rightRegularL2 x

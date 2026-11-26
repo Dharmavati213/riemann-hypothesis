@@ -795,9 +795,15 @@ lemma Comparison.IsBijective.isBijectiveOn_of_compatibleRoots {n : ℕ} {U : Com
       rintro A ⟨⟨⟨s₀⟩, y⟩, hs₀⟩ s hs
       -- A root system `s₀` of `t 0` and root systems `s` of the others are one tuple `cons s₀ s`.
       refine (existsUnique_congr fun f ↦ ?_).1 (h_rep A y (cons s₀ s) (cases hs₀ hs))
-      -- a point of `Y` is a subtype only after unfolding `fibreProd`, which `rw` does not do
-      erw [Subtype.ext_iff, Prod.mk_inj, up_inj, forall_fin_succ]
-      tauto
+      constructor
+      · rintro ⟨hy, h_roots⟩
+        have h_first : MonoidHom.comp f.down.hom (r 0) = s₀ := h_roots 0
+        refine ⟨Subtype.ext (Prod.ext (congrArg ULift.up h_first) hy), ?_⟩
+        exact fun i ↦ h_roots i.succ
+      · rintro ⟨h_point, h_tail⟩
+        have h_pair := congrArg Subtype.val h_point
+        refine ⟨congrArg Prod.snd h_pair, Fin.cases ?_ h_tail⟩
+        exact congrArg (fun z ↦ z.1.down) h_pair
     let c' : Comparison (TimesBNat.fst C ⋙ F) (TimesBNat.fst C' ⋙ F') :=
       ⟨c.functor.prod (𝟭 _), (TimesBNat.fst C').whiskerLeft c.coeffHom⟩
     -- The comparison `c'` over `C × Bℕ` is bijective on `Y × ℕ`, which on both sides has the

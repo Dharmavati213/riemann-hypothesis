@@ -160,7 +160,7 @@ lemma IsSqZeroExt.landsIn_of_comp (hψ : IsSqZeroExt ψ) {y : Spec C ⟶ X} {V :
   -- Every point of Spec C is the image of a point of Spec C', where the composite lands in V.
   hψ.surjective_specMap.surj.forall.mpr h_in
 
-open MvPolynomial Algebra FormallySmooth FormallyUnramified RingHom in
+open MvPolynomial Algebra RingHom in
 /-- If f : X → S is smooth of relative dimension d, every point x of X has an open neighbourhood
 V on which some d functions are étale coordinates for f. -/
 lemma exists_isEtaleChart (x : X) {d : ℕ} (hf : SmoothOfRelativeDimension d f) :
@@ -188,19 +188,19 @@ lemma exists_isEtaleChart (x : X) {d : ℕ} (hf : SmoothOfRelativeDimension d f)
     (h_point_iff ξ (σ ≫ ψ) (ψ ∘ l)).1 ⟨by simp [hyt], hl.symm⟩
   algebraize [g, eval₂Hom σ.hom l, eval₂Hom (σ ≫ ψ).hom (ψ ∘ l)]
   have h_nil : IsNilpotent (ker ψ.hom) := hψ.isNilpotent_ker
-  -- Existence: `g` is formally smooth, so `ξ` lifts to an algebra map `ρ` into `C`.
-  obtain ⟨ρ, rfl⟩ :
-      ∃ ρ : Γ(X, V) →ₐ[MvPolynomial (Fin d) Γ(S, U)] C, ofHom ρ.toRingHom ≫ ψ = ξ := by
-    let ξ_alg : Γ(X, V) →ₐ[MvPolynomial (Fin d) Γ(S, U)] C' := ⟨ξ.hom, RingHom.congr_fun hξ⟩
-    let ψ_alg : C →ₐ[MvPolynomial (Fin d) Γ(S, U)] C' := ⟨ψ.hom, map_eval₂Hom _ _ _⟩
-    refine ⟨liftOfSurjective ξ_alg ψ_alg hψ.coe_surjective h_nil, ?_⟩
+  let ξ_alg : Γ(X, V) →ₐ[MvPolynomial (Fin d) Γ(S, U)] C' := ⟨ξ.hom, RingHom.congr_fun hξ⟩
+  let ψ_alg : C →ₐ[MvPolynomial (Fin d) Γ(S, U)] C' := ⟨ψ.hom, map_eval₂Hom _ _ _⟩
+  have : FormallyEtale (MvPolynomial (Fin d) Γ(S, U)) Γ(X, V) := h_etale.formallyEtale
+  obtain ⟨ρ, hρ, h_unique⟩ := New.Variety.existsUnique_algHom_lift ξ_alg ψ_alg hψ.coe_surjective h_nil
+  have h_lift : ofHom ρ.toRingHom ≫ ψ = ξ := by
     ext a
-    exact AlgHom.congr_fun (comp_liftOfSurjective ξ_alg ψ_alg hψ.coe_surjective h_nil) a
+    exact AlgHom.congr_fun hρ a
+  obtain rfl := h_lift.symm
   obtain ⟨hρ_over, hρ_coord⟩ :=
     (h_point_iff (ofHom ρ.toRingHom) σ l).2 (RingHom.ext ρ.commutes)
   refine ⟨homMk _ hρ_over, ⟨by simp, hρ_coord⟩,
     fun ⟨y', _, hy'_over⟩ ⟨hy'_red, hy'_coord⟩ ↦ ?_⟩
-  -- Uniqueness: another lift is an algebra map `ρ'` congruent to `ρ`, and `g` is unramified.
+  -- Any scheme-theoretic lift on the chart gives an algebraic lift through `ψ`.
   obtain ⟨ρ', rfl⟩ := landsIn_opensRange.mp
     (hψ.landsIn_of_comp (landsIn_opensRange.mpr ⟨ofHom ρ.toRingHom ≫ ψ, hy'_red.symm⟩) :
       LandsIn y' hV.fromSpec.opensRange)
@@ -208,7 +208,7 @@ lemma exists_isEtaleChart (x : X) {d : ℕ} (hf : SmoothOfRelativeDimension d f)
   have h_red : ρ' ≫ ψ = ofHom ρ.toRingHom ≫ ψ := by
     simpa [-map_comp, ← map_comp_assoc, cancel_mono, map_inj] using hy'_red
   obtain rfl : ⟨ρ'.hom, RingHom.congr_fun h_alg⟩ = ρ :=
-    FormallyUnramified.ext' ψ.hom h_nil _ _ (ConcreteCategory.congr_hom h_red)
+    h_unique _ (AlgHom.ext fun a ↦ ConcreteCategory.congr_hom h_red a)
   rfl
 
 @[simp]

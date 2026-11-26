@@ -127,6 +127,11 @@ lemma relLength_add_length_inf : relLength S T + length A ↥(S ⊓ T) = length 
   rw [relLength, ← (T.submoduleOfEquivInf S).length_eq, add_comm]
   exact (length_eq_add_of_exact (T.submoduleOf S).subtype (T.submoduleOf S).mkQ
     (Submodule.subtype_injective _) (mkQ_surjective _) (LinearMap.exact_subtype_mkQ _)).symm
+/-- The length of `S` is the sum of the lengths of its image under `f` and the kernel of `f` on `S`. -/
+lemma length_map_add_length_inf_ker :
+    length A (S.map f) + length A ↥(S ⊓ f.ker) = length A S := by
+  rw [← relLength_ker S f, relLength_add_length_inf]
+
 @[simp]
 lemma relLength_bot : relLength S ⊥ = length A S := by rw [← ker_id, relLength_ker, S.map_id]
 
@@ -180,7 +185,7 @@ lemma relLength_le_of_mapsTo (h_maps : ∀ x ∈ S, f x ∈ S') (h_back : ∀ x 
     relLength S T ≤ relLength S' T' := by
   -- `S ⧸ f⁻¹ T'` surjects onto `S ⧸ T` and injects into `S' ⧸ T'`.
   let K : Submodule A S := (T'.submoduleOf S').comap (f.restrict h_maps)
-  have hK : K ≤ T.submoduleOf S := fun x ↦ h_back x x.2
+  have hK : K ≤ T.submoduleOf S := fun x ↦ h_back x x.property
   calc relLength S T ≤ length A (S ⧸ K) := length_le_of_surjective _ (factor_surjective hK)
     _ ≤ relLength S' T' :=
       length_le_of_injective (mapQ K (T'.submoduleOf S') (f.restrict h_maps) le_rfl)
@@ -257,25 +262,25 @@ lemma length_ker_le_addVal_det (M : Matrix n n O) (p : O) :
   -- is cyclic, so a quotient of `O ⧸ a i`.
   obtain ⟨Q, -, P, -, a, rfl⟩ := isValuationPair_top.smith_normal_form M
   have h_cyclic : ∀ i : n, ∃ g : QuotSpan p, torsionBy O (QuotSpan p) (a i) = O ∙ g := fun i ↦
-    (IsPrincipal.of_comap _ (span {p}).mkQ_surjective _).1
+    (IsPrincipal.of_comap _ (span {p}).mkQ_surjective _).principal
   choose g hg using h_cyclic
   let ψ : (∀ i : n, QuotSpan (a i)) →ₗ[O] n → QuotSpan p :=
     P⁻¹ • piMap fun i ↦ liftQSpanSingleton _ (toSpanSingleton O _ (g i))
       (show g i ∈ torsionBy O (QuotSpan p) (a i) by simp [hg i])
-  have h_ker : ker ((Q.1 * diagonal a * P.1) • 1 : End O (n → QuotSpan p)) ≤ .map ψ ⊤ :=
+  have h_ker : ker ((Q.val * diagonal a * P.val) • 1 : End O (n → QuotSpan p)) ≤ .map ψ ⊤ :=
     fun w hw ↦ by
       -- Cancelling `Q` shows that `a i` kills the coordinate `i` of `P • w`.
-      have h_coord : ∀ i : n, ∃ t : O, t • g i = (P.1 • w) i := by
+      have h_coord : ∀ i : n, ∃ t : O, t • g i = (P.val • w) i := by
         simpa [mul_smul, funext_iff, diagonal, ← mem_torsionBy_iff, Submodule.mem_span_singleton,
           hg] using hw
       choose t ht using h_coord
       exact ⟨fun i ↦ mkQ _ (t i), mem_top, ((smul_eq_iff_eq_inv_smul P).1 (funext ht).symm).symm⟩
-  calc length O (ker ((Q.1 * diagonal a * P.1) • 1 : End O (n → QuotSpan p)))
+  calc length O (ker ((Q.val * diagonal a * P.val) • 1 : End O (n → QuotSpan p)))
     _ ≤ length O (⊤ : Submodule O (∀ i : n, QuotSpan (a i))) := length_le_of_le_map _ ⊤ h_ker
     _ = addVal O (∏ i : n, a i) := by simp [addVal_prod]
     -- `det M = det Q * (∏ i, a i) * det P`, so its valuation is no smaller than that of the
     -- product.
-    _ ≤ addVal O (Q.1 * diagonal a * P.1).det := by simp [le_add_right]
+    _ ≤ addVal O (Q.val * diagonal a * P.val).det := by simp [le_add_right]
 
 /-- Let `O` be a discrete valuation ring, `B ≅ O/p` a cyclic `O`-module and `Z` an `O`-module of
 functions from `Γ` to `B`. If `n i • z (q i) = 0` for all `z ∈ Z`, and only `0` vanishes at all
@@ -402,7 +407,7 @@ lemma relLength_le_of_prime_smul_mem {T : Submodule ℤ_[p] V}
   -- `m + 1` classes in it are linearly dependent.
   let P : Ideal ℤ_[p] := Ideal.span {(p : ℤ_[p])}
   have h_torsion : IsTorsionBy ℤ_[p] (T ⧸ L'.submoduleOf T) p :=
-    (isTorsionBy_quotient_iff _ _).2 fun x ↦ h_kill x x.2
+    (isTorsionBy_quotient_iff _ _).2 fun x ↦ h_kill x x.property
   let : Module (ℤ_[p] ⧸ P) (T ⧸ L'.submoduleOf T) := h_torsion.module
   have : P.IsMaximal := PadicInt.prime_p.isMaximal_span_singleton
   let := Ideal.Quotient.field P
@@ -447,7 +452,7 @@ lemma relLength_le_of_relations (t : ℕ) (h_kill : ∀ x ∈ L, p ^ t • x ∈
         simpa [Finset.smul_sum, ← mul_smul, mul_comm] using h_sum
     have h_bottom : relLength T L' ≤ m :=
       relLength_le_of_prime_smul_mem (fun x hx ↦ ((h_mem x).1 hx).2) fun x ↦
-        h_rel (fun i ↦ x i) fun i ↦ (h_mem _).1 (x i).2
+        h_rel (fun i ↦ x i) fun i ↦ (h_mem _).1 (x i).property
     simpa [add_one_mul] using relLength_trans h_top h_bottom
 
 end New.Lift

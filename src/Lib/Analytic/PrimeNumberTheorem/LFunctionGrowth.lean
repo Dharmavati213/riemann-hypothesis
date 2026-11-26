@@ -3,6 +3,8 @@ module
 public import Lib.General.NumberTheory.ImaginaryQuadraticField
 import Lib.Analytic.EntireLFunction
 import TauCeti.NumberTheory.DirichletCharacter.LFunction.Bounds
+import TauCeti.NumberTheory.LSeries.RiemannZeta.Basic
+import TauCeti.NumberTheory.LSeries.RiemannZeta.Bounds
 
 /-!
 # Growth of Dirichlet L-functions near the line `re s = 1`
@@ -41,24 +43,18 @@ omit [NeZero N] in
 lemma norm_LSeries_char_le {A : ℝ} (hA : 0 < A) (hs : 1 + 1 / A ≤ s.re) :
     ‖LSeries (fun n : ℕ ↦ χ n) s‖ ≤ 1 + A := by
   have hs_one : 1 < s.re := by linarith [one_div_pos.2 hA]
-  have h_summable : Summable fun n : ℕ ↦ 1 / (n : ℝ) ^ s.re :=
-    Real.summable_one_div_nat_rpow.2 hs_one
+  have h_sum : HasSum (fun n : ℕ ↦ 1 / (n : ℝ) ^ s.re) (riemannZeta s.re).re := by
+    simpa only [Real.rpow_neg (Nat.cast_nonneg _), one_div] using
+      TauCeti.hasSum_nat_rpow_neg_riemannZeta_re hs_one
   have term_le (n : ℕ) : ‖LSeries.term (χ ·) s n‖ ≤ 1 / (n : ℝ) ^ s.re := by
     rw [LSeries.norm_term_eq]
     split_ifs
     · positivity
     · exact div_le_div_of_nonneg_right (χ.norm_le_one _) (by positivity)
-  -- `ζ(σ) - 1 / (σ - 1) = 1 - σ T` with `T ≥ 0`
-  have zeta_le : ∑' n : ℕ, 1 / (n + 1 : ℝ) ^ s.re ≤ 1 + 1 / (s.re - 1) := by
-    have h_nonneg : 0 ≤ s.re * ZetaAsymptotics.termTSum s.re :=
-      mul_nonneg (by linarith) (tsum_nonneg fun n ↦ ZetaAsymptotics.term_nonneg _ _)
-    linarith [ZetaAsymptotics.zeta_limit_aux1 hs_one]
   calc
-    _ ≤ ∑' n : ℕ, 1 / (n : ℝ) ^ s.re := tsum_of_norm_bounded h_summable.hasSum term_le
-    _ = ∑' n : ℕ, 1 / (n + 1 : ℝ) ^ s.re := by
-      rw [h_summable.tsum_eq_zero_add]
-      simp [Real.zero_rpow (one_pos.trans hs_one).ne']
-    _ ≤ 1 + 1 / (s.re - 1) := zeta_le
+    _ ≤ (riemannZeta s.re).re := tsum_of_norm_bounded h_sum term_le
+    _ ≤ 1 + 1 / (s.re - 1) :=
+      (TauCeti.riemannZeta_re_lt_one_add_one_div_sub_one (zero_lt_one.trans hs_one) hs_one.ne').le
     _ ≤ 1 + A := by linarith [(one_div_le hA (sub_pos.2 hs_one)).1 (by linarith)]
 
 /-- `𝖿_χ(s)` is `L(s, χ)`, times `(s - 1) / s` if `χ` is principal. The entire function `entireL χ`
@@ -104,7 +100,6 @@ lemma norm_regularL_le_linear (hs : 1 / 2 ≤ s.re) : ‖regularL χ s‖ ≤ 8 
       ‖regularL χ z‖ ≤ 8 * N * ‖z‖ := by
     have hz_pos : 0 < z.re := by linarith
     have hz_norm : 1 / 2 ≤ ‖z‖ := hz.trans (re_le_norm z)
-    have hN : (0 : ℝ) ≤ N := Nat.cast_nonneg N
     by_cases hχ : χ = 1
     · have h_eq : regularL χ z = (z - 1) / z * χ.LFunction z := by
         simp [regularL, entireL, hχ, LFunctionTrivChar₁, Function.update_of_ne hz1]

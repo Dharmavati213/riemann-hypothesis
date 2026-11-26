@@ -270,6 +270,11 @@ lemma invOnUnits_det_eq_resChar_det (N : Matrix b b V.O) :
   simpa [RingHom.map_det, ← V.O.subtype_apply, -Subring.subtype_apply] using
     hχ.isPrimitive_resChar_and_invOnUnits_eq.right N.det
 
+omit [Fintype b] [DecidableEq b] in
+private lemma exists_integral_lift {M : Matrix b b F} (hM : IsIntMatrix O M) :
+    ∃ M₀ : Matrix b b V.O, M₀.map Subtype.val = M :=
+  ⟨of fun i j ↦ ⟨M i j, hM i j⟩, rfl⟩
+
 /-- Let χ be tame: there are a reduction π of O onto a finite ring with kernel ϖO and a primitive
 character η of that ring with η ∘ π equal to χ⁻¹ on units and 0 on the rest of O. Let A be an
 integral frame (an integral basis with column blocks K, I, L, whose integral inverse has row blocks
@@ -287,10 +292,8 @@ lemma IntegralFrame.stdColDatum_mul_sub_smul (A : IntegralFrame F n m b) (r : Ma
       (.mul (fun i j ↦ (r i j).property) (h_blocks.isIntMatrix_dualK.mul hx))).sub (hx.smul ϖ_mem)
   -- With `k`, `u` the lifts of `A.dualK * x`, `A.dualL * x` to `O`, `A.dualL * y` is
   -- `r * k - ϖ • u`.
-  obtain ⟨k, hk⟩ : ∃ k : Matrix b b V.O, k.map Subtype.val = A.dualK * x :=
-    ⟨of fun i j ↦ ⟨(A.dualK * x) i j, h_blocks.isIntMatrix_dualK.mul hx i j⟩, rfl⟩
-  obtain ⟨u, hu⟩ : ∃ u : Matrix b b V.O, u.map Subtype.val = A.dualL * x :=
-    ⟨of fun i j ↦ ⟨(A.dualL * x) i j, h_blocks.isIntMatrix_dualL.mul hx i j⟩, rfl⟩
+  obtain ⟨k, hk⟩ := exists_integral_lift (h_blocks.isIntMatrix_dualK.mul hx)
+  obtain ⟨u, hu⟩ := exists_integral_lift (h_blocks.isIntMatrix_dualL.mul hx)
   let N : Matrix b b V.O := r * k - (⟨V.ϖ.val, ϖ_mem⟩ : V.O) • u
   have hN : A.dualL * y = N.map Subtype.val := by
     simp [N, hy, ← Matrix.mul_assoc, h_blocks.dualL_mul_L, ← hk, ← hu, ← Matrix.ext_iff,
@@ -364,8 +367,7 @@ lemma IntegralFrame.match_mem_of_isPrimitiveMatrix_vanishing
       have h_single : IsIntMatrix O (single j i a) := fun _ _ ↦ by simp [single_apply, ite_mem, ha]
       simpa [S, A.stdColDatum_shear_of_isIntMatrix h_single, h_std, trace_mul_single] using
         hΛ (single j i a)
-    obtain ⟨T₀, rfl⟩ : ∃ T₀ : Matrix b b V.O, T₀.map Subtype.val = T :=
-      ⟨of fun i j ↦ ⟨T i j, hT i j⟩, rfl⟩
+    obtain ⟨T₀, rfl⟩ := exists_integral_lift hT
     -- `T` is not unimodular, so the Gauss sum of index `T` is zero.
     have h_det : η (T₀.map π).det = 0 := by
       rw [← invOnUnits_det_eq_resChar_det, invOnUnits,

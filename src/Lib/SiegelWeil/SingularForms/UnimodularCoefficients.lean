@@ -562,11 +562,9 @@ lemma exists_eq_radicalElement_mul_actsOnFrame {g : G E s} {α : Matrix Unit Uni
       A.symm.ActsOnFrame (A.levi (t, g₀)) (t⁻¹).valᴴ := by
     constructor <;> simp [Splitting.levi, Matrix.mul_assoc, Matrix.add_mul]
   refine ⟨c, z, t.val, (t⁻¹).valᴴ, A.levi (t, g₀), hg_eq, ?_, ?_,
-    by rw [conjTranspose_conjTranspose, t.inv_mul]⟩
-  · simp [ActsOnFrame, comp_kAdelic, mul_fromCols, h_k, h_compl, fromCols_mul_fromBlocks,
-      Matrix.mul_assoc]
-  · simp only [ActsOnFrame, comp_kAdelic, mul_fromCols, h_l]
-    simp [h_compl, fromCols_mul_fromBlocks, Matrix.mul_assoc]
+    by rw [conjTranspose_conjTranspose, t.inv_mul]⟩ <;>
+    (simp only [ActsOnFrame, comp_kAdelic, mul_fromCols, h_k, h_l]
+     simp [h_compl, fromCols_mul_fromBlocks, Matrix.mul_assoc])
 
 /-- Let the splittings `A`, `B` be adapted to the integral structure, let `h` act on the frame of
 `A.comp B` with upper right block `0` and lower blocks `x`, `γ`, and let `h * κ`, with `κ` integral

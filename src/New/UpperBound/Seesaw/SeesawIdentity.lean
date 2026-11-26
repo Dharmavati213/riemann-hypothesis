@@ -119,13 +119,13 @@ lemma exists_integral_eq_mul_inner_restrictToFormY (hM : D.m = M)
   refine ⟨C * card (WeylIndex (D.Y D.m) D.columnsY) * c, fun x ψ F hF ↦ ?_⟩
   -- `x̄` is the pairing of its algebraic form `xAlg` with the translates of the highest vector.
   let xAlg : AlgForm (D.Y D.m) D.columnsY (D.lastEntry D.m) := toAlgForm _ hw x
-  have h_conj (a : GInf D.E (D.signsY D.m)) (g : Gf D.E (D.Y D.m)) : star (x.1 (a, g)) =
-      gramForm (xAlg.1 g) (conjWeylRep D.columnsY (D.lastEntry D.m) a
+  have h_conj (a : GInf D.E (D.signsY D.m)) (g : Gf D.E (D.Y D.m)) : star (x.val (a, g)) =
+      gramForm (xAlg.val g) (conjWeylRep D.columnsY (D.lastEntry D.m) a
         (highestVector D.columnsY (D.paramY D.m))) := by
     rw [← star_ofAlgForm hs, ofAlgForm_toAlgForm]
   -- `avg` is the common mean over the finite points of both sides.
   let avg : ℂ := classIntegral stdRatPoints (stdLevel D.E (D.Y D.m)) fun h ↦
-    gramForm (xAlg.1 h) (D.branching.map (↑) *ᵥ ψ.1 (D.borderU h))
+    gramForm (xAlg.val h) (D.branching.map (↑) *ᵥ ψ.val (D.borderU h))
   -- `Y_m` is standard and its last grading has no isotropic vectors split off: so `hF` describes
   -- `F` at every point, after relabelling along `D.lastIndexEquiv`, and the Bessel subgroup is the
   -- whole group.
@@ -133,16 +133,16 @@ lemma exists_integral_eq_mul_inner_restrictToFormY (hM : D.m = M)
       (e := D.lastIndexEquiv.sumCongr (.refl Unit)) (by simp [hs]) (g, 1)) := by
     convert hF (.reindex D.lastIndexEquiv (by rw [hs]; rfl) g)
     · -- `inclX` of the relabelled point is `g`: they have the same matrix in rational coordinates.
-      apply (D.spaceY _).isEmbedding_ratCoordMatrix.2
+      apply (D.spaceY _).isEmbedding_ratCoordMatrix.injective
       -- '↓' rewrites `ratCoordMatrix` of `inclX` before its arguments are unfolded.
       simp [← ext_iff, lastGrading, ↓ratCoordMatrix_inclX, ratCoordMatrix_eq, IsStd.point_eq_one]
     · exact New.G.ext_adeleMatrix (by simp [← ext_iff, New.G.blockEmb])
   have hΓ : (lastGrading rfl).ratBessel = (D.spaceY D.m).Γ :=
     inf_eq_left.2 fun g _ ↦ by simp [mem_besselGroup_iff, lastGrading]
-  have h_left : ∫ g, F g * star (x.1 g) ∂(D.spaceY D.m).quotMeasure = C * avg := by
+  have h_left : ∫ g, F g * star (x.val g) ∂(D.spaceY D.m).quotMeasure = C * avg := by
     simp_rw [mul_comm (F _), hF']
-    refine (hC ψ (star x.1) 1 (fun g ↦ gramForm (xAlg.1 g)) (stdLevel D.E (D.Y D.m))
-      x.2.conj.toIsAutomorphic h_conj).trans ?_
+    refine (hC ψ (star x.val) 1 (fun g ↦ gramForm (xAlg.val g)) (stdLevel D.E (D.Y D.m))
+      x.property.conj.toIsAutomorphic h_conj).trans ?_
     -- The index of `stdLevel` in itself is `1`, and `D.borderU h` is the point `diag (h, 1)`.
     have h_index : stdLevelIndex (stdLevel D.E (D.Y D.m)) = 1 := by simp
     rw [h_index, Nat.cast_one, div_one]
@@ -295,7 +295,7 @@ lemma integrable_unfoldStage_mul (ϑ : D.TameChar)
     [DecidableEq X] (Y : Grading (D.spaceY (k + 1)) D.N X (2 * D.ϱ + 1 - (k + 1)))
     (z : D.ConjFormY (k + 1)) :
     Integrable (unfoldStage ϑ t φ ξ y k hk Y * z.val) Y.ratBessel.quotMeasure := by
-  exact (integral_unfoldStageOn ϑ t φ ξ y k hk Y z.2.toIsAutomorphic
+  exact (integral_unfoldStageOn ϑ t φ ξ y k hk Y z.property.toIsAutomorphic
     (isRapid_conjFormY (lt_m_of_le hk) z)).1
 
 /-- The recursion of the iterated unfolding, for the tame character `ϑ`, the source form `φ` on
@@ -317,7 +317,7 @@ lemma integral_unfoldStageOn_mul_transposedLiftY (ϑ : D.TameChar)
       unfoldStageOn ϑ t φ ξ y k hk r * transposedLiftY ϑ k z (r.val * (ξ k, y k))
         ∂(D.gradingY k hk).besselMeasure =
       stdLevelIndex (levelY ϑ k) * unfoldedPeriod ϑ t φ ξ y k hk Y z := by
-  obtain ⟨-, h_step⟩ := integral_unfoldStageOn ϑ t φ ξ y k hk Y z.2.toIsAutomorphic
+  obtain ⟨-, h_step⟩ := integral_unfoldStageOn ϑ t φ ξ y k hk Y z.property.toIsAutomorphic
     (isRapid_conjFormY (lt_m_of_le hk) z)
   -- `h_step` evaluates `Ξ_{k+1}` as the period of `𝒲_k` against the theta integral of `z`.
   rw [unfoldedPeriod, ← h_step, ← integral_const_mul]
@@ -336,10 +336,10 @@ lemma sum_quotient_chosenLevel_eq_sum_cutPoints (ϑ : D.TameChar)
   let J : Subgroup (Gf D.E (D.Y 0)) := levelY ϑ 0
   have h_out (x : Gf D.E (D.Y 0)) : f (x : Gf D.E (D.Y 0) ⧸ J).out = f x := by
     obtain ⟨u, hu⟩ := QuotientGroup.mk_out_eq_mul J x
-    rw [hu, hf x u u.2]
+    rw [hu, hf x u u.property]
   -- A class of `J_M` modulo `J` goes to the class modulo `J` of its representative.
   refine sum_bij (fun q _ ↦ ↑(q.out : Gf D.E (D.Y 0)))
-    (fun q _ ↦ (mk_mem_cutPoints_zero ϑ).2 q.out.2) (fun q _ q' _ h_eq ↦ ?_) (fun c hc ↦ ?_)
+    (fun q _ ↦ (mk_mem_cutPoints_zero ϑ).2 q.out.property) (fun q _ q' _ h_eq ↦ ?_) (fun c hc ↦ ?_)
     fun q _ ↦ (h_out q.out).symm
   · rw [← q.out_eq', ← q'.out_eq']
     exact QuotientGroup.eq.2 (QuotientGroup.eq.1 h_eq :)
@@ -380,7 +380,7 @@ lemma integral_mul_liftY_poincareAt (ϑ : D.TameChar)
   -- The period over `[R_0]` at `(g, x)` depends only on the class of `x` modulo `J`.
   let period (x : Gf D.E (D.Y 0)) : ℂ :=
     ∫ r : (D.gradingY 0).besselGroup,
-      (D.gradingY 0).sourceFn t φ.1 r * transposedLiftY ϑ 0 z (r.1 * (g, x))
+      (D.gradingY 0).sourceFn t φ.val r * transposedLiftY ϑ 0 z (r.val * (g, x))
         ∂(D.gradingY 0).besselMeasure
   have period_mul (x u : Gf D.E (D.Y 0)) (hu : u ∈ J) : period (x * u) = period x := by
     have h_mul : ((g, x * u) : New.G D.E (D.signsY 0)) = (g, x) * (1, u) := by simp
@@ -456,12 +456,12 @@ lemma exists_integral_mul_lowerChainUpTo_eq_cutSum
     obtain ⟨c, hc⟩ := ih (by omega) a' Y₀
     refine ⟨c, fun ϑ φ z S h_period ↦ ?_⟩
     let z' : D.ConjFormY (k + 1) := transposedLiftY ϑ (k + 1) z
-    have hz' : (D.spaceY (k + 1)).IsAutomorphic z' := z'.2.toIsAutomorphic
+    have hz' : (D.spaceY (k + 1)).IsAutomorphic z' := z'.property.toIsAutomorphic
     -- Descend `z`. It remains to show that the period of `z'` at step `k` is `a' ξ` times the
     -- weighted sum of `S` over `cutPoints ϑ (k + 1) _`.
     refine (integral_mul_liftY ϑ (lt_m_of_le hk) z _).trans
       (hc ϑ φ z' _ fun ξ y hy_zero hy_top ↦ ?_)
-    let f : New.G D.E (D.signsY (k + 1)) → ℂ := unfoldStage ϑ t φ ξ y k (by omega) Y₀ * z'.1
+    let f : New.G D.E (D.signsY (k + 1)) → ℂ := unfoldStage ϑ t φ ξ y k (by omega) Y₀ * z'.val
     have h_cut : IsStageCut ϑ (k + 1) hk (cutPoints ϑ (k + 1) hk) := isStageCut_cutPoints ϑ k hk
     have h_fix : Y₀.ratBessel.FixesLeft f := fun γ hγ x ↦ by
       simp only [f, Pi.mul_apply, fixesLeft_ratBessel_unfoldStage ϑ t φ ξ y k _ Y₀ γ hγ,
@@ -517,7 +517,7 @@ lemma isInvariant_seesawDatum (ϑ : D.TameChar) : (seesawDatum ϑ).IsInvariant �
   let bY (i : ℕ) : Gf D.E (D.Y i) :=
     if hi : i < 2 * D.ϱ + 2 then (D.gradingY i).inclXFin (b i) else 1
   rw [seesawDatum, map_cutSum, ← cutSum_comp_smul ϑ _ le_rfl (h := bY) (evaluatedTensor ϑ)
-    (fun i hi ↦ ⟨b i, (b i).2, dite_eq_left hi⟩) fun i hi ↦ dite_eq_right hi.not_gt]
+    (fun i hi ↦ ⟨b i, (b i).property, dite_eq_left hi⟩) fun i hi ↦ dite_eq_right hi.not_gt]
   congr with c
   simp only [evaluatedTensor, ← Quotient.mk_smul_out, evaluatedDatum_out,
     twoKernelAction, TensorChain.map_pure]
@@ -574,12 +574,12 @@ lemma exists_lowerChainUpTo_poincareAt_eq (t : (WeylIndex (D.X 0) D.columnCount 
   refine ⟨c₀, fun ϑ φ ↦ ext_inner_left ℂ fun x ↦ ?_⟩
   let L : D.ChainTensor →ₗ[ℂ] ℂ := innerₛₗ ℂ x ∘ₗ restrictToFormY hm ∘ₗ chainOfTensor ϑ φ
   have h_top (ξ : ∀ i, GInf D.E (D.signsY i)) (y : ∀ i, Gf D.E (D.Y i)) (hy : y (2 * D.ϱ + 2) = 1) :
-      unfoldedPeriod ϑ t φ ξ y _ le_rfl (D.lastGrading hm) ⟨_, x.2.conj⟩ =
+      unfoldedPeriod ϑ t φ ξ y _ le_rfl (D.lastGrading hm) ⟨_, x.property.conj⟩ =
         c (l ξ) * L (pure (evaluatedDatum ϑ y) (D.ϱ + 1)) :=
     (integral_top _ x (h_stage ξ ϑ φ y hy)).trans (by simp [L, doubleLiftChain])
   calc
     _ = c₀ * cutSum ϑ _ le_rfl fun q ↦ L (evaluatedTensor ϑ q) :=
-      h_sum ϑ φ ⟨_, x.2.conj⟩ _ fun ξ y _ hy ↦ by
+      h_sum ϑ φ ⟨_, x.property.conj⟩ _ fun ξ y _ hy ↦ by
         rw [evaluatedTensor_mk, h_top ξ y hy, comp_apply]
     _ = c₀ * L (seesawDatum ϑ) := by rw [seesawDatum, map_cutSum]
     _ = _ := by simp [L, inner_smul_right]
@@ -608,7 +608,7 @@ lemma exists_isAdmissibleCombination_seesawDatum (D : Data P) :
       IsAdmissibleCombination (fun x : Translations (P := P) (D := D) ↦ C • D.gluedVacuum x)
         (admissibleTranslations ϑ.normQ) ϑ.normQ (D.residueMatrixCount ^ (2 * D.m)) (ϑ.Q = ∅) 1
         (evaluatedTensor ϑ fun i : ℕ ↦ ⟦(y i).val⟧) := by
-    simpa [evaluatedTensor_mk] using h_comb ϑ _ fun i ↦ (y i).2
+    simpa [evaluatedTensor_mk] using h_comb ϑ _ fun i ↦ (y i).property
   exact (isAdmissibleCombination_cutSum ϑ _ le_rfl _).bind _ 1 (fun y _ ↦ h_value y) (one_mul _).dvd
     (by simp)
 

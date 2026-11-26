@@ -134,11 +134,11 @@ variable {P : Parameters} {D : Data P} {ϑ : D.TameChar}
 lemma normQ_mul_M_pow_mem_modulus {c : ℕ} :
     ↑(ϑ.normQ * D.M ^ c) ∈ (D.twistModulus ϑ c).ideal := by
   -- `D.M` lies in the product `(D.piM)` of the chosen places, and each norm `w.q` in `w`.
-  have hM_mem : ↑D.M ∈ ∏ i, (D.chosenPlace i).1 := by
+  have hM_mem : ↑D.M ∈ ∏ i, (D.chosenPlace i).asIdeal := by
     rw [← span_piM D, mem_span_singleton]
     exact Dvd.intro _ D.piM_mul_star
   rw [TameChar.normQ, ← ϑ.Q.prod_coe_sort FinPlace.q, Nat.cast_mul, Nat.cast_pow, Nat.cast_prod]
-  exact mul_mem_mul_rev (pow_mem_pow hM_mem c) (prod_mem_prod fun w _ ↦ absNorm_mem w.1.1)
+  exact mul_mem_mul_rev (pow_mem_pow hM_mem c) (prod_mem_prod fun w _ ↦ absNorm_mem w.val.asIdeal)
 
 /-- Replacing the matrix Y by Y·Bᵀ multiplies the matrices `constantRows` on the right by the
 transpose of the block diagonal matrix (1, 1, τB, τA) at each τ, whatever A is. -/

@@ -1,8 +1,9 @@
 module
 
-public import Lib.CM.Sigma.Basic
 public import Lib.General.Algebra.AdicCompletion
 public import Lib.General.NumberTheory.CoefficientRings
+public import Lib.General.NumberTheory.ImaginaryQuadraticField
+public import TauCeti.Analysis.Normed.Ring.Ultra
 import Lib.General.NumberTheory.PadicLimitsValuation
 import Lib.General.NumberTheory.SUnitsAndClassNumber
 
@@ -269,7 +270,7 @@ lemma piPrime_mem_quadInt (d : ℕ) {p : ℕ} [PrimeSevenModEight d] : piPrime d
   split_ifs
   exacts [I_mul_sqrt_mem_quadInt d, natCast_mem _ p]
 
-lemma piPrime_ne_zero (d : ℕ) {p : ℕ} [PrimeSevenModEight d] [Fact p.Prime] :
+lemma piPrime_ne_zero (d : ℕ) {p : ℕ} [Fact p.Prime] :
     piPrime d p ≠ 0 := by
   have hp : p ≠ 0 := (Fact.out : p.Prime).ne_zero
   unfold piPrime

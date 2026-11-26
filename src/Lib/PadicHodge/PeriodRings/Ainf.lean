@@ -1,7 +1,6 @@
 module
 
 public import Lib.PadicHodge.PeriodRings.AxTheorem
-public import TauCeti.Analysis.Normed.Ring.Ultra
 public import TauCeti.RingTheory.Huber.Pair
 public import TauCeti.RingTheory.Perfectoid.Integral.Basic
 public import TauCeti.RingTheory.WittVector.Cyclotomic
@@ -260,12 +259,6 @@ private def OFlat.iterateSeq (a : ℕ → OFlat → OFlat) : ℕ → OFlat
 private lemma OFlat.coeff_add_pow_pow (x : OFlat) (m n : ℕ) :
     x.coeff (m + n) ^ p ^ n = x.coeff m := coeffMonoidHom_pow_p_pow' x m n
 
-/-- For a polynomial `f` over `O^♭`, the `n`-th coordinate of `f (x)` depends only on the `n`-th
-coordinate of `x`. -/
-private lemma OFlat.coeff_eval_eq_of_coeff_eq {f : OFlat[X]} {x y : OFlat} {n : ℕ}
-    (h_coeff : x.coeff n = y.coeff n) : (f.eval x).coeff n = (f.eval y).coeff n := by
-  rw [← eval₂_hom, h_coeff, eval₂_hom]
-
 /-- The tilt O^♭ is absolutely integrally closed: every monic polynomial of positive degree over
 it has a root. The root is built coordinate by coordinate from roots modulo `p`. -/
 lemma OFlat.isAbsIntegrallyClosed : IsAbsIntegrallyClosed OFlat := by
@@ -301,7 +294,7 @@ lemma OFlat.isAbsIntegrallyClosed : IsAbsIntegrallyClosed OFlat := by
   -- the `n`-th coordinate of the root is that of `s (n + d + 1)`, and the `n`-th coordinate of
   -- `f (s (n + d + 1))` is a power of the `(n + d)`-th one, which is `0`
   calc (f.eval root).coeff n
-    _ = (f.eval (s (n + d + 1))).coeff n := coeff_eval_eq_of_coeff_eq rfl
+    _ = (f.eval (s (n + d + 1))).coeff n := by simp only [← eval₂_hom]; rfl
     _ = (f.eval (s (n + d + 1))).coeff (n + d) ^ p ^ d := (coeff_add_pow_pow _ n d).symm
     _ = (0 : OFlat).coeff n := by simp [h_root_s, NeZero.ne p]
 

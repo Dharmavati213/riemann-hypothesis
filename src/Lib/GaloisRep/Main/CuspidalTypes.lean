@@ -317,7 +317,7 @@ algebras, with `k` algebraically closed of characteristic `0`. If `f` kills no b
 `f' (piMatrixUnit i)` has trace `1`, then `f'` is a retract of `f`: some `B` with a left inverse `C`
 satisfies `f z * B = B * f' z` for all `z`. -/
 lemma New.exists_retract_of_trace_map_piMatrixUnit_eq_one {k N n : Type} [Field k] [CharZero k]
-    [IsAlgClosed k] [Fintype N] [DecidableEq N] [Fintype n] [DecidableEq n] {b : ℕ}
+    [Fintype N] [DecidableEq N] [Fintype n] [DecidableEq n] {b : ℕ}
     {d : Fin b → ℕ} [∀ i : Fin b, NeZero (d i)] (f : PiMatrix k d →ₐ[k] Matrix N N k)
     (f' : PiMatrix k d →ₐ[k] Matrix n n k) (f_ne : ∀ i : Fin b, f (piMatrixUnit i) ≠ 0)
     (f'_trace : ∀ i : Fin b, (f' (piMatrixUnit i)).trace = 1) :
@@ -535,11 +535,11 @@ lemma New.Period.aeval_cocharacter_eq_zero {p : ℕ} [ThePrime p] {n : Type _} [
   obtain ⟨V, hV⟩ := NonarchimedeanGroup.is_nonarchimedean _ h
   -- `u ν` is the weight of the monomial `ν`; `W` consists of the vectors that vanish at the
   -- translates by all `g` in the open subgroup `V`, and `W'` of those that vanish at `T ^ κ * x`.
-  let u (ν : F.support) : ℤ := ∑ i, ν.1 i * κ i
+  let u (ν : F.support) : ℤ := ∑ i, ν.val i * κ i
   let W : Submodule ℂ_[p] (F.support → ℂ_[p]) := (of fun (ν : F.support) (g : V) ↦
-    ∏ i, ((cyclotomicGp g ^ (-κ i)).val • (g : Gp p) • x i) ^ ν.1 i).vecMulLinear.ker
+    ∏ i, ((cyclotomicGp g ^ (-κ i)).val • (g : Gp p) • x i) ^ ν.val i).vecMulLinear.ker
   let W' : Submodule ℂ_[p] (F.support → ℂ_[p]) := (Fintype.linearCombination ℂ_[p]
-    fun ν : F.support ↦ ∏ i, (T (κ i) * C (x i)) ^ ν.1 i).ker
+    fun ν : F.support ↦ ∏ i, (T (κ i) * C (x i)) ^ ν.val i).ker
   refine le_of_hodgeTate_stable le_rfl u W W'
     (fun a ha ↦ ?_) (fun v ν hv _ h_supp _ _ ↦ ?_) (funext fun g ↦ hV g.prop)
   · -- Stability: for `k ∈ V`, apply `k` to the equation of `W` at `k⁻¹ * g`.

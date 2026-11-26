@@ -81,7 +81,7 @@ lemma New.exists_root_near_one {Ω : Type*} [Field Ω] [IsAlgClosed Ω] (A : Val
 then `a = x ^ l` for some `x` in `L` with `|x - 1| ≤ r`. -/
 lemma New.exists_local_root_near_one (Γ : Type*) {L Ω : Type} [Group Γ] [TopologicalSpace Γ]
     [Field L] [Field Ω] [Algebra L Ω] [MulSemiringAction Γ Ω] (A : ValuationSubring Ω)
-    [hLocal : IsLocalGalois Γ L A] {l : ℕ} [NeZero l] {a : L} {r : A.ValueGroup} (hr : r ≠ 0)
+    [hLocal : IsLocalGalois Γ L A] {l : ℕ} {a : L} {r : A.ValueGroup} (hr : r ≠ 0)
     (hr_lt : r < A.valuation l) (ha : A.valuation (algebraMap L Ω a - 1) ≤ A.valuation l * r) :
     ∃ x : L, a = x ^ l ∧ A.valuation (algebraMap L Ω x - 1) ≤ r := by
   have h_alg_closed : IsAlgClosed Ω := hLocal.toIsAlgClosed

@@ -3,7 +3,6 @@ module
 public import New.Determinant.Norms.AdjointThetaLift
 public import New.OneLift.HeckeValues.CharacterLift
 import Lib.DiscreteSeries.Haar.TotalMass
-import Lib.General.Algebra.IntegralPowerSeries
 import Lib.General.Groups.IndexOfProduct
 import TauCeti.Topology.Algebra.Group.Units
 import TauCeti.Topology.Instances.Matrix

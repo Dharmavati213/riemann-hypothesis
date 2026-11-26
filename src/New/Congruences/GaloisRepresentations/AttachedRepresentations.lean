@@ -104,14 +104,14 @@ theorem isLiftSetting_descentPair (j : D.LiftIndex)
     mem_goodTuples.1 (mem_piFinset.1 (mem_map_equiv.1 hc) i)
   refine
     { toLevelPlaces_eq := rfl
-      exists_tamePart_eq_chiMLocal_zpow_mul := ⟨j, j.2, rfl⟩
+      exists_tamePart_eq_chiMLocal_zpow_mul := ⟨j, j.property, rfl⟩
       odd := by simp [D.card_rowIndex, D.r_odd, D.t_odd, DescentPair.rankDiff]
       rank_le := by simp [D.card_rowIndex, DescentPair.rankDiff]
       isLabel w := ((h_good w.1).1 w.2).isLabel
       exists_primitive_or_one i := ?_
       not_isRoot_scaledTypePoly w := ?_ }
   · obtain ⟨w, hw⟩ := (h_good i).2
-    exact ⟨⟨i, w⟩, w.2.2, .inl ⟨D.card_rowIndex, hw⟩⟩
+    exact ⟨⟨i, w⟩, w.property.2, .inl ⟨D.card_rowIndex, hw⟩⟩
   · -- `1` is a root of the scaled type polynomial exactly when `x`, the unit naming the character
     -- at `w`, is a root of `c w`; it is a root of unity of order dividing `P.q₂ D.towerExp`, so it
     -- is not.
@@ -149,7 +149,7 @@ theorem isLiftSetting_mainPair (hp : p.IsMainPair j) :
       rank_le := by grind [card_unique]
       -- `map_one` is kept out of `simp` because it would undo the rewriting of `1` as `C 1`.
       isLabel i := by simp [IsLabel, ← C_1, Monic, -map_one, separable_X_sub_C.squarefree]
-      exists_primitive_or_one k := ⟨⟨k, D.chosenEquiv k 1⟩, (D.chosenEquiv k 1).2.2, by simp⟩
+      exists_primitive_or_one k := ⟨⟨k, D.chosenEquiv k 1⟩, (D.chosenEquiv k 1).property.2, by simp⟩
       not_isRoot_scaledTypePoly i := ?_ }
   -- The scaled type polynomial has the root `1` only if the tame part of `ν` is trivial at the
   -- place, and a main pair is ramified.
@@ -172,7 +172,7 @@ theorem trivialLift_mem_range_typeProjection (hp : p.IsMainPair j) :
   -- The label `X - 1` belongs to the trivial character of `GL₁`.
   have h_label (w : FinPlace D.E) (g : GL Unit (ResField w)) :
       (labelChar (faithfulChar (ResField w))
-          (X - C (charName (faithfulChar (ResField w)) 1).1)).evalGL g = 1 := by
+          (X - C (charName (faithfulChar (ResField w)) 1).val)).evalGL g = 1 := by
     rw [labelChar_X_sub_C]
     -- On `GL₁` the rank `1` part of a function is the function itself.
     exact (ite_eq_left (by simp)).trans ((evalGL_detChar 1 g).trans (MulChar.one_apply_coe g.det))
@@ -218,9 +218,9 @@ lemma levelPrime_pow_sub_one_dvd_chosenGroupOrder {i : Fin 2} {d : ℕ}
   -- of a place `w` above `p_i`, and `chosenGroupOrder` is a multiple of the product of these
   -- orders.
   let w : D.ChosenPlace i := D.chosenEquiv i 1
-  have h_above : ↑(D.levelPrime i) ∈ w.val.asIdeal := w.2.2
+  have h_above : ↑(D.levelPrime i) ∈ w.val.asIdeal := w.property.2
   calc
-    D.levelPrime i ^ d - 1 ∣ Nat.card (GL (Fin d) (ResField w.1)) := by
+    D.levelPrime i ^ d - 1 ∣ Nat.card (GL (Fin d) (ResField w.val)) := by
       grw [card_GL_field, ← dvd_prod_of_mem _ (mem_univ ⟨0, hd.1⟩), Fintype.card_eq_nat_card,
         card_ResField, D.q_eq_levelPrime h_above, pow_zero]
     _ ∣ Nat.card (∀ x, GL (Fin d) (ResField (D.chosenPlace x))) := by
@@ -492,7 +492,7 @@ theorem isFiniteTypeAt_and_hasJumpsAt_of_conjPlace {R : GalRep ℓ D.E m} {k : �
     (isTraceNondeg_transpose_inv (R' := Rdual) h_dual.nondeg fun g : AbsGal D ↦ rfl).twist _
   have h_normal : IsTraceNondeg (R.comp conjGal) :=
     h_dual.nondeg.comp conjGal ⟨fun _ _ _ ↦ ⟨_, conjGal_conjGal _⟩⟩
-  obtain ⟨Pm, hPm⟩ : ∃ Pm : GL m (PadicAlgCl ℓ), ∀ g, (r' g).1 * Pm = Pm * (R (conjGal g)).1 :=
+  obtain ⟨Pm, hPm⟩ : ∃ Pm : GL m (PadicAlgCl ℓ), ∀ g, (r' g).val * Pm = Pm * (R (conjGal g)).val :=
     h_nondeg.exists_conj_of_trace_eq _ (AlgHom.id (PadicAlgCl ℓ) (Matrix m m (PadicAlgCl ℓ)))
       h_normal.hasSemiprimeSpan
       (by simp [r', Rdual, h_dual.trace_conj, Units.smul_def, cyclotomicInv])
@@ -512,7 +512,7 @@ theorem isFiniteTypeAt_and_hasJumpsAt_of_conjPlace {R : GalRep ℓ D.E m} {k : �
   have h_pair [H : PadicPlaceEmbedding D.E (conjPlace A) ℓ]
       (g : decompGroup Gal(Ω/D.E) (conjPlace A)) (x y : m → PadicAlgCl ℓ) :
       dot (decompRep r' (conjPlace A) g x) (decompRep R (conjPlace A) g y) =
-        (χ g ^ (-k.pred : ℤ)).1 • dot x y := by
+        (χ g ^ (-k.pred : ℤ)).val • dot x y := by
     simp [dot, r', Rdual, H.cyclotomicGp_eq_cyclotomicChar, mulVec_transpose, ← dotProduct_mulVec,
       @Algebra.smul_def ℤ_[ℓ], Units.smul_def]
   have h_jump (H : PadicPlaceEmbedding D.E (conjPlace A) ℓ) (γ : PadicAlgCl ℓ →ₐ[ℤ_[ℓ]] ℂ_[ℓ])

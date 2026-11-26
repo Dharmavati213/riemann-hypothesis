@@ -865,8 +865,7 @@ lemma exists_param_pow_card_eq_zero (hw : D.IsGoodAt (ker x.baseHom))
         simpa [sub_smul, ← map_smul, sub_eq_zero] using hz _ ht
       have h_van : VanishesAlong (hq.pointEquiv z ≫ (c • 𝟙 y.groupScheme)) (.id B) :=
         (vanishesAlong_iff (𝟙 _) (by simp [specMap])).mpr (by simp [← map_smul, hz c hc])
-      have h_zero : RingHom.id B (u ^ sectionCount e (Subtype.val : T → AdelicTorsion E D.Index)
-          ((Over.map (specMap φ)).map (specOver.map π) ≫ hq.pointEquiv z)) = 0 :=
+      have h_zero :=
         (h_ker (J := T) Subtype.val Subtype.val_injective Subtype.prop).map_eq_zero
           (c • 𝟙 y.groupScheme) h_fix
           (fun s hs ↦ ⟨⟨t • s, smul_mem_torsionBySet_of_comp_smul_eq_zero e h_dvd hs⟩, rfl⟩) h_van

@@ -308,13 +308,6 @@ lemma hasHeckePolynomial_of_mem_eigenPart {p : FinPlace D.E × ℕ → ℂ} {y :
   hasHeckePolynomial_of_heckeSplit (D.principalForms_le_sphericalAt V hw y.prop) fun i ↦ by
     rw [← D.coe_heckeOperator_apply V hw, (D.mem_eigenPart V).1 hy, coe_smul]
 
-/-- Let `T` be in the Hecke algebra, `T_x = D.heckeOperator x` for a pair `x = (w, i)`, and `a, b`
-complex numbers. On a form `y` of principal level with eigensystem `d`, the operator
-`a (T T_x - b T)` acts as `a (d x - b) T`. -/
-lemma smul_mul_heckeOperator_sub_smul_apply {d : FinPlace D.E × ℕ → ℂ} {y : D.principalForms V}
-    (hy : y ∈ D.eigenPart V d) (T : D.heckeAlgebra) (x : FinPlace D.E × ℕ) (a b : ℂ) :
-    (a • (T * D.heckeOperator x - b • T)).val V y = (a * (d x - b)) • T.val V y := by
-  simp [(D.mem_eigenPart V).1 hy x, ← sub_smul, ← mul_smul]
 
 open scoped Classical in
 /-- For an eigensystem `q` and a finite set `F` of eigensystems, one member `T` of the Hecke algebra
@@ -325,7 +318,13 @@ lemma exists_hecke_proj_eigenPart (q : FinPlace D.E × ℕ → ℂ) (F : Finset 
       ∀ {s : D.RowIndex → ℤˣ} {V : Space D.E D.RowIndex s}, ∀ y ∈ D.eigenPart V d,
         T.val V y = if d = q then y else 0 := by
   induction F using Finset.induction with
-  | empty => exact ⟨1, by simp⟩
+  -- The witnesses are written with `algebraMap ℂ _ 1` and `+ (-c) •` rather than `1` and `-`:
+  -- the `One` and `Sub` instances of `D.heckeAlgebra` are slow for the kernel to check.
+  | empty =>
+    refine ⟨algebraMap ℂ _ 1, fun d hd s V y _ ↦ ?_⟩
+    rw [insert_empty_eq, Finset.mem_singleton] at hd
+    rw [hd, ite_eq_left rfl]
+    exact one_smul ℂ y
   | insert e F _ ih =>
     obtain ⟨T, hT⟩ := ih
     by_cases he_eq_q : e = q
@@ -333,12 +332,21 @@ lemma exists_hecke_proj_eigenPart (q : FinPlace D.E × ℕ → ℂ) (F : Finset 
     -- Choose `x` with `e x ≠ q x` and multiply by `(T_x - e x) / (q x - e x)`, which is `1` on the
     -- `q`-part and `0` on the `e`-part.
     obtain ⟨x, hx⟩ : ∃ x : FinPlace D.E × ℕ, q x ≠ e x := Function.ne_iff.1 (Ne.symm he_eq_q)
-    refine ⟨(q x - e x)⁻¹ • (T * D.heckeOperator x - e x • T), fun d hd s V y hy ↦ ?_⟩
-    rw [D.smul_mul_heckeOperator_sub_smul_apply V hy]
+    refine ⟨(q x - e x)⁻¹ • (T * D.heckeOperator x + (-e x) • T), fun d hd s V y hy ↦ ?_⟩
+    have h_apply : ((q x - e x)⁻¹ • (T * D.heckeOperator x + (-e x) • T)).val V y =
+        ((q x - e x)⁻¹ * (d x - e x)) • T.val V y := by
+      simp only [SetLike.val_smul, Subalgebra.coe_add, MulMemClass.coe_mul, Pi.smul_apply,
+        Pi.add_apply, Pi.mul_apply, LinearMap.smul_apply, LinearMap.add_apply, mul_apply_eq_comp,
+        (D.mem_eigenPart V).1 hy x, map_smul]
+      rw [← add_smul, ← sub_eq_add_neg, smul_smul]
+    rw [h_apply]
     obtain rfl | hd_ne_e := eq_or_ne d e
-    · simp [he_eq_q]
-    rw [hT d (by simpa [hd_ne_e] using hd) y hy]
-    by_cases hd_eq_q : d = q <;> simp [hd_eq_q, sub_ne_zero.2 hx]
+    · simp only [sub_self, mul_zero, zero_smul, he_eq_q, ↓reduceIte]
+    rw [Finset.insert_comm] at hd
+    rw [hT d (Finset.mem_of_mem_insert_of_ne hd hd_ne_e) y hy]
+    by_cases hd_eq_q : d = q
+    · simp only [hd_eq_q, ↓reduceIte, inv_mul_cancel₀ (sub_ne_zero.2 hx), one_smul]
+    · simp only [hd_eq_q, ↓reduceIte, smul_zero]
 
 /-- An element `g` of `D.chosenGL` acts on forms of principal level through its integral lift
 `liftResidue g` to `G_f`. -/

@@ -233,7 +233,7 @@ lemma KummerChart.pow_smul_mem_cupOrthogonal_of_isScaledCupCoboundary [Topologic
 
 /-- Let `Γ → Gp p = Gal(ℚ̄_p / ℚ_p)` be an open embedding, let the chart `k` be unramified and
 `p ≥ 5`, and at each letter `i` let `b i + W + η ≤ (p - 3) a` and let `p`
-divide no nonzero integer within `6 (a + η + W)` of `0` or `± b i` (`NoMultipleNear`). Let `L` be
+divide no nonzero integer within `n ≥ a + max a η + max η W` of `0` or `± b i` (`NoMultipleNear`). Let `L` be
 crystalline with Hodge–Tate jumps in `U'`, and at each letter let the jump sets of `U` and `U'` lie
 in `[-η, η] ∪ ∓ε i [b i, b i + W]`, with opposite signs. If `U` and `U'` avoid `[-a, 0)`, or `U'`
 lies in `[-η, 0]`, then every crystalline cocycle of `L` lies in `cupOrthogonal`: its cup product
@@ -241,9 +241,10 @@ with every crystalline cocycle of a crystalline lattice with jumps in `U` is a c
 lemma KummerChart.crysCocycles_le_cupOrthogonal_of_no_small_neg_jump [TopologicalSpace Γ]
     (k : KummerChart Γ)
     (ζ : k.LetterRoot O) (ho : IsOpenEmbedding Γ.overGp.toGp) (hk : k.IsUnramified)
-    (hp : 5 ≤ p) {a η W : ℕ} {b : k.Letter → ℕ} {ε : k.Letter → ℤˣ}
+    (hp : 5 ≤ p) {a η W n : ℕ} {b : k.Letter → ℕ} {ε : k.Letter → ℤˣ}
     (h_height : ∀ i : k.Letter, b i + W + η ≤ (p - 3) * a)
-    (h_gap : ∀ i : k.Letter, NoMultipleNear p (6 * (a + η + W)) (b i)) (hL : InClass ⊤ ⊥ U' L)
+    (h_gap : ∀ i : k.Letter, NoMultipleNear p n (b i)) (hn : a + max a η + max η W ≤ n)
+    (hL : InClass ⊤ ⊥ U' L)
     (hU : ∀ i : k.Letter, FitsWindows η (-ε i) (b i) W (k.letterJumps ζ U i))
     (hU' : ∀ i : k.Letter, FitsWindows η (ε i) (b i) W (k.letterJumps ζ U' i))
     (h_small : (∀ (g : O →ₐ[ℤ_[p]] ℂ_[p]) (u : ℤ), u ∈ U g ∨ u ∈ U' g → u ∉ Ico (-a : ℤ) 0) ∨
@@ -268,8 +269,8 @@ lemma KummerChart.crysCocycles_le_cupOrthogonal_of_no_small_neg_jump [Topologica
       have h_sum := (hU i).neg_add_le_of_opposite (hU' i) hv hv'
       have h_bound := h_height i
       -- The gap around zero excludes the nonzero multiple p itself.
-      have h_radius : ¬ p ≤ 6 * (a + η + W) := fun hn ↦ h_gap i p (by omega)
-        (.inl (by rw [abs_of_nonneg (by positivity)]; exact_mod_cast hn)) dvd_rfl
+      have h_radius : ¬ p ≤ n := fun hpn ↦ h_gap i p (by omega)
+        (.inl (by rw [abs_of_nonneg (by positivity)]; exact_mod_cast hpn)) dvd_rfl
       cases a <;> simp only [Nat.mul_zero, Nat.mul_succ] at * <;> omega
   -- The two cases of `h_small` pass from the embeddings to the letters.
   have h_small_letters :
@@ -282,7 +283,7 @@ lemma KummerChart.crysCocycles_le_cupOrthogonal_of_no_small_neg_jump [Topologica
       exacts [by simp, h_low g hg]
   have differentBound_eq : k.differentBound = 0 := hk.right.right
   refine P.isScaledCupCoboundary_of_killsCokernel (κ := 0) (kills tateDual_le) (kills ?_) (kills ?_)
-    h_gap hU hU' h_small_letters (by simp [differentBound_eq]) c ⟨x, hx⟩
+    h_gap hn hU hU' h_small_letters (by simp [differentBound_eq]) c ⟨x, hx⟩
   · exact fun i _ hu ↦ ((hU i).le_add le_rfl hu).trans (height_le i)
   · exact fun i _ hu ↦ ((hU' i).le_add le_rfl hu).trans (height_le i)
 
@@ -376,7 +377,7 @@ lemma KummerChart.dualDefect_eq_zero_and_dualDefect_le [TopologicalSpace Γ] (k 
         (11 * (k.f * (m * (a + 1) + finrank O L * (W + 1))) : ℕ) *
           length O (O ⧸ Ideal.span {(p : O)}) :=
   ⟨fun h_small ↦ dualDefect_eq_zero_iff.2 (k.crysCocycles_le_cupOrthogonal_of_no_small_neg_jump
-      ζ ho hk hp h_height h_gap hL hU hU' h_small),
+      ζ ho hk hp h_height h_gap (by omega) hL hU hU' h_small),
     fun _ hm ↦ k.dualDefect_le_of_few_low_weights ζ ho hk hp h_height hη h_far h_gap hL hU hU' hm⟩
 
 /-- Let `Γ → Gp p` be an open embedding, and let the root `ζ` assign the embeddings of `O` to the
@@ -521,8 +522,8 @@ lattice lies in `InClass F K U` if its periods fixed on a neighbourhood of `1` t
 filter `F` span, its Hodge–Tate jumps at each embedding `g` of `O` lie in `U g`, and each polynomial
 allowed by `K s` kills `s` on its periods, for `s` in inertia. Let `L` lie in the class for `U'` and
 `s ↦ K s⁻¹`. If `U` and `U'` lie at each embedding in `[-η, η]` and in the opposite far windows
-`∓ε [b, b + W]`, and `p > b + 6 (W + η) + r² (N + 1)² + 2`, then
-`p ^ (3 r² (N + 1)² + 150 (η + W + 1))` times any crystalline cocycle of `L` has cup product a
+`∓ε [b, b + W]`, and `p > b + η + max η W + r² (N + 1)² + 2`, then
+`p ^ (3 r² (N + 1)² + 8 η + 2 W)` times any crystalline cocycle of `L` has cup product a
 coboundary with every crystalline cocycle of a lattice in `InClass F K U` paired with `L`. -/
 lemma hasCupExponent_of_isTameType [TopologicalSpace Γ] (ho : IsOpenEmbedding Γ.overGp.toGp)
     (h_surj : Surjective Γ.overGp.toGp) {F : Filter Γ} {K : Γ → O[X] → Prop}
@@ -530,8 +531,8 @@ lemma hasCupExponent_of_isTameType [TopologicalSpace Γ] (ho : IsOpenEmbedding �
     (hK : ∀ s : Γ, IsWeilPair (toGp s) 0 → IsTameType p r N (K s)) {η W b : ℕ} {ε : ℤˣ}
     (hU : ∀ g : O →ₐ[ℤ_[p]] ℂ_[p], FitsWindows η (-ε) b W (U g))
     (hU' : ∀ g : O →ₐ[ℤ_[p]] ℂ_[p], FitsWindows η ε b W (U' g))
-    (hp : b + 6 * (W + η) + r ^ 2 * (N + 1) ^ 2 + 2 < p) :
-    HasCupExponent (InClass F K U) L (3 * (r ^ 2 * (N + 1) ^ 2) + 150 * (η + W + 1)) := by
+    (hp : b + η + max η W + r ^ 2 * (N + 1) ^ 2 + 2 < p) :
+    HasCupExponent (InClass F K U) L (3 * (r ^ 2 * (N + 1) ^ 2) + (8 * η + 2 * W)) := by
   -- Take a tame chart `d` of ramification index `e = lcm (p ^ i - 1)`, `1 ≤ i ≤ r`, over which all
   -- lattices of the class become crystalline, and apply `isScaledCupCoboundary_of_killsCokernel`
   -- with `a = 0` and `κ = r ^ 2 * (N + 1) ^ 2`. The three cokernels are killed by `p ^ κ` thanks to
@@ -566,30 +567,28 @@ lemma hasCupExponent_of_isTameType [TopologicalSpace Γ] (ho : IsOpenEmbedding �
     d.fitsWindows_letterJumps ζ hU i
   have h_window' (i : d.Letter) : FitsWindows η ε b W (d.letterJumps ζ U' i) :=
     d.fitsWindows_letterJumps ζ hU' i
-  -- All jumps of the three sides are at most `b + 6 (W + η)`.
+  -- All jumps of the three sides are at most `b + η + max η W`.
   have window_le {s : ℤˣ} {V : Finset ℤ} (hV : FitsWindows η s b W V) :
-      ∀ u ∈ V, u ≤ (b + 6 * (W + η) : ℕ) := fun u hu ↦
-        (hV.le_add (W := W + η) le_rfl hu).trans (by lia)
+      ∀ u ∈ V, u ≤ (b + η + max η W : ℕ) := fun u hu ↦
+        (hV.le_add (W := W + η) le_rfl hu).trans (by omega)
   -- The jumps of the Tate dual side are `0` and the `-(v + v') - 1`.
   have tateDual_le (i : d.Letter) :
-      ∀ u ∈ P.tateDualSide.jumpSet i, u ≤ (b + 6 * (W + η) : ℕ) := by
+      ∀ u ∈ P.tateDualSide.jumpSet i, u ≤ (b + η + max η W : ℕ) := by
     refine d.le_of_mem_jumpSet_tateDualSide ζ P (by positivity) fun v hv v' hv' ↦ ?_
     have h_sum := (h_window i).neg_add_le_of_opposite (h_window' i) hv hv'
     omega
   have cost_le {n : ℕ} (hn : n ≤ N * N + N) : r ^ 2 * (n + 1) ≤ r ^ 2 * (N + 1) ^ 2 :=
     Nat.mul_le_mul_left _ (by linarith)
-  have h_gap : NoMultipleNear p (6 * (0 + η + W)) b := noMultipleNear_of_add_lt (by omega)
+  have h_gap : NoMultipleNear p (η + max η W) b := noMultipleNear_of_add_lt (by omega)
   refine P.isScaledCupCoboundary_of_killsCokernel (a := 0) (κ := r ^ 2 * (N + 1) ^ 2)
-    (fun i ↦ ?_) (fun i ↦ ?_) (fun i ↦ ?_) (fun _ ↦ h_gap) h_window h_window' (.inl (by simp))
+    (fun i ↦ ?_) (fun i ↦ ?_) (fun i ↦ ?_) (fun _ ↦ h_gap) (by simp) h_window h_window' (.inl (by simp))
     ?_ c ⟨x, hx⟩
   · exact d.killsCokernel_of_isKilledBy h_killed tateDual_le hq'' he_le hp (cost_le (by nlinarith))
   · exact d.killsCokernel_of_isKilledBy (hY.isKilledBy_of_isWeilPair hKq d.isWeilPair_tameGen)
       (fun i ↦ window_le (h_window i)) hq he_le hp (cost_le (by omega))
   · exact d.killsCokernel_of_isKilledBy (hL.isKilledBy_of_isWeilPair hKq' d.isWeilPair_tameGen)
       (fun i ↦ window_le (h_window' i)) hq' he_le hp (cost_le (by omega))
-  · show 3 * (r ^ 2 * (N + 1) ^ 2 + (8 * (6 * (0 + η + W)) + 4) * d.differentBound) ≤
-      3 * (r ^ 2 * (N + 1) ^ 2) + 150 * (η + W + 1)
-    grw [d.differentBound_le_one]
+  · grw [d.differentBound_le_one]
     lia
 
 end New.Lift

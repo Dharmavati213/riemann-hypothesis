@@ -771,10 +771,10 @@ lemma glMultiplier_mul_of_map_evalAt_eq_one
   refine chiFin_congr fun w ↦ ?_
   have h_local {x y : GL ι (𝔸f E)} (hxy : x.map (evalAt w) = y.map (evalAt w)) :
       v ((saturatingElem x).val.val.det w) = v ((saturatingElem y).val.val.det w) := by
-    obtain ⟨u, hu⟩ : ∃ u : GL ι (𝔸f E), IsSaturating (Ô E).matrix y u := exists_isSaturating y
-    have h_sat : IsSaturating (LocInt w).matrix (x.map (evalAt w)) (u.map (evalAt w)) := by
-      simpa only [hxy] using hu.map_evalAt w
-    rw [h_sat.v_det_saturatingElem, (hu.map_evalAt w).v_det_saturatingElem]
+    have hx := (saturatingElem x).property.map_evalAt w
+    rw [hxy] at hx
+    simpa [← evalAt_apply, RingHom.map_det] using
+      hx.v_det_eq ((saturatingElem y).property.map_evalAt w)
   obtain hb | hb' := h_supp w
   · have h_comp : (b * b').map (evalAt w) = b'.map (evalAt w) := by rw [map_mul, hb, one_mul]
     simp [h_local h_comp, v_det_saturatingElem_eq_one hb]

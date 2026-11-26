@@ -421,7 +421,7 @@ def thetaMultiples {J : Type} [Fintype J] (μ : J → InfinitePlace (P.E s) × n
     exact ⟨H + H', add_mem hH hH', by rw [map_add, map_add, hg, hg', mul_add]⟩
   smul_mem' := by
     rintro a g ⟨H, hH, hg⟩
-    refine ⟨ιₚ a • H, P.cmCurve.smul_mem_multiSeriesRing a.2 hH, ?_⟩
+    refine ⟨ιₚ a • H, P.cmCurve.smul_mem_multiSeriesRing a.property hH, ?_⟩
     rw [mul_smul_comm, ← hg]
     change MvPowerSeries.map ιₚ (V.jetSeries c ((a : ℂ) • g)) =
       ιₚ a • MvPowerSeries.map ιₚ (V.jetSeries c g)

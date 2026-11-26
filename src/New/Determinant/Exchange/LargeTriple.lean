@@ -476,8 +476,10 @@ lemma mem_map_sum_iff_fixes_cols (k : G E (t' ⊕ᵥ s)) :
     have h_cols : γ.val.val * fromRows (1 : Matrix b b E) (0 : Matrix n b E) =
         γ.val.val.toCols₁ := by ext; simp [Matrix.mul_apply, Matrix.one_apply]
     simpa only [h_cols] using New.U.mem_range_sum_right rfl V'.isUnit_J
-  -- the form of `V'.sum W₁` is `fromBlocks V'.J 0 0 W₁.J` by definition
-  erw [← exists_congr fun γ ↦ and_congr_left' (h_fixes γ)]
+  change _ ↔ ∃ γ : U (fromBlocks V'.J 0 0 W₁.J),
+    γ.val.val * fromRows (1 : Matrix b b E) (0 : Matrix n b E) = fromRows 1 0 ∧
+      (V'.sum W₁).ratEmbed γ = k
+  rw [← exists_congr fun γ ↦ and_congr_left' (h_fixes γ)]
   simp [Γ, sum_ratEmbed, -Subtype.exists]
 
 omit [WeilData E] [Fintype b] [DecidableEq b] in

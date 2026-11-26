@@ -74,8 +74,8 @@ lemma tsum_mul_measure_le_lintegral {G I : Type*} [Group G] [MeasurableSpace G] 
 level `J`, that is, under some open subgroup of the integral points. -/
 lemma TestFunction.exists_isLevel_invariant {E n : Type} [Field E] [NumberField E] [IsCMField E]
     [Fintype n] [DecidableEq n] (φ : TestFunction (Gf E n)) : ∃ J : Subgroup (Gf E n), IsLevel J ∧
-      (∀ u ∈ J, ∀ y : Gf E n, φ.1 (u⁻¹ * y) = φ.1 y) ∧
-      ∀ u ∈ J, ∀ y : Gf E n, φ.1 (y * u) = φ.1 y := by
+      (∀ u ∈ J, ∀ y : Gf E n, φ.val (u⁻¹ * y) = φ.val y) ∧
+      ∀ u ∈ J, ∀ y : Gf E n, φ.val (y * u) = φ.val y := by
   have h_fixed : ∀ᶠ p in nhds (1 : Gf E n × Gf E n), TestFunction.translate p φ = φ :=
     IsSmoothRep.eventually_fixed φ
   have h_left : ∀ᶠ u in nhds (1 : Gf E n), TestFunction.translate (u, 1) φ = φ :=
@@ -297,9 +297,9 @@ lemma integrable_majorant (φ : TestFunction (Gf E n)) {A : ℕ} (hA : 8 * card 
   have h_inf : Integrable fun z : GInf E s ↦ ∏ w : InfinitePlace E, (‖(z w).val.val‖ ^ A)⁻¹ :=
     .fintype_prod fun _ ↦ h_place
   obtain ⟨h_const, h_compact, -⟩ := φ.property
-  have h_fin : Integrable φ.1 := h_const.continuous.integrable_of_hasCompactSupport h_compact
+  have h_fin : Integrable φ.val := h_const.continuous.integrable_of_hasCompactSupport h_compact
   have h_eq (y : G E s) :
-      (∏ w : InfinitePlace E, (‖(y.1 w).val.val‖ ^ A)⁻¹) * ‖φ.1 y.2‖ = majorant φ.1 A y := by
+      (∏ w : InfinitePlace E, (‖(y.1 w).val.val‖ ^ A)⁻¹) * ‖φ.val y.2‖ = majorant φ.val A y := by
     simp [majorant, Finset.prod_pow, mul_comm]
   exact (h_inf.mul_prod h_fin.norm).congr (.of_forall h_eq)
 

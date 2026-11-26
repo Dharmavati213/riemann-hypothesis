@@ -70,7 +70,7 @@ lemma New.exists_GL_col_mem_of_span {K n : Type*} [Field K] [Fintype n] [Decidab
     (ofSpan h_span).reindex (indexEquiv (ofSpan h_span) (Pi.basisFun K n))
   have h_unit : IsUnit (Matrix.of b)ᵀ := linearIndependent_col_iff_isUnit.1 b.linearIndependent
   exact ⟨h_unit.unit, fun i ↦ ofSpan_subset h_span
-    (by simp [b]; exact ((indexEquiv (ofSpan h_span) (Pi.basisFun K n)).symm i).2)⟩
+    (by simp [b]; exact ((indexEquiv (ofSpan h_span) (Pi.basisFun K n)).symm i).property)⟩
 
 end NonUnitalUnits
 

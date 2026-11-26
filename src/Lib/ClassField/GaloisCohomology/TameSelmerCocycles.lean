@@ -221,10 +221,8 @@ lemma length_localCocycles_le (hB : ∀ b : B, ℓ ^ M • b = 0) (hA : IsPlaceO
     exact funext (eq_zero_on_decompGroup hA h_cocycle h_lc (h_unram hy h_tame) hφ hφ_zero)
   have h_ker : length O Z₀ ≤ length O (ker ((ρ γ - 1) • 1 : End O (n → B))) := by
     simpa using relLength_le_of_mapsTo evalFrob (T := ⊥) (T' := ⊥) h_fixed h_inj
-  have h_quot : relLength (localCocycles ρ L A B) (ker evalTame) ≤ length O (n → B) := by
-    grw [relLength_ker, length_mono le_top, length_top]
-  rw [← relLength_add_length_inf _ (ker evalTame)]
-  exact add_le_add h_quot h_ker
+  rw [← length_map_add_length_inf_ker _ evalTame]
+  exact add_le_add (length_le_of_injective _ (Submodule.subtype_injective _)) h_ker
 
 /-- Let `A'` be a place of `Ω` over `v`, and let `ρ` be trivial on the inertia groups above `v`.
 A cocycle `c` for `ρ` that vanishes on the inertia group of `A'` vanishes on every inertia group

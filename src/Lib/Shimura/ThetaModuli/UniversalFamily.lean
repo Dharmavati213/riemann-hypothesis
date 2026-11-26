@@ -376,7 +376,7 @@ lemma holomorphicAt_complexPoint {F : AnalyticFamily D} ⦃b : BallBase D.Index�
     ∏ ω : D.levelTorsion, (u b' • FamilyParameter.levelCoords (F, b') ω) (k ω)
   have h_analytic (k : D.levelTorsion → D.dualTorsion) : AnalyticAt ℂ (fun b' ↦ coords b' k) b :=
     Finset.analyticAt_fun_prod _ fun ω _ ↦
-      (hu ..).comp₂ analyticAt_id (F.analyticAt _ hb (toRealVectors (ratLift F.frame ω.1)))
+      (hu ..).comp₂ analyticAt_id (F.analyticAt _ hb (toRealVectors (ratLift F.frame ω.val)))
   refine .of_isHomogeneousCoords C.isProjEmbedding_pi_coordBundle h_analytic
     (hu_ne.mono fun b' h_unit ↦ ?_) fun _ ↦ Over.w _
   exact .pi (w := (·)) fun ω ↦ (C.isHomogeneousCoords_complexPoint (F, b') ω).smul h_unit
