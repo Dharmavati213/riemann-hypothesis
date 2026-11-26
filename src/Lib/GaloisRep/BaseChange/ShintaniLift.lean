@@ -224,6 +224,7 @@ lemma isLocalMatching_shintani {S : GalSemidirect (ResField w) (ResField u) n �
   have h_order : orderOf φ = finrank E E' :=
     (orderOf_frobeniusAlgEquivOfAlgebraic _ _).trans h_degree
   have hφ_ne : φ ≠ 1 := by simpa [← h_order] using hμ.out.ne_one
+  -- some `σ ≠ 1` fixes `u`, lies outside its inertia group and induces `φ` on its residue field
   obtain ⟨σ, h_frob⟩ := IsArithFrobAt.exists_of_isInvariant (𝓞 E) Gal(E'/E) u.asIdeal
   have hσ (x : 𝓞 E') : φ (algebraMap _ _ x) = algebraMap _ _ (σ • x) := by
     rw [eq_comm]
